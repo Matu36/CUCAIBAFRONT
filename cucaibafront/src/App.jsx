@@ -4,17 +4,17 @@ import { Routes, Route } from "react-router-dom";
 import SideBar from "./components/SideBar";
 import GetAgentes from "./components/GetAgentes";
 
-
 function App() {
+  
 
   return (
-  <Routes>
-  <Route path={"/"} element={<SideBar />} />
-  <Route path={"/agentes"} element={<GetAgentes />} />
-
-
-  </Routes>
-  )
+    <div>
+    <SideBar />
+    <Routes>
+      <Route path={"/agentes"} element={<GetAgentes />} />
+    </Routes>
+    </div>
+  );
 }
 
 export default App;
