@@ -1,14 +1,10 @@
 import React from "react";
+import "../assets/styles/style.css";
+import { Link } from "react-router-dom";
 
 const SideBar = () => {
-
-  
-  
-
   return (
     <div className="sidebar-nav navbar-collapse offcanvas-collapse">
-
-<button className="btn btn-primary">BOOTSTRAP ANDA; REVISAR PARTIALS!</button>
       <label
         style={{
           padding: ".85rem 0",
@@ -22,9 +18,10 @@ const SideBar = () => {
       </label>
       <ul className="metismenu side-menu" id="side-menu">
         <li>
-          <a href="#">
+          <Link to="/">
             <i className="fas fa-hospital-symbol fa-lg fa-fw mr-2"></i> Inicio
-          </a>
+            </Link>
+         
         </li>
         <li>
           <a className="has-arrow" href="#" aria-expanded="false">
@@ -32,10 +29,12 @@ const SideBar = () => {
           </a>
           <ul className="sub-menu">
             <li>
-              <a href="#">Ver Agentes</a>
+              <Link to="/agentes">
+               Ver Agentes
+              </Link>
             </li>
             <li>
-              <a href="#">Crear Agente</a>
+              <a>Crear Agente</a>
             </li>
           </ul>
         </li>
