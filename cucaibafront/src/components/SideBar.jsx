@@ -1,8 +1,12 @@
 import React from "react";
-import 'bootstrap/dist/css/bootstrap.min.css';
+
+
+
 const SideBar = () => {
   return (
     <div className="sidebar-nav navbar-collapse offcanvas-collapse">
+
+<button className="btn btn-primary">BOOTSTRAP ANDA; REVISAR PARTIALS!</button>
       <label
         style={{
           padding: ".85rem 0",
