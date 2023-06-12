@@ -8,6 +8,7 @@ import Layout from "./components/Layout/Layout.jsx";
 import GetAgentes from "./components/GetAgentes.jsx";
 import { Home } from "./Pages/Home.jsx";
 import PostAgentes from "./components/PostAgentes.jsx";
+import GetOperativos from "./components/GetOperativos.jsx";
 
 const router = createBrowserRouter([
   {
@@ -28,8 +29,16 @@ const router = createBrowserRouter([
           {
             path: "/agentes/crear-agente",
             element: <PostAgentes />
+          },
+        ]
+      },
+      {
+        path:"operativos",
+        children: [
+          {
+            path:"/operativos/ver-operativos",
+            element: <GetOperativos />
           }
-
         ]
       }
     ]
