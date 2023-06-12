@@ -5,7 +5,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { store } from "../src/Redux/Store/index.js";
 import { Provider } from "react-redux";
-import Layout from "./components/Layout.jsx";
+import Layout from "./components/Layout/Layout.jsx";
 import GetAgentes from "./components/GetAgentes.jsx";
 
 const router = createBrowserRouter([

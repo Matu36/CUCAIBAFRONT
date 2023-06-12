@@ -77,9 +77,12 @@
      padding: 0 .75rem .175rem 1rem;
      margin-bottom: .125rem;
  }
+
+ .sidebarIcons {
+    margin-right: 10px;
+ }
  /** End Submenu **/
 
- 
 
  .offcanvas-collapse {
     align-items:start;
@@ -118,12 +121,13 @@
     -webkit-overflow-scrolling: touch;
 }
 .navbar-ms {
-    background: #3b3d45 url('../img/dark-mosaic.png') 0 0;
+    background: #3b3d45 url('../images/dark-mosaic.png') 0 0;
     border-top: 5px solid var(--ms-main-color);
     box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.16);
     margin-bottom: 0;
-    min-height: 80px;
+    max-height: 80px;
 }
+
 .intranet-logo > span{
     display: block;
     font-family: var(--ms-font), Helvetica, sans-serif;
@@ -136,7 +140,7 @@
     color: #acacac;
 }
 .intranet-logo .snd-line {
-    color: var(--ms-main-color);
+    color: red;
 }
 .btn-user{
     color: #fff;
@@ -147,7 +151,6 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    width: 20rem;
     text-align: right;
 }
 .btn-user i{
@@ -183,6 +186,10 @@
 }
 .dropdown-item:focus, .dropdown-item:hover {
     background-color: #fff;
+}
+
+.sidebarIcons {
+
 }
 
 /** titulo del index **/

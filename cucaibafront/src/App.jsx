@@ -1,6 +1,6 @@
 import React from "react";
 import "./App.css";
-import SideBar from "./components/SideBar";
+import SideBar from "./components/Layout/SideBar";
 import GetAgentes from "./components/GetAgentes";
 
 function App() {
