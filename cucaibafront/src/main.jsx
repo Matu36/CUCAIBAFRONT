@@ -9,6 +9,7 @@ import GetAgentes from "./components/GetAgentes.jsx";
 import { Home } from "./Pages/Home.jsx";
 import PostAgentes from "./components/PostAgentes.jsx";
 import GetOperativos from "./components/GetOperativos.jsx";
+import PostOperativos from "./components/PostOperativos.jsx";
 
 const router = createBrowserRouter([
   {
@@ -17,7 +18,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <Home />
+        element: <Home />,
       },
       {
         path: "/agentes",
@@ -28,22 +29,23 @@ const router = createBrowserRouter([
           },
           {
             path: "/agentes/crear-agente",
-            element: <PostAgentes />
+            element: <PostAgentes />,
           },
-        ]
+        ],
       },
       {
-        path:"operativos",
+        path: "operativos",
         children: [
           {
-            path:"/operativos/ver-operativos",
-            element: <GetOperativos />
-          }
-        ]
-      }
-    ]
+            path: "/operativos/ver-operativos",
+            element: <GetOperativos />,
+          },
+          { path: "/operativos/nuevo-operativo", element: <PostOperativos /> },
+        ],
+      },
+    ],
   },
-])
+]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
