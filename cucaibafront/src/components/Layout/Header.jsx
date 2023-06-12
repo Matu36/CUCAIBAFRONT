@@ -12,8 +12,8 @@ import "./styles/header.css"
 const Header = () => {
     const [isOpen, setIsOpen] = useState(false)
     return (
-        <header className="container">
-            <nav className="navbar fixed-top navbar-offcanvas navbar-ms p-4">
+        <header >
+            <nav className="navbar position-relative top-0 navbar-offcanvas navbar-ms p-4">
                 <div className="row w-100 flex-nowrap align-items-center justify-content-center">
                     <button className="navbar-toggler mr-1 border-0" type='button' id="navToggle" onClick={() => setIsOpen(!isOpen)}>
                         <GiHamburgerMenu size="3rem" />

@@ -8,7 +8,6 @@ import {BsFillPersonFill} from "react-icons/bs"
 import {SiWebmoney} from "react-icons/si"
 
 const SideBar = ({isOpen}) => {
-  console.log(isOpen)
   return (
     <div className={`sidebar-nav navbar-collapse offcanvas-collapse ${isOpen ? "open" : "null"}`}>
       <label
@@ -35,12 +34,14 @@ const SideBar = ({isOpen}) => {
           </a>
           <ul className="collapse sub-menu" id="collapseAgentes">
             <li >
-              <Link to="/agentes">
+              <Link to="/agentes/ver-agentes">
                Ver Agentes
               </Link>
             </li>
             <li >
-              <a>Crear Agente</a>
+            <Link to="/agentes/crear-agente">
+               Nuevo Agente
+              </Link>
             </li>
           </ul>
         </li>
