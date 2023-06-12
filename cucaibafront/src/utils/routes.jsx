@@ -1,37 +1,38 @@
-import { createBrowserRouter } from 'react-router-dom';
-import { Home } from '../Pages/Home';
-import Layout from '../components/Layout/Layout';
-import GetAgentes from '../components/GetAgentes';
-import PostAgentes from '../components/PostAgentes';
-import GetOperativos from '../components/GetOperativos';
+import {createBrowserRouter} from "react-router-dom";
+
+import {Home} from "../Pages/Home";
+import Layout from "../components/Layout/Layout";
+import GetAgentes from "../components/GetAgentes";
+import PostAgentes from "../components/PostAgentes";
+import GetOperativos from "../components/GetOperativos";
 
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: "/",
     element: <Layout />,
     children: [
       {
-        path: '/',
+        path: "/",
         element: <Home />,
       },
       {
-        path: '/agentes',
+        path: "/agentes",
         children: [
           {
-            path: '/agentes/ver-agentes',
+            path: "/agentes/ver-agentes",
             element: <GetAgentes />,
           },
           {
-            path: '/agentes/crear-agente',
+            path: "/agentes/crear-agente",
             element: <PostAgentes />,
           },
         ],
       },
       {
-        path: '/operativos',
+        path: "/operativos",
         children: [
           {
-            path: '/operativos/ver-operativos',
+            path: "/operativos/ver-operativos",
             element: <GetOperativos />,
           },
         ],
