@@ -39,13 +39,13 @@ function SideBar({isOpen}) {
           </a>
           <ul className="collapse sub-menu" id="collapseAgentes">
             <li>
-              <Link to="/agentes/ver-agentes" onClick={() => isOpen(false)}>
-                Ver Agentes
+              <Link to="/agentes/crear-agente" onClick={() => isOpen(false)}>
+                Cargar Agente
               </Link>
             </li>
             <li>
-              <Link to="/agentes/crear-agente" onClick={() => isOpen(false)}>
-                Nuevo Agente
+              <Link to="/agentes/ver-agentes" onClick={() => isOpen(false)}>
+                Ver Agentes
               </Link>
             </li>
           </ul>
