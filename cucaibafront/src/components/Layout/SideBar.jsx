@@ -68,7 +68,7 @@ const SideBar = ({isOpen}) => {
             </li>
             <li>
               <a className="btn btn-link disabled " href="#">
-                Guardias
+                Guardia
               </a>
             </li>
           </ul>
