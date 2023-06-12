@@ -1,13 +1,14 @@
 import React from "react";
 import "../../assets/styles/style.css";
 import { Link } from "react-router-dom";
-
-import {AiFillHome, AiTwotoneContainer} from "react-icons/ai"
+import {AiFillHome} from "react-icons/ai"
 import {FaAmbulance} from "react-icons/fa"
 import {BsFillPersonFill} from "react-icons/bs"
 import {SiWebmoney} from "react-icons/si"
 
 const SideBar = ({isOpen}) => {
+  
+
   return (
     <div className={`sidebar-nav navbar-collapse offcanvas-collapse ${isOpen ? "open" : "null"}`}>
       <label
@@ -23,23 +24,23 @@ const SideBar = ({isOpen}) => {
       </label>
       <ul className="metismenu side-menu" id="side-menu">
         <li>
-          <Link to="/">
+          <Link to="/" onClick={() => isOpen(false)}>
             <AiFillHome className="sidebarIcons"/> Inicio
             </Link>
          
         </li>
         <li> 
-          <a className="nav-link dropdown-toggle"  data-bs-toggle="collapse" href="#collapseAgentes" role="button" aria-expanded="false" aria-controls="collapseExample">
+          <a className="nav-link dropdown-toggle"  data-bs-toggle="collapse" href="#collapseAgentes" role="button" aria-expanded="false" aria-controls="collapseExample" >
             <BsFillPersonFill className="sidebarIcons"  /> Agentes
           </a>
           <ul className="collapse sub-menu" id="collapseAgentes">
             <li >
-              <Link to="/agentes/ver-agentes">
+              <Link to="/agentes/ver-agentes" onClick={() => isOpen(false)}>
                Ver Agentes
               </Link>
             </li>
             <li >
-            <Link to="/agentes/crear-agente">
+            <Link to="/agentes/crear-agente" onClick={() => isOpen(false)}>
                Nuevo Agente
               </Link>
             </li>
@@ -54,7 +55,9 @@ const SideBar = ({isOpen}) => {
               <a href="#">Cargar operativos</a>
             </li>
             <li>
-              <a href="#">Ver operativos</a>
+            <Link to="/operativos/ver-operativos" onClick={() => isOpen(false)}>
+              <a>Ver operativos</a>
+              </Link>
             </li>
           </ul>
         </li>
