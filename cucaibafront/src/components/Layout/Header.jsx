@@ -12,9 +12,9 @@ import "./styles/header.css"
 const Header = () => {
     const [isOpen, setIsOpen] = useState(false)
     return (
-        <header >
-            <nav className="navbar position-relative top-0 navbar-offcanvas navbar-ms p-4">
-                <div className="row w-100 flex-nowrap align-items-center justify-content-center">
+        <header className='' >
+            <nav className="navbar  position-relative top-0 navbar-offcanvas navbar-ms">
+                <div className="row w-100 mx-auto flex-nowrap align-items-center justify-content-center">
                     <button className="navbar-toggler mr-1 border-0" type='button' id="navToggle" onClick={() => setIsOpen(!isOpen)}>
                         <GiHamburgerMenu size="3rem" />
                     </button>
@@ -24,13 +24,13 @@ const Header = () => {
                     </div>
                     <div className="col-3 d-flex justify-content-end align-items-center">
                         <div className="dropdown">
-                            <button className="btn btn-user font-weight-medium dropdown-toggle" type="button" id="dropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <button className="btn btn-user font-weight-medium dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <BiUserCircle size="2rem" />
                                 <span className="username"> Alejandro Oslovski </span>
                             </button>
                             <div className="dropdown-user dropdown-menu pt-4" aria-labelledby="dropdownMenu">
                                 <div className="dropdown-item text-center text-secondary mb-2 pt-2" type="button">
-                                    <svg className="svg" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-person-circle" viewBox="0 0 16 16">
+                                    <svg  xmlns="http://www.w3.org/2000/svg" width="10vh" height="10vh" fill="currentColor" className="bi bi-person-circle" viewBox="0 0 16 16">
                                         <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"></path>
                                         <path fillRule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"></path>
                                     </svg>
@@ -41,7 +41,7 @@ const Header = () => {
                                         @wilson
                                     </div>
                                     <div className="text-muted text-center mt-3">
-                                        <span className="badge badge-pill badge-light border border-dark px-5 py-2">
+                                        <span className="badge badge-pill rounded-5 text-dark-emphasis badge-light border border-dark px-5 py-2">
                                             Perfil Hospital
                                         </span>
                                     </div>
