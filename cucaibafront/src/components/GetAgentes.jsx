@@ -2,8 +2,13 @@ import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getAgentes } from "../Redux/Actions";
 import Paginacion from "./Paginacion";
+import { useAgentes } from "../hooks/useAgentes";
 
 const GetAgentes = () => {
+
+  const { agentesQuery } = useAgentes();
+  // console.log(agentesQuery.data);
+
   let dispatch = useDispatch();
   useEffect(() => {
     dispatch(getAgentes());
@@ -73,7 +78,7 @@ const GetAgentes = () => {
         />
       </div>
       <h1>Lista de Agentes</h1>
-      <table className="table table-striped">
+      <div className="table-responsive"><table className="table table-striped">
         <thead>
           <tr>
             <th>ID</th>
@@ -94,7 +99,8 @@ const GetAgentes = () => {
             </tr>
           ))}
         </tbody>
-      </table>
+      </table></div>
+
       {agentes && (
         <Paginacion
           currentPage={currentPage}
@@ -102,6 +108,7 @@ const GetAgentes = () => {
           handlePageNumber={handlePageNumber}
         />
       )}
+
     </div>
   );
 };
