@@ -1,21 +1,23 @@
+/* eslint-disable react/react-in-jsx-scope */
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import "../../assets/styles/style.css";
-import {Link} from "react-router-dom";
-import {AiFillHome} from "react-icons/ai";
-import {FaAmbulance} from "react-icons/fa";
-import {BsFillPersonFill} from "react-icons/bs";
-import {SiWebmoney} from "react-icons/si";
+import '../../assets/styles/style.css';
+import { Link } from 'react-router-dom';
+import { AiFillHome } from 'react-icons/ai';
+import { FaAmbulance } from 'react-icons/fa';
+import { BsFillPersonFill } from 'react-icons/bs';
+import { SiWebmoney } from 'react-icons/si';
 
-function SideBar({isOpen}) {
+function SideBar({ isOpen }) {
   return (
-    <div className={`sidebar-nav navbar-collapse offcanvas-collapse ${isOpen ? "open" : "null"}`}>
+    // eslint-disable-next-line react/react-in-jsx-scope
+    <div className={`sidebar-nav navbar-collapse offcanvas-collapse ${isOpen ? 'open' : 'null'}`}>
       <label
         style={{
-          padding: ".85rem 0",
-          marginBottom: "1px",
-          color: "var(--bs-secondary-color)",
-          letterSpacing: "1px",
-          fontWeight: "600",
+          padding: '.85rem 0',
+          marginBottom: '1px',
+          color: 'var(--bs-secondary-color)',
+          letterSpacing: '1px',
+          fontWeight: '600',
         }}
       >
         Menú de navegación
@@ -23,7 +25,9 @@ function SideBar({isOpen}) {
       <ul className="metismenu side-menu" id="side-menu">
         <li>
           <Link to="/" onClick={() => isOpen(false)}>
-            <AiFillHome className="sidebarIcons" /> Inicio
+            <AiFillHome className="sidebarIcons" />
+            {' '}
+            Inicio
           </Link>
         </li>
         <li>
@@ -35,7 +39,9 @@ function SideBar({isOpen}) {
             href="#collapseAgentes"
             role="button"
           >
-            <BsFillPersonFill className="sidebarIcons" /> Agentes
+            <BsFillPersonFill className="sidebarIcons" />
+            {' '}
+            Agentes
           </a>
           <ul className="collapse sub-menu" id="collapseAgentes">
             <li>
@@ -59,7 +65,9 @@ function SideBar({isOpen}) {
             href="#collapseOperativos"
             role="button"
           >
-            <FaAmbulance className="sidebarIcons" /> Operativos
+            <FaAmbulance className="sidebarIcons" />
+            {' '}
+            Operativos
           </a>
           <ul className="collapse sub-menu" id="collapseOperativos">
             <li>
@@ -83,7 +91,9 @@ function SideBar({isOpen}) {
             href="#collapseHonorarios"
             role="button"
           >
-            <SiWebmoney className="sidebarIcons" /> Honorarios
+            <SiWebmoney className="sidebarIcons" />
+            {' '}
+            Honorarios
           </a>
           <ul className="collapse sub-menu" id="collapseHonorarios">
             <li>
