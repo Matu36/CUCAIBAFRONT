@@ -89,13 +89,18 @@ function SideBar({ isOpen }) {
             href="#collapseHonorarios"
             role="button"
           >
+            
             <SiWebmoney className="sidebarIcons" />
             {' '}
+
             Honorarios
           </a>
+          
           <ul className="collapse sub-menu" id="collapseHonorarios">
             <li>
-              <a href="/algo">Variables</a>
+            <Link to="/honorarios/variables" onClick= {() => isOpen(false)}>
+              Variables
+              </Link>
             </li>
             <li>
               <a className="btn btn-link disabled " href="/algo">

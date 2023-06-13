@@ -7,6 +7,7 @@ import GetOperativos from "../components/GetOperativos";
 import PostOperativos from "../components/PostOperativos";
 import CrearAgente from "../Pages/Crear-Agente";
 import { CrearOperativo } from "../Pages/Crear-Operativo";
+import { CrearHonorarios } from "../Pages/Crear-Honorarios";
 
 const router = createBrowserRouter([
   {
@@ -40,8 +41,19 @@ const router = createBrowserRouter([
           {path: "/operativos/nuevo-operativo", element: <CrearOperativo />},
         ],
       },
+      {
+        path: "honorarios",
+        children: [
+          {
+            path:"/honorarios/variables",
+            element: <CrearHonorarios />
+          }
+        ]
+        }
+      
     ],
   },
+  
 ]);
 
 export default router;

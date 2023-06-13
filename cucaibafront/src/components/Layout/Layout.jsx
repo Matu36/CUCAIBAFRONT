@@ -5,7 +5,7 @@ function Layout() {
   return (
     <>
       <Header />
-      <main><Outlet /></main>
+      <main style={{background: "#f7f7f7"}}><Outlet /></main>
 
       <footer>Footer</footer>
     </>
