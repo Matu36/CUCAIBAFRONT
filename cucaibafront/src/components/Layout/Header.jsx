@@ -1,26 +1,28 @@
-import React, { useState, useEffect } from "react";
-import SideBar from "./SideBar";
-import { GiHamburgerMenu } from "react-icons/gi";
-import { BiUserCircle } from "react-icons/bi";
-import "./styles/header.css";
+import React, { useState, useEffect } from 'react';
 
-const Header = () => {
+import { GiHamburgerMenu } from 'react-icons/gi';
+import { BiUserCircle } from 'react-icons/bi';
+import './styles/header.css';
+
+import SideBar from './Sidebar';
+
+function Header() {
   const [isOpen, setIsOpen] = useState(false);
 
-  //----------------------- CADA VEZ QUE SE HACE CLICK SE CIERRA LA SIDEBAR -------- //
+  // ----------------------- CADA VEZ QUE SE HACE CLICK SE CIERRA LA SIDEBAR -------- //
 
   const handleOutsideClick = (event) => {
     if (isOpen) {
-      if (!event.target.closest(".navbar-ms")) {
+      if (!event.target.closest('.navbar-ms')) {
         setIsOpen(false);
       }
     }
   };
 
   useEffect(() => {
-    document.addEventListener("click", handleOutsideClick);
+    document.addEventListener('click', handleOutsideClick);
     return () => {
-      document.removeEventListener("click", handleOutsideClick);
+      document.removeEventListener('click', handleOutsideClick);
     };
   }, [isOpen]);
 
@@ -67,11 +69,11 @@ const Header = () => {
                     className="bi bi-person-circle"
                     viewBox="0 0 16 16"
                   >
-                    <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"></path>
+                    <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
                     <path
                       fillRule="evenodd"
                       d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"
-                    ></path>
+                    />
                   </svg>
                   <div className="font-weight-bold text-no-wrap mt-2">
                     Alejandro Oslovski
@@ -83,7 +85,7 @@ const Header = () => {
                     </span>
                   </div>
                 </div>
-                <div className="dropdown-divider mt-4"></div>
+                <div className="dropdown-divider mt-4" />
                 <div
                   className="dropdown-item text-secondary text-center py-3"
                   type="button"
@@ -91,7 +93,7 @@ const Header = () => {
                   Centro De Alta Complejidad Cardiovascular Presidente Juan
                   Domingo Peron
                 </div>
-                <div className="dropdown-divider mb-2"></div>
+                <div className="dropdown-divider mb-2" />
                 <div className="dropdown-item text-center" type="button">
                   <a
                     id="closeSession"
@@ -110,6 +112,6 @@ const Header = () => {
       </nav>
     </header>
   );
-};
+}
 
 export default Header;
