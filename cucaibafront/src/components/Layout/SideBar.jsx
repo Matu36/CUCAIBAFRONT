@@ -1,5 +1,4 @@
-/* eslint-disable react/react-in-jsx-scope */
-/* eslint-disable jsx-a11y/label-has-associated-control */
+
 import '../../assets/styles/style.css';
 import { Link } from 'react-router-dom';
 import { AiFillHome } from 'react-icons/ai';
@@ -9,7 +8,6 @@ import { SiWebmoney } from 'react-icons/si';
 
 function SideBar({ isOpen }) {
   return (
-    // eslint-disable-next-line react/react-in-jsx-scope
     <div className={`sidebar-nav navbar-collapse offcanvas-collapse ${isOpen ? 'open' : 'null'}`}>
       <label
         style={{
@@ -91,13 +89,18 @@ function SideBar({ isOpen }) {
             href="#collapseHonorarios"
             role="button"
           >
+            
             <SiWebmoney className="sidebarIcons" />
             {' '}
+
             Honorarios
           </a>
+          
           <ul className="collapse sub-menu" id="collapseHonorarios">
             <li>
-              <a href="/algo">Variables</a>
+            <Link to="/honorarios/variables" onClick= {() => isOpen(false)}>
+              Variables
+              </Link>
             </li>
             <li>
               <a className="btn btn-link disabled " href="/algo">

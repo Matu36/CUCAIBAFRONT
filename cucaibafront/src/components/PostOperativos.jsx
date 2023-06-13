@@ -1,11 +1,11 @@
 import { postOperativo } from "../Redux/Actions"
-import { useDispatch} from "react-redux";
+import { useDispatch } from "react-redux";
 import { useState } from "react";
 import Swal from "sweetalert2";
 
 const PostOperativos = () => {
 
-let dispatch = useDispatch();
+  let dispatch = useDispatch();
 
   //---------------------------- CREACION OPERATIVO ---------------------------- //
 
@@ -14,7 +14,7 @@ let dispatch = useDispatch();
     fecha: "",
     descripcion: "",
     fechapago: "",
-    
+
   });
 
   const handleOnSubmit = async (e) => {
@@ -24,7 +24,7 @@ let dispatch = useDispatch();
       operativo.referencia &&
       operativo.fecha &&
       operativo.descripcion &&
-      operativo.fechapago 
+      operativo.fechapago
     ) {
       const newOperativo = {
         ...operativo,
@@ -43,7 +43,7 @@ let dispatch = useDispatch();
         fecha: "",
         descripcion: "",
         fechapago: ""
-       
+
       });
     } else {
       Swal.fire({
@@ -56,61 +56,57 @@ let dispatch = useDispatch();
   };
   return (
     <form onSubmit={handleOnSubmit}>
-      <div>
-      Referencia
-              <input
-                type="text"
-                name="nombre"
-                value={operativo.referencia}
-                autoComplete="off"
-                placeholder="Número de Referencia"
-                onChange={(e) =>
-                  setOperativo({ ...operativo, referencia: e.target.value })
-                }
-              />
-              </div>
-              <div>
-      Fecha
-              <input
-                type="date"
-                name="fecha"
-                value={operativo.fecha}
-                autoComplete="off"
-                placeholder="Fecha del Operativo"
-                onChange={(e) =>
-                  setOperativo({ ...operativo, fecha: e.target.value })
-                }
-              />
-              </div>
-              <div>
-      Descripción
-              <input
-                type="text"
-                name="descripción"
-                value={operativo.descripcion}
-                autoComplete="off"
-                placeholder="Descripción"
-                onChange={(e) =>
-                  setOperativo({ ...operativo, descripcion: e.target.value })
-                }
-              />
-              </div>
-              <div>
-      Fecha de Pago
-              <input
-                type="date"
-                name="Fecha de Pago"
-                value={operativo.fechapago}
-                autoComplete="off"
-                placeholder="Fecha de Pago"
-                onChange={(e) =>
-                  setOperativo({ ...operativo, fechapago: e.target.value })
-                }
-              />
-              </div>
-              <button type="submit">Agregar Operativo</button>
-</form>
+      <div className="mb-3">
+        <label for="inputReferncia" class="form-label">Referencia</label>
+        <input type="text" class="form-control" id="inputReferencia" aria-describedby="ReferenciaHelp"
+         name="referencia"
+          value={operativo.referencia}
+          autoComplete="off"
+          placeholder="Número de Referencia"
+          onChange={(e) =>
+            setOperativo({ ...operativo, referencia: e.target.value })
+          }
+        />
+      </div>
+      <div className="mb-3">
+        <label for="inputFecha" class="form-label">Fecha</label>
+        <input type="date" class="form-control" id="inputFecha" aria-describedby="FechaHelp"
+         name="Fecha"
+          value={operativo.fecha}
+          autoComplete="off"
+          placeholder="Fecha del operativo"
+          onChange={(e) =>
+            setOperativo({ ...operativo, fecha: e.target.value })
+          }
+        />
+      </div>
+      <div className="mb-3">
+        <label for="inputDescripción" class="form-label">Descripción</label>
+        <input type="text" class="form-control" id="inputDescripción" aria-describedby="DescripciónHelp"
+         name="descripción"
+          value={operativo.descripcion}
+          autoComplete="off"
+          placeholder="Descripción"
+          onChange={(e) =>
+            setOperativo({ ...operativo, descripcion: e.target.value })
+          }
+        />
+      </div>
+      <div className="mb-3">
+        <label for="inputFechadePago" class="form-label">Fecha de Pago</label>
+        <input type="date" class="form-control" id="inputFechadePago" aria-describedby="FechadePagoHelp"
+         name="Fecha de Pago"
+          value={operativo.fechapago}
+          autoComplete="off"
+          placeholder="Fecha de Pago"
+          onChange={(e) =>
+            setOperativo({ ...operativo, fechapago: e.target.value })
+          }
+        />
+      </div>
+      <button type="submit" className='btn btn-primary' style={{background: "var(--ms-main-color)"}}>Agregar Operativo</button>
+    </form>
   )
-              }
+}
 
 export default PostOperativos

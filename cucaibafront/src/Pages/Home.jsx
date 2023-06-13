@@ -2,8 +2,8 @@ import "../assets/styles/style.css"
 
 export const Home = () => {
   return (
-    <div className="container-fluid container-lg my-3 my-lg-5 pb-5 mt-10">
-    <div className="titulo-principal d-flex align-items-center mb-3">
+    <div className="container-fluid container-lg  pb-5 mt-10">
+    <div className="titulo-principal py-3 py-lg-5 d-flex align-items-center mb-3">
         <div>
             <span className="fa-stack fa-2x">
               <i className="far fa-circle fa-stack-2x text-info"></i>
