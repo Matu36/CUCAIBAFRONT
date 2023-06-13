@@ -1,5 +1,4 @@
-/* eslint-disable react/react-in-jsx-scope */
-/* eslint-disable jsx-a11y/label-has-associated-control */
+
 import '../../assets/styles/style.css';
 import { Link } from 'react-router-dom';
 import { AiFillHome } from 'react-icons/ai';
@@ -9,7 +8,6 @@ import { SiWebmoney } from 'react-icons/si';
 
 function SideBar({ isOpen }) {
   return (
-    // eslint-disable-next-line react/react-in-jsx-scope
     <div className={`sidebar-nav navbar-collapse offcanvas-collapse ${isOpen ? 'open' : 'null'}`}>
       <label
         style={{
