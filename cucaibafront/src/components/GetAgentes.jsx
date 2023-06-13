@@ -2,8 +2,13 @@ import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getAgentes } from "../Redux/Actions";
 import Paginacion from "./Paginacion";
+import { useAgentes } from "../hooks/useAgentes";
 
 const GetAgentes = () => {
+
+  const {agentesQuery} = useAgentes();
+  // console.log(agentesQuery.data);
+
   let dispatch = useDispatch();
   useEffect(() => {
     dispatch(getAgentes());
@@ -102,6 +107,7 @@ const GetAgentes = () => {
           handlePageNumber={handlePageNumber}
         />
       )}
+      
     </div>
   );
 };
