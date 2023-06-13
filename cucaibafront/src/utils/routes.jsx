@@ -3,9 +3,9 @@ import {createBrowserRouter} from "react-router-dom";
 import {Home} from "../Pages/Home";
 import Layout from "../components/Layout/Layout";
 import GetAgentes from "../components/GetAgentes";
-import PostAgentes from "../components/PostAgentes";
 import GetOperativos from "../components/GetOperativos";
 import PostOperativos from "../components/PostOperativos";
+import CrearAgente from "../Pages/Crear-Agente";
 
 const router = createBrowserRouter([
   {
@@ -25,7 +25,7 @@ const router = createBrowserRouter([
           },
           {
             path: "/agentes/crear-agente",
-            element: <PostAgentes />,
+            element: <CrearAgente />,
           },
         ],
       },
