@@ -6,6 +6,7 @@ import GetAgentes from "../components/GetAgentes";
 import GetOperativos from "../components/GetOperativos";
 import PostOperativos from "../components/PostOperativos";
 import CrearAgente from "../Pages/Crear-Agente";
+import { CrearOperativo } from "../Pages/Crear-Operativo";
 
 const router = createBrowserRouter([
   {
@@ -36,7 +37,7 @@ const router = createBrowserRouter([
             path: "/operativos/ver-operativos",
             element: <GetOperativos />,
           },
-          {path: "/operativos/nuevo-operativo", element: <PostOperativos />},
+          {path: "/operativos/nuevo-operativo", element: <CrearOperativo />},
         ],
       },
     ],

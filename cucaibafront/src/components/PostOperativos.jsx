@@ -56,11 +56,10 @@ const PostOperativos = () => {
   };
   return (
     <form onSubmit={handleOnSubmit}>
-      <div>
-        Referencia
-        <input
-          type="text"
-          name="nombre"
+      <div className="mb-3">
+        <label for="inputReferncia" class="form-label">Referencia</label>
+        <input type="text" class="form-control" id="inputReferencia" aria-describedby="ReferenciaHelp"
+         name="referencia"
           value={operativo.referencia}
           autoComplete="off"
           placeholder="Número de Referencia"
@@ -69,24 +68,22 @@ const PostOperativos = () => {
           }
         />
       </div>
-      <div>
-        Fecha
-        <input
-          type="date"
-          name="fecha"
+      <div className="mb-3">
+        <label for="inputFecha" class="form-label">Fecha</label>
+        <input type="date" class="form-control" id="inputFecha" aria-describedby="FechaHelp"
+         name="Fecha"
           value={operativo.fecha}
           autoComplete="off"
-          placeholder="Fecha del Operativo"
+          placeholder="Fecha del operativo"
           onChange={(e) =>
             setOperativo({ ...operativo, fecha: e.target.value })
           }
         />
       </div>
-      <div>
-        Descripción
-        <input
-          type="text"
-          name="descripción"
+      <div className="mb-3">
+        <label for="inputDescripción" class="form-label">Descripción</label>
+        <input type="text" class="form-control" id="inputDescripción" aria-describedby="DescripciónHelp"
+         name="descripción"
           value={operativo.descripcion}
           autoComplete="off"
           placeholder="Descripción"
@@ -95,11 +92,10 @@ const PostOperativos = () => {
           }
         />
       </div>
-      <div>
-        Fecha de Pago
-        <input
-          type="date"
-          name="Fecha de Pago"
+      <div className="mb-3">
+        <label for="inputFechadePago" class="form-label">Fecha de Pago</label>
+        <input type="date" class="form-control" id="inputFechadePago" aria-describedby="FechadePagoHelp"
+         name="Fecha de Pago"
           value={operativo.fechapago}
           autoComplete="off"
           placeholder="Fecha de Pago"
@@ -108,7 +104,7 @@ const PostOperativos = () => {
           }
         />
       </div>
-      <button type="submit">Agregar Operativo</button>
+      <button type="submit" className='btn btn-primary' style={{background: "var(--ms-main-color)"}}>Agregar Operativo</button>
     </form>
   )
 }
