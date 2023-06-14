@@ -5,7 +5,6 @@ import Paginacion from "./Paginacion";
 import { useAgentes } from "../hooks/useAgentes";
 
 const GetAgentes = () => {
-
   const { agentesQuery } = useAgentes();
   // console.log(agentesQuery.data);
 
@@ -31,7 +30,7 @@ const GetAgentes = () => {
     if (!search) setAgente(agentes);
     else {
       arrayCache = arrayCache.filter((agent) =>
-        agent.apellido.toLowerCase().includes(value.toLowerCase())
+        agent.cuil.toLowerCase().includes(value.toLowerCase())
       );
 
       setAgente(arrayCache);
@@ -67,39 +66,44 @@ const GetAgentes = () => {
 
   return (
     <div>
-      <div style={{ display: "flex", alignItems: "center" }}>
+      <h1>Lista de Agentes</h1>
+<br />
+
+      <div className="input-group mb-3" style={{ width: "30rem" }}>
         <input
           type="text"
-          placeholder="Buscar Usuario "
+          className="form-control"
+          placeholder="Buscar por CUIL"
           onChange={handleOnChange}
           value={search}
           autoComplete="off"
-          width="30rem"
         />
       </div>
-      <h1>Lista de Agentes</h1>
-      <div className="table-responsive"><table className="table table-striped">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Apellido</th>
-            <th>Nombre</th>
-            <th>CBU</th>
-            <th>CUIL</th>
-          </tr>
-        </thead>
-        <tbody>
-          {totalAgentes.map((agente) => (
-            <tr key={agente.id}>
-              <td>{agente.id}</td>
-              <td>{agente.apellido}</td>
-              <td>{agente.nombre}</td>
-              <td>{agente.cbu}</td>
-              <td>{agente.cuil}</td>
+
+      <div className="table-responsive">
+        <table className="table table-striped">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Apellido</th>
+              <th>Nombre</th>
+              <th>CBU</th>
+              <th>CUIL</th>
             </tr>
-          ))}
-        </tbody>
-      </table></div>
+          </thead>
+          <tbody>
+            {totalAgentes.map((agente) => (
+              <tr key={agente.id}>
+                <td>{agente.id}</td>
+                <td>{agente.apellido}</td>
+                <td>{agente.nombre}</td>
+                <td>{agente.cbu}</td>
+                <td>{agente.cuil}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
 
       {agentes && (
         <Paginacion
@@ -108,7 +112,6 @@ const GetAgentes = () => {
           handlePageNumber={handlePageNumber}
         />
       )}
-
     </div>
   );
 };

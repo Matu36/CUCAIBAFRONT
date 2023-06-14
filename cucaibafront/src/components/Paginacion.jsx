@@ -29,16 +29,16 @@ export default function Paginacion(props) {
   const hasMultiplePages = numberOfPage > 1;
 
   return (
-    <div className="pagination">
+    <div className="pagination justify-content-center">
       <button
-        disabled={isFirstPage || !hasMultiplePages}
+        className={`btn btn-success ${isFirstPage || !hasMultiplePages ? 'disabled' : ''}`}
         onClick={() => handleClick(1)}
       >
         Primera
       </button>
 
       <button
-        disabled={isFirstPage || !hasMultiplePages}
+        className={`btn btn-success ${isFirstPage || !hasMultiplePages ? 'disabled' : ''}`}
         onClick={() => handleClick(currentPage - 1)}
       >
         Anterior
@@ -47,18 +47,18 @@ export default function Paginacion(props) {
       {renderPageNumbers()}
 
       <button
-        disabled={isLastPage || !hasMultiplePages}
+        className={`btn btn-success ${isLastPage || !hasMultiplePages ? 'disabled' : ''}`}
         onClick={() => handleClick(currentPage + 1)}
       >
         Siguiente
       </button>
 
       <button
-        disabled={isLastPage || !hasMultiplePages}
+        className={`btn btn-success ${isLastPage || !hasMultiplePages ? 'disabled' : ''}`}
         onClick={() => handleClick(numberOfPage)}
       >
         Última
       </button>
     </div>
   );
-}
+  };

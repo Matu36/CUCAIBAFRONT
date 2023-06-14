@@ -62,31 +62,33 @@ const GetOperativos = () => {
 
   return (
     <div>
-      <div style={{ display: "flex", alignItems: "center" }}>
+      <h1>Lista de Operativos</h1>
+      <br />
+
+      <div className="input-group mb-3" style={{ width: "30rem" }}>
         <input
           type="text"
-          placeholder="Buscar Usuario "
+          className="form-control"
+          placeholder="Buscar número de Referencia"
           onChange={handleOnChange}
           value={search}
           autoComplete="off"
-          width="30rem"
         />
       </div>
-      <h1>Lista de Operativos</h1>
+
       <table className="table table-striped">
         <thead>
           <tr>
             <th>Referencia</th>
             <th>Fecha</th>
             <th>Descripcion</th>
-            
           </tr>
         </thead>
         <tbody>
           {totalOperativos.map((operativo) => (
             <tr key={operativo.id}>
               <td>{operativo.referencia}</td>
-              <td>{operativo.fecha.date}</td> 
+              <td>{operativo.fecha.date}</td>
               <td>{operativo.descripcion}</td>
             </tr>
           ))}

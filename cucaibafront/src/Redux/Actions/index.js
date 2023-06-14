@@ -6,7 +6,7 @@ export const GET_OPERATIVOS = "GET_OPERATIVOS";
 export const POST_OPERATIVO = "POST_OPERATIVO";
 
 export const getAgentes = () => async (dispatch) => {
-  let response = await AgentesAPI.get("/");
+  let response = await AgentesAPI.get("http://localhost:8000/agentes");
   return dispatch({ type: GET_AGENTES, payload: response.data });
 };
 
@@ -27,6 +27,6 @@ export const postOperativo =
           descripcion,
           fechapago,
         },
-        
+
       )
       .then((payload) => dispatch({ type: POST_OPERATIVO, payload }));
