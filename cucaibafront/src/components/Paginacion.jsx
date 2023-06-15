@@ -31,14 +31,20 @@ export default function Paginacion(props) {
   return (
     <div className="pagination justify-content-center">
       <button
-        className={`btn btn-success ${isFirstPage || !hasMultiplePages ? 'disabled' : ''}`}
+        className={`btn btn-primary ${
+          isFirstPage || !hasMultiplePages ? "disabled" : ""
+        }`}
+        style={{ background: "var(--ms-main-color)" }}
         onClick={() => handleClick(1)}
       >
         Primera
       </button>
 
       <button
-        className={`btn btn-success ${isFirstPage || !hasMultiplePages ? 'disabled' : ''}`}
+        className={`btn btn-primary ${
+          isFirstPage || !hasMultiplePages ? "disabled" : ""
+        }`}
+        style={{ background: "var(--ms-main-color)" }}
         onClick={() => handleClick(currentPage - 1)}
       >
         Anterior
@@ -47,18 +53,24 @@ export default function Paginacion(props) {
       {renderPageNumbers()}
 
       <button
-        className={`btn btn-success ${isLastPage || !hasMultiplePages ? 'disabled' : ''}`}
+        className={`btn btn-primary ${
+          isFirstPage || !hasMultiplePages ? "disabled" : ""
+        }`}
+        style={{ background: "var(--ms-main-color)" }}
         onClick={() => handleClick(currentPage + 1)}
       >
         Siguiente
       </button>
 
       <button
-        className={`btn btn-success ${isLastPage || !hasMultiplePages ? 'disabled' : ''}`}
+        className={`btn btn-primary ${
+          isFirstPage || !hasMultiplePages ? "disabled" : ""
+        }`}
+        style={{ background: "var(--ms-main-color)" }}
         onClick={() => handleClick(numberOfPage)}
       >
         Última
       </button>
     </div>
   );
-  };
+}
