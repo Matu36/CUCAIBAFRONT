@@ -13,16 +13,23 @@ export default function Paginacion(props) {
       pageNumbers.push(i);
     }
 
-    return pageNumbers.map((pageNumber) => (
-      <button
-        key={pageNumber}
-        className={currentPage === pageNumber ? "active" : ""}
-        onClick={() => handleClick(pageNumber)}
-      >
-        {pageNumber}
-      </button>
-    ));
-  };
+    return (
+    <div className="page-numbers">
+      {pageNumbers.map((pageNumber) => (
+        <button
+          key={pageNumber}
+          className={`btn btn-primary ${
+            currentPage === pageNumber ? "active" : ""
+          }`}
+          style={{ background: "var(--ms-main-color)" }}
+          onClick={() => handleClick(pageNumber)}
+        >
+          {pageNumber}
+        </button>
+      ))}
+    </div>
+  );
+};
 
   const isFirstPage = currentPage === 1;
   const isLastPage = currentPage === numberOfPage;
