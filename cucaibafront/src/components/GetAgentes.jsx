@@ -2,67 +2,81 @@ import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getAgentes } from "../Redux/Actions";
 import Paginacion from "./Paginacion";
-import { useAgentes } from "../hooks/useAgentes";
+import ClipLoader from "react-spinners/ClipLoader";
 
 const GetAgentes = () => {
-  const { agentesQuery } = useAgentes();
-  // console.log(agentesQuery.data);
 
-  let dispatch = useDispatch();
+  const dispatch = useDispatch();
+  const agentes = useSelector((state) => state.agentes);
+  const [search, setSearch] = useState("");
+  const [agente, setAgente] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [numberOfPage, setNumberOfPage] = useState(0);
+  const [totalAgentes, setTotalAgentes] = useState([]);
+
+  const primerArreglo = agentes.slice(0, 1)[0];
+
   useEffect(() => {
     dispatch(getAgentes());
-  }, []);
+  }, [dispatch]);
 
-  const agentes = useSelector((state) => state.agentes);
+  useEffect(() => {
+    setAgente(primerArreglo || []);
+  }, [primerArreglo]);
 
-  //SEARCHBAR
 
-  const [search, setSearch] = useState("");
-  const [agente, setAgente] = useState(agentes);
+  //-------------------------------- SEARCHBAR --------------------------- //
+
+  useEffect(() => {
+    filterByCuil(search);
+  }, [agente, search]);
 
   const handleOnChange = (e) => {
     e.preventDefault();
     setSearch(e.target.value);
   };
-
-  const filterByLastName = (value) => {
-    let arrayCache = [...agentes];
-    if (!search) setAgente(agentes);
-    else {
-      arrayCache = arrayCache.filter((agent) =>
-        agent.cuil.toLowerCase().includes(value.toLowerCase())
+  const filterByCuil = (value) => {
+    let arrayCache = [...agente];
+    if (!search) {
+      setAgente(primerArreglo || []); // Restablecer al valor original si la búsqueda está vacía
+    } else {
+      arrayCache = arrayCache.filter((oper) =>
+        oper.cuil.toLowerCase().includes(value.toLowerCase())
       );
-
       setAgente(arrayCache);
     }
   };
 
+  //-------------------------------- FIN SEARCHBAR --------------------------- //
+
+
+  //--------------------------------- PAGINADO-------------------------------- //
   useEffect(() => {
-    filterByLastName(search);
-  }, [agentes, search]);
-  //FIN SEARCHBAR
+    setTotalAgentes(
+      agente.slice(indexFirstPageIngredient(), indexLastPageIngredient())
+    );
+    setNumberOfPage(Math.ceil(agente.length / 9));
+  }, [agente, currentPage]);
 
-  //PAGINADO
-
-  const [currentPage, setCurrentPage] = useState(1); //Pagina Actual seteada en 1
-  const [numberOfPage, setNumberOfPage] = useState(0); //Numero de Paginas seteado en 0
-  const [totalAgentes, setTotalAgentes] = useState(agente);
-
-  const indexFirstPageIngredient = () => (currentPage - 1) * 9; // Indice del primer Elemento
-  const indexLastPageIngredient = () => indexFirstPageIngredient() + 9; //Indice del segundo elemento
+  const indexFirstPageIngredient = () => (currentPage - 1) * 9;
+  const indexLastPageIngredient = () => indexFirstPageIngredient() + 9;
 
   const handlePageNumber = (number) => {
     setCurrentPage(number);
   };
 
-  useEffect(() => {
-    setTotalAgentes(
-      agente.slice(indexFirstPageIngredient(), indexLastPageIngredient())
+  //--------------------------------- FIN PAGINADO-------------------------------- //
+  if (agentes.length === 0) {
+    return (
+      <div className="spinner-container">
+        <ClipLoader
+          color={"#0000555"}
+          loading={true}
+          size={85}
+        />
+      </div>
     );
-    setNumberOfPage(Math.ceil(agente.length / 9)); // cambiando el estado local de numeros de paginas a renderiza
-  }, [agente, currentPage]);
-
-  //FIN PAGINADO
+  }
 
   return (
     <div>
