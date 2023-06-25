@@ -5,7 +5,6 @@ import Paginacion from "./Paginacion";
 import ClipLoader from "react-spinners/ClipLoader";
 
 const GetAgentes = () => {
-
   const dispatch = useDispatch();
   const agentes = useSelector((state) => state.agentes);
   const [search, setSearch] = useState("");
@@ -23,7 +22,6 @@ const GetAgentes = () => {
   useEffect(() => {
     setAgente(primerArreglo || []);
   }, [primerArreglo]);
-
 
   //-------------------------------- SEARCHBAR --------------------------- //
 
@@ -49,7 +47,6 @@ const GetAgentes = () => {
 
   //-------------------------------- FIN SEARCHBAR --------------------------- //
 
-
   //--------------------------------- PAGINADO-------------------------------- //
   useEffect(() => {
     setTotalAgentes(
@@ -66,22 +63,38 @@ const GetAgentes = () => {
   };
 
   //--------------------------------- FIN PAGINADO-------------------------------- //
-  if (agentes.length === 0) {
+
+  //---------------------------------SPINNER ------------------------------------//
+
+  const [showSpinner, setShowSpinner] = useState(true);
+  useEffect(() => {
+    setTimeout(() => {
+      setShowSpinner(false);
+    }, 2000);
+  }, []);
+  if (showSpinner) {
     return (
-      <div className="spinner-container">
-        <ClipLoader
-          color={"#0000555"}
-          loading={true}
-          size={85}
-        />
-      </div>
+      <div className="d-flex justify-content-center align-items-center vh-100">
+      {showSpinner ? (
+        <button className="btn btn-primary" type="button" disabled>
+          <span
+            className="spinner-border spinner-border-sm mr-2"
+            role="status"
+            aria-hidden="true"
+          ></span>
+          Cargando...
+        </button>
+      ) : null}
+    </div>
     );
   }
+
+  //---------------------------------FIN SPINNER ------------------------------------//
 
   return (
     <div>
       <h1>Lista de Agentes</h1>
-<br />
+      <br />
 
       <div className="input-group mb-3" style={{ width: "30rem" }}>
         <input
