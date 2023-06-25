@@ -23,7 +23,6 @@ const GetOperativos = () => {
     setOperativo(primerArreglo || []);
   }, [primerArreglo]);
 
-
   //-------------------------------- SEARCHBAR --------------------------- //
 
   useEffect(() => {
@@ -46,9 +45,7 @@ const GetOperativos = () => {
     }
   };
 
-
   //-------------------------------- FIN SEARCHBAR --------------------------- //
-
 
   //--------------------------------- PAGINADO-------------------------------- //
   useEffect(() => {
@@ -68,13 +65,10 @@ const GetOperativos = () => {
   //--------------------------------- FIN PAGINADO-------------------------------- //
   if (operativos.length === 0) {
     return (
-      <div className="spinner-container">
-        <ClipLoader
-          color={"#0000555"}
-          loading={true}
-          size={85}
-        />
-      </div>
+      <button class="btn btn-primary" type="button" disabled>
+  <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+  Loading...
+</button>
     );
   }
 
