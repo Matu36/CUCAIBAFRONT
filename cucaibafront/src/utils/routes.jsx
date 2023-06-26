@@ -2,7 +2,7 @@ import {createBrowserRouter} from "react-router-dom";
 
 import {Home} from "../Pages/Home";
 import Layout from "../components/Layout/Layout";
-import GetOperativos from "../components/GetOperativos";
+import Operativos from "../Pages/Operativos";
 import CrearAgente from "../Pages/Crear-Agente";
 import { CrearOperativo } from "../Pages/Crear-Operativo";
 import { CrearHonorarios } from "../Pages/Crear-Honorarios";
@@ -35,7 +35,7 @@ const router = createBrowserRouter([
         children: [
           {
             path: "/operativos/ver-operativos",
-            element: <GetOperativos />,
+            element: <Operativos />,
           },
           {path: "/operativos/nuevo-operativo", element: <CrearOperativo />},
         ],

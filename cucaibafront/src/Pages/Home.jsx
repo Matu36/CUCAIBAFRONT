@@ -12,7 +12,7 @@ export const Home = () => {
         </div>
         <div>
             <h4 className="font-weight-bold text-muted text-uppercase mb-0">Ablaciones</h4>
-            <h6 className="text-info mb-0">Bienvenido Cacho
+            <h6 className="text-info mb-0">Bienvenidos
             </h6>
         </div>
     </div>
