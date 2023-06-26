@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getOperativos } from "../Redux/Actions";
 import Paginacion from "./Paginacion";
-import ClipLoader from "react-spinners/ClipLoader";
 
 const GetOperativos = () => {
   const dispatch = useDispatch();
@@ -14,6 +13,7 @@ const GetOperativos = () => {
   const [totalOperativos, setTotalOperativos] = useState([]);
 
   const primerArreglo = operativos.slice(0, 1)[0];
+
 
   useEffect(() => {
     dispatch(getOperativos());
@@ -27,7 +27,7 @@ const GetOperativos = () => {
 
   useEffect(() => {
     filterByRef(search);
-  }, [operativo, search]);
+  }, [search]);
 
   const handleOnChange = (e) => {
     e.preventDefault();
@@ -63,12 +63,26 @@ const GetOperativos = () => {
   };
 
   //--------------------------------- FIN PAGINADO-------------------------------- //
+  const [showSpinner, setShowSpinner] = useState(true);
+  useEffect(() => {
+    setTimeout(() => {
+      setShowSpinner(false);
+    }, 2000);
+  }, []);
   if (operativos.length === 0) {
     return (
-      <button class="btn btn-primary" type="button" disabled>
-  <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-  Loading...
-</button>
+      <div className="d-flex justify-content-center align-items-center vh-100">
+      {showSpinner ? (
+        <button className="btn btn-primary" type="button" disabled>
+          <span
+            className="spinner-border spinner-border-sm mr-2"
+            role="status"
+            aria-hidden="true"
+          ></span>
+          Cargando...
+        </button>
+      ) : null}
+    </div>
     );
   }
 
