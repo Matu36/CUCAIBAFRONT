@@ -23,12 +23,14 @@ const PostOperativos = () => {
     if (
       operativo.referencia &&
       operativo.fecha &&
-      operativo.descripcion &&
-      operativo.fechapago
+      operativo.descripcion 
+      // operativo.fechapago
     ) {
       const newOperativo = {
         ...operativo,
+        fecha: operativo.fecha.replace("T", " ")
       };
+      console.log(newOperativo.fecha.replace("T", " "));
       dispatch(postOperativo(newOperativo));
       await Swal.fire({
         position: "center",
@@ -42,7 +44,7 @@ const PostOperativos = () => {
         referencia: "",
         fecha: "",
         descripcion: "",
-        fechapago: ""
+        // fechapago: ""
 
       });
     } else {
@@ -70,7 +72,7 @@ const PostOperativos = () => {
       </div>
       <div className="mb-3">
         <label for="inputFecha" class="form-label">Fecha</label>
-        <input type="date" class="form-control" id="inputFecha" aria-describedby="FechaHelp"
+        <input type="datetime-local" class="form-control" id="inputFecha" aria-describedby="FechaHelp"
          name="Fecha"
           value={operativo.fecha}
           autoComplete="off"
@@ -108,5 +110,6 @@ const PostOperativos = () => {
     </form>
   )
 }
+
 
 export default PostOperativos
