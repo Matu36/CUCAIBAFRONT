@@ -30,7 +30,7 @@ const PostOperativos = () => {
         ...operativo,
         fecha: operativo.fecha.replace("T", " ")
       };
-      console.log(newOperativo.fecha.replace("T", " "));
+      
       dispatch(postOperativo(newOperativo));
       await Swal.fire({
         position: "center",
