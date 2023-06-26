@@ -9,14 +9,13 @@ const GetAgentes = () => {
   const [search, setSearch] = useState("");
   const [agente, setAgente] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [numberOfPage, setNumberOfPage] = useState(0);
-  const [totalAgentes, setTotalAgentes] = useState([]);
+  const [totalPages, setTotalPages] = useState(0);
 
   const primerArreglo = agentes.slice(0, 1)[0];
 
   useEffect(() => {
-    dispatch(getAgentes());
-  }, []);
+    dispatch(getAgentes(currentPage, 10));
+  }, [currentPage]);
 
   useEffect(() => {
     setAgente(primerArreglo || []);
@@ -32,6 +31,7 @@ const GetAgentes = () => {
     e.preventDefault();
     setSearch(e.target.value);
   };
+
   const filterByCuil = (value) => {
     let arrayCache = [...agente];
     if (!search) {
@@ -47,15 +47,10 @@ const GetAgentes = () => {
   //-------------------------------- FIN SEARCHBAR --------------------------- //
 
   //--------------------------------- PAGINADO-------------------------------- //
+  
   useEffect(() => {
-    setTotalAgentes(
-      agente.slice(indexFirstPageIngredient(), indexLastPageIngredient())
-    );
-    setNumberOfPage(Math.ceil(agente.length / 9));
-  }, [agente, currentPage]);
-
-  const indexFirstPageIngredient = () => (currentPage - 1) * 9;
-  const indexLastPageIngredient = () => indexFirstPageIngredient() + 9;
+    setTotalPages(Math.ceil(agentes.length / 10));
+  }, [agentes]);
 
   const handlePageNumber = (number) => {
     setCurrentPage(number);
@@ -74,17 +69,17 @@ const GetAgentes = () => {
   if (agentes.length === 0) {
     return (
       <div className="d-flex justify-content-center align-items-center vh-100">
-      {showSpinner ? (
-        <button className="btn btn-primary" type="button" disabled>
-          <span
-            className="spinner-border spinner-border-sm mr-2"
-            role="status"
-            aria-hidden="true"
-          ></span>
-          Cargando...
-        </button>
-      ) : null}
-    </div>
+        {showSpinner ? (
+          <button className="btn btn-primary" type="button" disabled>
+            <span
+              className="spinner-border spinner-border-sm mr-2"
+              role="status"
+              aria-hidden="true"
+            ></span>
+            Cargando...
+          </button>
+        ) : null}
+      </div>
     );
   }
 
@@ -118,7 +113,7 @@ const GetAgentes = () => {
             </tr>
           </thead>
           <tbody>
-            {totalAgentes.map((agente) => (
+            {agente.map((agente) => (
               <tr key={agente.id}>
                 <td>{agente.id}</td>
                 <td>{agente.apellido}</td>
@@ -134,7 +129,7 @@ const GetAgentes = () => {
       {agentes && (
         <Paginacion
           currentPage={currentPage}
-          numberOfPage={numberOfPage}
+          numberOfPage={totalPages}
           handlePageNumber={handlePageNumber}
         />
       )}

@@ -4,6 +4,7 @@ import axios from "axios";
 export const GET_AGENTES = "GET_AGENTES";
 export const GET_OPERATIVOS = "GET_OPERATIVOS";
 export const POST_OPERATIVO = "POST_OPERATIVO";
+export const POST_AGENTES = "POST_AGENTES";
 
 export const getAgentes = () => async (dispatch) => {
   let response = await axios.get("http://localhost/cucaibabonif/trunk/public/index.php/api/agentes", {
@@ -11,7 +12,8 @@ export const getAgentes = () => async (dispatch) => {
     'headers': {
         'Access-Control-Allow-Origin': '*',
         'allow_methods':  'GET',
-    }});
+    }}, {});
+
     return dispatch({ type: GET_AGENTES, payload: response.data });
   };
 
@@ -23,7 +25,6 @@ export const getOperativos = () => async (dispatch) => {
         'allow_methods':  'GET',
   }});
 
-  console.log(response.data)
 
   return dispatch({ type: GET_OPERATIVOS, payload: response.data });
 };
@@ -33,13 +34,43 @@ export const postOperativo =
   (dispatch) =>
     axios
       .post(
-        "http://localhost:8000/operativos/nuevo",
+        "http://localhost/cucaibabonif/trunk/public/index.php/api/operativos", 
         {
           referencia,
           fecha,
           descripcion,
           fechapago,
         },
-
+        {
+          'mode': 'cors',
+          'headers': {
+              'Access-Control-Allow-Origin': '*',
+              'allow_methods':  'POST',
+        }}
       )
       .then((payload) => dispatch({ type: POST_OPERATIVO, payload }));
+
+      export const postAgentes =
+  ({ apellido, nombre, cbu, cuil, tipoPago, personaid }) =>
+  (dispatch) =>
+    axios
+      .post(
+        "http://localhost/cucaibabonif/trunk/public/index.php/api/agentes", 
+        {
+          apellido,
+          nombre,
+          cbu,
+          cuil,
+          tipoPago,
+          personaid
+        },
+        {
+          'mode': 'cors',
+          'headers': {
+              'Access-Control-Allow-Origin': '*',
+              'allow_methods':  'POST',
+        }},
+        
+
+      )
+      .then((payload) => dispatch({ type: POST_AGENTES, payload }));
