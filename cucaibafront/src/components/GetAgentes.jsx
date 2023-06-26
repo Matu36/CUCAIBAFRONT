@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getAgentes } from "../Redux/Actions";
 import Paginacion from "./Paginacion";
-import ClipLoader from "react-spinners/ClipLoader";
 
 const GetAgentes = () => {
   const dispatch = useDispatch();
@@ -17,7 +16,7 @@ const GetAgentes = () => {
 
   useEffect(() => {
     dispatch(getAgentes());
-  }, [dispatch]);
+  }, []);
 
   useEffect(() => {
     setAgente(primerArreglo || []);
@@ -27,7 +26,7 @@ const GetAgentes = () => {
 
   useEffect(() => {
     filterByCuil(search);
-  }, [agente, search]);
+  }, [search]);
 
   const handleOnChange = (e) => {
     e.preventDefault();
@@ -72,7 +71,7 @@ const GetAgentes = () => {
       setShowSpinner(false);
     }, 2000);
   }, []);
-  if (showSpinner) {
+  if (agentes.length === 0) {
     return (
       <div className="d-flex justify-content-center align-items-center vh-100">
       {showSpinner ? (
