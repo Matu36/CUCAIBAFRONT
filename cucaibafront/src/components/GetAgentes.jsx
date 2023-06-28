@@ -15,10 +15,10 @@ const GetAgentes = () => {
 
   useEffect(() => {
     dispatch(getAgentes(currentPage, 10));
-  }, [currentPage]);
+  }, [dispatch, currentPage]);
 
   useEffect(() => {
-    setAgente(primerArreglo || []);
+    setAgente(primerArreglo);
   }, [primerArreglo]);
 
   //-------------------------------- SEARCHBAR --------------------------- //
@@ -47,14 +47,16 @@ const GetAgentes = () => {
   //-------------------------------- FIN SEARCHBAR --------------------------- //
 
   //--------------------------------- PAGINADO-------------------------------- //
-  
+
   useEffect(() => {
-    setTotalPages(Math.ceil(agentes.length / 10));
+    setTotalPages(Math.ceil(agentes.length));
   }, [agentes]);
 
   const handlePageNumber = (number) => {
     setCurrentPage(number);
   };
+
+
 
   //--------------------------------- FIN PAGINADO-------------------------------- //
 
