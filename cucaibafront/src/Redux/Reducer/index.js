@@ -1,4 +1,4 @@
-import { GET_AGENTES, GET_OPERATIVOS, POST_OPERATIVO } from "../Actions";
+import { GET_AGENTES, GET_OPERATIVOS, POST_OPERATIVO, POST_AGENTES } from "../Actions";
 
 const InitialState = {
   agentes: [],
@@ -14,6 +14,8 @@ function rootReducer(state = InitialState, action) {
       return { ...state, operativos: action.payload };
     case POST_OPERATIVO:
       return { ...state, operativos: [...state.operativos, action.payload] };
+    case POST_AGENTES:
+        return { ...state, agentes: [...state.agentes, action.payload] };
     default:
       return state;
   }

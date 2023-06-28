@@ -13,32 +13,45 @@ export default function Paginacion(props) {
       pageNumbers.push(i);
     }
 
-    return pageNumbers.map((pageNumber) => (
-      <button
-        key={pageNumber}
-        className={currentPage === pageNumber ? "active" : ""}
-        onClick={() => handleClick(pageNumber)}
-      >
-        {pageNumber}
-      </button>
-    ));
-  };
+    return (
+    <div className="page-numbers">
+      {pageNumbers.map((pageNumber) => (
+        <button
+          key={pageNumber}
+          className={`btn btn-primary ${
+            currentPage === pageNumber ? "active" : ""
+          }`}
+          style={{ background: "var(--ms-main-color)" }}
+          onClick={() => handleClick(pageNumber)}
+        >
+          {pageNumber}
+        </button>
+      ))}
+    </div>
+  );
+};
 
   const isFirstPage = currentPage === 1;
   const isLastPage = currentPage === numberOfPage;
   const hasMultiplePages = numberOfPage > 1;
 
   return (
-    <div className="pagination">
+    <div className="pagination justify-content-center">
       <button
-        disabled={isFirstPage || !hasMultiplePages}
+        className={`btn btn-primary ${
+          isFirstPage || !hasMultiplePages ? "disabled" : ""
+        }`}
+        style={{ background: "var(--ms-main-color)" }}
         onClick={() => handleClick(1)}
       >
         Primera
       </button>
 
       <button
-        disabled={isFirstPage || !hasMultiplePages}
+        className={`btn btn-primary ${
+          isFirstPage || !hasMultiplePages ? "disabled" : ""
+        }`}
+        style={{ background: "var(--ms-main-color)" }}
         onClick={() => handleClick(currentPage - 1)}
       >
         Anterior
@@ -47,14 +60,20 @@ export default function Paginacion(props) {
       {renderPageNumbers()}
 
       <button
-        disabled={isLastPage || !hasMultiplePages}
+        className={`btn btn-primary ${
+          isFirstPage || !hasMultiplePages ? "disabled" : ""
+        }`}
+        style={{ background: "var(--ms-main-color)" }}
         onClick={() => handleClick(currentPage + 1)}
       >
         Siguiente
       </button>
 
       <button
-        disabled={isLastPage || !hasMultiplePages}
+        className={`btn btn-primary ${
+          isFirstPage || !hasMultiplePages ? "disabled" : ""
+        }`}
+        style={{ background: "var(--ms-main-color)" }}
         onClick={() => handleClick(numberOfPage)}
       >
         Última

@@ -5,7 +5,7 @@ import { FaAmbulance } from "react-icons/fa";
 import { BsFillPersonFill } from "react-icons/bs";
 import { SiWebmoney } from "react-icons/si";
 
-const SideBar = ({ isOpen }) => {
+function SideBar({ isOpen }) {
   return (
     <div
       className={`sidebar-nav navbar-collapse offcanvas-collapse ${
@@ -16,9 +16,9 @@ const SideBar = ({ isOpen }) => {
         style={{
           padding: ".85rem 0",
           marginBottom: "1px",
-          color: "#606060",
+          color: "var(--bs-secondary-color)",
           letterSpacing: "1px",
-          opacity: ".3",
+          fontWeight: "600",
         }}
       >
         Menú de navegación
@@ -30,37 +30,37 @@ const SideBar = ({ isOpen }) => {
           </Link>
         </li>
         <li>
-          <a
-            className="nav-link dropdown-toggle"
-            data-bs-toggle="collapse"
-            href="#collapseAgentes"
-            role="button"
+          <button
+            className="btn btn-primary"
+            type="button"
+            data-toggle="collapse"
+            data-target="#collapseAgentes"
             aria-expanded="false"
-            aria-controls="collapseExample"
+            aria-controls="collapseAgentes"
           >
             <BsFillPersonFill className="sidebarIcons" /> Agentes
-          </a>
+          </button>
           <ul className="collapse sub-menu" id="collapseAgentes">
             <li>
-              <Link to="/agentes/ver-agentes" onClick={() => isOpen(false)}>
-                Ver Agentes
+              <Link to="/agentes/crear-agente" onClick={() => isOpen(false)}>
+                Cargar Agente
               </Link>
             </li>
             <li>
-              <Link to="/agentes/crear-agente" onClick={() => isOpen(false)}>
-                Nuevo Agente
+              <Link to="/agentes/ver-agentes" onClick={() => isOpen(false)}>
+                Ver Agentes
               </Link>
             </li>
           </ul>
         </li>
         <li>
           <a
+            aria-controls="collapseExample"
+            aria-expanded="false"
             className="nav-link dropdown-toggle"
             data-bs-toggle="collapse"
             href="#collapseOperativos"
             role="button"
-            aria-expanded="false"
-            aria-controls="collapseExample"
           >
             <FaAmbulance className="sidebarIcons" /> Operativos
           </a>
@@ -70,7 +70,7 @@ const SideBar = ({ isOpen }) => {
                 to="/operativos/nuevo-operativo"
                 onClick={() => isOpen(false)}
               >
-                <a>Cargar operativos</a>
+                Cargar operativos
               </Link>
             </li>
             <li>
@@ -78,28 +78,31 @@ const SideBar = ({ isOpen }) => {
                 to="/operativos/ver-operativos"
                 onClick={() => isOpen(false)}
               >
-                <a>Ver operativos</a>
+                Ver operativos
               </Link>
             </li>
           </ul>
         </li>
         <li>
           <a
+            aria-controls="collapseExample"
+            aria-expanded="false"
             className="nav-link dropdown-toggle"
             data-bs-toggle="collapse"
             href="#collapseHonorarios"
             role="button"
-            aria-expanded="false"
-            aria-controls="collapseExample"
           >
             <SiWebmoney className="sidebarIcons" /> Honorarios
           </a>
+
           <ul className="collapse sub-menu" id="collapseHonorarios">
             <li>
-              <a href="#">Variables</a>
+              <Link to="/honorarios/variables" onClick={() => isOpen(false)}>
+                Variables
+              </Link>
             </li>
             <li>
-              <a className="btn btn-link disabled " href="#">
+              <a className="btn btn-link disabled " href="/algo">
                 Guardia
               </a>
             </li>
@@ -108,6 +111,6 @@ const SideBar = ({ isOpen }) => {
       </ul>
     </div>
   );
-};
+}
 
 export default SideBar;
