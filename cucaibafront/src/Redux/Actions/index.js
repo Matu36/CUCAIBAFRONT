@@ -1,5 +1,5 @@
 import axios from "axios";
-// import { AgentesAPI } from "../../api/AgentesAPI";
+import { AgentesAPI } from "../../api/AgentesAPI";
 
 export const GET_AGENTES = "GET_AGENTES";
 export const GET_OPERATIVOS = "GET_OPERATIVOS";
@@ -7,23 +7,19 @@ export const POST_OPERATIVO = "POST_OPERATIVO";
 export const POST_AGENTES = "POST_AGENTES";
 
 export const getAgentes = () => async (dispatch) => {
-  let response = await axios.get("http://localhost/cucaibabonif/trunk/public/index.php/api/agentes", {
-    'mode': 'cors',
-    'headers': {
-        'Access-Control-Allow-Origin': '*',
-        'allow_methods':  'GET',
-    }}, {});
+  let response = await AgentesAPI.get("/");
 
-    return dispatch({ type: GET_AGENTES, payload: response.data });
-  };
+  return dispatch({ type: GET_AGENTES, payload: response.data });
+};
 
 export const getOperativos = () => async (dispatch) => {
   let response = await axios.get("http://localhost/cucaibabonif/trunk/public/index.php/api/operativos", {
     'mode': 'cors',
     'headers': {
-        'Access-Control-Allow-Origin': '*',
-        'allow_methods':  'GET',
-  }});
+      'Access-Control-Allow-Origin': '*',
+      'allow_methods': 'GET',
+    }
+  });
 
 
   return dispatch({ type: GET_OPERATIVOS, payload: response.data });
@@ -31,46 +27,39 @@ export const getOperativos = () => async (dispatch) => {
 
 export const postOperativo =
   ({ referencia, fecha, descripcion, fechapago }) =>
-  (dispatch) =>
-    axios
-      .post(
-        "http://localhost/cucaibabonif/trunk/public/index.php/api/operativos", 
-        {
-          referencia,
-          fecha,
-          descripcion,
-          fechapago,
-        },
-        {
-          'mode': 'cors',
-          'headers': {
+    (dispatch) =>
+      axios
+        .post(
+          "http://localhost/cucaibabonif/trunk/public/index.php/api/operativos",
+          {
+            referencia,
+            fecha,
+            descripcion,
+            fechapago,
+          },
+          {
+            'mode': 'cors',
+            'headers': {
               'Access-Control-Allow-Origin': '*',
-              'allow_methods':  'POST',
-        }}
-      )
-      .then((payload) => dispatch({ type: POST_OPERATIVO, payload }));
+              'allow_methods': 'POST',
+            }
+          }
+        )
+        .then((payload) => dispatch({ type: POST_OPERATIVO, payload }));
 
-      export const postAgentes =
+export const postAgentes =
   ({ apellido, nombre, cbu, cuil, tipoPago, personaid }) =>
-  (dispatch) =>
-    axios
-      .post(
-        "http://localhost/cucaibabonif/trunk/public/index.php/api/agentes", 
-        {
-          apellido,
-          nombre,
-          cbu,
-          cuil,
-          tipoPago,
-          personaid
-        },
-        {
-          'mode': 'cors',
-          'headers': {
-              'Access-Control-Allow-Origin': '*',
-              'allow_methods':  'POST',
-        }},
-        
-
-      )
-      .then((payload) => dispatch({ type: POST_AGENTES, payload }));
+    (dispatch) =>
+      AgentesAPI
+        .post(
+          "",
+          {
+            apellido,
+            nombre,
+            cbu,
+            cuil,
+            tipoPago,
+            personaid
+          },
+        )
+        .then((payload) => dispatch({ type: POST_AGENTES, payload }));
