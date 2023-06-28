@@ -10,7 +10,7 @@ function SideBar({ isOpen }) {
     <div
       className={`sidebar-nav navbar-collapse offcanvas-collapse ${
         isOpen ? "open" : "null"
-      }`}
+        }`}
     >
       <label
         style={{
@@ -30,16 +30,16 @@ function SideBar({ isOpen }) {
           </Link>
         </li>
         <li>
-          <button
-            className="btn btn-primary"
-            type="button"
-            data-toggle="collapse"
-            data-target="#collapseAgentes"
-            aria-expanded="false"
+          <a
             aria-controls="collapseAgentes"
+            aria-expanded="false"
+            className="nav-link dropdown-toggle"
+            data-bs-toggle="collapse"
+            href="#collapseAgentes"
+            role="button"
           >
             <BsFillPersonFill className="sidebarIcons" /> Agentes
-          </button>
+          </a>
           <ul className="collapse sub-menu" id="collapseAgentes">
             <li>
               <Link to="/agentes/crear-agente" onClick={() => isOpen(false)}>
