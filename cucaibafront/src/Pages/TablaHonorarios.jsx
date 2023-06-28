@@ -70,6 +70,7 @@ const arrayObjetos = [
 ];
 
 const RowHonorario = ({ data }) => {
+
   return (
     <>
       <tr
@@ -83,52 +84,52 @@ const RowHonorario = ({ data }) => {
         <td>{data.descripcion}</td>
         <td>{data.fecha}</td>
       </tr>
-      <tr className="collapse table-active" id={`rowCollapse${data.id}`}>
-        <td className="info-operativo" colSpan={3}>
-          <div className="d-flex align-items-center justify-content-between">
-            <div>
-              <h5>Agentes asociados al Operativo</h5>
-              <hr />
-            </div>
+        <tr className="collapse table-active shown" id={`rowCollapse${data.id}`}>
+          <td className="info-operativo" colSpan={3}>
+            <div className="d-flex align-items-center justify-content-between">
+              <div>
+                <h5>Agentes asociados al Operativo</h5>
+                <hr />
+              </div>
 
-            <button type="button" className="btn btn-primary">
-              Agregar Agente <BsFillPersonFill />
-            </button>
-          </div>
-          <table className="table table-responsive">
-            <thead>
-              <tr>
-                <th scope="col">CUIL</th>
-                <th scope="col">DNI</th>
-                <th scope="col">Nombre</th>
-                <th scope="col">CBU</th>
-                <th scope="col">Acción</th>
-              </tr>
-            </thead>
-            <tbody>
-              {data.agentes.map((a, i) => (
-                <tr key={i}>
-                  <td>{a.cuil}</td>
-                  <td>{a.id}</td>
-                  <td>{a.nombre}</td>
-                  <td>{a.cbu}</td>
-                  <td>
-                    <button
-                      type="button"
-                      className="btn btn-success"
-                      data-bs-toggle="tooltip"
-                      data-bs-placement="right"
-                      data-bs-title="Añadir modulo al Agente"
-                    >
-                      <AiOutlinePlus />
-                    </button>
-                  </td>
+              <button type="button" className="btn btn-primary">
+                Agregar Agente <BsFillPersonFill />
+              </button>
+            </div>
+            <table className="table table-responsive">
+              <thead>
+                <tr>
+                  <th scope="col">CUIL</th>
+                  <th scope="col">DNI</th>
+                  <th scope="col">Nombre</th>
+                  <th scope="col">CBU</th>
+                  <th scope="col">Acción</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </td>
-      </tr>
+              </thead>
+              <tbody>
+                {data.agentes.map((a, i) => (
+                  <tr key={i}>
+                    <td>{a.cuil}</td>
+                    <td>{a.id}</td>
+                    <td>{a.nombre}</td>
+                    <td>{a.cbu}</td>
+                    <td>
+                      <button
+                        type="button"
+                        className="btn btn-success"
+                        data-bs-toggle="tooltip"
+                        data-bs-placement="right"
+                        data-bs-title="Añadir modulo al Agente"
+                      >
+                        <AiOutlinePlus />
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </td>
+        </tr>
     </>
   );
 };

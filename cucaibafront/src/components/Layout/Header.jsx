@@ -39,7 +39,7 @@ function Header() {
             <GiHamburgerMenu size="3rem" />
           </button>
           <div className="col-7 pl-0 pl-md-2 intranet-logo">
-            <span className="fst-line">INTRANET</span>
+            <span className="fst-line">INTRANET - Liquidación Honorarios C.U.C.A.I.B.A</span>
             <span className="snd-line">MINISTERIO DE SALUD</span>
           </div>
           <div className="col-3 d-flex justify-content-end align-items-center">
