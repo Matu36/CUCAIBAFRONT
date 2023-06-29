@@ -7,6 +7,7 @@ import { usePagination } from "../hooks/usePagination";
 import EmptyTable from "../components/UI/EmptyTable";
 import DataTable from "react-data-table-component";
 import moment from "moment";
+import { useNavigate } from "react-router-dom";
 
 const arrayAgentes = [
   {
@@ -74,6 +75,20 @@ const arrayObjetos = [
 ];
 
 const ExpandedComponent = ({ data }) => {
+  const navigate = useNavigate();
+
+  const handleAdd = (id) => {
+    navigate("/honorarios/variables/crear-honorario/" + id + "/agregar", {
+      replace: true,
+    });
+  };
+
+  const handleCreate = (id) => {
+    navigate("/honorarios/variables/crear-honorario/", {
+      replace: true,
+    });
+  };
+
   return (
     <div className="p-3">
       <div className="d-flex align-items-center justify-content-between">
@@ -82,7 +97,11 @@ const ExpandedComponent = ({ data }) => {
           <hr />
         </div>
 
-        <button type="button" className="btn btn-primary">
+        <button
+          type="button"
+          className="btn btn-primary"
+          onClick={() => handleCreate(data.id)}
+        >
           Agregar Agente <BsFillPersonFill />
         </button>
       </div>
@@ -110,6 +129,7 @@ const ExpandedComponent = ({ data }) => {
                   data-bs-toggle="tooltip"
                   data-bs-placement="right"
                   data-bs-title="Añadir modulo al Agente"
+                  onClick={() => handleAdd(a.id)}
                 >
                   <AiOutlinePlus />
                 </button>
@@ -134,7 +154,7 @@ const columns = [
   { name: "Descripción", selector: (row) => row.descripcion, sortable: true },
 ];
 
-const TablaHonorarios = () => {
+const TablaHonorarios = ({ ...props }) => {
   const { paginationOptions } = usePagination(arrayObjetos);
 
   return (
@@ -150,6 +170,7 @@ const TablaHonorarios = () => {
         }
         expandableRows
         expandableRowsComponent={ExpandedComponent}
+        {...props}
       />
     </div>
   );

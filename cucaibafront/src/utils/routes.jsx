@@ -56,6 +56,26 @@ const router = createBrowserRouter([
               {
                 path: "/honorarios/variables/crear-honorario",
                 element: <CrearHonorarios />,
+                children: [
+                  {
+                    index: true,
+                    element: (
+                      <TablaHonorarios
+                        selectableRows
+                        selectableRowsNoSelectAll
+                        selectableRowsSingle
+                        striped
+                        selectableRowsHighlight
+                      />
+                    ),
+                  },
+                  {
+                    path: "/honorarios/variables/crear-honorario/:id/agregar",
+                    element: (
+                      <h1>Tabla con los modulos del agente con este id</h1>
+                    ),
+                  },
+                ],
               },
             ],
           },
