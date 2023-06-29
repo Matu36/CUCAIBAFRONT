@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getOperativos } from "../Redux/Actions";
 import DataTable from "react-data-table-component";
+import EmptyTable from "./UI/EmptyTable";
 
 const GetOperativos = () => {
   const dispatch = useDispatch();
@@ -64,10 +65,10 @@ const GetOperativos = () => {
   };
 
   const columns = [
-    { name: "ID", selector: "id", sortable: true },
-    { name: "Referencia", selector: "referencia", sortable: true },
-    { name: "Fecha", selector: "fecha", sortable: true },
-    { name: "Descripción", selector: "descripcion", sortable: true },
+    { name: "ID", selector: row => row.id, sortable: true },
+    { name: "Referencia", selector: row => row.referencia, sortable: true },
+    { name: "Fecha", selector: row => row.fecha, sortable: true },
+    { name: "Descripción", selector: row => row.descripcion, sortable: true },
   ];
 
   //--------------------------------- FIN PAGINADO-------------------------------- //
@@ -118,7 +119,9 @@ const GetOperativos = () => {
         columns={columns}
         data={operativo}
         pagination
+        striped
         paginationComponentOptions={paginationOptions}
+        noDataComponent={<EmptyTable msg="No se encontro el operativo con ese N° SINTRA" />}
       />
     </div>
   );
