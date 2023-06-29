@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { getAgentes } from "../Redux/Actions";
 import DataTable from "react-data-table-component";
 import EmptyTable from "./UI/EmptyTable";
+import { usePagination } from "../hooks/usePagination";
 
 const GetAgentes = () => {
   const dispatch = useDispatch();
@@ -10,8 +11,8 @@ const GetAgentes = () => {
   const [search, setSearch] = useState("");
   const primerArreglo = agentes.slice(0, 1)[0];
   const [agente, setAgente] = useState(primerArreglo);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [perPage, setPerPage] = useState(10);
+
+  const {paginationOptions} = usePagination(primerArreglo)
 
   useEffect(() => {
     dispatch(getAgentes());
@@ -46,25 +47,6 @@ const GetAgentes = () => {
   //-------------------------------- FIN SEARCHBAR --------------------------- //
 
   //----------------------------------PAGINADO ------------------------------//
-
-  const handlePageChange = (page) => {
-    setCurrentPage(page);
-  };
-
-  const handlePerRowsChange = (perPage, page) => {
-    setCurrentPage(page);
-    setPerPage(perPage);
-  };
-
-  const paginationOptions = {
-    paginationServer: false,
-    paginationTotalRows: primerArreglo ? primerArreglo.length : 0,
-    paginationDefaultPage: currentPage,
-    paginationPerPage: perPage,
-    paginationRowsPerPageOptions: [10, 25, 50, 100],
-    onChangePage: handlePageChange,
-    onChangeRowsPerPage: handlePerRowsChange,
-  };
 
   const columns = [
     { name: "ID", selector: row => row.id, sortable: true },
