@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getAgentes } from "../Redux/Actions";
 import DataTable from "react-data-table-component";
+import EmptyTable from "./UI/EmptyTable";
+import { usePagination } from "../hooks/usePagination";
 
 const GetAgentes = () => {
   const dispatch = useDispatch();
@@ -9,8 +11,8 @@ const GetAgentes = () => {
   const [search, setSearch] = useState("");
   const primerArreglo = agentes.slice(0, 1)[0];
   const [agente, setAgente] = useState(primerArreglo);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [perPage, setPerPage] = useState(10);
+
+  const {paginationOptions} = usePagination(primerArreglo)
 
   useEffect(() => {
     dispatch(getAgentes());
@@ -46,31 +48,12 @@ const GetAgentes = () => {
 
   //----------------------------------PAGINADO ------------------------------//
 
-  const handlePageChange = (page) => {
-    setCurrentPage(page);
-  };
-
-  const handlePerRowsChange = (perPage, page) => {
-    setCurrentPage(page);
-    setPerPage(perPage);
-  };
-
-  const paginationOptions = {
-    paginationServer: false,
-    paginationTotalRows: primerArreglo ? primerArreglo.length : 0,
-    paginationDefaultPage: currentPage,
-    paginationPerPage: perPage,
-    paginationRowsPerPageOptions: [10, 25, 50, 100],
-    onChangePage: handlePageChange,
-    onChangeRowsPerPage: handlePerRowsChange,
-  };
-
   const columns = [
-    { name: "ID", selector: "id", sortable: true },
-    { name: "Apellido", selector: "apellido", sortable: true },
-    { name: "Nombre", selector: "nombre", sortable: true },
-    { name: "CBU", selector: "cbu", sortable: true },
-    { name: "CUIL", selector: "cuil", sortable: true },
+    { name: "ID", selector: row => row.id, sortable: true },
+    { name: "Apellido", selector: row => row.apellido, sortable: true },
+    { name: "Nombre", selector: row => row.nombre, sortable: true },
+    { name: "CBU", selector: row => row.cbu, sortable: true },
+    { name: "CUIL", selector: row => row.cuil, sortable: true },
   ];
 
   //------------------------- FIN PAGINADO -----------------------------------//
@@ -122,7 +105,9 @@ const GetAgentes = () => {
         columns={columns}
         data={agente}
         pagination
+        striped
         paginationComponentOptions={paginationOptions}
+        noDataComponent={<EmptyTable msg="No se encontro el Agente con ese CUIL" />}
       />
     </div>
   );

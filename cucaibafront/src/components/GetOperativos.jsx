@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getOperativos } from "../Redux/Actions";
 import DataTable from "react-data-table-component";
+import EmptyTable from "./UI/EmptyTable";
+import { usePagination } from "../hooks/usePagination";
+import Moment from "moment"
 
 const GetOperativos = () => {
   const dispatch = useDispatch();
@@ -9,8 +12,8 @@ const GetOperativos = () => {
   const [search, setSearch] = useState("");
   const primerArreglo = operativos.slice(0, 1)[0];
   const [operativo, setOperativo] = useState(primerArreglo);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [perPage, setPerPage] = useState(10);
+
+  const {paginationOptions} = usePagination(primerArreglo);
 
   useEffect(() => {
     dispatch(getOperativos());
@@ -44,30 +47,11 @@ const GetOperativos = () => {
   //-------------------------------- FIN SEARCHBAR --------------------------- //
 
   //--------------------------------- PAGINADO-------------------------------- //
-  const handlePageChange = (page) => {
-    setCurrentPage(page);
-  };
-
-  const handlePerRowsChange = (perPage, page) => {
-    setCurrentPage(page);
-    setPerPage(perPage);
-  };
-
-  const paginationOptions = {
-    paginationServer: false,
-    paginationTotalRows: primerArreglo ? primerArreglo.length : 0,
-    paginationDefaultPage: currentPage,
-    paginationPerPage: perPage,
-    paginationRowsPerPageOptions: [10, 25, 50, 100],
-    onChangePage: handlePageChange,
-    onChangeRowsPerPage: handlePerRowsChange,
-  };
-
   const columns = [
-    { name: "ID", selector: "id", sortable: true },
-    { name: "Referencia", selector: "referencia", sortable: true },
-    { name: "Fecha", selector: "fecha", sortable: true },
-    { name: "Descripción", selector: "descripcion", sortable: true },
+    { name: "ID", selector: row => row.id, sortable: true },
+    { name: "Referencia", selector: row => row.referencia, sortable: true },
+    { name: "Fecha", selector: row => row.fecha, sortable: true, format: row => Moment(row.fecha).format('L') },
+    { name: "Descripción", selector: row => row.descripcion, sortable: true },
   ];
 
   //--------------------------------- FIN PAGINADO-------------------------------- //
@@ -118,7 +102,9 @@ const GetOperativos = () => {
         columns={columns}
         data={operativo}
         pagination
+        striped
         paginationComponentOptions={paginationOptions}
+        noDataComponent={<EmptyTable msg="No se encontro el operativo con ese N° SINTRA" />}
       />
     </div>
   );

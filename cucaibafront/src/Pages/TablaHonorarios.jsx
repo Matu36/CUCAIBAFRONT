@@ -3,6 +3,10 @@ import "./styles/tablaHonorarios.css";
 import { BsFillPersonFill } from "react-icons/bs";
 import { AiOutlinePlus } from "react-icons/ai";
 import "../lib/tooltip";
+import { usePagination } from "../hooks/usePagination";
+import EmptyTable from "../components/UI/EmptyTable";
+import DataTable from "react-data-table-component";
+import moment from "moment";
 
 const arrayAgentes = [
   {
@@ -69,88 +73,84 @@ const arrayObjetos = [
   },
 ];
 
-const RowHonorario = ({ data }) => {
-
+const ExpandedComponent = ({ data }) => {
   return (
-    <>
-      <tr
-        href={`#rowCollapse${data.id}`}
-        aria-expanded="false"
-        aria-controls={`#rowCollapse${data.id}`}
-        className="row-header"
-        data-bs-toggle="collapse"
-      >
-        <td>{data.referencia}</td>
-        <td>{data.descripcion}</td>
-        <td>{data.fecha}</td>
-      </tr>
-        <tr className="collapse table-active shown" id={`rowCollapse${data.id}`}>
-          <td className="info-operativo" colSpan={3}>
-            <div className="d-flex align-items-center justify-content-between">
-              <div>
-                <h5>Agentes asociados al Operativo</h5>
-                <hr />
-              </div>
+    <div className="p-3">
+      <div className="d-flex align-items-center justify-content-between">
+        <div>
+          <h5>Agentes asociados al Operativo</h5>
+          <hr />
+        </div>
 
-              <button type="button" className="btn btn-primary">
-                Agregar Agente <BsFillPersonFill />
-              </button>
-            </div>
-            <table className="table table-responsive">
-              <thead>
-                <tr>
-                  <th scope="col">CUIL</th>
-                  <th scope="col">DNI</th>
-                  <th scope="col">Nombre</th>
-                  <th scope="col">CBU</th>
-                  <th scope="col">Acción</th>
-                </tr>
-              </thead>
-              <tbody>
-                {data.agentes.map((a, i) => (
-                  <tr key={i}>
-                    <td>{a.cuil}</td>
-                    <td>{a.id}</td>
-                    <td>{a.nombre}</td>
-                    <td>{a.cbu}</td>
-                    <td>
-                      <button
-                        type="button"
-                        className="btn btn-success"
-                        data-bs-toggle="tooltip"
-                        data-bs-placement="right"
-                        data-bs-title="Añadir modulo al Agente"
-                      >
-                        <AiOutlinePlus />
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </td>
-        </tr>
-    </>
-  );
-};
-
-const TablaHonorarios = () => {
-  return (
-    <div>
-      <table className="table table-responsive table-hover">
+        <button type="button" className="btn btn-primary">
+          Agregar Agente <BsFillPersonFill />
+        </button>
+      </div>
+      <table className="table table-responsive">
         <thead>
           <tr>
-            <th scope="col">N° Sintra</th>
-            <th scope="col">Descripción</th>
-            <th scope="col">Fecha</th>
+            <th scope="col">CUIL</th>
+            <th scope="col">DNI</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">CBU</th>
+            <th scope="col">Acción</th>
           </tr>
         </thead>
-        <tbody id="accordion">
-          {arrayObjetos.map((e, i) => (
-            <RowHonorario data={e} key={i} />
+        <tbody>
+          {data.agentes.map((a, i) => (
+            <tr key={i}>
+              <td>{a.cuil}</td>
+              <td>{a.id}</td>
+              <td>{a.nombre}</td>
+              <td>{a.cbu}</td>
+              <td>
+                <button
+                  type="button"
+                  className="btn btn-success"
+                  data-bs-toggle="tooltip"
+                  data-bs-placement="right"
+                  data-bs-title="Añadir modulo al Agente"
+                >
+                  <AiOutlinePlus />
+                </button>
+              </td>
+            </tr>
           ))}
         </tbody>
       </table>
+    </div>
+  );
+};
+
+const columns = [
+  { name: "ID", selector: (row) => row.id, sortable: true },
+  { name: "Referencia", selector: (row) => row.referencia, sortable: true },
+  {
+    name: "Fecha",
+    selector: (row) => row.fecha,
+    sortable: true,
+    format: (row) => moment(row.fecha).format("L"),
+  },
+  { name: "Descripción", selector: (row) => row.descripcion, sortable: true },
+];
+
+const TablaHonorarios = () => {
+  const { paginationOptions } = usePagination(arrayObjetos);
+
+  return (
+    <div>
+      <DataTable
+        columns={columns}
+        data={arrayObjetos}
+        pagination
+        striped
+        paginationComponentOptions={paginationOptions}
+        noDataComponent={
+          <EmptyTable msg="No se encontro el Agente con ese CUIL" />
+        }
+        expandableRows
+        expandableRowsComponent={ExpandedComponent}
+      />
     </div>
   );
 };
