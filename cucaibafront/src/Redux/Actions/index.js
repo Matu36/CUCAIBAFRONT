@@ -7,8 +7,8 @@ export const GET_OPERATIVOS = "GET_OPERATIVOS";
 export const POST_OPERATIVO = "POST_OPERATIVO";
 export const POST_AGENTES = "POST_AGENTES";
 
-export const getAgentes = (page) => async (dispatch) => {
-  let response = await AgentesAPI.get(`?page=${page}`);
+export const getAgentes = () => async (dispatch) => {
+  let response = await AgentesAPI.get();
 
   return dispatch({ type: GET_AGENTES, payload: response.data });
 };

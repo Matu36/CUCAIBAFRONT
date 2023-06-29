@@ -1,26 +1,23 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getOperativos } from "../Redux/Actions";
-import Paginacion from "./Paginacion";
+import DataTable from "react-data-table-component";
 
 const GetOperativos = () => {
   const dispatch = useDispatch();
   const operativos = useSelector((state) => state.operativos);
   const [search, setSearch] = useState("");
-  const [operativo, setOperativo] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [numberOfPage, setNumberOfPage] = useState(0);
-  const [totalOperativos, setTotalOperativos] = useState([]);
-
   const primerArreglo = operativos.slice(0, 1)[0];
-
+  const [operativo, setOperativo] = useState(primerArreglo);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [perPage, setPerPage] = useState(10);
 
   useEffect(() => {
     dispatch(getOperativos());
-  }, [dispatch]);
+  }, []);
 
   useEffect(() => {
-    setOperativo(primerArreglo || []);
+    setOperativo(primerArreglo);
   }, [primerArreglo]);
 
   //-------------------------------- SEARCHBAR --------------------------- //
@@ -34,11 +31,10 @@ const GetOperativos = () => {
     setSearch(e.target.value);
   };
   const filterByRef = (value) => {
-    let arrayCache = [...operativo];
-    if (!search) {
-      setOperativo(primerArreglo || []); // Restablecer al valor original si la búsqueda está vacía
+    if (!value) {
+      setOperativo(primerArreglo);
     } else {
-      arrayCache = arrayCache.filter((oper) =>
+      const arrayCache = primerArreglo.filter((oper) =>
         oper.referencia.toLowerCase().includes(value.toLowerCase())
       );
       setOperativo(arrayCache);
@@ -48,21 +44,35 @@ const GetOperativos = () => {
   //-------------------------------- FIN SEARCHBAR --------------------------- //
 
   //--------------------------------- PAGINADO-------------------------------- //
-  useEffect(() => {
-    setTotalOperativos(
-      operativo.slice(indexFirstPageIngredient(), indexLastPageIngredient())
-    );
-    setNumberOfPage(Math.ceil(operativo.length / 9));
-  }, [operativo, currentPage]);
-
-  const indexFirstPageIngredient = () => (currentPage - 1) * 9;
-  const indexLastPageIngredient = () => indexFirstPageIngredient() + 9;
-
-  const handlePageNumber = (number) => {
-    setCurrentPage(number);
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
   };
 
+  const handlePerRowsChange = (perPage, page) => {
+    setCurrentPage(page);
+    setPerPage(perPage);
+  };
+
+  const paginationOptions = {
+    paginationServer: false,
+    paginationTotalRows: primerArreglo ? primerArreglo.length : 0,
+    paginationDefaultPage: currentPage,
+    paginationPerPage: perPage,
+    paginationRowsPerPageOptions: [10, 25, 50, 100],
+    onChangePage: handlePageChange,
+    onChangeRowsPerPage: handlePerRowsChange,
+  };
+
+  const columns = [
+    { name: "ID", selector: "id", sortable: true },
+    { name: "Referencia", selector: "referencia", sortable: true },
+    { name: "Fecha", selector: "fecha", sortable: true },
+    { name: "Descripción", selector: "descripcion", sortable: true },
+  ];
+
   //--------------------------------- FIN PAGINADO-------------------------------- //
+
+  //---------------------------------SPINNER ------------------------------------- //
   const [showSpinner, setShowSpinner] = useState(true);
   useEffect(() => {
     setTimeout(() => {
@@ -72,19 +82,21 @@ const GetOperativos = () => {
   if (operativos.length === 0) {
     return (
       <div className="d-flex justify-content-center align-items-center vh-100">
-      {showSpinner ? (
-        <button className="btn btn-primary" type="button" disabled>
-          <span
-            className="spinner-border spinner-border-sm mr-2"
-            role="status"
-            aria-hidden="true"
-          ></span>
-          Cargando...
-        </button>
-      ) : null}
-    </div>
+        {showSpinner ? (
+          <button className="btn btn-primary" type="button" disabled>
+            <span
+              className="spinner-border spinner-border-sm mr-2"
+              role="status"
+              aria-hidden="true"
+            ></span>
+            Cargando...
+          </button>
+        ) : null}
+      </div>
     );
   }
+
+  //------------------------------------FIN SPINNER ------------------------------ //
 
   return (
     <div>
@@ -95,38 +107,19 @@ const GetOperativos = () => {
         <input
           type="text"
           className="form-control"
-          placeholder="Buscar número de Referencia"
+          placeholder="Buscar por Número de Referencia"
           onChange={handleOnChange}
           value={search}
           autoComplete="off"
         />
       </div>
 
-      <table className="table table-striped">
-        <thead>
-          <tr>
-            <th>Referencia</th>
-            <th>Fecha</th>
-            <th>Descripcion</th>
-          </tr>
-        </thead>
-        <tbody>
-          {totalOperativos.map((operativo) => (
-            <tr key={operativo.id}>
-              <td>{operativo.referencia}</td>
-              <td>{operativo.fecha}</td>
-              <td>{operativo.descripcion}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      {operativos && (
-        <Paginacion
-          currentPage={currentPage}
-          numberOfPage={numberOfPage}
-          handlePageNumber={handlePageNumber}
-        />
-      )}
+      <DataTable
+        columns={columns}
+        data={operativo}
+        pagination
+        paginationComponentOptions={paginationOptions}
+      />
     </div>
   );
 };

@@ -1,21 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getAgentes } from "../Redux/Actions";
-import Paginacion from "./Paginacion";
+import DataTable from "react-data-table-component";
 
 const GetAgentes = () => {
   const dispatch = useDispatch();
   const agentes = useSelector((state) => state.agentes);
   const [search, setSearch] = useState("");
-  const [agente, setAgente] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(0);
-
   const primerArreglo = agentes.slice(0, 1)[0];
+  const [agente, setAgente] = useState(primerArreglo);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [perPage, setPerPage] = useState(10);
 
   useEffect(() => {
-    dispatch(getAgentes(currentPage, 10));
-  }, [dispatch, currentPage]);
+    dispatch(getAgentes());
+  }, []);
 
   useEffect(() => {
     setAgente(primerArreglo);
@@ -33,11 +32,10 @@ const GetAgentes = () => {
   };
 
   const filterByCuil = (value) => {
-    let arrayCache = [...agente];
-    if (!search) {
-      setAgente(primerArreglo || []); // Restablecer al valor original si la búsqueda está vacía
+    if (!value) {
+      setAgente(primerArreglo);
     } else {
-      arrayCache = arrayCache.filter((oper) =>
+      const arrayCache = primerArreglo.filter((oper) =>
         oper.cuil.toLowerCase().includes(value.toLowerCase())
       );
       setAgente(arrayCache);
@@ -46,19 +44,36 @@ const GetAgentes = () => {
 
   //-------------------------------- FIN SEARCHBAR --------------------------- //
 
-  //--------------------------------- PAGINADO-------------------------------- //
+  //----------------------------------PAGINADO ------------------------------//
 
-  useEffect(() => {
-    setTotalPages(Math.ceil(agentes.length));
-  }, [agentes]);
-
-  const handlePageNumber = (number) => {
-    setCurrentPage(number);
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
   };
 
+  const handlePerRowsChange = (perPage, page) => {
+    setCurrentPage(page);
+    setPerPage(perPage);
+  };
 
+  const paginationOptions = {
+    paginationServer: false,
+    paginationTotalRows: primerArreglo ? primerArreglo.length : 0,
+    paginationDefaultPage: currentPage,
+    paginationPerPage: perPage,
+    paginationRowsPerPageOptions: [10, 25, 50, 100],
+    onChangePage: handlePageChange,
+    onChangeRowsPerPage: handlePerRowsChange,
+  };
 
-  //--------------------------------- FIN PAGINADO-------------------------------- //
+  const columns = [
+    { name: "ID", selector: "id", sortable: true },
+    { name: "Apellido", selector: "apellido", sortable: true },
+    { name: "Nombre", selector: "nombre", sortable: true },
+    { name: "CBU", selector: "cbu", sortable: true },
+    { name: "CUIL", selector: "cuil", sortable: true },
+  ];
+
+  //------------------------- FIN PAGINADO -----------------------------------//
 
   //---------------------------------SPINNER ------------------------------------//
 
@@ -103,38 +118,12 @@ const GetAgentes = () => {
         />
       </div>
 
-      <div className="table-responsive">
-        <table className="table table-striped">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Apellido</th>
-              <th>Nombre</th>
-              <th>CBU</th>
-              <th>CUIL</th>
-            </tr>
-          </thead>
-          <tbody>
-            {agente.map((agente) => (
-              <tr key={agente.id}>
-                <td>{agente.id}</td>
-                <td>{agente.apellido}</td>
-                <td>{agente.nombre}</td>
-                <td>{agente.cbu}</td>
-                <td>{agente.cuil}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-
-      {agentes && (
-        <Paginacion
-          currentPage={currentPage}
-          numberOfPage={totalPages}
-          handlePageNumber={handlePageNumber}
-        />
-      )}
+      <DataTable
+        columns={columns}
+        data={agente}
+        pagination
+        paginationComponentOptions={paginationOptions}
+      />
     </div>
   );
 };
