@@ -66,11 +66,11 @@ const GetAgentes = () => {
   };
 
   const columns = [
-    { name: "ID", selector: "id", sortable: true },
-    { name: "Apellido", selector: "apellido", sortable: true },
-    { name: "Nombre", selector: "nombre", sortable: true },
-    { name: "CBU", selector: "cbu", sortable: true },
-    { name: "CUIL", selector: "cuil", sortable: true },
+    { name: "ID", selector: row => row.id, sortable: true },
+    { name: "Apellido", selector: row => row.apellido, sortable: true },
+    { name: "Nombre", selector: row => row.nombre, sortable: true },
+    { name: "CBU", selector: row => row.cbu, sortable: true },
+    { name: "CUIL", selector: row => row.cuil, sortable: true },
   ];
 
   //------------------------- FIN PAGINADO -----------------------------------//
@@ -122,6 +122,7 @@ const GetAgentes = () => {
         columns={columns}
         data={agente}
         pagination
+        striped
         paginationComponentOptions={paginationOptions}
       />
     </div>
