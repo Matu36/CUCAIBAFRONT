@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getAgentes } from "../Redux/Actions";
 import DataTable from "react-data-table-component";
+import EmptyTable from "./UI/EmptyTable";
 
 const GetAgentes = () => {
   const dispatch = useDispatch();
@@ -124,6 +125,7 @@ const GetAgentes = () => {
         pagination
         striped
         paginationComponentOptions={paginationOptions}
+        noDataComponent={<EmptyTable msg="No se encontro el Agente con ese CUIL" />}
       />
     </div>
   );
