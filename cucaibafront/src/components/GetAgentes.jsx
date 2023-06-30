@@ -90,7 +90,7 @@ const GetAgentes = ({ ...props }) => {
       <h1>Lista de Agentes</h1>
       <br />
 
-      <div className="input-group mb-3" style={{ width: "30rem" }}>
+      <div className="input-group mb-3" style={{ maxWidth: "40%" }}>
         <input
           type="text"
           className="form-control"
