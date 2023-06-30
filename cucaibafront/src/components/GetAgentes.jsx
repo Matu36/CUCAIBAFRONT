@@ -5,14 +5,14 @@ import DataTable from "react-data-table-component";
 import EmptyTable from "./UI/EmptyTable";
 import { usePagination } from "../hooks/usePagination";
 
-const GetAgentes = () => {
+const GetAgentes = ({ ...props }) => {
   const dispatch = useDispatch();
   const agentes = useSelector((state) => state.agentes);
   const [search, setSearch] = useState("");
   const primerArreglo = agentes.slice(0, 1)[0];
   const [agente, setAgente] = useState(primerArreglo);
 
-  const {paginationOptions} = usePagination(primerArreglo)
+  const { paginationOptions } = usePagination(primerArreglo);
 
   useEffect(() => {
     dispatch(getAgentes());
@@ -49,11 +49,11 @@ const GetAgentes = () => {
   //----------------------------------PAGINADO ------------------------------//
 
   const columns = [
-    { name: "ID", selector: row => row.id, sortable: true },
-    { name: "Apellido", selector: row => row.apellido, sortable: true },
-    { name: "Nombre", selector: row => row.nombre, sortable: true },
-    { name: "CBU", selector: row => row.cbu, sortable: true },
-    { name: "CUIL", selector: row => row.cuil, sortable: true },
+    { name: "ID", selector: (row) => row.id, sortable: true },
+    { name: "Apellido", selector: (row) => row.apellido, sortable: true },
+    { name: "Nombre", selector: (row) => row.nombre, sortable: true },
+    { name: "CBU", selector: (row) => row.cbu, sortable: true },
+    { name: "CUIL", selector: (row) => row.cuil, sortable: true },
   ];
 
   //------------------------- FIN PAGINADO -----------------------------------//
@@ -107,7 +107,10 @@ const GetAgentes = () => {
         pagination
         striped
         paginationComponentOptions={paginationOptions}
-        noDataComponent={<EmptyTable msg="No se encontro el Agente con ese CUIL" />}
+        noDataComponent={
+          <EmptyTable msg="No se encontro el Agente con ese CUIL" />
+        }
+        {...props}
       />
     </div>
   );

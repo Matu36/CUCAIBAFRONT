@@ -9,6 +9,7 @@ import { CrearHonorarios } from "../Pages/Crear-Honorarios";
 import Agentes from "../Pages/Agentes";
 import LayoutHonorarios from "../components/Layout/LayoutHonorarios";
 import TablaHonorarios from "../Pages/TablaHonorarios";
+import GetAgentes from "../components/GetAgentes";
 
 const router = createBrowserRouter([
   {
@@ -56,6 +57,47 @@ const router = createBrowserRouter([
               {
                 path: "/honorarios/variables/crear-honorario",
                 element: <CrearHonorarios />,
+                children: [
+                  {
+                    index: true,
+                    element: (
+                      <>
+                        <div>
+                          <h1>Asignar Agente al Operativo</h1>
+                          <hr />
+                          <p>
+                            <i>(Solo uno)</i>
+                          </p>
+                          <br />
+                        </div>
+                        <TablaHonorarios
+                          selectableRows
+                          selectableRowsNoSelectAll
+                          selectableRowsSingle
+                          striped
+                          selectableRowsHighlight
+                        />
+                      </>
+
+                      // <GetAgentes selectableRows
+                      //   selectableRowsNoSelectAll
+                      //   selectableRowsSingle
+                      //   selectableRowsHighlight/>
+                    ),
+                  },
+                  {
+                    path: "/honorarios/variables/crear-honorario/:id/agregar",
+                    element: (
+                      <>
+                        <div>
+                          <h1>Agregar honorario al Agente</h1>
+                          <hr />
+                        </div>
+                        <TablaHonorarios />
+                      </>
+                    ),
+                  },
+                ],
               },
             ],
           },
