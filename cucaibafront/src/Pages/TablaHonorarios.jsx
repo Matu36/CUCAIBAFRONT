@@ -159,6 +159,10 @@ const TablaHonorarios = ({ ...props }) => {
 
   return (
     <div>
+      <div className="mb-5">
+        <h1>Carga de Honorarios Variables</h1>
+        <hr />
+      </div>
       <DataTable
         columns={columns}
         data={arrayObjetos}

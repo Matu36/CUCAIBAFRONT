@@ -10,8 +10,8 @@ export const CrearHonorarios = () => {
   };
   return (
     <div>
-      Crear-Honorarios
       <Outlet />
+      <hr />
       <PostHonorarios />
     </div>
   );
