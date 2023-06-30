@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import "./styles/tablaHonorarios.css";
 import { BsFillPersonFill } from "react-icons/bs";
 import { AiOutlinePlus } from "react-icons/ai";
@@ -154,18 +154,58 @@ const columns = [
   { name: "Descripción", selector: (row) => row.descripcion, sortable: true },
 ];
 
+
+
 const TablaHonorarios = ({ ...props }) => {
+  
+  const [search, setSearch] = useState("");
+  const [honorario, setHonorario] = useState(arrayObjetos);
   const { paginationOptions } = usePagination(arrayObjetos);
+
+  
+  //-------------------------------- SEARCHBAR --------------------------- //
+
+  useEffect(() => {
+    filterByReferencia(search);
+  }, [search]);
+
+  const handleOnChange = (e) => {
+    e.preventDefault();
+    setSearch(e.target.value);
+  };
+
+  const filterByReferencia = (value) => {
+    if (!value) {
+      setHonorario(arrayObjetos);
+    } else {
+      const arrayCache = arrayObjetos.filter((oper) =>
+        oper.referencia.toLowerCase().includes(value.toLowerCase())
+      );
+      setHonorario(arrayCache);
+    }
+  };
+
+  //-------------------------------- FIN SEARCHBAR --------------------------- //
 
   return (
     <div>
       <div className="mb-5">
         <h1>Carga de Honorarios Variables</h1>
         <hr />
+        <div className="input-group mb-3" style={{ maxWidth: "40%" }}>
+        <input
+          type="text"
+          className="form-control"
+          placeholder="Buscar por Referencia"
+          onChange={handleOnChange}
+          value={search}
+          autoComplete="off"
+        />
+      </div>
       </div>
       <DataTable
         columns={columns}
-        data={arrayObjetos}
+        data={honorario}
         pagination
         striped
         paginationComponentOptions={paginationOptions}
