@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const AgentesAPI = axios.create({
-    baseURL: "http://localhost:80/cucaibabonif/trunk/public/index.php/api/agentes",
+    baseURL: `${import.meta.env.VITE_BACKEND_URL}/agentes`,
     withCredentials: false,
     mode: "cors",
     headers: {

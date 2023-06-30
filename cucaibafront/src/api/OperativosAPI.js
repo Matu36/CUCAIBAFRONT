@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const OperativosAPI = axios.create({
-    baseURL: "http://localhost:80/cucaibabonif/trunk/public/index.php/api/operativos",
+    baseURL: `${import.meta.env.VITE_BACKEND_URL}/operativos`,
     withCredentials: true,
     mode: "cors",
     headers: {
