@@ -1,11 +1,12 @@
-import { postAgentes } from "../Redux/Actions"
+import { postAgentes } from "../Redux/Actions";
 import { useDispatch } from "react-redux";
 import { useState } from "react";
 import Swal from "sweetalert2";
 
 const postAgente = () => {
-
   let dispatch = useDispatch();
+
+  const [persona, setPersona] = useState(null);
 
   //---------------------------- CREACION AGENTE ---------------------------- //
 
@@ -15,9 +16,13 @@ const postAgente = () => {
     cbu: "",
     cuil: "",
     tipoPago: "",
-    personaid: ""
-
+    personaid: "",
   });
+
+  const handleFindPersona = () => {
+    console.log(agente.cuil);
+    setPersona([]);
+  };
 
   const handleOnSubmit = async (e) => {
     e.preventDefault();
@@ -29,7 +34,6 @@ const postAgente = () => {
       agente.cuil &&
       agente.tipoPago &&
       agente.personaid
-
     ) {
       const newAgente = {
         ...agente,
@@ -49,8 +53,7 @@ const postAgente = () => {
         cbu: "",
         cuil: "",
         tipoPago: "",
-        personaid: ""
-
+        personaid: "",
       });
     } else {
       Swal.fire({
@@ -64,80 +67,131 @@ const postAgente = () => {
   return (
     <form onSubmit={handleOnSubmit}>
       <div className="mb-3">
-        <label htmlFor="inputApellido" className="form-label">Apellido</label>
-        <input type="text" className="form-control" id="inputApellido" aria-describedby="ApellidoHelp"
+        <label htmlFor="inputFechadePago" className="form-label">
+          CUIL
+        </label>
+        <div
+          className="d-flex gap-5 align-items-center justify-content-center"
+          style={{ height: "40px" }}
+        >
+          <input
+            type="text"
+            className="form-control"
+            id="inputCUIL"
+            aria-describedby="CUILHelp"
+            name="CUIL"
+            value={agente.cuil}
+            autoComplete="off"
+            placeholder="CUIL"
+            onChange={(e) => setAgente({ ...agente, cuil: e.target.value })}
+          />
+          <button
+            className="btn "
+            type="button"
+            style={{
+              background: "var(--ms-main-color)",
+              color: "#fff",
+            }}
+            onClick={handleFindPersona}
+          >
+            Buscar Persona
+          </button>
+        </div>
+      </div>
+      <div className="mb-3">
+        <label htmlFor="inputApellido" className="form-label">
+          Apellido
+        </label>
+        <input
+          type="text"
+          className="form-control"
+          id="inputApellido"
+          aria-describedby="ApellidoHelp"
           name="apellido"
           value={agente.apellido}
           autoComplete="off"
           placeholder="Apellido"
-          onChange={(e) =>
-            setAgente({ ...agente, apellido: e.target.value })
-          }
+          disabled={persona === null}
+          onChange={(e) => setAgente({ ...agente, apellido: e.target.value })}
         />
       </div>
       <div className="mb-3">
-        <label htmlFor="inputNombre" className="form-label">Nombre</label>
-        <input type="text" className="form-control" id="inputNombre" aria-describedby="NombreHelp"
+        <label htmlFor="inputNombre" className="form-label">
+          Nombre
+        </label>
+        <input
+          type="text"
+          className="form-control"
+          id="inputNombre"
+          aria-describedby="NombreHelp"
           name="Nombre"
           value={agente.nombre}
           autoComplete="off"
           placeholder="Nombre"
-          onChange={(e) =>
-            setAgente({ ...agente, nombre: e.target.value })
-          }
+          disabled={persona === null}
+          onChange={(e) => setAgente({ ...agente, nombre: e.target.value })}
         />
       </div>
       <div className="mb-3">
-        <label htmlFor="inputDescripción" className="form-label">CBU</label>
-        <input type="text" className="form-control" id="inputCBU" aria-describedby="CBUHelp"
+        <label htmlFor="inputDescripción" className="form-label">
+          CBU
+        </label>
+        <input
+          type="text"
+          className="form-control"
+          id="inputCBU"
+          aria-describedby="CBUHelp"
           name="CBU"
           value={agente.cbu}
           autoComplete="off"
           placeholder="CBU"
-          onChange={(e) =>
-            setAgente({ ...agente, cbu: e.target.value })
-          }
+          disabled={persona === null}
+          onChange={(e) => setAgente({ ...agente, cbu: e.target.value })}
         />
       </div>
       <div className="mb-3">
-        <label htmlFor="inputFechadePago" className="form-label">CUIL</label>
-        <input type="text" className="form-control" id="inputCUIL" aria-describedby="CUILHelp"
-          name="CUIL"
-          value={agente.cuil}
-          autoComplete="off"
-          placeholder="CUIL"
-          onChange={(e) =>
-            setAgente({ ...agente, cuil: e.target.value })
-          }
-        />
-      </div>
-      <div className="mb-3">
-        <label htmlFor="inputTipoPago" className="form-label">Tipo de Pago</label>
-        <input type="text" className="form-control" id="TipoPago" aria-describedby="TipoPagoHelp"
+        <label htmlFor="inputTipoPago" className="form-label">
+          Tipo de Pago
+        </label>
+        <input
+          type="text"
+          className="form-control"
+          id="TipoPago"
+          aria-describedby="TipoPagoHelp"
           name="TIPOPAGO"
           value={agente.tipoPago}
           autoComplete="off"
           placeholder="Tipo de Pago"
-          onChange={(e) =>
-            setAgente({ ...agente, tipoPago: e.target.value })
-          }
+          disabled={persona === null}
+          onChange={(e) => setAgente({ ...agente, tipoPago: e.target.value })}
         />
       </div>
       <div className="mb-3">
-        <label htmlFor="inputPersId" className="form-label">PersonaId</label>
-        <input type="text" className="form-control" id="inputCUIL" aria-describedby="CUILHelp"
+        <label htmlFor="inputPersId" className="form-label">
+          PersonaId
+        </label>
+        <input
+          type="text"
+          className="form-control"
+          id="inputCUIL"
+          aria-describedby="CUILHelp"
           name="PersId"
           value={agente.personaid}
           autoComplete="off"
           placeholder="pERSID"
-          onChange={(e) =>
-            setAgente({ ...agente, personaid: e.target.value })
-          }
+          disabled={persona === null}
+          onChange={(e) => setAgente({ ...agente, personaid: e.target.value })}
         />
       </div>
-      <button type="submit" className='btn btn-primary' style={{ background: "var(--ms-main-color)" }}>Agregar Agente</button>
+      <button
+        type="submit"
+        className="btn btn-primary"
+        style={{ background: "var(--ms-main-color)" }}
+      >
+        Agregar Agente
+      </button>
     </form>
-  )
-}
+  );
+};
 
-export default postAgente
+export default postAgente;
