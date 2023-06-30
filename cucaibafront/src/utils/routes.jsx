@@ -10,6 +10,7 @@ import Agentes from "../Pages/Agentes";
 import LayoutHonorarios from "../components/Layout/LayoutHonorarios";
 import TablaHonorarios from "../Pages/TablaHonorarios";
 import GetAgentes from "../components/GetAgentes";
+import AsignarAgente from "../Pages/AsignarAgente";
 
 const router = createBrowserRouter([
   {
@@ -51,7 +52,7 @@ const router = createBrowserRouter([
             path: "/honorarios/variables",
             children: [
               {
-                path: "/honorarios/variables",
+                index: true,
                 element: <TablaHonorarios />,
               },
               {
@@ -60,30 +61,7 @@ const router = createBrowserRouter([
                 children: [
                   {
                     index: true,
-                    element: (
-                      <>
-                        <div>
-                          <h1>Asignar Agente al Operativo</h1>
-                          <hr />
-                          <p>
-                            <i>(Solo uno)</i>
-                          </p>
-                          <br />
-                        </div>
-                        <TablaHonorarios
-                          selectableRows
-                          selectableRowsNoSelectAll
-                          selectableRowsSingle
-                          striped
-                          selectableRowsHighlight
-                        />
-                      </>
-
-                      // <GetAgentes selectableRows
-                      //   selectableRowsNoSelectAll
-                      //   selectableRowsSingle
-                      //   selectableRowsHighlight/>
-                    ),
+                    element: <AsignarAgente />,
                   },
                   {
                     path: "/honorarios/variables/crear-honorario/:id/agregar",
