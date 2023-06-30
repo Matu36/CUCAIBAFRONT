@@ -1,7 +1,10 @@
 import React from "react";
 import { AiOutlinePlus } from "react-icons/ai";
+import { useModulos } from "../hooks/useModulos";
 
-const PostHonorarios = () => {
+const PostHonorarios = ({ disabled }) => {
+  const { modulosQuery } = useModulos();
+  console.log(modulosQuery.data);
   const handleChange = (e) => {
     console.log(e);
   };
@@ -24,11 +27,17 @@ const PostHonorarios = () => {
             id="funcionSelect"
             className="form-select"
             aria-label="Default select example"
+            disabled={disabled}
           >
-            <option defaultChecked>Open this select menu</option>
-            <option defaultValue="1">One</option>
-            <option defaultValue="2">Two</option>
-            <option defaultValue="3">Three</option>
+            {modulosQuery.isLoading ? (
+              <option defaultChecked>Cargando...</option>
+            ) : (
+              modulosQuery.data.map((m) => (
+                <option value={m.id} key={m.id}>
+                  {m.descripcion}
+                </option>
+              ))
+            )}
           </select>
         </div>
         <div className="mb-3 w-20">
@@ -52,6 +61,7 @@ const PostHonorarios = () => {
             id="buttonAddModulo"
             type="button"
             className="btn btn-success"
+            disabled={disabled}
           >
             <AiOutlinePlus />
           </button>
