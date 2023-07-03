@@ -9,8 +9,8 @@ import { CrearHonorarios } from "../Pages/Crear-Honorarios";
 import Agentes from "../Pages/Agentes";
 import LayoutHonorarios from "../components/Layout/LayoutHonorarios";
 import TablaHonorarios from "../Pages/TablaHonorarios";
-import GetAgentes from "../components/GetAgentes";
 import AsignarAgente from "../Pages/AsignarAgente";
+import ModulosVista from "../Pages/ModulosVista";
 
 const router = createBrowserRouter([
   {
@@ -81,6 +81,10 @@ const router = createBrowserRouter([
           },
         ],
       },
+      {
+        path: "/modulos",
+        element: <ModulosVista />
+      }
     ],
   },
 ]);
