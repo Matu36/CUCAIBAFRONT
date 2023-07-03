@@ -4,14 +4,15 @@ import { AiFillHome } from "react-icons/ai";
 import { FaAmbulance } from "react-icons/fa";
 import { BsFillPersonFill } from "react-icons/bs";
 import { SiWebmoney } from "react-icons/si";
+import { TbNurse } from "react-icons/tb";
 
 function SideBar({ isOpen }) {
   return (
     <div
       className={`sidebar-nav navbar-collapse offcanvas-collapse ${
         isOpen ? "open" : "null"
-        }`}
-        style={{zIndex: 1000}}
+      }`}
+      style={{ zIndex: 1000 }}
     >
       <label
         style={{
@@ -108,7 +109,16 @@ function SideBar({ isOpen }) {
               </a>
             </li>
           </ul>
+
         </li>
+        <ul className="metismenu side-menu" id="side-menu">
+        <li>
+          <Link to="/modulos" onClick={() => isOpen(false)}>
+            <TbNurse className="sidebarIcons"/> Módulos
+          </Link>
+        </li>
+      </ul>
+
       </ul>
     </div>
   );
