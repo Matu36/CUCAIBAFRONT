@@ -1,31 +1,37 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { getAgentes } from "../Redux/Actions";
+import { getModulos } from "../Redux/Actions";
 import DataTable from "react-data-table-component";
 import EmptyTable from "./UI/EmptyTable";
 import { usePagination } from "../hooks/usePagination";
+import { CgCloseO } from "react-icons/cg";
+import Moment from "moment";
+import CrearModulo from "./CrearModulo";
 
-const GetAgentes = ({ ...props }) => {
+const Modulos = ({ ...props }) => {
   const dispatch = useDispatch();
-  const agentes = useSelector((state) => state.agentes);
+  const modulos = useSelector((state) => state.modulos);
   const [search, setSearch] = useState("");
-  const primerArreglo = agentes.slice(0, 1)[0];
-  const [agente, setAgente] = useState(primerArreglo);
+  let primerArreglo = [];
+  if (modulos.length > 1) {
+    primerArreglo = modulos[1][0];
+  }
+  const [modulo, setModulo] = useState(primerArreglo);
 
   const { paginationOptions } = usePagination(primerArreglo);
 
   useEffect(() => {
-    dispatch(getAgentes());
+    dispatch(getModulos());
   }, []);
 
   useEffect(() => {
-    setAgente(primerArreglo);
+    setModulo(primerArreglo);
   }, [primerArreglo]);
 
   //-------------------------------- SEARCHBAR --------------------------- //
 
   useEffect(() => {
-    filterByCuil(search);
+    filterByDescripcion(search);
   }, [search]);
 
   const handleOnChange = (e) => {
@@ -33,16 +39,27 @@ const GetAgentes = ({ ...props }) => {
     setSearch(e.target.value);
   };
 
-  const filterByCuil = (value) => {
+  const filterByDescripcion = (value) => {
     if (!value) {
-      setAgente(primerArreglo);
+      setModulo(primerArreglo);
     } else {
-      const arrayCache = primerArreglo.filter((oper) =>
-        oper.cuil.toLowerCase().includes(value.toLowerCase())
+      const arrayCache = primerArreglo.filter((mod) =>
+        mod.descripcion.toLowerCase().includes(value.toLowerCase())
       );
-      setAgente(arrayCache);
+      setModulo(arrayCache);
     }
   };
+
+    //MOSTRANDO EL FORMULARIO DE CREACION //
+
+    const [mostrarFormulario, setMostrarFormulario] = useState(false);
+    function handleMostrarFormulario() {
+      setMostrarFormulario(true);
+    }
+
+    function handleCerrarFormulario() {
+      setMostrarFormulario(false);
+    }
 
   //-------------------------------- FIN SEARCHBAR --------------------------- //
 
@@ -50,10 +67,15 @@ const GetAgentes = ({ ...props }) => {
 
   const columns = [
     { name: "ID", selector: (row) => row.id, sortable: true },
-    { name: "Apellido", selector: (row) => row.apellido, sortable: true },
-    { name: "Nombre", selector: (row) => row.nombre, sortable: true },
-    { name: "CBU", selector: (row) => row.cbu, sortable: true },
-    { name: "CUIL", selector: (row) => row.cuil, sortable: true },
+    { name: "Descripción", selector: (row) => row.descripcion, sortable: true },
+    { name: "Valor", selector: (row) => row.valor, sortable: true },
+    {
+      name: "Fecha Desde",
+      selector: (row) => row.fechaDesde,
+      sortable: true,
+      format: (row) => Moment(row.fecha).format("L"),
+    },
+    { name: "Fecha hasta", selector: (row) => row.fecha_hasta, sortable: true },
   ];
 
   //------------------------- FIN PAGINADO -----------------------------------//
@@ -66,7 +88,7 @@ const GetAgentes = ({ ...props }) => {
       setShowSpinner(false);
     }, 2000);
   }, []);
-  if (agentes.length === 0) {
+  if (modulos.length === 0) {
     return (
       <div className="d-flex justify-content-center align-items-center vh-100">
         {showSpinner ? (
@@ -87,33 +109,56 @@ const GetAgentes = ({ ...props }) => {
 
   return (
     <div>
-      <h1>Lista de Agentes</h1>
+      <h1>Lista de Módulos</h1>
       <br />
 
       <div className="input-group mb-3" style={{ maxWidth: "40%" }}>
         <input
           type="text"
           className="form-control"
-          placeholder="Buscar por CUIL"
+          placeholder="Buscar por Descripción"
           onChange={handleOnChange}
           value={search}
           autoComplete="off"
         />
       </div>
+      <button
+       className="btn btn-primary"
+       style={{ background: "var(--ms-main-color)" }}
+        onClick={handleMostrarFormulario}
+      >
+        Crear Módulo
+      </button>
+      {mostrarFormulario && (
+        <div
+          style={{
+            position: "fixed",
+            top: "45%",
+            left: "45%",
+            transform: "translate(-50%, -50%)",
+            backgroundColor: "white",
+            padding: "10px",
+            zIndex: "999",
+          }}
+        >
+          <button fontSize="2rem" onClick={handleCerrarFormulario}>
+            <CgCloseO />
+          </button>
+          <CrearModulo />
+        </div>
+      )}
 
       <DataTable
         columns={columns}
-        data={agente}
+        data={modulo}
         pagination
         striped
         paginationComponentOptions={paginationOptions}
-        noDataComponent={
-          <EmptyTable msg="No se encontro el Agente con ese CUIL" />
-        }
+        noDataComponent={<EmptyTable msg="No se encontro el tipo de Módulo" />}
         {...props}
       />
     </div>
   );
 };
 
-export default GetAgentes;
+export default Modulos;
