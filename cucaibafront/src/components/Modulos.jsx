@@ -111,7 +111,7 @@ const Modulos = ({ ...props }) => {
     <div>
       <h1>Lista de Módulos</h1>
       <br />
-
+<div style={{display:"flex", justifyContent:"space-between"}}>
       <div className="input-group mb-3" style={{ maxWidth: "40%" }}>
         <input
           type="text"
@@ -129,15 +129,15 @@ const Modulos = ({ ...props }) => {
       >
         Crear Módulo
       </button>
+      
       {mostrarFormulario && (
         <div
           style={{
             position: "fixed",
             top: "45%",
-            left: "45%",
+            left: "50%",
             transform: "translate(-50%, -50%)",
             backgroundColor: "white",
-            padding: "10px",
             zIndex: "999",
           }}
         >
@@ -147,6 +147,7 @@ const Modulos = ({ ...props }) => {
           <CrearModulo />
         </div>
       )}
+      </div>
 
       <DataTable
         columns={columns}
