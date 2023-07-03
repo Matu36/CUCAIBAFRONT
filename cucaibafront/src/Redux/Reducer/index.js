@@ -4,6 +4,9 @@ import {
   POST_OPERATIVO,
   POST_AGENTES,
   GET_MODULOS,
+  GET_CATEGORIAS,
+  GET_TIPOMODULO,
+  POST_MODULO,
 } from "../Actions";
 
 const InitialState = {
@@ -12,6 +15,10 @@ const InitialState = {
   operativos: [],
 
   modulos: [],
+
+  categorias: [],
+
+  TipoModulo: [],
 };
 
 function rootReducer(state = InitialState, action) {
@@ -26,6 +33,12 @@ function rootReducer(state = InitialState, action) {
       return { ...state, agentes: [...state.agentes, action.payload] };
     case GET_MODULOS:
       return { ...state, modulos: [state.modulos, action.payload] };
+    case GET_CATEGORIAS:
+      return { ...state, categorias: [state.categorias, action.payload] };
+    case GET_TIPOMODULO:
+      return { ...state, TipoModulo: [state.TipoModulo, action.payload] };
+    case POST_MODULO:
+      return { ...state, modulos: [...state.modulos, action.payload] };
     default:
       return state;
   }
