@@ -46,7 +46,7 @@ const postAgente = () => {
         showConfirmButton: false,
         timer: 2000,
       });
-      // window.location.reload();
+      //window.location.reload();
       setAgente({
         apellido: "",
         nombre: "",

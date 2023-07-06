@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { getModulos } from "../Redux/Actions";
+import { getModulos, updateModulo } from "../Redux/Actions";
 import DataTable from "react-data-table-component";
 import EmptyTable from "./UI/EmptyTable";
 import { usePagination } from "../hooks/usePagination";
-import { CgCloseO } from "react-icons/cg";
+import { BiEditAlt, BiSave } from "react-icons/bi";
 import Moment from "moment";
 import CrearModulo from "./CrearModulo";
+import {MdCancel} from "react-icons/md";
 
 const Modulos = ({ ...props }) => {
   const dispatch = useDispatch();
@@ -50,20 +51,54 @@ const Modulos = ({ ...props }) => {
     }
   };
 
-    //MOSTRANDO EL FORMULARIO DE CREACION //
+  //MOSTRANDO EL FORMULARIO DE CREACION //
 
-    const [mostrarFormulario, setMostrarFormulario] = useState(false);
-    function handleMostrarFormulario() {
-      setMostrarFormulario(true);
-    }
+  const [mostrarFormulario, setMostrarFormulario] = useState(false);
+  function handleMostrarFormulario() {
+    setMostrarFormulario(true);
+  }
 
-    function handleCerrarFormulario() {
-      setMostrarFormulario(false);
-    }
+  function handleCerrarFormulario() {
+    setMostrarFormulario(false);
+  }
 
   //-------------------------------- FIN SEARCHBAR --------------------------- //
 
-  //----------------------------------PAGINADO ------------------------------//
+  //EDITAR PRECIO
+
+  const [editIndex, setEditIndex] = useState(null);
+  const [editPrice, setEditPrice] = useState(null);
+
+  const handleEdit = (id, valor) => {
+    setEditIndex(id);
+    setEditPrice(valor);
+  };
+
+  const handlePriceChange = (valor) => {
+    setEditPrice(valor);
+  };
+
+  const handleSave = (id) => {
+    if (editPrice !== null) {
+    const updatedModulo = {
+      id: id,
+      valor: editPrice,
+    };
+  
+    
+    dispatch(updateModulo(updatedModulo));
+    setEditIndex(null);
+    setEditPrice(null);
+  };}
+
+  const handleCancel = () => {
+    setEditIndex(null);
+    setEditPrice(null);
+  };
+
+  //FIN EDITAR PRECIO
+
+  //----------------------------------COLUMNAS ------------------------------//
 
   const columns = [
     { name: "ID", selector: (row) => row.id, sortable: true },
@@ -71,14 +106,27 @@ const Modulos = ({ ...props }) => {
     { name: "Valor", selector: (row) => row.valor, sortable: true },
     {
       name: "Fecha Desde",
-      selector: (row) => row.fechaDesde,
-      sortable: true,
-      format: (row) => Moment(row.fecha).format("L"),
-    },
+      selector: (row) => row.fechaDesde, sortable: true,
+      format: (row) => Moment(row.fecha).format("L")},
     { name: "Fecha hasta", selector: (row) => row.fecha_hasta, sortable: true },
+    { name: "Acción",
+    cell: (row) =>
+      editIndex === row.id ? (
+        <>
+          <input
+            type="number"
+            value={editPrice}
+            onChange={(e) => handlePriceChange(e.target.value)}
+          />
+          <button onClick={() => handleSave(row.id)}> <BiSave/> </button> 
+          <button onClick={handleCancel}><MdCancel/></button>
+        </>
+      ) : (
+        <BiEditAlt onClick={() => handleEdit(row.id, row.valor)} />
+      ),},
   ];
 
-  //------------------------- FIN PAGINADO -----------------------------------//
+  
 
   //---------------------------------SPINNER ------------------------------------//
 
@@ -111,42 +159,40 @@ const Modulos = ({ ...props }) => {
     <div>
       <h1>Lista de Módulos</h1>
       <br />
-
-      <div className="input-group mb-3" style={{ maxWidth: "40%" }}>
-        <input
-          type="text"
-          className="form-control"
-          placeholder="Buscar por Descripción"
-          onChange={handleOnChange}
-          value={search}
-          autoComplete="off"
-        />
-      </div>
-      <button
-       className="btn btn-primary"
-       style={{ background: "var(--ms-main-color)" }}
-        onClick={handleMostrarFormulario}
-      >
-        Crear Módulo
-      </button>
-      {mostrarFormulario && (
-        <div
-          style={{
-            position: "fixed",
-            top: "45%",
-            left: "45%",
-            transform: "translate(-50%, -50%)",
-            backgroundColor: "white",
-            padding: "10px",
-            zIndex: "999",
-          }}
-        >
-          <button fontSize="2rem" onClick={handleCerrarFormulario}>
-            <CgCloseO />
-          </button>
-          <CrearModulo />
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <div className="input-group mb-3" style={{ maxWidth: "40%" }}>
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Buscar por Descripción"
+            onChange={handleOnChange}
+            value={search}
+            autoComplete="off"
+          />
         </div>
-      )}
+        <button
+          className="btn btn-primary"
+          style={{ background: "var(--ms-main-color)" }}
+          onClick={handleMostrarFormulario}
+        >
+          Crear Módulo
+        </button>
+
+        {mostrarFormulario && (
+          <div
+            style={{
+              position: "fixed",
+              top: "45%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              backgroundColor: "white",
+              zIndex: "999",
+            }}
+          >
+            <CrearModulo handleCerrarFormulario={handleCerrarFormulario} />
+          </div>
+        )}
+      </div>
 
       <DataTable
         columns={columns}
