@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const AgentesAPI = axios.create({
     baseURL: `${import.meta.env.VITE_BACKEND_URL}/agentes`,
-    withCredentials: false,
+    withCredentials: true,
     mode: "cors",
     headers: {
         'Access-Control-Allow-Origin': '*',

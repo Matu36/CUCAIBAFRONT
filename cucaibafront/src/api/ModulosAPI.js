@@ -6,7 +6,7 @@ export const ModulosAPI = axios.create({
     mode: "cors",
     headers: {
         'Access-Control-Allow-Origin': '*',
-        'allow_methods': ["GET", "POST"],
+        'allow_methods': ["GET", "POST", "PUT"],
         "Access-Control-Allow-Credentials": true
     }
 })

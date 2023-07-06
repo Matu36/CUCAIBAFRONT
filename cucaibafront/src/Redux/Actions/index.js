@@ -13,6 +13,7 @@ export const GET_MODULOS = "GET_MODULOS";
 export const GET_CATEGORIAS = "GET_CATEGORIAS";
 export const GET_TIPOMODULO = "GET_TIPOMODULO";
 export const POST_MODULO = "POST_MODULO";
+export const UPDATE_MODULO = "UPDATE_MODULO";
 
 export const getAgentes = () => async (dispatch) => {
   let response = await AgentesAPI.get("");
@@ -76,14 +77,14 @@ export const postAgentes =
     }).then((payload) => dispatch({ type: POST_AGENTES, payload }));
 
 export const postModulo =
-  ({ tipo, categpria, valor, descripcion, fechaDesde }) =>
+  ({ tipo, categoria, valor, descripcion, fechaDesde }) =>
   (dispatch) =>
     axios
       .post(
         "http://localhost/cucaibabonif/trunk/public/index.php/api/modulos",
         {
           tipo,
-          categpria,
+          categoria,
           valor,
           descripcion,
           fechaDesde,
@@ -97,3 +98,29 @@ export const postModulo =
         }
       )
       .then((payload) => dispatch({ type: POST_MODULO, payload }));
+
+      export const updateModulo = (modulo) => {
+        return (dispatch) => {
+          axios
+            .put(
+              `http://localhost/cucaibabonif/trunk/public/index.php/api/modulos/${modulo.id}/update-value`,
+              modulo,
+              {
+                mode: "cors",
+                headers: {
+                  "Access-Control-Allow-Origin": "*",
+                  allow_methods: "PUT",
+                },
+              }
+            )
+            .then((res) => {
+              dispatch({
+                type: UPDATE_MODULO,
+                payload: { ...modulo },
+              });
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        };
+      };

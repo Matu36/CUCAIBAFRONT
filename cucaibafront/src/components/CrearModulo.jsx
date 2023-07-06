@@ -3,7 +3,7 @@ import Swal from "sweetalert2";
 import { getCategorias, getTipoModulo, postModulo } from "../Redux/Actions";
 import { useDispatch, useSelector } from "react-redux";
 
-const CrearModulo = () => {
+const CrearModulo = ({ handleCerrarFormulario }) => {
   const dispatch = useDispatch();
 
   const categorias = useSelector((state) => state.categorias);
@@ -28,43 +28,44 @@ const CrearModulo = () => {
 
   //CREACION DE MODULO //
   const [modulo, setModulo] = useState({
-    Tipo: "",
-    Categoria: "",
-    Valor: "",
-    Descripcion: "",
-    FechaDesde: "",
+    tipo: "",
+    categoria: "",
+    valor: "",
+    descripcion: "",
+    fechaDesde: "",
   });
 
   const handleOnSubmit = async (e) => {
     e.preventDefault();
 
     if (
-      modulo.Tipo &&
-      modulo.Categoria &&
-      modulo.Valor &&
-      modulo.Descripcion &&
-      modulo.FechaDesde
+      modulo.tipo &&
+      modulo.categoria &&
+      modulo.valor &&
+      modulo.descripcion &&
+      modulo.fechaDesde
     ) {
       const newModulo = {
         ...modulo,
       };
-      dispatch(postModulo(newModulo));
 
       console.log(newModulo);
+      dispatch(postModulo(newModulo));
+
       await Swal.fire({
         position: "center",
         icon: "success",
         title: "El modulo ha sido creado",
         showConfirmButton: false,
-        timer: 4000,
+        timer: 3000,
       });
-
+      window.location.reload();
       setModulo({
-        Tipo: "",
-        Categoria: "",
-        Valor: "",
-        Descripcion: "",
-        FechaDesde: "",
+        tipo: "",
+        categoria: "",
+        valor: "",
+        descripcion: "",
+        fechaDesde: "",
       });
     } else {
       Swal.fire({
@@ -93,24 +94,25 @@ const CrearModulo = () => {
 
   return (
     <div
-      className="form-container"
+      className="form-container pt-4"
       style={{
         padding: "20px",
         boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
-        border: "2px solid black",
+        border: "3px solid var(--ms-main-color)",
       }}
     >
       <form onSubmit={handleOnSubmit} className="row g-3">
         <div className="col-md-6">
           <label htmlFor="tipo">Tipo</label>
-          <select
+          <select className="form-select form-select-md mb-3" aria-label=".form-select-lg example"
             name="tipo"
-            value={modulo.destructuring}
+            value={modulo.tipo}
             onChange={(e) =>
-              setModulo({ ...modulo, Tipo: Number(e.target.value) })
+              setModulo({ ...modulo, tipo: Number(e.target.value) })
             }
             placeholder="Selecciona un tipo"
           >
+            <option value="">Seleccionar</option>
             {destructuring.map((tipo) => (
               <option key={tipo.id} value={tipo.id}>
                 {tipo.descripcion}
@@ -120,14 +122,15 @@ const CrearModulo = () => {
         </div>
         <div className="col-md-6">
           <label htmlFor="categoria">Categoria</label>
-          <select
+          <select className="form-select form-select-md mb-3" aria-label=".form-select-lg example"
             name="categoria"
-            value={modulo.primerArreglo}
+            value={modulo.categoria}
             onChange={(e) =>
-              setModulo({ ...modulo, Categoria: Number(e.target.value) })
+              setModulo({ ...modulo, categoria: Number(e.target.value) })
             }
             placeholder="Selecciona una categoria"
           >
+            <option value="">Seleccionar</option>
             {primerArreglo.map((mod) => (
               <option key={mod.id} value={mod.id}>
                 {mod.descripcion}
@@ -136,16 +139,16 @@ const CrearModulo = () => {
           </select>
         </div>
         <div className="col-md-6">
-          <label htmlFor="descripcion">Descripcion</label>
-          <input
+          <label htmlFor="descripcion">descripcion</label>
+          <input 
             type="text"
             className="form-control"
             name="descripcion"
-            value={modulo.Descripcion}
+            value={modulo.descripcion}
             autoComplete="off"
             placeholder="Descripción"
             onChange={(e) =>
-              setModulo({ ...modulo, Descripcion: e.target.value })
+              setModulo({ ...modulo, descripcion: e.target.value })
             }
           />
         </div>
@@ -155,11 +158,11 @@ const CrearModulo = () => {
             type="number"
             className="form-control"
             name="valor"
-            value={modulo.Valor}
+            value={modulo.valor}
             autoComplete="off"
             placeholder="Valor"
             onChange={(e) =>
-              setModulo({ ...modulo, Valor: Number(e.target.value) })
+              setModulo({ ...modulo, valor: Number(e.target.value) })
             }
           />
         </div>
@@ -169,22 +172,31 @@ const CrearModulo = () => {
             type="datetime-local"
             className="form-control"
             name="fechaDesde"
-            value={modulo.FechaDesde}
+            value={modulo.fechaDesde}
             autoComplete="off"
             placeholder="Fecha Desde"
             onChange={(e) =>
               setModulo({
                 ...modulo,
-                FechaDesde: formatDateTime(e.target.value),
+                fechaDesde: formatDateTime(e.target.value),
               })
             }
           />
         </div>
-        <div className="col-8 d-flex justify-content-center pt-4">
-          <button type="submit" className="btn btn-primary">
-            Crear Modulo
-          </button>
-        </div>
+        <div className="d-flex justify-content-between pt-4">
+  <button type="submit" className="btn btn-primary mx-5 ml-4 pt-2" style={{ background: "var(--ms-main-color)" }}>
+    Crear Modulo
+  </button>
+  <button 
+    onClick={handleCerrarFormulario}
+    type="submit"
+    className="btn btn-primary mx-5 pb-2" style={{ background: "var(--ms-main-color)" }}
+  >
+    Cancelar
+  </button>
+</div>
+
+        
       </form>
     </div>
   );
