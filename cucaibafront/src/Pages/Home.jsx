@@ -1,4 +1,5 @@
 import "../assets/styles/style.css";
+import Notificacion from "../Pages/LandingNotificacion.jsx"
 
 export const Home = () => {
   return (
@@ -12,10 +13,13 @@ export const Home = () => {
         </div>
         <div>
           <h4 className="font-weight-bold text-muted text-uppercase mb-0">
-            Ablaciones
+           Honorarios CUCAIBA
           </h4>
-          <h6 className="text-info mb-0">Bienvenidos</h6>
+          <h5 className="text-info mb-0">Bienvenidos</h5>
         </div>
+      </div>
+      <div className="notificacion" style={{marginBlockEnd:"0px"}}>
+      <Notificacion />
       </div>
     </div>
   );
