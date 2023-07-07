@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { motion } from "framer-motion";
-import { getModulos } from "../Redux/Actions/index";
+import { getModulos } from "../../Redux/Actions/index";
 import { useDispatch, useSelector } from "react-redux";
+import "../../assets/styles/style.css";
 
 const LandingNotificacion = () => {
   let dispatch = useDispatch();
@@ -25,10 +25,7 @@ const LandingNotificacion = () => {
   return (
     <>
       {primerArreglo.length > 0 && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 5 }}
+        <div
           style={{
             margin: "20px auto",
             padding: "10px",
@@ -36,6 +33,8 @@ const LandingNotificacion = () => {
             borderRadius: "4px",
             boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
             maxWidth: "50%",
+            opacity: 0,
+            animation: "fadeIn 3s forwards",
           }}
         >
           <div
@@ -46,9 +45,12 @@ const LandingNotificacion = () => {
               borderRadius: "4px",
             }}
           >
-            Ud tiene {primerArreglo.length} liquidaciones de agentes pendientes
+            <span style={{ fontWeight: "bold" }}>
+              Ud tiene {primerArreglo.length} liquidaciones de agentes
+              pendientes
+            </span>
           </div>
-        </motion.div>
+        </div>
       )}
     </>
   );

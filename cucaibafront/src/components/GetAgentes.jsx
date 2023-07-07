@@ -49,7 +49,6 @@ const GetAgentes = ({ ...props }) => {
   //----------------------------------PAGINADO ------------------------------//
 
   const columns = [
-    { name: "ID", selector: (row) => row.id, sortable: true },
     { name: "Apellido", selector: (row) => row.apellido, sortable: true },
     { name: "Nombre", selector: (row) => row.nombre, sortable: true },
     { name: "CBU", selector: (row) => row.cbu, sortable: true },

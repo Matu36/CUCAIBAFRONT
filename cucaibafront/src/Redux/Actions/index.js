@@ -103,8 +103,8 @@ export const postModulo =
         return (dispatch) => {
           axios
             .put(
-              `http://localhost/cucaibabonif/trunk/public/index.php/api/modulos/${modulo.id}/update-value`,
-              modulo,
+               `http://localhost/cucaibabonif/trunk/public/index.php/api/modulos/${modulo.id}/update-value`,
+              {...modulo},
               {
                 mode: "cors",
                 headers: {
@@ -114,6 +114,7 @@ export const postModulo =
               }
             )
             .then((res) => {
+              
               dispatch({
                 type: UPDATE_MODULO,
                 payload: { ...modulo },

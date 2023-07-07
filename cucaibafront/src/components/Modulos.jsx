@@ -7,7 +7,7 @@ import { usePagination } from "../hooks/usePagination";
 import { BiEditAlt, BiSave } from "react-icons/bi";
 import Moment from "moment";
 import CrearModulo from "./CrearModulo";
-import {MdCancel} from "react-icons/md";
+import { MdCancel } from "react-icons/md";
 
 const Modulos = ({ ...props }) => {
   const dispatch = useDispatch();
@@ -80,16 +80,17 @@ const Modulos = ({ ...props }) => {
 
   const handleSave = (id) => {
     if (editPrice !== null) {
-    const updatedModulo = {
-      id: id,
-      valor: editPrice,
-    };
-  
-    
-    dispatch(updateModulo(updatedModulo));
-    setEditIndex(null);
-    setEditPrice(null);
-  };}
+      const updatedModulo = {
+        id: id,
+        valor: editPrice,
+      };
+
+      dispatch(updateModulo(updatedModulo));
+      dispatch(getModulos());
+      setEditIndex(null);
+      setEditPrice(null);
+    }
+  };
 
   const handleCancel = () => {
     setEditIndex(null);
@@ -101,32 +102,67 @@ const Modulos = ({ ...props }) => {
   //----------------------------------COLUMNAS ------------------------------//
 
   const columns = [
-    { name: "ID", selector: (row) => row.id, sortable: true },
     { name: "Descripción", selector: (row) => row.descripcion, sortable: true },
     { name: "Valor", selector: (row) => row.valor, sortable: true },
     {
       name: "Fecha Desde",
-      selector: (row) => row.fechaDesde, sortable: true,
-      format: (row) => Moment(row.fecha).format("L")},
-    { name: "Fecha hasta", selector: (row) => row.fecha_hasta, sortable: true },
-    { name: "Acción",
-    cell: (row) =>
-      editIndex === row.id ? (
-        <>
-          <input
-            type="number"
-            value={editPrice}
-            onChange={(e) => handlePriceChange(e.target.value)}
-          />
-          <button onClick={() => handleSave(row.id)}> <BiSave/> </button> 
-          <button onClick={handleCancel}><MdCancel/></button>
-        </>
-      ) : (
-        <BiEditAlt onClick={() => handleEdit(row.id, row.valor)} />
-      ),},
-  ];
+      selector: (row) => row.fechaDesde,
+      sortable: true,
+      format: (row) => Moment(row.fechaDesde).format("L"),
+    },
+    {
+      name: "Fecha hasta",
+      selector: (row) => row.fechaHasta,
+      format: (row) => Moment(row.fechaHasta).format("L"),
 
-  
+      sortable: true,
+    },
+    {
+      name: "Acción",
+      cell: (row) =>
+        editIndex === row.id ? (
+          <>
+            <input
+              className="input"
+              style={{ maxWidth: "40%" }}
+              type="number"
+              value={editPrice}
+              onChange={(e) => handlePriceChange(+e.target.value)}
+            />
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "10px",
+                maxWidth: "50%",
+                marginLeft: "1rem",
+              }}
+            >
+              <button
+                className="btn btn-outline-secondary btn-sm"
+                onClick={() => handleSave(row.id)}
+              >
+                Guardar
+              </button>
+              <button
+                className="btn btn-outline-secondary btn-sm"
+                onClick={handleCancel}
+              >
+                Cancelar
+              </button>
+            </div>
+          </>
+        ) : (
+          <button
+            className="btn btn-success btn-sm"
+            onClick={() => handleEdit(row.id, row.valor)}
+          >
+            {" "}
+            Editar Valor
+          </button>
+        ),
+    },
+  ];
 
   //---------------------------------SPINNER ------------------------------------//
 
@@ -171,8 +207,8 @@ const Modulos = ({ ...props }) => {
           />
         </div>
         <button
-          className="btn btn-primary"
-          style={{ background: "var(--ms-main-color)" }}
+          className="btn btn-success mb-2"
+          style={{ background: "var(--ms-main-color)", marginRight: "4rem" }}
           onClick={handleMostrarFormulario}
         >
           Crear Módulo
