@@ -48,7 +48,6 @@ const GetOperativos = () => {
 
   //--------------------------------- PAGINADO-------------------------------- //
   const columns = [
-    { name: "ID", selector: row => row.id, sortable: true },
     { name: "Referencia", selector: row => row.referencia, sortable: true },
     { name: "Fecha", selector: row => row.fecha, sortable: true, format: row => Moment(row.fecha).format('L') },
     { name: "Descripción", selector: row => row.descripcion, sortable: true },

@@ -29,14 +29,14 @@ function Header() {
   return (
     <header className="">
       <nav className="navbar  position-relative top-0 navbar-offcanvas navbar-ms">
-        <div className="row w-100 mx-auto flex-nowrap align-items-center justify-content-center">
+        <div className="row w-100 mx-auto flex-nowrap align-items-center justify-content-between">
           <button
             className="navbar-toggler mr-1 border-0"
             type="button"
             id="navToggle"
             onClick={() => setIsOpen(!isOpen)}
           >
-            <GiHamburgerMenu size="3rem" />
+            <GiHamburgerMenu size="2rem" />
           </button>
           <div className="col-7 pl-0 pl-md-2 intranet-logo">
             <span className="fst-line">INTRANET</span>
@@ -45,6 +45,8 @@ function Header() {
           <div className="col-3 d-flex justify-content-end align-items-center">
             <div className="dropdown">
             </div>
+
+            <div>
               <button
                 className="btn btn-user font-weight-medium dropdown-toggle"
                 type="button"
@@ -105,6 +107,7 @@ function Header() {
                   >
                     Salir
                   </a>
+                  </div>
                 </div>
               </div>
             </div>
