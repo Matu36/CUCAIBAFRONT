@@ -140,7 +140,7 @@ const CrearModulo = ({ handleCerrarFormulario }) => {
         </div>
         <div className="col-md-6">
           <label htmlFor="descripcion">descripcion</label>
-          <input 
+          <input
             type="text"
             className="form-control"
             name="descripcion"
@@ -187,7 +187,7 @@ const CrearModulo = ({ handleCerrarFormulario }) => {
   <button type="submit" className="btn btn-primary mx-5 ml-4 pt-2" style={{ background: "var(--ms-main-color)" }}>
     Crear Modulo
   </button>
-  <button 
+  <button
     onClick={handleCerrarFormulario}
     type="submit"
     className="btn btn-primary mx-5 pb-2" style={{ background: "var(--ms-main-color)" }}
@@ -196,7 +196,7 @@ const CrearModulo = ({ handleCerrarFormulario }) => {
   </button>
 </div>
 
-        
+
       </form>
     </div>
   );
