@@ -28,10 +28,10 @@ const LandingNotificacion = () => {
         <div
           style={{
             margin: "20px auto",
-            padding: "10px",
-            border: "1px solid rgba(0, 0, 0, 0.2)",
+            padding: "40px",
+            border: "1px solid rgba(2, 2, 2, 0.2)",
             borderRadius: "4px",
-            boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
+            boxShadow: "2px 2px 4px rgba(0, 0, 0, 0.1)",
             maxWidth: "50%",
             opacity: 0,
             animation: "fadeIn 3s forwards",
@@ -40,14 +40,14 @@ const LandingNotificacion = () => {
           <div
             className="mx-auto text-center"
             style={{
-              padding: "10px",
+              padding: "20px",
               backgroundColor: "rgba(0, 0, 0, 0.05)",
               borderRadius: "4px",
             }}
           >
             <span style={{ fontWeight: "bold" }}>
-              Ud tiene {primerArreglo.length} liquidaciones de agentes
-              pendientes
+              Ud tiene {primerArreglo.length} Liquidaciones de Agentes
+              Pendientes
             </span>
           </div>
         </div>

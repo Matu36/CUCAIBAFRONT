@@ -18,6 +18,10 @@ export const Home = () => {
           <h5 className="text-info mb-0">Bienvenidos</h5>
         </div>
       </div>
+      <br />
+      <br />
+      <br />
+
       <div className="notificacion" style={{ marginBlockEnd: "0px" }}>
         <Notificacion />
       </div>

@@ -102,7 +102,7 @@ const Modulos = ({ ...props }) => {
   //----------------------------------COLUMNAS ------------------------------//
 
   const columns = [
-    { name: "Descripción", selector: (row) => row.descripcion, sortable: true },
+    { name: "Descripción", selector: (row) => row.descripcion, sortable: true, },
     { name: "Valor", selector: (row) => row.valor, sortable: true },
     {
       name: "Fecha Desde",
@@ -113,7 +113,8 @@ const Modulos = ({ ...props }) => {
     {
       name: "Fecha hasta",
       selector: (row) => row.fechaHasta,
-      format: (row) => Moment(row.fechaHasta).format("L"),
+      format: (row) =>
+        row.fechaHasta ? Moment(row.fechaHasta).format("L") : "",
 
       sortable: true,
     },
@@ -139,13 +140,13 @@ const Modulos = ({ ...props }) => {
               }}
             >
               <button
-                className="btn btn-outline-secondary btn-sm"
+                className="btn btn-outline-secondary btn-sm mt-1"
                 onClick={() => handleSave(row.id)}
               >
                 Guardar
               </button>
               <button
-                className="btn btn-outline-secondary btn-sm"
+                className="btn btn-secondary btn-sm mb-1"
                 onClick={handleCancel}
               >
                 Cancelar
@@ -193,8 +194,12 @@ const Modulos = ({ ...props }) => {
 
   return (
     <div>
-      <h1>Lista de Módulos</h1>
+      <h1>Módulos</h1>
+      <h5 className="subtitulo" style={{ color: "#5DADE2" }}>
+        Listado de todos los módulos
+      </h5>
       <br />
+
       <div style={{ display: "flex", justifyContent: "space-between" }}>
         <div className="input-group mb-3" style={{ maxWidth: "40%" }}>
           <input
@@ -207,11 +212,11 @@ const Modulos = ({ ...props }) => {
           />
         </div>
         <button
-          className="btn btn-success mb-2"
-          style={{ background: "var(--ms-main-color)", marginRight: "4rem" }}
+          className="btn btn-success btn-md"
+          style={{ marginRight: "4rem", marginBottom: "2rem" }}
           onClick={handleMostrarFormulario}
         >
-          Crear Módulo
+          + Crear Módulo
         </button>
 
         {mostrarFormulario && (
