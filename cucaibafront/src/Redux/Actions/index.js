@@ -114,7 +114,7 @@ export const postModulo =
               }
             )
             .then((res) => {
-              
+
               dispatch({
                 type: UPDATE_MODULO,
                 payload: { ...modulo },

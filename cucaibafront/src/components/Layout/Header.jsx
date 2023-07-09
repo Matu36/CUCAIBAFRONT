@@ -28,17 +28,17 @@ function Header() {
 
   return (
     <header className="">
-      <nav className="navbar  position-relative top-0 navbar-offcanvas navbar-ms">
+      <nav className="navbar position-relative top-0 navbar-offcanvas navbar-ms">
         <div className="row w-100 mx-auto flex-nowrap align-items-center justify-content-between">
           <button
-            className="navbar-toggler mr-1 border-0"
+            className="navbar-toggler border-0"
             type="button"
             id="navToggle"
             onClick={() => setIsOpen(!isOpen)}
           >
             <GiHamburgerMenu size="2rem" />
           </button>
-          <div className="col-7 pl-0 pl-md-2 intranet-logo">
+          <div className="col-8 pl-0 intranet-logo">
             <span className="fst-line">INTRANET</span>
             <span className="snd-line">MINISTERIO DE SALUD</span>
           </div>

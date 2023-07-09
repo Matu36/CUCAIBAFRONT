@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import { getCategorias, getTipoModulo, postModulo } from "../Redux/Actions";
 import { useDispatch, useSelector } from "react-redux";
+import "../assets/styles/style.css";
+import { validateNumberInput } from "../utils/Validaciones";
 
 const CrearModulo = ({ handleCerrarFormulario }) => {
   const dispatch = useDispatch();
@@ -49,7 +51,6 @@ const CrearModulo = ({ handleCerrarFormulario }) => {
         ...modulo,
       };
 
-      console.log(newModulo);
       dispatch(postModulo(newModulo));
 
       await Swal.fire({
@@ -94,17 +95,42 @@ const CrearModulo = ({ handleCerrarFormulario }) => {
 
   return (
     <div
-      className="form-container pt-4"
+      className="form-container pt-2"
       style={{
         padding: "20px",
         boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
-        border: "3px solid var(--ms-main-color)",
+        border: "1px solid gray",
       }}
     >
-      <form onSubmit={handleOnSubmit} className="row g-3">
+      <form onSubmit={handleOnSubmit} className="row g-3 pt-4">
+        <div
+          className="modulo"
+          style={{
+            display: "flex",
+            justifyContent: "flex-start",
+            marginLeft: 0,
+            color: "#5DADE2",
+          }}
+        >
+          <h6>CREAR MODULO</h6>
+        </div>
+        <hr
+          style={{
+            margin: "10px 0",
+            border: "none",
+            borderBottom: "5px solid #5DADE2",
+          }}
+        />
         <div className="col-md-6">
-          <label htmlFor="tipo">Tipo</label>
-          <select className="form-select form-select-md mb-3" aria-label=".form-select-lg example"
+          <label htmlFor="tipo">
+            Tipo
+            <span style={{ color: "red", marginLeft: "5px", fontSize: "20px" }}>
+              *
+            </span>
+          </label>
+          <select
+            className="form-select form-select-md mb-3"
+            aria-label=".form-select-lg example"
             name="tipo"
             value={modulo.tipo}
             onChange={(e) =>
@@ -121,8 +147,15 @@ const CrearModulo = ({ handleCerrarFormulario }) => {
           </select>
         </div>
         <div className="col-md-6">
-          <label htmlFor="categoria">Categoria</label>
-          <select className="form-select form-select-md mb-3" aria-label=".form-select-lg example"
+          <label htmlFor="categoria">
+            Categoria{" "}
+            <span style={{ color: "red", marginLeft: "5px", fontSize: "20px" }}>
+              *
+            </span>
+          </label>
+          <select
+            className="form-select form-select-md mb-3"
+            aria-label=".form-select-lg example"
             name="categoria"
             value={modulo.categoria}
             onChange={(e) =>
@@ -139,7 +172,12 @@ const CrearModulo = ({ handleCerrarFormulario }) => {
           </select>
         </div>
         <div className="col-md-6">
-          <label htmlFor="descripcion">descripcion</label>
+          <label htmlFor="descripcion">
+            Descripción{" "}
+            <span style={{ color: "red", marginLeft: "5px", fontSize: "20px" }}>
+              *
+            </span>
+          </label>
           <input
             type="text"
             className="form-control"
@@ -153,7 +191,12 @@ const CrearModulo = ({ handleCerrarFormulario }) => {
           />
         </div>
         <div className="col-md-3">
-          <label htmlFor="valor">Valor</label>
+          <label htmlFor="valor">
+            Valor{" "}
+            <span style={{ color: "red", marginLeft: "5px", fontSize: "20px" }}>
+              *
+            </span>
+          </label>
           <input
             type="number"
             className="form-control"
@@ -167,7 +210,12 @@ const CrearModulo = ({ handleCerrarFormulario }) => {
           />
         </div>
         <div className="col-md-3">
-          <label htmlFor="fechaDesde">Fecha Desde</label>
+          <label htmlFor="fechaDesde">
+            Fecha Desde{" "}
+            <span style={{ color: "red", marginLeft: "5px", fontSize: "20px" }}>
+              *
+            </span>
+          </label>
           <input
             type="datetime-local"
             className="form-control"
@@ -183,20 +231,27 @@ const CrearModulo = ({ handleCerrarFormulario }) => {
             }
           />
         </div>
-        <div className="d-flex justify-content-between pt-4">
-  <button type="submit" className="btn btn-primary mx-5 ml-4 pt-2" style={{ background: "var(--ms-main-color)" }}>
-    Crear Modulo
-  </button>
-  <button
-    onClick={handleCerrarFormulario}
-    type="submit"
-    className="btn btn-primary mx-5 pb-2" style={{ background: "var(--ms-main-color)" }}
-  >
-    Cancelar
-  </button>
-</div>
 
-
+        <hr
+          style={{
+            marginTop: "2rem",
+            border: "none",
+            borderBottom: "5px solid #5DADE2",
+          }}
+        />
+        <div className="d-flex justify-content-end">
+          <button
+            onClick={handleCerrarFormulario}
+            type="submit"
+            className="btn btn-outline-secondary pb-2"
+            style={{ marginRight: "10px" }}
+          >
+            Cancelar
+          </button>
+          <button type="submit" className="btn btn-success pt-2">
+            Crear Modulo
+          </button>
+        </div>
       </form>
     </div>
   );
