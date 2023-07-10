@@ -13,6 +13,7 @@ const GetOperativos = () => {
   const primerArreglo = operativos.slice(0, 1)[0];
   const [operativo, setOperativo] = useState(primerArreglo);
 
+
   const { paginationOptions } = usePagination(primerArreglo);
 
   useEffect(() => {
