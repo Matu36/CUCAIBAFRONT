@@ -8,6 +8,7 @@ import {
   GET_TIPOMODULO,
   POST_MODULO,
   UPDATE_MODULO,
+  GET_PERSONAS,
 } from "../Actions";
 
 const InitialState = {
@@ -20,12 +21,16 @@ const InitialState = {
   categorias: [],
 
   TipoModulo: [],
+
+  personas: [],
 };
 
 function rootReducer(state = InitialState, action) {
   switch (action.type) {
     case GET_AGENTES:
       return { ...state, agentes: action.payload };
+    case GET_PERSONAS:
+      return { ...state, personas: action.payload };
     case GET_OPERATIVOS:
       return { ...state, operativos: action.payload };
     case POST_OPERATIVO:

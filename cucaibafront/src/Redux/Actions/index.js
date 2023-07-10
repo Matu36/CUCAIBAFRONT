@@ -4,6 +4,7 @@ import { OperativosAPI } from "../../api/OperativosAPI";
 import { ModulosAPI } from "../../api/ModulosAPI";
 import { CategoriasAPI } from "../../api/CategoriasAPI.js";
 import { TipoAPI } from "../../api/TipoAPI";
+import { PersonasAPI } from "../../api/PersonasAPI";
 
 export const GET_AGENTES = "GET_AGENTES";
 export const GET_OPERATIVOS = "GET_OPERATIVOS";
@@ -14,11 +15,18 @@ export const GET_CATEGORIAS = "GET_CATEGORIAS";
 export const GET_TIPOMODULO = "GET_TIPOMODULO";
 export const POST_MODULO = "POST_MODULO";
 export const UPDATE_MODULO = "UPDATE_MODULO";
+export const GET_PERSONAS = "GET_PERSONAS";
 
 export const getAgentes = () => async (dispatch) => {
   let response = await AgentesAPI.get("");
 
   return dispatch({ type: GET_AGENTES, payload: response.data });
+};
+
+export const getPersonas = () => async (dispatch) => {
+  let response = await PersonasAPI.get("");
+
+  return dispatch({ type: GET_PERSONAS, payload: response.data });
 };
 
 export const getOperativos = () => async (dispatch) => {
@@ -45,27 +53,15 @@ export const getTipoModulo = () => async (dispatch) => {
 export const postOperativo =
   ({ referencia, fecha, descripcion, fechapago }) =>
   (dispatch) =>
-    axios
-      .post(
-        "http://localhost/cucaibabonif/trunk/public/index.php/api/operativos",
-        {
-          referencia,
-          fecha,
-          descripcion,
-          fechapago,
-        },
-        {
-          mode: "cors",
-          headers: {
-            "Access-Control-Allow-Origin": "*",
-            allow_methods: "POST",
-          },
-        }
-      )
-      .then((payload) => dispatch({ type: POST_OPERATIVO, payload }));
+    OperativosAPI.post("", {
+      referencia,
+      fecha,
+      descripcion,
+      fechapago,
+    }).then((payload) => dispatch({ type: POST_OPERATIVO, payload }));
 
 export const postAgentes =
-  ({ apellido, nombre, cbu, cuil, tipoPago, personaid }) =>
+  ({apellido, nombre, cbu, cuil, tipoPago, personaid }) =>
   (dispatch) =>
     AgentesAPI.post("", {
       apellido,
@@ -79,40 +75,27 @@ export const postAgentes =
 export const postModulo =
   ({ tipo, categoria, valor, descripcion, fechaDesde }) =>
   (dispatch) =>
-    axios
-      .post(
-        "http://localhost/cucaibabonif/trunk/public/index.php/api/modulos",
-        {
-          tipo,
-          categoria,
-          valor,
-          descripcion,
-          fechaDesde,
-        },
-        {
-          mode: "cors",
-          headers: {
-            "Access-Control-Allow-Origin": "*",
-            allow_methods: "POST",
-          },
-        }
-      )
-      .then((payload) => dispatch({ type: POST_MODULO, payload }));
+    ModulosAPI.post("", {
+      tipo,
+      categoria,
+      valor,
+      descripcion,
+      fechaDesde,
+    }).then((payload) => dispatch({ type: POST_MODULO, payload }));
 
 export const updateModulo = (modulo) => {
   return (dispatch) => {
-    axios
-      .put(
-        `http://localhost/cucaibabonif/trunk/public/index.php/api/modulos/${modulo.id}/update-value`,
-        { ...modulo },
-        {
-          mode: "cors",
-          headers: {
-            "Access-Control-Allow-Origin": "*",
-            allow_methods: "PUT",
-          },
-        }
-      )
+    ModulosAPI.put(
+      `/${modulo.id}/update-value`,
+      { ...modulo },
+      {
+        mode: "cors",
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          allow_methods: "PUT",
+        },
+      }
+    )
       .then((res) => {
         dispatch({
           type: UPDATE_MODULO,
