@@ -7,7 +7,6 @@ import { usePagination } from "../hooks/usePagination";
 import Moment from "moment";
 import CrearModulo from "./CrearModulo";
 
-
 const Modulos = ({ ...props }) => {
   const dispatch = useDispatch();
   const modulos = useSelector((state) => state.modulos);
@@ -101,7 +100,7 @@ const Modulos = ({ ...props }) => {
   //----------------------------------COLUMNAS ------------------------------//
 
   const columns = [
-    { name: "Descripción", selector: (row) => row.descripcion, sortable: true, },
+    { name: "Descripción", selector: (row) => row.descripcion, sortable: true },
     { name: "Valor", selector: (row) => row.valor, sortable: true },
     {
       name: "Fecha Desde",
@@ -176,14 +175,12 @@ const Modulos = ({ ...props }) => {
     return (
       <div className="d-flex justify-content-center align-items-center vh-100">
         {showSpinner ? (
-          <button className="btn btn-primary" type="button" disabled>
-            <span
-              className="spinner-border spinner-border-sm mr-2"
-              role="status"
-              aria-hidden="true"
-            ></span>
-            Cargando...
-          </button>
+          <div
+            className="spinner-border spinner-border-lg text-primary"
+            style={{ width: "5rem", height: "5rem" }}
+            role="status"
+          >
+          </div>
         ) : null}
       </div>
     );
