@@ -232,9 +232,10 @@ const CrearModulo = ({ handleCerrarFormulario }) => {
           />
         </div>
 
+
         <hr
           style={{
-            marginTop: "2rem",
+            marginTop: "4rem",
             border: "none",
             borderBottom: "5px solid #5DADE2",
           }}

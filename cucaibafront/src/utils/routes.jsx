@@ -11,6 +11,7 @@ import LayoutHonorarios from "../components/Layout/LayoutHonorarios";
 import TablaHonorarios from "../Pages/TablaHonorarios";
 import AsignarAgente from "../Pages/AsignarAgente";
 import ModulosVista from "../Pages/ModulosVista";
+import LiquidacionesPendientes from "../Pages/Liquidaciones-Pendientes";
 
 const router = createBrowserRouter([
   {
@@ -84,6 +85,10 @@ const router = createBrowserRouter([
       {
         path: "/modulos",
         element: <ModulosVista />
+      },
+      {
+        path:"/liquidaciones",
+        element: <LiquidacionesPendientes />
       }
     ],
   },

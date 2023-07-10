@@ -1,8 +1,9 @@
 import React from 'react'
+import "../../assets/styles/style.css";
 
 const Footer = () => {
   return (
-    <div style={{ marginBottom: 0 }}>
+    <div className="footer container mb-0">
       Footer
     </div>
   )

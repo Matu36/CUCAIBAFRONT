@@ -659,3 +659,12 @@ span.select2-selection.is-invalid > span.select2-selection__rendered {
 .select2-container--open {
     z-index: 1;
 }
+
+.data-table-container .dataTables_length label {
+  display: none;
+}
+
+.data-table-container .dataTables_info::before {
+  content: "Filas por página: ";
+}
+

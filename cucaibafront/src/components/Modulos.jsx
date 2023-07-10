@@ -4,10 +4,9 @@ import { getModulos, updateModulo } from "../Redux/Actions";
 import DataTable from "react-data-table-component";
 import EmptyTable from "./UI/EmptyTable";
 import { usePagination } from "../hooks/usePagination";
-import { BiEditAlt, BiSave } from "react-icons/bi";
 import Moment from "moment";
 import CrearModulo from "./CrearModulo";
-import { MdCancel } from "react-icons/md";
+
 
 const Modulos = ({ ...props }) => {
   const dispatch = useDispatch();

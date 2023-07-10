@@ -83,7 +83,10 @@ const GetOperativos = () => {
 
   return (
     <div>
-      <h1>Lista de Operativos</h1>
+      <h1>Operativos</h1>
+      <h5 className="subtitulo" style={{ color: "#5DADE2" }}>
+        Listado de todos los Operativos
+      </h5>
       <br />
 
       <div className="input-group mb-3" style={{ maxWidth: "40%" }}>
