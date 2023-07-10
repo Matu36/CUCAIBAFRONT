@@ -23,7 +23,6 @@ export const usePagination = (primerArreglo) => {
         onChangePage: handlePageChange,
         onChangeRowsPerPage: handlePerRowsChange,
 
-
     };
 
     return {paginationOptions};

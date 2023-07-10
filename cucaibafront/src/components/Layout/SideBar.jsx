@@ -5,6 +5,7 @@ import { FaAmbulance } from "react-icons/fa";
 import { BsFillPersonFill } from "react-icons/bs";
 import { SiWebmoney } from "react-icons/si";
 import { TbNurse } from "react-icons/tb";
+import { BiMoneyWithdraw } from "react-icons/bi";
 
 function SideBar({ isOpen }) {
   return (
@@ -109,16 +110,22 @@ function SideBar({ isOpen }) {
               </a>
             </li>
           </ul>
-
         </li>
         <ul className="metismenu side-menu" id="side-menu">
-        <li>
-          <Link to="/modulos" onClick={() => isOpen(false)}>
-            <TbNurse className="sidebarIcons"/> Módulos
-          </Link>
-        </li>
-      </ul>
-
+          <li>
+            <Link to="/modulos" onClick={() => isOpen(false)}>
+              <TbNurse className="sidebarIcons" /> Módulos
+            </Link>
+          </li>
+        </ul>
+        <ul className="metismenu side-menu" id="side-menu">
+          <li>
+            <Link to="/liquidaciones" onClick={() => isOpen(false)}>
+              <BiMoneyWithdraw className="sidebarIcons" /> Liquidaciones
+              Pendientes
+            </Link>
+          </li>
+        </ul>
       </ul>
     </div>
   );

@@ -99,29 +99,28 @@ export const postModulo =
       )
       .then((payload) => dispatch({ type: POST_MODULO, payload }));
 
-      export const updateModulo = (modulo) => {
-        return (dispatch) => {
-          axios
-            .put(
-               `http://localhost/cucaibabonif/trunk/public/index.php/api/modulos/${modulo.id}/update-value`,
-              {...modulo},
-              {
-                mode: "cors",
-                headers: {
-                  "Access-Control-Allow-Origin": "*",
-                  allow_methods: "PUT",
-                },
-              }
-            )
-            .then((res) => {
-
-              dispatch({
-                type: UPDATE_MODULO,
-                payload: { ...modulo },
-              });
-            })
-            .catch((error) => {
-              console.log(error);
-            });
-        };
-      };
+export const updateModulo = (modulo) => {
+  return (dispatch) => {
+    axios
+      .put(
+        `http://localhost/cucaibabonif/trunk/public/index.php/api/modulos/${modulo.id}/update-value`,
+        { ...modulo },
+        {
+          mode: "cors",
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+            allow_methods: "PUT",
+          },
+        }
+      )
+      .then((res) => {
+        dispatch({
+          type: UPDATE_MODULO,
+          payload: { ...modulo },
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+};
