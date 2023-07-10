@@ -1,44 +1,83 @@
 import { postAgentes } from "../Redux/Actions";
-import { useDispatch } from "react-redux";
-import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
+import { getPersonas } from "../Redux/Actions";
+import { useNavigate } from "react-router-dom";
+
 
 const postAgente = () => {
+  let navigate = useNavigate();
   let dispatch = useDispatch();
 
+  const personas = useSelector((state) => state.personas);
+  let primerArreglo = [];
+  if (personas.length > 1) {
+    primerArreglo = personas[0];
+  }
+
+  const [agentes, setAgentes] = useState(primerArreglo);
   const [persona, setPersona] = useState(null);
 
-  //---------------------------- CREACION AGENTE ---------------------------- //
+  useEffect(() => {
+    dispatch(getPersonas());
+  }, []);
 
-  const [agente, setAgente] = useState({
-    apellido: "",
-    nombre: "",
-    cbu: "",
-    cuil: "",
-    tipoPago: "",
-    personaid: "",
-  });
+  useEffect(() => {
+    setAgentes(primerArreglo);
+  }, [primerArreglo]);
 
   const handleFindPersona = () => {
-    console.log(agente.cuil);
-    setPersona([]);
+    if (agentes.nroDocumento) {
+      const foundPersona = primerArreglo.find(
+        (persona) => persona.nroDocumento === agentes.nroDocumento
+      );
+
+      if (foundPersona) {
+        setPersona(foundPersona);
+        setAgentes({
+          ...agentes,
+          apellido: foundPersona.apellido,
+          nombre: foundPersona.nombre,
+          cuil: foundPersona.cuil,
+          cbu: foundPersona.cbuBloque1 + foundPersona.cbuBloque2,
+          tipoPago:agentes.tipoPago,
+          personaid: foundPersona.id,
+
+        });
+      } else {
+        Swal.fire({
+          position: "center",
+          icon: "error",
+          title: "Persona no encontrada",
+          showConfirmButton: true,
+        });
+      }
+    } else {
+      Swal.fire({
+        position: "center",
+        icon: "error",
+        title: "Por favor, ingresa un número de DNI",
+        showConfirmButton: true,
+      });
+    }
   };
 
   const handleOnSubmit = async (e) => {
     e.preventDefault();
 
-    if (
-      agente.apellido &&
-      agente.nombre &&
-      agente.cbu &&
-      agente.cuil &&
-      agente.tipoPago &&
-      agente.personaid
-    ) {
+    if (persona) { 
       const newAgente = {
-        ...agente,
+        apellido: persona.apellido,
+        nombre: persona.nombre,
+        cuil: persona.cuil,
+        cbu: persona.cbuBloque1 + persona.cbuBloque2,
+        tipoPago: agentes.tipoPago,
+        personaid: persona.id,
       };
+      
       dispatch(postAgentes(newAgente));
+      
       await Swal.fire({
         position: "center",
         icon: "success",
@@ -46,12 +85,11 @@ const postAgente = () => {
         showConfirmButton: false,
         timer: 2000,
       });
-      //window.location.reload();
-      setAgente({
+      setAgentes({
         apellido: "",
         nombre: "",
-        cbu: "",
         cuil: "",
+        cbu: "",
         tipoPago: "",
         personaid: "",
       });
@@ -64,11 +102,12 @@ const postAgente = () => {
       });
     }
   };
+
   return (
     <form onSubmit={handleOnSubmit}>
       <div className="mb-3">
         <label htmlFor="inputFechadePago" className="form-label">
-          CUIL
+          DNI
         </label>
         <div
           className="d-flex gap-5 align-items-center justify-content-center"
@@ -77,21 +116,19 @@ const postAgente = () => {
           <input
             type="text"
             className="form-control"
-            id="inputCUIL"
-            aria-describedby="CUILHelp"
-            name="CUIL"
-            value={agente.cuil}
+            id="inputDNI"
+            aria-describedby="DNIHelp"
+            name="DNI"
+            value={agentes.nroDocumento}
             autoComplete="off"
-            placeholder="CUIL"
-            onChange={(e) => setAgente({ ...agente, cuil: e.target.value })}
+            placeholder="DNI"
+            onChange={(e) =>
+              setAgentes({ ...agentes, nroDocumento: e.target.value })
+            }
           />
           <button
-            className="btn "
+            className="btn btn-success"
             type="button"
-            style={{
-              background: "var(--ms-main-color)",
-              color: "#fff",
-            }}
             onClick={handleFindPersona}
           >
             Buscar Persona
@@ -108,11 +145,13 @@ const postAgente = () => {
           id="inputApellido"
           aria-describedby="ApellidoHelp"
           name="apellido"
-          value={agente.apellido}
+          value={agentes.apellido}
           autoComplete="off"
           placeholder="Apellido"
-          disabled={persona === null}
-          onChange={(e) => setAgente({ ...agente, apellido: e.target.value })}
+          disabled
+          onChange={(e) =>
+            setAgentes({ ...agentes, apellido: e.target.value })
+          }
         />
       </div>
       <div className="mb-3">
@@ -125,11 +164,28 @@ const postAgente = () => {
           id="inputNombre"
           aria-describedby="NombreHelp"
           name="Nombre"
-          value={agente.nombre}
+          value={agentes.nombre}
           autoComplete="off"
           placeholder="Nombre"
-          disabled={persona === null}
-          onChange={(e) => setAgente({ ...agente, nombre: e.target.value })}
+          disabled
+          onChange={(e) => setAgentes({ ...agentes, nombre: e.target.value })}
+        />
+      </div>
+      <div className="mb-3">
+        <label htmlFor="inputDescripción" className="form-label">
+          CUIL
+        </label>
+        <input
+          type="text"
+          className="form-control"
+          id="inputCUIL"
+          aria-describedby="CUILHelp"
+          name="CUIL"
+          value={agentes.cuil}
+          autoComplete="off"
+          placeholder="CUIL"
+          disabled
+          onChange={(e) => setAgentes({ ...agentes, cuil: e.target.value })}
         />
       </div>
       <div className="mb-3">
@@ -142,11 +198,11 @@ const postAgente = () => {
           id="inputCBU"
           aria-describedby="CBUHelp"
           name="CBU"
-          value={agente.cbu}
+          value={agentes.cbu}
           autoComplete="off"
           placeholder="CBU"
-          disabled={persona === null}
-          onChange={(e) => setAgente({ ...agente, cbu: e.target.value })}
+          disabled
+          onChange={(e) => setAgentes({ ...agentes, cbu: e.target.value })}
         />
       </div>
       <div className="mb-3">
@@ -159,34 +215,33 @@ const postAgente = () => {
           id="TipoPago"
           aria-describedby="TipoPagoHelp"
           name="TIPOPAGO"
-          value={agente.tipoPago}
+          value= {agentes.tipoPago}
           autoComplete="off"
           placeholder="Tipo de Pago"
-          disabled={persona === null}
-          onChange={(e) => setAgente({ ...agente, tipoPago: e.target.value })}
+          onChange={(e) =>
+            setAgentes({ ...agentes, tipoPago: e.target.value })
+          }
         />
       </div>
       <div className="mb-3">
-        <label htmlFor="inputPersId" className="form-label">
-          PersonaId
-        </label>
         <input
-          type="text"
+          type="hidden"
           className="form-control"
-          id="inputCUIL"
-          aria-describedby="CUILHelp"
+          id="inputID"
+          aria-describedby="IDHelp"
           name="PersId"
-          value={agente.personaid}
+          value={agentes.personaid}
           autoComplete="off"
           placeholder="pERSID"
-          disabled={persona === null}
-          onChange={(e) => setAgente({ ...agente, personaid: e.target.value })}
+          disabled
+          onChange={(e) => setAgentes({ ...agentes, personaid: e.target.value })}
         />
       </div>
+
       <button
         type="submit"
-        className="btn btn-primary"
-        style={{ background: "var(--ms-main-color)" }}
+        className="btn btn-success"
+        
       >
         Agregar Agente
       </button>

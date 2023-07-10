@@ -38,7 +38,7 @@ const GetAgentes = ({ ...props }) => {
       setAgente(primerArreglo);
     } else {
       const arrayCache = primerArreglo.filter((oper) =>
-        oper.cuil.toLowerCase().includes(value.toLowerCase())
+        oper.apellido.toLowerCase().includes(value.toLowerCase())
       );
       setAgente(arrayCache);
     }
@@ -95,7 +95,7 @@ const GetAgentes = ({ ...props }) => {
         <input
           type="text"
           className="form-control"
-          placeholder="Buscar por CUIL"
+          placeholder="Buscar por APELLIDO"
           onChange={handleOnChange}
           value={search}
           autoComplete="off"

@@ -71,8 +71,8 @@ const PostOperativos = () => {
         />
       </div>
       <div className="mb-3">
-        <label for="inputFecha" class="form-label">Fecha</label>
-        <input type="datetime-local" class="form-control" id="inputFecha" aria-describedby="FechaHelp"
+        <label for="inputFecha" className="form-label">Fecha</label>
+        <input type="datetime-local" className="form-control" id="inputFecha" aria-describedby="FechaHelp"
          name="Fecha"
           value={operativo.fecha}
           autoComplete="off"
@@ -83,26 +83,14 @@ const PostOperativos = () => {
         />
       </div>
       <div className="mb-3">
-        <label for="inputDescripción" class="form-label">Descripción</label>
-        <input type="text" class="form-control" id="inputDescripción" aria-describedby="DescripciónHelp"
+        <label for="inputDescripción" className="form-label">Descripción</label>
+        <input type="text" className="form-control" id="inputDescripción" aria-describedby="DescripciónHelp"
          name="descripción"
           value={operativo.descripcion}
           autoComplete="off"
           placeholder="Descripción"
           onChange={(e) =>
             setOperativo({ ...operativo, descripcion: e.target.value })
-          }
-        />
-      </div>
-      <div className="mb-3">
-        <label for="inputFechadePago" class="form-label">Fecha de Pago</label>
-        <input type="date" class="form-control" id="inputFechadePago" aria-describedby="FechadePagoHelp"
-         name="Fecha de Pago"
-          value={operativo.fechapago}
-          autoComplete="off"
-          placeholder="Fecha de Pago"
-          onChange={(e) =>
-            setOperativo({ ...operativo, fechapago: e.target.value })
           }
         />
       </div>
