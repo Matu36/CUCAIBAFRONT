@@ -4,7 +4,7 @@ import { getOperativos } from "../Redux/Actions";
 import DataTable from "react-data-table-component";
 import EmptyTable from "./UI/EmptyTable";
 import { usePagination } from "../hooks/usePagination";
-import Moment from "moment"
+import Moment from "moment";
 
 const GetOperativos = () => {
   const dispatch = useDispatch();
@@ -13,7 +13,7 @@ const GetOperativos = () => {
   const primerArreglo = operativos.slice(0, 1)[0];
   const [operativo, setOperativo] = useState(primerArreglo);
 
-  const {paginationOptions} = usePagination(primerArreglo);
+  const { paginationOptions } = usePagination(primerArreglo);
 
   useEffect(() => {
     dispatch(getOperativos());
@@ -48,9 +48,14 @@ const GetOperativos = () => {
 
   //--------------------------------- PAGINADO-------------------------------- //
   const columns = [
-    { name: "Referencia", selector: row => row.referencia, sortable: true },
-    { name: "Fecha", selector: row => row.fecha, sortable: true, format: row => Moment(row.fecha).format('L') },
-    { name: "Descripción", selector: row => row.descripcion, sortable: true },
+    { name: "Referencia", selector: (row) => row.referencia, sortable: true },
+    {
+      name: "Fecha",
+      selector: (row) => row.fecha,
+      sortable: true,
+      format: (row) => Moment(row.fecha).format("L"),
+    },
+    { name: "Descripción", selector: (row) => row.descripcion, sortable: true },
   ];
 
   //--------------------------------- FIN PAGINADO-------------------------------- //
@@ -66,14 +71,13 @@ const GetOperativos = () => {
     return (
       <div className="d-flex justify-content-center align-items-center vh-100">
         {showSpinner ? (
-          <button className="btn btn-primary" type="button" disabled>
-            <span
-              className="spinner-border spinner-border-sm mr-2"
-              role="status"
-              aria-hidden="true"
-            ></span>
-            Cargando...
-          </button>
+          <div
+            className="spinner-border spinner-border-lg text-primary"
+            style={{ width: "5rem", height: "5rem" }}
+            role="status"
+          >
+            <span className="visually-hidden">Cargando...</span>
+          </div>
         ) : null}
       </div>
     );
@@ -106,7 +110,9 @@ const GetOperativos = () => {
         pagination
         striped
         paginationComponentOptions={paginationOptions}
-        noDataComponent={<EmptyTable msg="No se encontro el operativo con ese N° SINTRA" />}
+        noDataComponent={
+          <EmptyTable msg="No se encontro el operativo con ese N° SINTRA" />
+        }
       />
     </div>
   );
