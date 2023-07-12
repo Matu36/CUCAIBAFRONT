@@ -13,7 +13,6 @@ const GetOperativos = () => {
   const primerArreglo = operativos.slice(0, 1)[0];
   const [operativo, setOperativo] = useState(primerArreglo);
 
-
   const { paginationOptions } = usePagination(primerArreglo);
 
   useEffect(() => {
@@ -49,7 +48,11 @@ const GetOperativos = () => {
 
   //--------------------------------- PAGINADO-------------------------------- //
   const columns = [
-    { name: "Referencia", selector: (row) => row.referencia, sortable: true },
+    {
+      name: "Proceso de Donación",
+      selector: (row) => row.referencia,
+      sortable: true,
+    },
     {
       name: "Fecha",
       selector: (row) => row.fecha,
