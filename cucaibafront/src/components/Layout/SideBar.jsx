@@ -104,11 +104,6 @@ function SideBar({ isOpen }) {
                 Variables
               </Link>
             </li>
-            <li>
-              <a className="btn btn-link disabled " href="/algo">
-                Guardia
-              </a>
-            </li>
           </ul>
         </li>
         <ul className="metismenu side-menu" id="side-menu">

@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
-import { GiHamburgerMenu } from 'react-icons/gi';
-import { BiUserCircle } from 'react-icons/bi';
-import './styles/header.css';
+import { GiHamburgerMenu } from "react-icons/gi";
+import { BiUserCircle } from "react-icons/bi";
+import "./styles/header.css";
 
-import SideBar from './Sidebar';
+import SideBar from "./Sidebar";
 
 function Header() {
   const [isOpen, setIsOpen] = useState(false);
@@ -13,21 +13,21 @@ function Header() {
 
   const handleOutsideClick = (event) => {
     if (isOpen) {
-      if (!event.target.closest('.navbar-ms')) {
+      if (!event.target.closest(".navbar-ms")) {
         setIsOpen(false);
       }
     }
   };
 
   useEffect(() => {
-    document.addEventListener('click', handleOutsideClick);
+    document.addEventListener("click", handleOutsideClick);
     return () => {
-      document.removeEventListener('click', handleOutsideClick);
+      document.removeEventListener("click", handleOutsideClick);
     };
   }, [isOpen]);
 
   return (
-    <header className="">
+    <header>
       <nav className="navbar position-relative top-0 navbar-offcanvas navbar-ms">
         <div className="row w-100 mx-auto flex-nowrap align-items-center justify-content-between">
           <button
@@ -43,9 +43,6 @@ function Header() {
             <span className="snd-line">MINISTERIO DE SALUD</span>
           </div>
           <div className="col-3 d-flex justify-content-end align-items-center">
-            <div className="dropdown">
-            </div>
-
             <div>
               <button
                 className="btn btn-user font-weight-medium dropdown-toggle"
@@ -53,7 +50,6 @@ function Header() {
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-
                 <BiUserCircle size="2rem" />
                 <span className="username"> Alejandro Oslovski </span>
               </button>
@@ -107,11 +103,11 @@ function Header() {
                   >
                     Salir
                   </a>
-                  </div>
                 </div>
               </div>
             </div>
           </div>
+        </div>
 
         <SideBar isOpen={isOpen} />
       </nav>

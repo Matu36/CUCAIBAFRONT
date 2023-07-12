@@ -5,7 +5,6 @@ import Swal from "sweetalert2";
 import { getPersonas } from "../Redux/Actions";
 import { useNavigate } from "react-router-dom";
 
-
 const postAgente = () => {
   let navigate = useNavigate();
   let dispatch = useDispatch();
@@ -41,9 +40,8 @@ const postAgente = () => {
           nombre: foundPersona.nombre,
           cuil: foundPersona.cuil,
           cbu: foundPersona.cbuBloque1 + foundPersona.cbuBloque2,
-          tipoPago:agentes.tipoPago,
+          tipoPago: agentes.tipoPago,
           personaid: foundPersona.id,
-
         });
       } else {
         Swal.fire({
@@ -66,7 +64,7 @@ const postAgente = () => {
   const handleOnSubmit = async (e) => {
     e.preventDefault();
 
-    if (persona) { 
+    if (persona) {
       const newAgente = {
         apellido: persona.apellido,
         nombre: persona.nombre,
@@ -75,9 +73,9 @@ const postAgente = () => {
         tipoPago: agentes.tipoPago,
         personaid: persona.id,
       };
-      
+
       dispatch(postAgentes(newAgente));
-      
+
       await Swal.fire({
         position: "center",
         icon: "success",
@@ -149,9 +147,7 @@ const postAgente = () => {
           autoComplete="off"
           placeholder="Apellido"
           disabled
-          onChange={(e) =>
-            setAgentes({ ...agentes, apellido: e.target.value })
-          }
+          onChange={(e) => setAgentes({ ...agentes, apellido: e.target.value })}
         />
       </div>
       <div className="mb-3">
@@ -209,19 +205,20 @@ const postAgente = () => {
         <label htmlFor="inputTipoPago" className="form-label">
           Tipo de Pago
         </label>
-        <input
-          type="text"
-          className="form-control"
-          id="TipoPago"
+        <select
+          id="inputTipoPago"
           aria-describedby="TipoPagoHelp"
-          name="TIPOPAGO"
-          value= {agentes.tipoPago}
-          autoComplete="off"
-          placeholder="Tipo de Pago"
-          onChange={(e) =>
-            setAgentes({ ...agentes, tipoPago: e.target.value })
-          }
-        />
+          name="TipoPago"
+          value={agentes.cbu}
+          placeholder="tipoPago"
+          disabled
+          onChange={(e) => setAgentes({ ...agentes, tipoPago: e.target.value })}
+          className="form-select form-select-md mb-3 form-control"
+        >
+          <option selected>Selecciona una opción</option>
+          <option value="ch">Cheque</option>
+          <option value="cb">Cuenta Bancaria</option>
+        </select>
       </div>
       <div className="mb-3">
         <input
@@ -234,15 +231,13 @@ const postAgente = () => {
           autoComplete="off"
           placeholder="pERSID"
           disabled
-          onChange={(e) => setAgentes({ ...agentes, personaid: e.target.value })}
+          onChange={(e) =>
+            setAgentes({ ...agentes, personaid: e.target.value })
+          }
         />
       </div>
 
-      <button
-        type="submit"
-        className="btn btn-success"
-        
-      >
+      <button type="submit" className="btn btn-success">
         Agregar Agente
       </button>
     </form>

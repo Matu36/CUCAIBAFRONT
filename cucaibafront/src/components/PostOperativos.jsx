@@ -1,10 +1,9 @@
-import { postOperativo } from "../Redux/Actions"
+import { postOperativo } from "../Redux/Actions";
 import { useDispatch } from "react-redux";
 import { useState } from "react";
 import Swal from "sweetalert2";
 
 const PostOperativos = () => {
-
   let dispatch = useDispatch();
 
   //---------------------------- CREACION OPERATIVO ---------------------------- //
@@ -14,7 +13,6 @@ const PostOperativos = () => {
     fecha: "",
     descripcion: "",
     fechapago: "",
-
   });
 
   const handleOnSubmit = async (e) => {
@@ -22,15 +20,14 @@ const PostOperativos = () => {
 
     if (
       operativo.referencia &&
-      operativo.fecha &&
-      operativo.descripcion 
+      operativo.fecha
       // operativo.fechapago
     ) {
       const newOperativo = {
         ...operativo,
-        fecha: operativo.fecha.replace("T", " ")
+        fecha: operativo.fecha.replace("T", " "),
       };
-      
+
       dispatch(postOperativo(newOperativo));
       await Swal.fire({
         position: "center",
@@ -45,7 +42,6 @@ const PostOperativos = () => {
         fecha: "",
         descripcion: "",
         // fechapago: ""
-
       });
     } else {
       Swal.fire({
@@ -59,21 +55,33 @@ const PostOperativos = () => {
   return (
     <form onSubmit={handleOnSubmit}>
       <div className="mb-3">
-        <label for="inputReferncia" class="form-label">Referencia</label>
-        <input type="text" class="form-control" id="inputReferencia" aria-describedby="ReferenciaHelp"
-         name="referencia"
+        <label for="inputReferncia" class="form-label">
+          Proceso de Donación
+        </label>
+        <input
+          type="text"
+          class="form-control"
+          id="inputReferencia"
+          aria-describedby="ReferenciaHelp"
+          name="referencia"
           value={operativo.referencia}
           autoComplete="off"
-          placeholder="Número de Referencia"
+          placeholder="N° de Proceso de Donación"
           onChange={(e) =>
             setOperativo({ ...operativo, referencia: e.target.value })
           }
         />
       </div>
       <div className="mb-3">
-        <label for="inputFecha" className="form-label">Fecha</label>
-        <input type="datetime-local" className="form-control" id="inputFecha" aria-describedby="FechaHelp"
-         name="Fecha"
+        <label for="inputFecha" className="form-label">
+          Fecha
+        </label>
+        <input
+          type="datetime-local"
+          className="form-control"
+          id="inputFecha"
+          aria-describedby="FechaHelp"
+          name="Fecha"
           value={operativo.fecha}
           autoComplete="off"
           placeholder="Fecha del operativo"
@@ -83,9 +91,15 @@ const PostOperativos = () => {
         />
       </div>
       <div className="mb-3">
-        <label for="inputDescripción" className="form-label">Descripción</label>
-        <input type="text" className="form-control" id="inputDescripción" aria-describedby="DescripciónHelp"
-         name="descripción"
+        <label for="inputDescripción" className="form-label">
+          Descripción
+        </label>
+        <input
+          type="text"
+          className="form-control"
+          id="inputDescripción"
+          aria-describedby="DescripciónHelp"
+          name="descripción"
           value={operativo.descripcion}
           autoComplete="off"
           placeholder="Descripción"
@@ -94,10 +108,15 @@ const PostOperativos = () => {
           }
         />
       </div>
-      <button type="submit" className='btn btn-primary' style={{background: "var(--ms-main-color)"}}>Agregar Operativo</button>
+      <button
+        type="submit"
+        className="btn btn-primary"
+        style={{ background: "var(--ms-main-color)" }}
+      >
+        Agregar Operativo
+      </button>
     </form>
-  )
-}
+  );
+};
 
-
-export default PostOperativos
+export default PostOperativos;
