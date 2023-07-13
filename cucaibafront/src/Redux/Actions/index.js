@@ -5,6 +5,7 @@ import { ModulosAPI } from "../../api/ModulosAPI";
 import { CategoriasAPI } from "../../api/CategoriasAPI.js";
 import { TipoAPI } from "../../api/TipoAPI";
 import { PersonasAPI } from "../../api/PersonasAPI";
+import { HonorariosAPI } from "../../api/HonorariosAPI";
 
 export const GET_AGENTES = "GET_AGENTES";
 export const GET_OPERATIVOS = "GET_OPERATIVOS";
@@ -16,6 +17,8 @@ export const GET_TIPOMODULO = "GET_TIPOMODULO";
 export const POST_MODULO = "POST_MODULO";
 export const UPDATE_MODULO = "UPDATE_MODULO";
 export const GET_PERSONAS = "GET_PERSONAS";
+export const GET_HONORARIO = "GET_HONORARIO";
+export const POST_HONORARIO = "POST_HONORARIO";
 
 export const getAgentes = () => async (dispatch) => {
   let response = await AgentesAPI.get("");
@@ -61,7 +64,7 @@ export const postOperativo =
     }).then((payload) => dispatch({ type: POST_OPERATIVO, payload }));
 
 export const postAgentes =
-  ({apellido, nombre, cbu, cuil, tipoPago, personaid }) =>
+  ({ apellido, nombre, cbu, cuil, tipoPago, personaid }) =>
   (dispatch) =>
     AgentesAPI.post("", {
       apellido,
@@ -107,3 +110,25 @@ export const updateModulo = (modulo) => {
       });
   };
 };
+
+export const getHonorario = () => async (dispatch) => {
+  let response = await HonorariosAPI.get("");
+
+  return dispatch({ type: GET_HONORARIO, payload: response.data });
+};
+
+export const getHonorarioByAgente = (agenteId) => async (dispatch) => {
+  let response = await HonorariosAPI.get(`/${agenteId}`);
+
+  return dispatch({ type: GET_HONORARIO, payload: response.data });
+};
+
+export const postHonorario =
+  ({ operativo_id, agente_id, modulo_id, fechaModif }) =>
+  (dispatch) =>
+    HonorariosAPI.post("", {
+      operativo_id,
+      agente_id,
+      modulo_id,
+      fechaModif,
+    }).then((payload) => dispatch({ type: POST_HONORARIO, payload }));
