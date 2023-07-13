@@ -67,14 +67,14 @@ const ExpandedComponent = () => {
       honorario.modulo_id &&
       honorario.fechaModif
     ) {
-      const newHonorario = {
-        ...honorario,
-      };
+      dispatch(
+        postHonorario(
+          honorario.operativo_id,
+          honorario.agente_id,
+          honorario.modulo_id,
+          honorario.fechaModif
+        ));
 
-      
-      dispatch(postHonorario(newHonorario));
-      
-      console.log(newHonorario);
       //  ALERT //
       await Swal.fire({
         position: "center",
@@ -249,7 +249,7 @@ const ExpandedComponent = () => {
                       </option>
                     ))}
                   </select>
-            
+
                   {opcionSeleccionada && (
                     <div className="pt-4">
                       <p>{nombreOpcionSeleccionada}</p>
