@@ -88,17 +88,7 @@ export const postModulo =
 
 export const updateModulo = (modulo) => {
   return (dispatch) => {
-    ModulosAPI.put(
-      `/${modulo.id}/update-value`,
-      { ...modulo },
-      {
-        mode: "cors",
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          allow_methods: "PUT",
-        },
-      }
-    )
+    ModulosAPI.put(`/${modulo.id}/update-value`, { ...modulo })
       .then((res) => {
         dispatch({
           type: UPDATE_MODULO,

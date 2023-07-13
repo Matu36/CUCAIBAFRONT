@@ -29,7 +29,7 @@ const ExpandedComponent = () => {
 
   useEffect(() => {
     setAgente(primerArreglo);
-  }, [primerArreglo]);
+  }, []);
 
   //Renderizando los módulos
 
@@ -71,9 +71,10 @@ const ExpandedComponent = () => {
         ...honorario,
       };
 
+      
       dispatch(postHonorario(newHonorario));
+      
       console.log(newHonorario);
-
       //  ALERT //
       await Swal.fire({
         position: "center",
@@ -83,6 +84,7 @@ const ExpandedComponent = () => {
         timer: 3000,
       });
       window.location.reload();
+
       setHonorario({
         operativo_id: "",
         agente_id: "",
@@ -151,7 +153,7 @@ const ExpandedComponent = () => {
             >
               <form onSubmit={handleOnSubmit} className="row g-3 pt-4">
                 <div
-                  className="modulo"
+                  className="honorario"
                   style={{
                     display: "flex",
                     justifyContent: "flex-start",
@@ -171,15 +173,10 @@ const ExpandedComponent = () => {
                 <label className="NroPD"> Proceso de Donación Número </label>
 
                 <input
-                  type="hidden"
-                  value="392"
-                  onChange={(e) =>
-                    setHonorario({
-                      ...honorario,
-                      operativo_id: Number(e.target.value),
-                    })
-                  }
-                />
+  type="hidden"
+  value={honorario.operativo_id}
+  name="operativo_id"
+/>
 
                 <div className="col-md-6">
                   <label htmlFor="tipo">
@@ -197,7 +194,7 @@ const ExpandedComponent = () => {
                   <select
                     className="form-select form-select-md mb-3"
                     aria-label=".form-select-lg example"
-                    name="tipo"
+                    name="agente_id"
                     value={honorario.agente_id}
                     onChange={(e) =>
                       setHonorario({
@@ -231,7 +228,7 @@ const ExpandedComponent = () => {
                   <select
                     className="form-select form-select-md mb-3"
                     aria-label=".form-select-lg example"
-                    name="tipo"
+                    name="modulo_id"
                     value={opcionSeleccionada}
                     onChange={(e) => {
                       setHonorario({
@@ -256,7 +253,7 @@ const ExpandedComponent = () => {
                   {opcionSeleccionada && (
                     <div className="pt-4">
                       <p>{nombreOpcionSeleccionada}</p>
-                      <p>
+                      <p style={{fontWeight:"bold"}}>
                         Valor: {arregloModulos[opcionSeleccionada - 1]?.valor}
                       </p>
                     </div>
@@ -264,15 +261,10 @@ const ExpandedComponent = () => {
                 </div>
 
                 <input
-                  type="hidden"
-                  value="2023-08-30T00:00:00-03:00"
-                  onChange={(e) =>
-                    setHonorario({
-                      ...honorario,
-                      fechaModif: e.target.value,
-                    })
-                  }
-                />
+  type="hidden"
+  value={honorario.fechaModif}
+  name="fechaModif"
+/>
                 <hr
                   style={{
                     marginTop: "3rem",
