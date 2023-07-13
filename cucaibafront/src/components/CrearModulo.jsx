@@ -3,7 +3,6 @@ import Swal from "sweetalert2";
 import { getCategorias, getTipoModulo, postModulo } from "../Redux/Actions";
 import { useDispatch, useSelector } from "react-redux";
 import "../assets/styles/style.css";
-import { validateNumberInput } from "../utils/Validaciones";
 
 const CrearModulo = ({ handleCerrarFormulario }) => {
   const dispatch = useDispatch();
@@ -231,7 +230,6 @@ const CrearModulo = ({ handleCerrarFormulario }) => {
             }
           />
         </div>
-
 
         <hr
           style={{

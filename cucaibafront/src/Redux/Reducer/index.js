@@ -9,6 +9,8 @@ import {
   POST_MODULO,
   UPDATE_MODULO,
   GET_PERSONAS,
+  GET_HONORARIO,
+  POST_HONORARIO,
 } from "../Actions";
 
 const InitialState = {
@@ -23,6 +25,8 @@ const InitialState = {
   TipoModulo: [],
 
   personas: [],
+
+  honorario: [],
 };
 
 function rootReducer(state = InitialState, action) {
@@ -54,6 +58,10 @@ function rootReducer(state = InitialState, action) {
       });
 
       return { ...state, modulos: updatedModulo };
+    case GET_HONORARIO:
+      return { ...state, honorario: action.payload };
+    case POST_HONORARIO:
+      return { ...state, honorario: [...state.honorario, action.payload] };
     default:
       return state;
   }

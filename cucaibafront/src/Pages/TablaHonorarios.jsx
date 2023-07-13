@@ -1,95 +1,119 @@
 import React, { useState, useEffect } from "react";
 import "./styles/tablaHonorarios.css";
 import { BsFillPersonFill } from "react-icons/bs";
-import { AiOutlinePlus } from "react-icons/ai";
 import "../lib/tooltip";
 import { usePagination } from "../hooks/usePagination";
 import EmptyTable from "../components/UI/EmptyTable";
 import DataTable from "react-data-table-component";
 import moment from "moment";
-import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { getOperativos } from "../Redux/Actions";
+import {
+  getOperativos,
+  getAgentes,
+  getModulos,
+  getHonorario,
+  postHonorario,
+} from "../Redux/Actions";
+import Swal from "sweetalert2";
 
-/* const arrayAgentes = [
-  {
-    id: 1,
-    nombre: "Agente 1",
-    cuil: "20345678901",
-    cbu: "1234567890123456789012",
-  },
-  {
-    id: 2,
-    nombre: "Agente 2",
-    cuil: "30345678901",
-    cbu: "2345678901234567890123",
-  },
-  {
-    id: 3,
-    nombre: "Agente 3",
-    cuil: "40345678901",
-    cbu: "3456789012345678901234",
-  },
-  {
-    id: 4,
-    nombre: "Agente 4",
-    cuil: "50345678901",
-    cbu: "4567890123456789012345",
-  },
-];
+const ExpandedComponent = () => {
+  //Renderizando los agentes //
+  const agentes = useSelector((state) => state.agentes);
+  let dispatch = useDispatch();
+  const primerArreglo = agentes.slice(0, 1)[0];
+  const [agente, setAgente] = useState(primerArreglo);
 
-const arrayObjetos = [
-  {
-    id: 1,
-    referencia: "ref1",
-    descripcion: "Descripción del objeto 1",
-    fecha: "2023-06-27",
-    agentes: arrayAgentes,
-  },
-  {
-    id: 2,
-    referencia: "ref2",
-    descripcion: "Descripción del objeto 2",
-    fecha: "2023-06-27",
-    agentes: arrayAgentes,
-  },
-  {
-    id: 3,
-    referencia: "ref3",
-    descripcion: "Descripción del objeto 3",
-    fecha: "2023-06-27",
-    agentes: arrayAgentes,
-  },
-  {
-    id: 4,
-    referencia: "ref4",
-    descripcion: "Descripción del objeto 4",
-    fecha: "2023-06-27",
-    agentes: arrayAgentes,
-  },
-  {
-    id: 5,
-    referencia: "ref5",
-    descripcion: "Descripción del objeto 5",
-    fecha: "2023-06-27",
-    agentes: arrayAgentes,
-  },
-]; */
+  useEffect(() => {
+    dispatch(getAgentes());
+  }, []);
 
-const ExpandedComponent = ({ data }) => {
-  const navigate = useNavigate();
+  useEffect(() => {
+    setAgente(primerArreglo);
+  }, [primerArreglo]);
 
-  const handleAdd = (id) => {
-    navigate("/honorarios/variables/crear-honorario/" + id + "/agregar", {
-      replace: true,
-    });
+  //Renderizando los módulos
+
+  const modulos = useSelector((state) => state.modulos);
+
+  let arregloModulos = [];
+
+  if (modulos.length > 1) {
+    arregloModulos = modulos[1][0];
+  }
+  const [modulo, setModulo] = useState(arregloModulos);
+
+  useEffect(() => {
+    dispatch(getModulos());
+  }, []);
+
+  useEffect(() => {
+    setModulo(arregloModulos);
+  }, []);
+
+  //CREACION DE HONORARIO //
+  const [honorario, setHonorario] = useState({
+    operativo_id: "",
+    agente_id: "",
+    modulo_id: "",
+    fechaModif: "",
+  });
+
+  const handleOnSubmit = async (e) => {
+    e.preventDefault();
+
+    if (
+      honorario.operativo_id &&
+      honorario.agente_id &&
+      honorario.modulo_id &&
+      honorario.fechaModif
+    ) {
+      const newHonorario = {
+        ...honorario,
+      };
+
+      dispatch(postHonorario(newHonorario));
+      console.log(newHonorario);
+
+      //  ALERT //
+      await Swal.fire({
+        position: "center",
+        icon: "success",
+        title: "El honorario se ha asignado correctamente al Agente",
+        showConfirmButton: false,
+        timer: 3000,
+      });
+      window.location.reload();
+      setHonorario({
+        operativo_id: "",
+        agente_id: "",
+        modulo_id: "",
+        fechaModif: "",
+      });
+    } else {
+      Swal.fire({
+        position: "center",
+        icon: "error",
+        title: "Por favor, completa todos los campos",
+        showConfirmButton: true,
+      });
+
+      // FIN ALTERT //
+    }
   };
 
-  const handleCreate = (id) => {
-    navigate("/honorarios/variables/crear-honorario/", {
-      replace: true,
-    });
-  };
+  //MOSTRANDO EL FORMULARIO DE CREACION //
+  const [mostrarFormulario, setMostrarFormulario] = useState(false);
+  function handleMostrarFormulario() {
+    setMostrarFormulario(true);
+  }
+
+  function handleCerrarFormulario() {
+    setMostrarFormulario(false);
+  }
+
+  //FIN FORMULARIO DE CREACION//
+  const [opcionSeleccionada, setOpcionSeleccionada] = useState("");
+  const [nombreOpcionSeleccionada, setNombreOpcionSeleccionada] = useState("");
 
   return (
     <div className="p-3">
@@ -102,11 +126,179 @@ const ExpandedComponent = ({ data }) => {
         <button
           type="button"
           className="btn btn-success"
-          onClick={() => handleCreate(data.id)}
+          onClick={handleMostrarFormulario}
         >
           Agregar Agente <BsFillPersonFill />
         </button>
+        {mostrarFormulario && (
+          <div
+            style={{
+              position: "fixed",
+              top: "45%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              backgroundColor: "white",
+              zIndex: "999",
+            }}
+          >
+            <div
+              className="form-container pt-2"
+              style={{
+                padding: "20px",
+                boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+                border: "1px solid gray",
+              }}
+            >
+              <form onSubmit={handleOnSubmit} className="row g-3 pt-4">
+                <div
+                  className="modulo"
+                  style={{
+                    display: "flex",
+                    justifyContent: "flex-start",
+                    marginLeft: 0,
+                    color: "#5DADE2",
+                  }}
+                >
+                  <h6>CREAR HONORARIO</h6>
+                </div>
+                <hr
+                  style={{
+                    margin: "10px 0",
+                    border: "none",
+                    borderBottom: "5px solid #5DADE2",
+                  }}
+                />
+                <label className="NroPD"> Proceso de Donación Número </label>
+
+                <input
+                  type="hidden"
+                  value="392"
+                  onChange={(e) =>
+                    setHonorario({
+                      ...honorario,
+                      operativo_id: Number(e.target.value),
+                    })
+                  }
+                />
+
+                <div className="col-md-6">
+                  <label htmlFor="tipo">
+                    Seleccionar Agente
+                    <span
+                      style={{
+                        color: "red",
+                        marginLeft: "5px",
+                        fontSize: "20px",
+                      }}
+                    >
+                      *
+                    </span>
+                  </label>
+                  <select
+                    className="form-select form-select-md mb-3"
+                    aria-label=".form-select-lg example"
+                    name="tipo"
+                    value={honorario.agente_id}
+                    onChange={(e) =>
+                      setHonorario({
+                        ...honorario,
+                        agente_id: Number(e.target.value),
+                      })
+                    }
+                    placeholder="Selecciona un tipo"
+                  >
+                    <option value="">Seleccionar</option>
+                    {primerArreglo.map((agente) => (
+                      <option key={agente.id} value={agente.id}>
+                        {agente.apellido + ", " + agente.nombre}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="col-md-6">
+                  <label htmlFor="tipo">
+                    Función desempeñada
+                    <span
+                      style={{
+                        color: "red",
+                        marginLeft: "5px",
+                        fontSize: "20px",
+                      }}
+                    >
+                      *
+                    </span>
+                  </label>
+                  <select
+                    className="form-select form-select-md mb-3"
+                    aria-label=".form-select-lg example"
+                    name="tipo"
+                    value={opcionSeleccionada}
+                    onChange={(e) => {
+                      setHonorario({
+                        ...honorario,
+                        modulo_id: Number(e.target.value),
+                      });
+                      setOpcionSeleccionada(e.target.value);
+                      setNombreOpcionSeleccionada(
+                        e.target.options[e.target.selectedIndex].text
+                      );
+                    }}
+                    placeholder="Selecciona un tipo"
+                  >
+                    <option value="">Seleccionar</option>
+                    {arregloModulos.map((modulo) => (
+                      <option key={modulo.id} value={modulo.id}>
+                        {modulo.descripcion}
+                      </option>
+                    ))}
+                  </select>
+            
+                  {opcionSeleccionada && (
+                    <div className="pt-4">
+                      <p>{nombreOpcionSeleccionada}</p>
+                      <p>
+                        Valor: {arregloModulos[opcionSeleccionada - 1]?.valor}
+                      </p>
+                    </div>
+                  )}
+                </div>
+
+                <input
+                  type="hidden"
+                  value="2023-08-30T00:00:00-03:00"
+                  onChange={(e) =>
+                    setHonorario({
+                      ...honorario,
+                      fechaModif: e.target.value,
+                    })
+                  }
+                />
+                <hr
+                  style={{
+                    marginTop: "3rem",
+                    border: "none",
+                    borderBottom: "5px solid #5DADE2",
+                  }}
+                />
+                <div className="d-flex justify-content-end">
+                  <button
+                    onClick={handleCerrarFormulario}
+                    type="submit"
+                    className="btn btn-outline-secondary pb-2"
+                    style={{ marginRight: "10px" }}
+                  >
+                    Cancelar
+                  </button>
+                  <button type="submit" className="btn btn-success pt-2">
+                    Crear Honorario
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
       </div>
+
       <table className="table table-responsive">
         <thead>
           <tr>
@@ -117,28 +309,6 @@ const ExpandedComponent = ({ data }) => {
             <th scope="col">Acción</th>
           </tr>
         </thead>
-        {/* <tbody>
-          {/* {data.agentes.map((a, i) => (
-            <tr key={i}>
-              <td>{a.cuil}</td>
-              <td>{a.id}</td>
-              <td>{a.nombre}</td>
-              <td>{a.cbu}</td>
-              <td>
-                <button
-                  type="button"
-                  className="btn btn-success"
-                  data-bs-toggle="tooltip"
-                  data-bs-placement="right"
-                  data-bs-title="Añadir modulo al Agente"
-                  onClick={() => handleAdd(a.id)}
-                >
-                  <AiOutlinePlus />
-                </button> */}
-        {/*   </td>
-            </tr>
-          ))}
-        </tbody> */}
       </table>
     </div>
   );
