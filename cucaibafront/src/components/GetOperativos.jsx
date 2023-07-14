@@ -5,9 +5,14 @@ import DataTable from "react-data-table-component";
 import EmptyTable from "./UI/EmptyTable";
 import { usePagination } from "../hooks/usePagination";
 import Moment from "moment";
+import Spinner from "./UI/Spinner";
+import MultiFilter from "./UI/MultiFilter";
 
 const GetOperativos = () => {
   const dispatch = useDispatch();
+
+  const [isLoading, setIsLoading] = useState(true);
+
   const operativos = useSelector((state) => state.operativos);
   const [search, setSearch] = useState("");
   const primerArreglo = operativos.slice(0, 1)[0];
@@ -17,6 +22,9 @@ const GetOperativos = () => {
 
   useEffect(() => {
     dispatch(getOperativos());
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
   }, []);
 
   useEffect(() => {
@@ -64,60 +72,58 @@ const GetOperativos = () => {
 
   //--------------------------------- FIN PAGINADO-------------------------------- //
 
-  //---------------------------------SPINNER ------------------------------------- //
-  const [showSpinner, setShowSpinner] = useState(true);
-  useEffect(() => {
-    setTimeout(() => {
-      setShowSpinner(false);
-    }, 2000);
-  }, []);
-  if (operativos.length === 0) {
-    return (
-      <div className="d-flex justify-content-center align-items-center vh-100">
-        {showSpinner ? (
-          <div
-            className="spinner-border spinner-border-lg text-primary"
-            style={{ width: "5rem", height: "5rem" }}
-            role="status"
-          >
-            <span className="visually-hidden">Cargando...</span>
-          </div>
-        ) : null}
-      </div>
-    );
-  }
-
-  //------------------------------------FIN SPINNER ------------------------------ //
-
   return (
     <div>
-      <h1>Operativos</h1>
-      <h5 className="subtitulo" style={{ color: "#5DADE2" }}>
-        Listado de todos los Operativos
-      </h5>
-      <br />
+      {isLoading && <Spinner />}
+      {!isLoading && (
+        <>
+          <h1>Operativos</h1>
+          <h5 className="subtitulo" style={{ color: "#5DADE2" }}>
+            Listado de todos los Operativos
+          </h5>
+          <br />
 
-      <div className="input-group mb-3" style={{ maxWidth: "40%" }}>
-        <input
-          type="text"
-          className="form-control"
-          placeholder="Buscar por Número de Referencia"
-          onChange={handleOnChange}
-          value={search}
-          autoComplete="off"
-        />
-      </div>
+          <MultiFilter>
+            <div class="mb-3">
+              <label htmlFor="inputRef" className="fw-bold form-label">
+                Proceso de Donación:
+              </label>
+              <input
+                id="inputRef"
+                type="text"
+                className="form-control"
+                placeholder="1234"
+                // onChange={handleOnChange}
+                // value={search}
+                autoComplete="off"
+              />
+            </div>
+            <div class="mb-3">
+              <label htmlFor="inputDesc" className="fw-bold form-label">
+                Descripción:
+              </label>
+              <input
+                id="inputDesc"
+                type="text"
+                className="form-control"
+                placeholder="Ablación..."
+                // onChange={handleOnChange}
+                // value={search}
+                autoComplete="off"
+              />
+            </div>
+          </MultiFilter>
 
-      <DataTable
-        columns={columns}
-        data={operativo}
-        pagination
-        striped
-        paginationComponentOptions={paginationOptions}
-        noDataComponent={
-          <EmptyTable msg="No se encontro el operativo con ese N° SINTRA" />
-        }
-      />
+          <DataTable
+            columns={columns}
+            data={operativo}
+            pagination
+            striped
+            paginationComponentOptions={paginationOptions}
+            noDataComponent={<EmptyTable msg="No se encontro el operativo" />}
+          />
+        </>
+      )}
     </div>
   );
 };
