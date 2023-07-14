@@ -1,103 +1,128 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getOperativos } from "../Redux/Actions";
-import Paginacion from "./Paginacion";
+import DataTable from "react-data-table-component";
+import EmptyTable from "./UI/EmptyTable";
+import { usePagination } from "../hooks/usePagination";
+import Moment from "moment";
+import Spinner from "./UI/Spinner";
+import MultiFilter from "./UI/MultiFilter";
 
 const GetOperativos = () => {
-  let dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(getOperativos());
-  }, []);
+  const dispatch = useDispatch();
+
+  const [isLoading, setIsLoading] = useState(true);
 
   const operativos = useSelector((state) => state.operativos);
-
-  //SEARCHBAR
-
   const [search, setSearch] = useState("");
-  const [operativo, setOperativo] = useState(operativos);
+  const primerArreglo = operativos.slice(0, 1)[0];
+  const [operativo, setOperativo] = useState(primerArreglo);
+
+  const { paginationOptions } = usePagination(primerArreglo);
+
+  useEffect(() => {
+    dispatch(getOperativos());
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+  }, []);
+
+  useEffect(() => {
+    setOperativo(primerArreglo);
+  }, [primerArreglo]);
+
+  //-------------------------------- SEARCHBAR --------------------------- //
+
+  useEffect(() => {
+    filterByRef(search);
+  }, [search]);
 
   const handleOnChange = (e) => {
     e.preventDefault();
     setSearch(e.target.value);
   };
-
-  const filterByLastName = (value) => {
-    let arrayCache = [...operativos];
-    if (!search) setOperativo(operativos);
-    else {
-      arrayCache = arrayCache.filter((oper) =>
+  const filterByRef = (value) => {
+    if (!value) {
+      setOperativo(primerArreglo);
+    } else {
+      const arrayCache = primerArreglo.filter((oper) =>
         oper.referencia.toLowerCase().includes(value.toLowerCase())
       );
-
       setOperativo(arrayCache);
     }
   };
 
-  useEffect(() => {
-    filterByLastName(search);
-  }, [operativos, search]);
-  //FIN SEARCHBAR
+  //-------------------------------- FIN SEARCHBAR --------------------------- //
 
-  //PAGINADO
+  //--------------------------------- PAGINADO-------------------------------- //
+  const columns = [
+    {
+      name: "Proceso de Donación",
+      selector: (row) => row.referencia,
+      sortable: true,
+    },
+    {
+      name: "Fecha",
+      selector: (row) => row.fecha,
+      sortable: true,
+      format: (row) => Moment(row.fecha).format("L"),
+    },
+    { name: "Descripción", selector: (row) => row.descripcion, sortable: true },
+  ];
 
-  const [currentPage, setCurrentPage] = useState(1); //Pagina Actual seteada en 1
-  const [numberOfPage, setNumberOfPage] = useState(0); //Numero de Paginas seteado en 0
-  const [totalOperativos, setTotalOperativos] = useState(operativo);
-
-  const indexFirstPageIngredient = () => (currentPage - 1) * 9; // Indice del primer Elemento
-  const indexLastPageIngredient = () => indexFirstPageIngredient() + 9; //Indice del segundo elemento
-
-  const handlePageNumber = (number) => {
-    setCurrentPage(number);
-  };
-
-  useEffect(() => {
-    setTotalOperativos(
-      operativo.slice(indexFirstPageIngredient(), indexLastPageIngredient())
-    );
-    setNumberOfPage(Math.ceil(operativo.length / 9)); // cambiando el estado local de numeros de paginas a renderiza
-  }, [operativo, currentPage]);
-
-  //FIN PAGINADO
+  //--------------------------------- FIN PAGINADO-------------------------------- //
 
   return (
     <div>
-      <div style={{ display: "flex", alignItems: "center" }}>
-        <input
-          type="text"
-          placeholder="Buscar Usuario "
-          onChange={handleOnChange}
-          value={search}
-          autoComplete="off"
-          width="30rem"
-        />
-      </div>
-      <h1>Lista de Operativos</h1>
-      <table className="table table-striped">
-        <thead>
-          <tr>
-            <th>Referencia</th>
-            <th>Fecha</th>
-            <th>Descripcion</th>
-            
-          </tr>
-        </thead>
-        <tbody>
-          {totalOperativos.map((operativo) => (
-            <tr key={operativo.id}>
-              <td>{operativo.referencia}</td>
-              <td>{operativo.fecha.date}</td> 
-              <td>{operativo.descripcion}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      {operativos && (
-        <Paginacion
-          currentPage={currentPage}
-          numberOfPage={numberOfPage}
-          handlePageNumber={handlePageNumber}
-        />
+      {isLoading && <Spinner />}
+      {!isLoading && (
+        <>
+          <h1>Operativos</h1>
+          <h5 className="subtitulo" style={{ color: "#5DADE2" }}>
+            Listado de todos los Operativos
+          </h5>
+          <br />
+
+          <MultiFilter>
+            <div class="mb-3">
+              <label htmlFor="inputRef" className="fw-bold form-label">
+                Proceso de Donación:
+              </label>
+              <input
+                id="inputRef"
+                type="text"
+                className="form-control"
+                placeholder="1234"
+                // onChange={handleOnChange}
+                // value={search}
+                autoComplete="off"
+              />
+            </div>
+            <div class="mb-3">
+              <label htmlFor="inputDesc" className="fw-bold form-label">
+                Descripción:
+              </label>
+              <input
+                id="inputDesc"
+                type="text"
+                className="form-control"
+                placeholder="Ablación..."
+                // onChange={handleOnChange}
+                // value={search}
+                autoComplete="off"
+              />
+            </div>
+          </MultiFilter>
+
+          <DataTable
+            columns={columns}
+            data={operativo}
+            pagination
+            striped
+            paginationComponentOptions={paginationOptions}
+            noDataComponent={<EmptyTable msg="No se encontro el operativo" />}
+          />
+        </>
       )}
     </div>
   );

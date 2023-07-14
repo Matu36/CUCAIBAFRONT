@@ -1,107 +1,118 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getAgentes } from "../Redux/Actions";
-import Paginacion from "./Paginacion";
+import DataTable from "react-data-table-component";
+import EmptyTable from "./UI/EmptyTable";
+import { usePagination } from "../hooks/usePagination";
 
-const GetAgentes = () => {
-  let dispatch = useDispatch();
+const GetAgentes = ({ ...props }) => {
+  const dispatch = useDispatch();
+  const agentes = useSelector((state) => state.agentes);
+  const [search, setSearch] = useState("");
+  const primerArreglo = agentes.slice(0, 1)[0];
+  const [agente, setAgente] = useState(primerArreglo);
+
+  const { paginationOptions } = usePagination(primerArreglo);
+
   useEffect(() => {
     dispatch(getAgentes());
   }, []);
 
-  const agentes = useSelector((state) => state.agentes);
+  useEffect(() => {
+    setAgente(primerArreglo);
+  }, [primerArreglo]);
 
-  //SEARCHBAR
+  //-------------------------------- SEARCHBAR --------------------------- //
 
-  const [search, setSearch] = useState("");
-  const [agente, setAgente] = useState(agentes);
+  useEffect(() => {
+    filterByCuil(search);
+  }, [search]);
 
   const handleOnChange = (e) => {
     e.preventDefault();
     setSearch(e.target.value);
   };
 
-  const filterByLastName = (value) => {
-    let arrayCache = [...agentes];
-    if (!search) setAgente(agentes);
-    else {
-      arrayCache = arrayCache.filter((agent) =>
-        agent.apellido.toLowerCase().includes(value.toLowerCase())
+  const filterByCuil = (value) => {
+    if (!value) {
+      setAgente(primerArreglo);
+    } else {
+      const arrayCache = primerArreglo.filter((oper) =>
+        oper.apellido.toLowerCase().includes(value.toLowerCase())
       );
-
       setAgente(arrayCache);
     }
   };
 
+  //-------------------------------- FIN SEARCHBAR --------------------------- //
+
+  //----------------------------------PAGINADO ------------------------------//
+
+  const columns = [
+    { name: "Apellido", selector: (row) => row.apellido, sortable: true },
+    { name: "Nombre", selector: (row) => row.nombre, sortable: true },
+    { name: "CBU", selector: (row) => row.cbu, sortable: true },
+    { name: "CUIL", selector: (row) => row.cuil, sortable: true },
+  ];
+
+  //------------------------- FIN PAGINADO -----------------------------------//
+
+  //---------------------------------SPINNER ------------------------------------//
+
+  const [showSpinner, setShowSpinner] = useState(true);
   useEffect(() => {
-    filterByLastName(search);
-  }, [agentes, search]);
-  //FIN SEARCHBAR
+    setTimeout(() => {
+      setShowSpinner(false);
+    }, 2000);
+  }, []);
+  if (agentes.length === 0) {
+    return (
+      <div className="d-flex justify-content-center align-items-center vh-100">
+        {showSpinner ? (
+          <div
+            className="spinner-border spinner-border-lg text-primary"
+            style={{ width: "5rem", height: "5rem" }}
+            role="status"
+          >
 
-  //PAGINADO
-
-  const [currentPage, setCurrentPage] = useState(1); //Pagina Actual seteada en 1
-  const [numberOfPage, setNumberOfPage] = useState(0); //Numero de Paginas seteado en 0
-  const [totalAgentes, setTotalAgentes] = useState(agente);
-
-  const indexFirstPageIngredient = () => (currentPage - 1) * 9; // Indice del primer Elemento
-  const indexLastPageIngredient = () => indexFirstPageIngredient() + 9; //Indice del segundo elemento
-
-  const handlePageNumber = (number) => {
-    setCurrentPage(number);
-  };
-
-  useEffect(() => {
-    setTotalAgentes(
-      agente.slice(indexFirstPageIngredient(), indexLastPageIngredient())
+          </div>
+        ) : null}
+      </div>
     );
-    setNumberOfPage(Math.ceil(agente.length / 9)); // cambiando el estado local de numeros de paginas a renderiza
-  }, [agente, currentPage]);
+  }
 
-  //FIN PAGINADO
+  //---------------------------------FIN SPINNER ------------------------------------//
 
   return (
     <div>
-      <div style={{ display: "flex", alignItems: "center" }}>
+      <h1>Agentes</h1>
+      <h5 className="subtitulo" style={{ color: "#5DADE2" }}>
+        Listado de todos los Agentes cargados
+      </h5>
+      <br />
+
+      <div className="input-group mb-3" style={{ maxWidth: "40%" }}>
         <input
           type="text"
-          placeholder="Buscar Usuario "
+          className="form-control"
+          placeholder="Buscar por APELLIDO"
           onChange={handleOnChange}
           value={search}
           autoComplete="off"
-          width="30rem"
         />
       </div>
-      <h1>Lista de Agentes</h1>
-      <table className="table table-striped">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Apellido</th>
-            <th>Nombre</th>
-            <th>CBU</th>
-            <th>CUIL</th>
-          </tr>
-        </thead>
-        <tbody>
-          {totalAgentes.map((agente) => (
-            <tr key={agente.id}>
-              <td>{agente.id}</td>
-              <td>{agente.apellido}</td>
-              <td>{agente.nombre}</td>
-              <td>{agente.cbu}</td>
-              <td>{agente.cuil}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      {agentes && (
-        <Paginacion
-          currentPage={currentPage}
-          numberOfPage={numberOfPage}
-          handlePageNumber={handlePageNumber}
-        />
-      )}
+
+      <DataTable
+        columns={columns}
+        data={agente}
+        pagination
+        striped
+        paginationComponentOptions={paginationOptions}
+        noDataComponent={
+          <EmptyTable msg="No se encontro el Agente con ese CUIL" />
+        }
+        {...props}
+      />
     </div>
   );
 };
