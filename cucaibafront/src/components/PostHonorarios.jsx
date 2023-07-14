@@ -1,6 +1,4 @@
 import React from "react";
-import { AiOutlinePlus } from "react-icons/ai";
-import { useModulos } from "../hooks/useModulos";
 
 const PostHonorarios = ({ disabled }) => {
   const { modulosQuery } = useModulos();
