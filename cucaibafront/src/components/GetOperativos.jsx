@@ -14,7 +14,10 @@ const GetOperativos = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   const operativos = useSelector((state) => state.operativos);
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState({
+    ref: "",
+    descripcion: "",
+  });
   const primerArreglo = operativos.slice(0, 1)[0];
   const [operativo, setOperativo] = useState(primerArreglo);
 
@@ -34,24 +37,23 @@ const GetOperativos = () => {
   //-------------------------------- SEARCHBAR --------------------------- //
 
   useEffect(() => {
-    filterByRef(search);
+    multiFilter(primerArreglo, search);
   }, [search]);
 
   const handleOnChange = (e) => {
-    e.preventDefault();
-    setSearch(e.target.value);
+    setSearch({ ...search, [e.target.name]: e.target.value });
   };
-  const filterByRef = (value) => {
-    if (!value) {
-      setOperativo(primerArreglo);
-    } else {
-      const arrayCache = primerArreglo.filter((oper) =>
-        oper.referencia.toLowerCase().includes(value.toLowerCase())
-      );
-      setOperativo(arrayCache);
-    }
-  };
+  const multiFilter = (array, search) => {
+    if (!search.ref && !search.descripcion) setOperativo(array);
 
+    let arrayCache = array
+      .filter((o) => o.referencia.includes(search.ref))
+      .filter((o) =>
+        o.descripcion.toLowerCase().includes(search.descripcion.toLowerCase())
+      );
+    setOperativo(arrayCache);
+    // }
+  };
   //-------------------------------- FIN SEARCHBAR --------------------------- //
 
   //--------------------------------- PAGINADO-------------------------------- //
@@ -84,31 +86,33 @@ const GetOperativos = () => {
           <br />
 
           <MultiFilter>
-            <div class="mb-3">
+            <div className="mb-3">
               <label htmlFor="inputRef" className="fw-bold form-label">
                 Proceso de Donación:
               </label>
               <input
                 id="inputRef"
+                name="ref"
                 type="text"
                 className="form-control"
                 placeholder="1234"
-                // onChange={handleOnChange}
-                // value={search}
+                onChange={handleOnChange}
+                value={search.ref}
                 autoComplete="off"
               />
             </div>
-            <div class="mb-3">
+            <div className="mb-3">
               <label htmlFor="inputDesc" className="fw-bold form-label">
                 Descripción:
               </label>
               <input
                 id="inputDesc"
                 type="text"
+                name="descripcion"
                 className="form-control"
                 placeholder="Ablación..."
-                // onChange={handleOnChange}
-                // value={search}
+                onChange={handleOnChange}
+                value={search.descripcion}
                 autoComplete="off"
               />
             </div>

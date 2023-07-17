@@ -2,7 +2,7 @@ import React from "react";
 
 const MultiFilter = ({ children }) => {
   return (
-    <div className="dropdown">
+    <div className="dropdown my-3">
       <button
         type="button"
         className="btn btn-primary dropdown-toggle"
