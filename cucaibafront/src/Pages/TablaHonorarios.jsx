@@ -10,6 +10,60 @@ import { useSelector, useDispatch } from "react-redux";
 import { getOperativos, getHonorario } from "../Redux/Actions";
 import { FormHonorario } from "../components/FormHonorario";
 import { BsChevronDown } from "react-icons/bs";
+import { useHonorarios } from "../hooks/useHonorarios";
+
+const ExpandedComponent = ({ data: operativo }) => {
+  const { data, isLoading } = useHonorarios(operativo.id).honorariosQuery;
+  return (
+    <div>
+      <div className="p-3">
+        <div className="agentes-container">
+          <div className="d-flex align-items-center justify-content-between">
+            <div>
+              <h5>Agentes asociados al Operativo</h5>
+              <hr />
+            </div>
+          </div>
+          <div className="p-3">
+            <table className="table table-responsive">
+              <thead>
+                <tr>
+                  <th scope="col">Apellido</th>
+                  <th scope="col">Nombre</th>
+                  <th scope="col">CUIL</th>
+                  <th scope="col">Acción</th>
+                </tr>
+              </thead>
+              {isLoading && (
+                <tr>
+                  <td colSpan={4}>Cargando...</td>
+                </tr>
+              )}
+              {!isLoading && typeof data === "object" ? (
+                <tbody>
+                  {data.map((agente) => (
+                    <tr key={agente.persona_id}>
+                      <td>{agente.apellido}</td>
+                      <td>{agente.nombre}</td>
+                      <td>{agente.cuil}</td>
+                      <button>agregar</button>
+                    </tr>
+                  ))}
+                </tbody>
+              ) : (
+                <tr>
+                  <td colSpan={4}>
+                    No hay ningún Agente Asociado al Operativo
+                  </td>
+                </tr>
+              )}
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 const TablaHonorarios = () => {
   const dispatch = useDispatch();
@@ -50,8 +104,6 @@ const TablaHonorarios = () => {
   }, []);
 
   const [mostrarAgentes, setMostrarAgentes] = useState(null);
-  
-  
 
   //MOSTRANDO EL FORMULARIO DE CREACION //
   const [mostrarFormulario, setMostrarFormulario] = useState(false);
@@ -105,85 +157,6 @@ const TablaHonorarios = () => {
 
   const columns = [
     {
-      name: "",
-    cell: (row, rowIndex) => (
-      <div>
-       
-        <div style={{ position: "relative" }}>
-          <button
-            type="button"
-            className="btn btn-link"
-            onClick={() => setMostrarAgentes(rowIndex)}
-          >
-            {mostrarAgentes === rowIndex ? (
-              <BsChevronDown
-                style={{ fontSize: "1.2rem", transform: "rotate(-90deg)" }}
-              />
-            ) : (
-              <BsChevronDown style={{ fontSize: "1.2rem" }} />
-            )}
-          </button>
-          {mostrarAgentes === rowIndex && (
-            <div className="agentes-container">
-              <div className="d-flex align-items-center justify-content-between">
-                <div>
-                  <h5>Agentes asociados al Operativo</h5>
-                  <hr />
-                </div>
-
-                <button
-                  type="button"
-                  className="btn btn-success"
-                  onClick={handleMostrarFormulario}
-                >
-                  Agregar Agente <BsFillPersonFill />
-                </button>
-                {mostrarFormulario && (
-                  <div className="formulario-container">
-                    <div
-                      className="form-container pt-2"
-                      style={{
-                        padding: "20px",
-                        boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
-                        border: "1px solid gray",
-                      }}
-                    >
-                      <FormHonorario
-                        handleCerrarFormulario={handleCerrarFormulario}
-                      />
-                    </div>
-                  </div>
-                )}
-              </div>
-              <div className="p-3">
-                <table className="table table-responsive">
-                  <thead>
-                    <tr>
-                      <th scope="col">CUIL</th>
-                      <th scope="col">Nombre Completo</th>
-                      <th scope="col">Función</th>
-                      <th scope="col">Valor</th>
-                    </tr>
-                  </thead>
-                  {/* <tbody>
-                    {operativo.agentes.map((agente) => (
-                      <tr key={agente.id}>
-                        <td>{agente.cuil}</td>
-                        <td>{agente.nombreCompleto}</td>
-                        <td>{agente.funcion}</td>
-                        <td>{agente.valor}</td>
-                      </tr>
-                    ))}
-                  </tbody> */}
-                </table>
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
-    ),
-  },
-    {
       name: "Proceso de Donación",
       selector: (row) => row.referencia,
       sortable: true,
@@ -230,8 +203,9 @@ const TablaHonorarios = () => {
           noDataComponent={
             <EmptyTable msg="No se encontró el PD con ese número de Referencia" />
           }
+          expandableRows
+          expandableRowsComponent={ExpandedComponent}
         />
-
       </div>
     </>
   );
