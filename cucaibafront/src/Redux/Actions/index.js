@@ -102,7 +102,7 @@ export const updateModulo = (modulo) => {
 };
 
 export const getHonorario = () => async (dispatch) => {
-  let response = await HonorariosAPI.get("");
+  let response = await HonorariosAPI.get("/props");
 
   return dispatch({ type: GET_HONORARIO, payload: response.data });
 };

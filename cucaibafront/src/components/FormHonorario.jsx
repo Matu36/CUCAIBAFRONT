@@ -15,6 +15,32 @@ export const FormHonorario = ({handleCerrarFormulario}) => {
   const primerArreglo = agentes.slice(0, 1)[0];
   const [agente, setAgente] = useState(primerArreglo);
 
+  //---------------------------------SPINNER ------------------------------------//
+
+  const [showSpinner, setShowSpinner] = useState(true);
+  useEffect(() => {
+    setTimeout(() => {
+      setShowSpinner(false);
+    }, 2000);
+  }, []);
+  if (agentes.length === 0) {
+    return (
+      <div className="d-flex justify-content-center align-items-center vh-100">
+        {showSpinner ? (
+          <div
+            className="spinner-border spinner-border-lg text-primary"
+            style={{ width: "5rem", height: "5rem" }}
+            role="status"
+          >
+
+          </div>
+        ) : null}
+      </div>
+    );
+  }
+
+  //---------------------------------FIN SPINNER ------------------------------------//
+
   useEffect(() => {
     dispatch(getAgentes());
   }, []);
