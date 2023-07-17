@@ -7,28 +7,49 @@ import EmptyTable from "../components/UI/EmptyTable";
 import DataTable from "react-data-table-component";
 import moment from "moment";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  getOperativos,
-  getAgentes,
-} from "../Redux/Actions";
+import { getOperativos, getHonorario } from "../Redux/Actions";
 import { FormHonorario } from "../components/FormHonorario";
+import { BsChevronDown } from "react-icons/bs";
 
+const TablaHonorarios = () => {
+  const dispatch = useDispatch();
+  const operativos = useSelector((state) => state.operativos);
+  const primerArregloOper = operativos.slice(0, 1)[0];
+  const [search, setSearch] = useState("");
+  const [honorario, setHonorario] = useState(primerArregloOper);
+  const { paginationOptions } = usePagination(primerArregloOper);
 
-const ExpandedComponent = () => {
-
-  //Renderizando los agentes //
-  const agentes = useSelector((state) => state.agentes);
-  let dispatch = useDispatch();
-  const primerArreglo = agentes.slice(0, 1)[0];
-  const [agente, setAgente] = useState(primerArreglo);
+  //Renderizado de los operativos //
 
   useEffect(() => {
-    dispatch(getAgentes());
+    dispatch(getOperativos());
+  }, [primerArregloOper]);
+
+  useEffect(() => {
+    setHonorario(primerArregloOper);
+  }, []);
+
+  const [showSpinner, setShowSpinner] = useState(true);
+  useEffect(() => {
+    setTimeout(() => {
+      setShowSpinner(false);
+    }, 2000);
+  }, []);
+
+  //Renderizando los honorarios //
+  const honorarios = useSelector((state) => state.honorario);
+  const primerArreglo = honorarios.slice(0, 1)[0];
+  const [honorar, setHonorar] = useState(primerArreglo);
+
+  useEffect(() => {
+    dispatch(getHonorario());
   }, []);
 
   useEffect(() => {
-    setAgente(primerArreglo);
+    setHonorar(primerArreglo);
   }, []);
+
+  const [mostrarAgentes, setMostrarAgentes] = useState({});
 
   //MOSTRANDO EL FORMULARIO DE CREACION //
   const [mostrarFormulario, setMostrarFormulario] = useState(false);
@@ -39,97 +60,6 @@ const ExpandedComponent = () => {
   function handleCerrarFormulario() {
     setMostrarFormulario(false);
   }
-
-  //FIN FORMULARIO DE CREACION//
-  
-  return (
-    <div className="p-3">
-      <div className="d-flex align-items-center justify-content-between">
-        <div>
-          <h5>Agentes asociados al Operativo</h5>
-          <hr />
-        </div>
-
-        <button
-          type="button"
-          className="btn btn-success"
-          onClick={handleMostrarFormulario}
-        >
-          Agregar Agente <BsFillPersonFill />
-        </button>
-        {mostrarFormulario && (
-          <div
-            style={{
-              position: "fixed",
-              top: "45%",
-              left: "50%",
-              transform: "translate(-50%, -50%)",
-              backgroundColor: "white",
-              zIndex: "999",
-            }}
-          >
-            <div
-              className="form-container pt-2"
-              style={{
-                padding: "20px",
-                boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
-                border: "1px solid gray",
-              }}
-            >
-              <FormHonorario handleCerrarFormulario={handleCerrarFormulario} />
-            </div>
-          </div>
-        )}
-      </div>
-
-      <table className="table table-responsive">
-        <thead>
-          <tr>
-            <th scope="col">CUIL</th>
-            <th scope="col">DNI</th>
-            <th scope="col">Nombre</th>
-            <th scope="col">CBU</th>
-            <th scope="col">Acción</th>
-          </tr>
-        </thead>
-      </table>
-    </div>
-  );
-};
-
-const columns = [
-  { name: "Referencia", selector: (row) => row.referencia, sortable: true },
-  {
-    name: "Fecha",
-    selector: (row) => row.fecha,
-    sortable: true,
-    format: (row) => moment(row.fecha).format("L"),
-  },
-  { name: "Descripción", selector: (row) => row.descripcion, sortable: true },
-];
-
-const TablaHonorarios = ({ ...props }) => {
-  const dispatch = useDispatch();
-  const operativos = useSelector((state) => state.operativos);
-  const primerArreglo = operativos.slice(0, 1)[0];
-  const [search, setSearch] = useState("");
-  const [honorario, setHonorario] = useState(primerArreglo);
-  const { paginationOptions } = usePagination(primerArreglo);
-
-  useEffect(() => {
-    dispatch(getOperativos());
-  }, []);
-
-  useEffect(() => {
-    setHonorario(primerArreglo);
-  }, [primerArreglo]);
-
-  const [showSpinner, setShowSpinner] = useState(true);
-  useEffect(() => {
-    setTimeout(() => {
-      setShowSpinner(false);
-    }, 2000);
-  }, []);
 
   //-------------------------------- SEARCHBAR --------------------------- //
 
@@ -144,9 +74,9 @@ const TablaHonorarios = ({ ...props }) => {
 
   const filterByReferencia = (value) => {
     if (!value) {
-      setHonorario(primerArreglo);
+      setHonorario(primerArregloOper);
     } else {
-      const arrayCache = primerArreglo.filter((oper) =>
+      const arrayCache = primerArregloOper.filter((oper) =>
         oper.referencia.toLowerCase().includes(value.toLowerCase())
       );
       setHonorario(arrayCache);
@@ -171,39 +101,141 @@ const TablaHonorarios = ({ ...props }) => {
     );
   }
 
+  const columns = [
+    {
+      name: "",
+      cell: (row) => (
+        <button
+          type="button"
+          className="btn btn-link"
+          onClick={() => setMostrarAgentes(!mostrarAgentes)}
+        >
+          {mostrarAgentes ? (
+            <BsChevronDown
+              style={{ fontSize: "1.2rem", transform: "rotate(-90deg)" }}
+            />
+          ) : (
+            <BsChevronDown style={{ fontSize: "1.2rem" }} />
+          )}
+        </button>
+      ),
+    },
+    {
+      name: "Proceso de Donación",
+      selector: (row) => row.referencia,
+      sortable: true,
+    },
+    {
+      name: "Fecha del Operativo",
+      selector: (row) => row.fecha,
+      sortable: true,
+      format: (row) => moment(row.fecha).format("L"),
+    },
+    {
+      name: "Descripción del Operativo",
+      selector: (row) => row.descripcion,
+      sortable: true,
+    },
+  ];
+
   return (
-    <div>
-      <div className="mb-5">
-        <h1>Honorarios</h1>
-        <h5 className="subtitulo" style={{ color: "#5DADE2" }}>
-          Carga de Honorarios Variables
-        </h5>
-        <hr />
-        <div className="input-group mb-3" style={{ maxWidth: "40%" }}>
-          <input
-            type="text"
-            className="form-control"
-            placeholder="Buscar por Referencia"
-            onChange={handleOnChange}
-            value={search}
-            autoComplete="off"
-          />
+    <>
+      <div>
+        <div className="mb-5">
+          <h1>Honorarios</h1>
+          <h5 className="subtitulo" style={{ color: "#5DADE2" }}>
+            Carga de Honorarios Variables
+          </h5>
+          <hr />
+          <div className="input-group mb-3" style={{ maxWidth: "40%" }}>
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Buscar por Referencia"
+              onChange={handleOnChange}
+              value={search}
+              autoComplete="off"
+            />
+          </div>
         </div>
+        <DataTable
+          columns={columns}
+          data={honorario}
+          pagination
+          striped
+          paginationComponentOptions={paginationOptions}
+          noDataComponent={
+            <EmptyTable msg="No se encontró el PD con ese número de Referencia" />
+          }
+        />
+
+        {mostrarAgentes && (
+          <div>
+            <div className="p-3">
+              <table className="table table-responsive">
+                <thead>
+                  <tr>
+                    <th scope="col">CUIL</th>
+                    <th scope="col">Nombre Completo</th>
+                    <th scope="col">Función</th>
+                    <th scope="col">Valor</th>
+                  </tr>
+                </thead>
+                {/* <tbody>
+                  {operativo.agentes.map((agente) => (
+                    <tr key={agente.id}>
+                      <td>{agente.cuil}</td>
+                      <td>{agente.nombreCompleto}</td>
+                      <td>{agente.funcion}</td>
+                      <td>{agente.valor}</td>
+                    </tr>
+                  ))}
+                </tbody> */}
+              </table>
+            </div>
+            <div className="d-flex align-items-center justify-content-between">
+              <div>
+                <h5>Agentes asociados al Operativo</h5>
+                <hr />
+              </div>
+
+              <button
+                type="button"
+                className="btn btn-success"
+                onClick={handleMostrarFormulario}
+              >
+                Agregar Agente <BsFillPersonFill />
+              </button>
+              {mostrarFormulario && (
+                <div
+                  style={{
+                    position: "fixed",
+                    top: "45%",
+                    left: "50%",
+                    transform: "translate(-50%, -50%)",
+                    backgroundColor: "white",
+                    zIndex: "999",
+                  }}
+                >
+                  <div
+                    className="form-container pt-2"
+                    style={{
+                      padding: "20px",
+                      boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+                      border: "1px solid gray",
+                    }}
+                  >
+                    <FormHonorario
+                      handleCerrarFormulario={handleCerrarFormulario}
+                    />
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
       </div>
-      <DataTable
-        columns={columns}
-        data={honorario}
-        pagination
-        striped
-        paginationComponentOptions={paginationOptions}
-        noDataComponent={
-          <EmptyTable msg="No se encontro el Agente con ese CUIL" />
-        }
-        expandableRows
-        expandableRowsComponent={ExpandedComponent}
-        {...props}
-      />
-    </div>
+    </>
   );
 };
 
