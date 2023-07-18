@@ -1,6 +1,7 @@
 import React from "react";
 
-const Modal = ({ title, referenceID, children }) => {
+const Modal = ({ title, referenceID, data, children }) => {
+  console.log(data);
   return (
     <div
       className="modal fade"
