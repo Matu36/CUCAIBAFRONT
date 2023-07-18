@@ -6,83 +6,8 @@ import EmptyTable from "../components/UI/EmptyTable";
 import DataTable from "react-data-table-component";
 import moment from "moment";
 import { useSelector, useDispatch } from "react-redux";
-import { getOperativos, getHonorario } from "../Redux/Actions";
-import { FormHonorario } from "../components/FormHonorario";
-import { useHonorarios } from "../hooks/useHonorarios";
-
-import { AiOutlinePlus } from "react-icons/ai";
-import Modal from "../components/UI/Modal";
-
-const ExpandedComponent = ({ data: operativo }) => {
-  const { data, isLoading } = useHonorarios(operativo.id).honorariosQuery;
-  return (
-    <>
-      <Modal title="Hola Mundo" referenceID="formModal">
-        <FormHonorario />
-      </Modal>
-      <div>
-        <div className="p-3">
-          <div className="agentes-container">
-            <div className="d-flex align-items-center justify-content-between">
-              <div>
-                <h5>Agentes asociados al Operativo</h5>
-                <hr />
-              </div>
-            </div>
-            <div className="p-3">
-              <table className="table table-responsive">
-                <thead>
-                  <tr>
-                    <th scope="col">Apellido</th>
-                    <th scope="col">Nombre</th>
-                    <th scope="col">CUIL</th>
-                    <th scope="col">Acción</th>
-                  </tr>
-                </thead>
-                {isLoading && (
-                  <tbody>
-                    <tr>
-                      <td colSpan={4}>Cargando...</td>
-                    </tr>
-                  </tbody>
-                )}
-                {!isLoading && typeof data === "object" ? (
-                  <tbody>
-                    {data.map((agente) => (
-                      <tr key={agente.persona_id}>
-                        <td>{agente.apellido}</td>
-                        <td>{agente.nombre}</td>
-                        <td>{agente.cuil}</td>
-                        <td>
-                          <button
-                            type="button"
-                            className="btn btn-primary btn-sm"
-                            data-bs-toggle="modal"
-                            data-bs-target="#formModal"
-                          >
-                            <AiOutlinePlus /> Agregar Función
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                ) : (
-                  <tbody>
-                    <tr>
-                      <td colSpan={4}>
-                        No hay ningún Agente Asociado al Operativo
-                      </td>
-                    </tr>
-                  </tbody>
-                )}
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-    </>
-  );
-};
+import RowExpandedComponent from "../components/UI/Table/RowExpandedComponent";
+import { getHonorario, getOperativos } from "../Redux/Actions";
 
 const TablaHonorarios = () => {
   const dispatch = useDispatch();
@@ -211,7 +136,7 @@ const TablaHonorarios = () => {
             <EmptyTable msg="No se encontró el PD con ese número de Referencia" />
           }
           expandableRows
-          expandableRowsComponent={ExpandedComponent}
+          expandableRowsComponent={RowExpandedComponent}
         />
       </div>
     </>
