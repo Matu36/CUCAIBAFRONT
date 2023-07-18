@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import "./styles/tablaHonorarios.css";
-import { BsFillPersonFill } from "react-icons/bs";
 import "../lib/tooltip";
 import { usePagination } from "../hooks/usePagination";
 import EmptyTable from "../components/UI/EmptyTable";
@@ -9,59 +8,79 @@ import moment from "moment";
 import { useSelector, useDispatch } from "react-redux";
 import { getOperativos, getHonorario } from "../Redux/Actions";
 import { FormHonorario } from "../components/FormHonorario";
-import { BsChevronDown } from "react-icons/bs";
 import { useHonorarios } from "../hooks/useHonorarios";
+
+import { AiOutlinePlus } from "react-icons/ai";
+import Modal from "../components/UI/Modal";
 
 const ExpandedComponent = ({ data: operativo }) => {
   const { data, isLoading } = useHonorarios(operativo.id).honorariosQuery;
   return (
-    <div>
-      <div className="p-3">
-        <div className="agentes-container">
-          <div className="d-flex align-items-center justify-content-between">
-            <div>
-              <h5>Agentes asociados al Operativo</h5>
-              <hr />
+    <>
+      <Modal title="Hola Mundo">
+        <FormHonorario />
+      </Modal>
+      <div>
+        <div className="p-3">
+          <div className="agentes-container">
+            <div className="d-flex align-items-center justify-content-between">
+              <div>
+                <h5>Agentes asociados al Operativo</h5>
+                <hr />
+              </div>
             </div>
-          </div>
-          <div className="p-3">
-            <table className="table table-responsive">
-              <thead>
-                <tr>
-                  <th scope="col">Apellido</th>
-                  <th scope="col">Nombre</th>
-                  <th scope="col">CUIL</th>
-                  <th scope="col">Acción</th>
-                </tr>
-              </thead>
-              {isLoading && (
-                <tr>
-                  <td colSpan={4}>Cargando...</td>
-                </tr>
-              )}
-              {!isLoading && typeof data === "object" ? (
-                <tbody>
-                  {data.map((agente) => (
-                    <tr key={agente.persona_id}>
-                      <td>{agente.apellido}</td>
-                      <td>{agente.nombre}</td>
-                      <td>{agente.cuil}</td>
-                      <button>agregar</button>
+            <div className="p-3">
+              <table className="table table-responsive">
+                <thead>
+                  <tr>
+                    <th scope="col">Apellido</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">CUIL</th>
+                    <th scope="col">Acción</th>
+                  </tr>
+                </thead>
+                {isLoading && (
+                  <tbody>
+                    <tr>
+                      <td colSpan={4}>Cargando...</td>
                     </tr>
-                  ))}
-                </tbody>
-              ) : (
-                <tr>
-                  <td colSpan={4}>
-                    No hay ningún Agente Asociado al Operativo
-                  </td>
-                </tr>
-              )}
-            </table>
+                  </tbody>
+                )}
+                {!isLoading && typeof data === "object" ? (
+                  <tbody>
+                    {data.map((agente) => (
+                      <tr key={agente.persona_id}>
+                        <td>{agente.apellido}</td>
+                        <td>{agente.nombre}</td>
+                        <td>{agente.cuil}</td>
+                        <td>
+                          <button
+                            type="button"
+                            className="btn btn-primary btn-sm"
+                            data-bs-toggle="modal"
+                            data-bs-target="#formModal"
+                          >
+                            <AiOutlinePlus /> Agregar Función
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                ) : (
+                  <tbody>
+                    <tr>
+                      <td colSpan={4}>
+                        No hay ningún Agente Asociado al Operativo
+                      </td>
+                    </tr>
+                  </tbody>
+                )}
+              </table>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
@@ -102,18 +121,6 @@ const TablaHonorarios = () => {
   useEffect(() => {
     setHonorar(primerArreglo);
   }, []);
-
-  const [mostrarAgentes, setMostrarAgentes] = useState(null);
-
-  //MOSTRANDO EL FORMULARIO DE CREACION //
-  const [mostrarFormulario, setMostrarFormulario] = useState(false);
-  function handleMostrarFormulario() {
-    setMostrarFormulario(true);
-  }
-
-  function handleCerrarFormulario() {
-    setMostrarFormulario(false);
-  }
 
   //-------------------------------- SEARCHBAR --------------------------- //
 
