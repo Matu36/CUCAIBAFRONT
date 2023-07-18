@@ -17,7 +17,7 @@ const ExpandedComponent = ({ data: operativo }) => {
   const { data, isLoading } = useHonorarios(operativo.id).honorariosQuery;
   return (
     <>
-      <Modal title="Hola Mundo">
+      <Modal title="Hola Mundo" referenceID="formModal">
         <FormHonorario />
       </Modal>
       <div>
