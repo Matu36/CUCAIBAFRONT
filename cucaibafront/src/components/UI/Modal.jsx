@@ -1,12 +1,12 @@
 import React from "react";
 
-const Modal = ({ title, children }) => {
+const Modal = ({ title, referenceID, children }) => {
   return (
     <div
       className="modal fade"
-      id="formModal"
+      id={`${referenceID}`}
       tabIndex="-1"
-      aria-labelledby="formModal"
+      aria-labelledby={`${referenceID}`}
       aria-hidden="true"
     >
       <div className="modal-dialog">

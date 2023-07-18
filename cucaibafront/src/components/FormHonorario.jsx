@@ -9,7 +9,7 @@ import {
 } from "../Redux/Actions";
 import Swal from "sweetalert2";
 
-export const FormHonorario = ({handleCerrarFormulario}) => {
+export const FormHonorario = () => {
   const agentes = useSelector((state) => state.agentes);
   let dispatch = useDispatch();
   const primerArreglo = agentes.slice(0, 1)[0];
@@ -31,9 +31,7 @@ export const FormHonorario = ({handleCerrarFormulario}) => {
             className="spinner-border spinner-border-lg text-primary"
             style={{ width: "5rem", height: "5rem" }}
             role="status"
-          >
-
-          </div>
+          ></div>
         ) : null}
       </div>
     );
@@ -47,6 +45,7 @@ export const FormHonorario = ({handleCerrarFormulario}) => {
 
   useEffect(() => {
     setAgente(primerArreglo);
+    console.log(agente);
   }, []);
 
   //Renderizando los módulos
@@ -66,6 +65,7 @@ export const FormHonorario = ({handleCerrarFormulario}) => {
 
   useEffect(() => {
     setModulo(arregloModulos);
+    console.log(modulo);
   }, []);
 
   //CREACION DE HONORARIO //
@@ -245,7 +245,6 @@ export const FormHonorario = ({handleCerrarFormulario}) => {
         />
         <div className="d-flex justify-content-end">
           <button
-            onClick={handleCerrarFormulario}
             type="submit"
             className="btn btn-outline-secondary pb-2"
             style={{ marginRight: "10px" }}
