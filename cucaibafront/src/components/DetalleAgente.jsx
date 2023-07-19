@@ -47,6 +47,13 @@ const DetalleAgente = () => {
     setMostrarDesplegable(!mostrarDesplegable);
   };
 
+  const obtenerMesYAño = (fecha) => {
+    const fechaObj = new Date(fecha);
+    const mes = String(fechaObj.getMonth() + 1).padStart(2, '0');
+    const anio = fechaObj.getFullYear();
+    return `${mes}/${anio}`;
+  };
+
   return (
     <div className="card">
       <div className="card-header">
@@ -76,38 +83,38 @@ const DetalleAgente = () => {
         </button>
       </div>
       {mostrarDesplegable && (
-        <div style={{ display: 'flex' }}>
-        {operativosAsociados.length > 0 ? (
-          operativosAsociados.map((operativo) => (
-            <div
-              key={operativo.operativo_id}
-              style={{
-                border: '1px solid gray',
-                padding: '10px',
-                marginTop:"20px",
-                marginRight: '10px',
-               
-              }}
-            >
-              <br />
-              <span style={{ fontWeight: 'bold'}}>Número de PD: </span>
-              {operativo.referencia}
-              <br />
-              <span style={{ fontWeight: 'bold'}}>Función Desempeñada: </span>
-              {operativo.descripcion}
-              <br />
-              <span style={{ fontWeight: 'bold'}}>Valor: $</span>
-              {operativo.valor}
-              <br />
-              <span style={{ fontWeight: 'bold'}}>Fecha: </span>
-              {operativo.fecha}
-            </div>
-          ))
-        ) : (
-          <div>No hay operativos asociados</div>
-        )}
-      </div>
-      
+        <div style={{ display: "flex" }}>
+          {operativosAsociados.length > 0 ? (
+            operativosAsociados.map((operativo) => (
+              <div
+                key={operativo.operativo_id}
+                style={{
+                  border: "1px solid gray",
+                  padding: "10px",
+                  marginTop: "20px",
+                  marginRight: "10px",
+                }}
+              >
+                <br />
+                <span style={{ fontWeight: "bold" }}>Número de PD: </span>
+                {operativo.referencia}
+                <br />
+                <span style={{ fontWeight: "bold" }}>
+                  Función Desempeñada:{" "}
+                </span>
+                {operativo.descripcion}
+                <br />
+                <span style={{ fontWeight: "bold" }}>Valor: $ </span>
+                {operativo.valor.toFixed(2)}
+                <br />
+                <span style={{ fontWeight: "bold" }}>Fecha: </span>
+                {obtenerMesYAño(operativo.fecha)}
+              </div>
+            ))
+          ) : (
+            <div>No hay operativos asociados</div>
+          )}
+        </div>
       )}
     </div>
   );
