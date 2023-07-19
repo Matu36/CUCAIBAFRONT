@@ -5,7 +5,7 @@ import { ImArrowLeft } from "react-icons/im";
 const BackButton = () => {
   const navigate = useNavigate();
   return (
-    <button onClick={() => navigate(-1)} className="btn btn-link">
+    <button onClick={() => navigate(-1)} className="btn btn-primary">
       <i className="bi bi-arrow-left">
         {" "}
         <ImArrowLeft />{" "}
