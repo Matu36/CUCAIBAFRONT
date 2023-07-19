@@ -4,9 +4,10 @@ import { getOperativos } from "../Redux/Actions";
 import DataTable from "react-data-table-component";
 import EmptyTable from "./UI/EmptyTable";
 import { usePagination } from "../hooks/usePagination";
-import Moment from "moment";
 import Spinner from "./UI/Spinner";
 import MultiFilter from "./UI/MultiFilter";
+import { obtenerMesYAño } from "../utils/MesAño";
+import "../assets/styles/detalle.css"
 
 const GetOperativos = () => {
   const dispatch = useDispatch();
@@ -20,7 +21,6 @@ const GetOperativos = () => {
   });
   const primerArreglo = operativos.slice(0, 1)[0];
   const [operativo, setOperativo] = useState(primerArreglo);
-console.log(primerArreglo);
   const { paginationOptions } = usePagination(primerArreglo);
 
   useEffect(() => {
@@ -46,17 +46,18 @@ console.log(primerArreglo);
   const multiFilter = (array, search) => {
     if (!search.ref && !search.descripcion) setOperativo(array);
 
-    let arrayCache = array
-      .filter((o) => o.referencia.includes(search.ref))
-      .filter((o) =>
-        o.descripcion.toLowerCase().includes(search.descripcion.toLowerCase())
-      );
-    setOperativo(arrayCache);
-    // }
+    // let arrayCache = array
+    //   .filter((o) => o.referencia.includes(search.ref))
+    //   .filter((o) =>
+    //     o.descripcion.toLowerCase().includes(search.descripcion.toLowerCase())
+    //   );
+    // setOperativo(arrayCache);
+    // // }
   };
   //-------------------------------- FIN SEARCHBAR --------------------------- //
 
   //--------------------------------- PAGINADO-------------------------------- //
+
   const columns = [
     {
       name: "Proceso de Donación",
@@ -67,16 +68,15 @@ console.log(primerArreglo);
       name: "Fecha",
       selector: (row) => row.fecha,
       sortable: true,
-      format: (row) => Moment(row.fecha).format("L"),
+      format: (row) => obtenerMesYAño(row.fecha),
     },
     { name: "Descripción", selector: (row) => row.descripcion, sortable: true },
   ];
 
   //--------------------------------- FIN PAGINADO-------------------------------- //
 
-
   return (
-    <div>
+    <div className="card">
       {isLoading && <Spinner />}
       {!isLoading && (
         <>
