@@ -5,6 +5,7 @@ import DataTable from "react-data-table-component";
 import EmptyTable from "./UI/EmptyTable";
 import { usePagination } from "../hooks/usePagination";
 import { Link } from "react-router-dom";
+import "../assets/styles/detalle.css"
 
 const GetAgentes = ({ ...props }) => {
   const dispatch = useDispatch();
@@ -93,7 +94,7 @@ const GetAgentes = ({ ...props }) => {
   //---------------------------------FIN SPINNER ------------------------------------//
 
   return (
-    <div>
+    <div className="card">
       <h1>Agentes</h1>
       <h5 className="subtitulo" style={{ color: "#5DADE2" }}>
         Listado de todos los Agentes cargados

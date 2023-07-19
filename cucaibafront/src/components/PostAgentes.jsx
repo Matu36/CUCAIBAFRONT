@@ -3,10 +3,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import { getPersonas } from "../Redux/Actions";
-import { useNavigate } from "react-router-dom";
+import "../assets/styles/detalle.css";
 
 const postAgente = () => {
-  let navigate = useNavigate();
   let dispatch = useDispatch();
 
   const personas = useSelector((state) => state.personas);
@@ -103,6 +102,7 @@ const postAgente = () => {
 
   return (
     <form onSubmit={handleOnSubmit}>
+      <div className="card">
       <div className="mb-3">
         <label htmlFor="inputFechadePago" className="form-label">
           DNI
@@ -236,11 +236,14 @@ const postAgente = () => {
           }
         />
       </div>
-
-      <button type="submit" className="btn btn-success">
+      
+      <button type="submit" className="btn btn-success" style={{maxWidth:"10%"}}>
         Agregar Agente
       </button>
+      </div>
+     
     </form>
+    
   );
 };
 

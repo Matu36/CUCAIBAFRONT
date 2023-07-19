@@ -4,7 +4,7 @@ import "../lib/tooltip";
 import { usePagination } from "../hooks/usePagination";
 import EmptyTable from "../components/UI/EmptyTable";
 import DataTable from "react-data-table-component";
-
+import "../assets/styles/detalle.css"
 import moment from "moment";
 import { useSelector, useDispatch } from "react-redux";
 import RowExpandedComponent from "../components/UI/Table/RowExpandedComponent";
@@ -109,7 +109,7 @@ const TablaHonorarios = () => {
 
   return (
     <>
-      <div>
+      <div className="card">
         <div className="mb-5">
           <h1>Honorarios</h1>
           <h5 className="subtitulo" style={{ color: "#5DADE2" }}>

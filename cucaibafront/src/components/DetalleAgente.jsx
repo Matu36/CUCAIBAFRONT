@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getAgentes, getHonorario } from "../Redux/Actions";
 import "../assets/styles/detalle.css";
+import { obtenerMesYAño } from "../utils/MesAño";
 
 const DetalleAgente = () => {
   const dispatch = useDispatch();
@@ -45,13 +46,6 @@ const DetalleAgente = () => {
 
   const toggleDesplegable = () => {
     setMostrarDesplegable(!mostrarDesplegable);
-  };
-
-  const obtenerMesYAño = (fecha) => {
-    const fechaObj = new Date(fecha);
-    const mes = String(fechaObj.getMonth() + 1).padStart(2, '0');
-    const anio = fechaObj.getFullYear();
-    return `${mes}/${anio}`;
   };
 
   return (

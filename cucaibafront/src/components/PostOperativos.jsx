@@ -2,6 +2,7 @@ import { postOperativo } from "../Redux/Actions";
 import { useDispatch } from "react-redux";
 import { useState } from "react";
 import Swal from "sweetalert2";
+import "../assets/styles/detalle.css";
 
 const PostOperativos = () => {
   let dispatch = useDispatch();
@@ -54,6 +55,7 @@ const PostOperativos = () => {
   };
   return (
     <form onSubmit={handleOnSubmit}>
+      <div className="card">
       <div className="mb-3">
         <label for="inputReferncia" class="form-label">
           Proceso de Donación
@@ -110,11 +112,11 @@ const PostOperativos = () => {
       </div>
       <button
         type="submit"
-        className="btn btn-primary"
-        style={{ background: "var(--ms-main-color)" }}
+        className="btn btn-success btn-md" style={{maxWidth:"13%"}}
       >
         Agregar Operativo
       </button>
+      </div>
     </form>
   );
 };
