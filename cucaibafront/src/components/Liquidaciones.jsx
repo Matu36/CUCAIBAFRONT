@@ -36,7 +36,7 @@ const Liquidaciones = () => {
       <table>
         <thead>
           <tr>
-            <th>Proceso de Donación</th>
+            <th>PD Nro</th>
             <th>CUIL</th>
             <th>Apellido</th>
             <th>Nombre</th>
@@ -51,7 +51,7 @@ const Liquidaciones = () => {
               <td>{agente.cuil}</td>
               <td>{agente.apellido}</td>
               <td>{agente.nombre}</td>
-              <td>{agente.valor}</td>
+              <td> $ {agente.valor.toFixed(2)}</td>
               <td>
                 <div className="d-flex">
                   <input
