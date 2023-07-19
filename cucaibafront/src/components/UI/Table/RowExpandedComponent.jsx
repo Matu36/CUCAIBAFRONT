@@ -5,15 +5,19 @@ import Modal from "../Modal";
 import { FormHonorario } from "../../FormHonorario";
 import { AiOutlinePlus } from "react-icons/ai";
 import { useOperativo } from "../../../hooks/useOperativo";
+import PostHonorarios from "../../PostHonorarios";
+import { useMutation } from "@tanstack/react-query";
+import { HonorariosAPI } from "../../../api/HonorariosAPI";
 
 const RowExpandedComponent = ({ data: operativo }) => {
   const { data: agentes, isLoading: loadingAgentes } = useOperativo(
     operativo.id
   ).agentesOperativoQuery;
 
-  const [modalData, setModalData] = useState({
-    operativoID: operativo.id,
-    agenteID: 0,
+  const [honorarioData, setHonorarioData] = useState({
+    operativo_id: operativo.id,
+    agente_id: 0,
+    modulo_id: 0,
   });
 
   const {
@@ -21,19 +25,32 @@ const RowExpandedComponent = ({ data: operativo }) => {
     isLoading: honorariosLoading,
     isError,
     refetch,
-  } = useHonorarios(operativo.id, modalData.agenteID).honorariosAgenteQuery;
+  } = useHonorarios(
+    operativo.id,
+    honorarioData.agente_id
+  ).honorariosAgenteQuery;
+
+  const mutation = useMutation(async (newHonorario) => {
+    return await HonorariosAPI.post("", newHonorario);
+  });
 
   const handleClick = (id) => {
-    setModalData({ ...modalData, agenteID: id });
+    setHonorarioData({ ...honorarioData, agente_id: id });
     refetch();
   };
+
+  const handleChangeModuloId = (id) => {
+    setHonorarioData({ ...honorarioData, modulo_id: id });
+  };
+
+  const crearHonorario = () => {
+    mutation.mutate({ ...honorarioData, fechaModif: new Date() });
+    refetch();
+  };
+
   return (
     <>
-      <Modal
-        title="Agregar función al Agente"
-        data={modalData}
-        referenceID="formModal"
-      >
+      <Modal title="Agregar función al Agente" referenceID="formModal">
         <div className="p-3">
           <h4>Modulos Pendientes del Agente</h4>
           <hr />
@@ -60,7 +77,10 @@ const RowExpandedComponent = ({ data: operativo }) => {
             </tbody>
           </table>
         </div>
-        <FormHonorario />
+        <PostHonorarios
+          handleModuloId={handleChangeModuloId}
+          handleClick={crearHonorario}
+        />
       </Modal>
       <div>
         <div className="p-3">
@@ -75,7 +95,7 @@ const RowExpandedComponent = ({ data: operativo }) => {
               <table className="table table-responsive">
                 <thead>
                   <tr>
-                    <th scope="col">Descripción</th>
+                    <th scope="col">Apellido</th>
                     <th scope="col">Nombre</th>
                     <th scope="col">CUIL</th>
                     <th scope="col">Acción</th>
