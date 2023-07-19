@@ -1,10 +1,9 @@
 import React from "react";
 
-const Modal = ({ title, referenceID, data, children }) => {
-  // console.log(data);
+const Modal = ({ title, referenceID, children }) => {
   return (
     <div
-      className="modal fade"
+      className="modal fade modal-lg"
       id={`${referenceID}`}
       tabIndex="-1"
       aria-labelledby={`${referenceID}`}
@@ -28,10 +27,10 @@ const Modal = ({ title, referenceID, data, children }) => {
               className="btn btn-secondary"
               data-bs-dismiss="modal"
             >
-              Close
+              Salir
             </button>
             <button type="button" className="btn btn-primary">
-              Save changes
+              Guardar Cambios
             </button>
           </div>
         </div>
