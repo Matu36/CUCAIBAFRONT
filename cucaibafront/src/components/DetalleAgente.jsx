@@ -77,7 +77,7 @@ const DetalleAgente = () => {
         </button>
       </div>
       {mostrarDesplegable && (
-        <div style={{ display: "flex" }}>
+        <div style={{ display: "flex", flexWrap: "wrap" }}>
           {operativosAsociados.length > 0 ? (
             operativosAsociados.map((operativo) => (
               <div
@@ -85,8 +85,10 @@ const DetalleAgente = () => {
                 style={{
                   border: "1px solid gray",
                   padding: "10px",
+                  paddingTop: "0px",
                   marginTop: "20px",
                   marginRight: "10px",
+                  flex: "0 0 calc(50% - 20px)",
                 }}
               >
                 <br />

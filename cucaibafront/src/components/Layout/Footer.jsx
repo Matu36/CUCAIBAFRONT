@@ -3,9 +3,9 @@ import "../../assets/styles/style.css";
 
 const Footer = () => {
   return (
-    <footer id="footer" class="footer mt-auto py-3">
+    <footer id="footer" className="footer mt-auto py-3">
       <span> Liquidaciones de Honorarios - CUCAIBA </span>
-      <span class="copy"> SIGLA SISTEMA - versión 2.0 </span>
+      <span className="copy"> SIGLA SISTEMA - versión 2.0 </span>
     </footer>
   );
 };
