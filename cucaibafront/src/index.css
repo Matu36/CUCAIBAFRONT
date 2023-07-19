@@ -17,3 +17,9 @@
 #root {
   background: "#f7f7f7";
 }
+
+
+.rdt_TableCol_Sortable {
+  font-weight: bold;
+  font-size: 0.8rem;
+}

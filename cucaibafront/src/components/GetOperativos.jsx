@@ -7,7 +7,7 @@ import { usePagination } from "../hooks/usePagination";
 import Spinner from "./UI/Spinner";
 import MultiFilter from "./UI/MultiFilter";
 import { obtenerMesYAño } from "../utils/MesAño";
-import "../assets/styles/detalle.css"
+import "../assets/styles/detalle.css";
 
 const GetOperativos = () => {
   const dispatch = useDispatch();
@@ -36,27 +36,43 @@ const GetOperativos = () => {
 
   //-------------------------------- SEARCHBAR --------------------------- //
 
-  useEffect(() => {
-    multiFilter(primerArreglo, search);
-  }, [search]);
+  // useEffect(() => {
+  //   filter(name);
+  // }, [search]);
 
   const handleOnChange = (e) => {
+    let filteredArray = [];
+
     setSearch({ ...search, [e.target.name]: e.target.value });
-  };
-  const multiFilter = (array, search) => {
-    if (!search.ref && !search.descripcion) setOperativo(array);
 
-    // let arrayCache = array
-    //   .filter((o) => o.referencia.includes(search.ref))
-    //   .filter((o) =>
-    //     o.descripcion.toLowerCase().includes(search.descripcion.toLowerCase())
-    //   );
-    // setOperativo(arrayCache);
-    // // }
-  };
-  //-------------------------------- FIN SEARCHBAR --------------------------- //
+    switch (e.target.name) {
+      case "ref":
+        filteredArray = primerArreglo.filter((o) =>
+          o.referencia.includes(search.ref.toLowerCase())
+        );
+        if (filteredArray.length > 0) {
+          setOperativo(filteredArray);
+        } else {
+          setOperativo(primerArreglo);
+        }
+        break;
 
-  //--------------------------------- PAGINADO-------------------------------- //
+      case "descripcion":
+        filteredArray = primerArreglo.filter((o) =>
+          o.descripcion.toLowerCase().includes(search.descripcion.toLowerCase())
+        );
+        if (filteredArray.length > 0) {
+          setOperativo(filteredArray);
+        } else {
+          setOperativo(primerArreglo);
+        }
+        break;
+
+      default:
+        setOperativo(primerArreglo);
+        break;
+    }
+  };
 
   const columns = [
     {
