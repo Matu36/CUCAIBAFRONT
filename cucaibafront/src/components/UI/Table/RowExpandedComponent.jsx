@@ -10,9 +10,11 @@ import { useMutation } from "@tanstack/react-query";
 import { HonorariosAPI } from "../../../api/HonorariosAPI";
 
 const RowExpandedComponent = ({ data: operativo }) => {
-  const { data: agentes, isLoading: loadingAgentes } = useOperativo(
-    operativo.id
-  ).agentesOperativoQuery;
+  const {
+    data: agentes,
+    isLoading: loadingAgentes,
+    refetch: refetchAgentes,
+  } = useOperativo(operativo.id).agentesOperativoQuery;
 
   const [honorarioData, setHonorarioData] = useState({
     operativo_id: operativo.id,
@@ -82,14 +84,37 @@ const RowExpandedComponent = ({ data: operativo }) => {
           handleClick={crearHonorario}
         />
       </Modal>
+      <Modal
+        title="Agregar Agente al Operativo"
+        referenceID="agregarAgenteModal"
+      >
+        <div>
+          <div>
+            <h5>Agentes Disponibles</h5>
+            <hr />
+          </div>
+        </div>
+        <PostHonorarios
+          handleModuloId={handleChangeModuloId}
+          handleClick={crearHonorario}
+        />
+      </Modal>
       <div>
         <div className="p-3">
           <div className="agentes-container">
-            <div className="d-flex align-items-center justify-content-between">
-              <div>
+            <div>
+              <div className="d-flex align-items-center justify-content-between">
                 <h5>Agentes asociados al Operativo</h5>
-                <hr />
+                <button
+                  type="btn"
+                  className="btn btn-success"
+                  data-bs-toggle="modal"
+                  data-bs-target="#agregarAgenteModal"
+                >
+                  Agregar Agente
+                </button>
               </div>
+              <hr />
             </div>
             <div className="p-3">
               <table className="table table-responsive">
