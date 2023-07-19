@@ -1,6 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
 import { ModulosAPI } from "../api/ModulosAPI";
-import { useEffect, useState } from "react";
 
 const getModulos = async () => {
   const { data } = await ModulosAPI.get("/");

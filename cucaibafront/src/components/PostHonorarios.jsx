@@ -1,10 +1,26 @@
-import React from "react";
+import React, { useState } from "react";
+import { useModulos } from "../hooks/useModulos";
+import { AiOutlinePlus } from "react-icons/ai";
 
-const PostHonorarios = ({ disabled }) => {
+const PostHonorarios = ({ disabled, handleModuloId, handleClick }) => {
   const { modulosQuery } = useModulos();
-  console.log(modulosQuery.data);
+
+  const [value, setValue] = useState(0);
   const handleChange = (e) => {
-    console.log(e);
+    let arrayValue = e.target.value.split("|");
+
+    setValue(arrayValue[1]);
+    handleModuloId(Number(arrayValue[0]));
+  };
+
+  const handleCreateClick = () => {
+    if (value == 0) {
+      alert("Se tiene que elegir un modulo");
+      return;
+    }
+    setValue(0);
+    handleModuloId(Number(0));
+    handleClick();
   };
 
   return (
@@ -27,11 +43,14 @@ const PostHonorarios = ({ disabled }) => {
             aria-label="Default select example"
             disabled={disabled}
           >
+            <option defaultChecked value={`${0}|${0}`}>
+              Elegí una opción
+            </option>
             {modulosQuery.isLoading ? (
               <option defaultChecked>Cargando...</option>
             ) : (
               modulosQuery.data.map((m) => (
-                <option value={m.id} key={m.id}>
+                <option value={`${m.id}|${m.valor}`} key={m.id}>
                   {m.descripcion}
                 </option>
               ))
@@ -46,7 +65,7 @@ const PostHonorarios = ({ disabled }) => {
             className="form-control"
             type="text"
             id="valorModuloDisabled"
-            value="500"
+            value={value}
             aria-label="Disabled Valor modulo"
             disabled
           />
@@ -60,6 +79,7 @@ const PostHonorarios = ({ disabled }) => {
             type="button"
             className="btn btn-success"
             disabled={disabled}
+            onClick={handleCreateClick}
           >
             <AiOutlinePlus />
           </button>
