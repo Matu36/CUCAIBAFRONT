@@ -75,14 +75,14 @@ const TablaHonorarios = () => {
   if (operativos.length === 0) {
     return (
       <div className="d-flex justify-content-center align-items-center vh-100">
-        {showSpinner ? (
+        {showSpinner ? 
           <div
             className="spinner-border spinner-border-lg text-primary"
             style={{ width: "5rem", height: "5rem" }}
             role="status"
           ></div>
-        ) : (
-          "null"
+         : (
+          null
         )}
       </div>
     );
