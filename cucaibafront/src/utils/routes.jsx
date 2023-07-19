@@ -12,6 +12,7 @@ import TablaHonorarios from "../Pages/TablaHonorarios";
 import AsignarAgente from "../Pages/AsignarAgente";
 import ModulosVista from "../Pages/ModulosVista";
 import LiquidacionesPendientes from "../Pages/Liquidaciones-Pendientes";
+import Detail from "../Pages/Detail";
 
 const router = createBrowserRouter([
   {
@@ -32,6 +33,10 @@ const router = createBrowserRouter([
           {
             path: "/agentes/crear-agente",
             element: <CrearAgente />,
+          },
+          {
+            path: "/agentes/agente/:id",
+            element: <Detail />,
           },
         ],
       },
