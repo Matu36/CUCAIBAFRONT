@@ -4,6 +4,7 @@ import { getAgentes } from "../Redux/Actions";
 import DataTable from "react-data-table-component";
 import EmptyTable from "./UI/EmptyTable";
 import { usePagination } from "../hooks/usePagination";
+import { Link } from "react-router-dom";
 
 const GetAgentes = ({ ...props }) => {
   const dispatch = useDispatch();
@@ -53,6 +54,14 @@ const GetAgentes = ({ ...props }) => {
     { name: "Nombre", selector: (row) => row.nombre, sortable: true },
     { name: "CBU", selector: (row) => row.cbu, sortable: true },
     { name: "CUIL", selector: (row) => row.cuil, sortable: true },
+    { 
+      name: "Acciones",
+      cell: (row) => (
+        <Link to={`/agentes/agente/${row.id}`}>
+          <button className="btn btn-success btn-md">Ver detalle del Agente</button>
+        </Link>
+      ),
+    },
   ];
 
   //------------------------- FIN PAGINADO -----------------------------------//
