@@ -7,6 +7,7 @@ import { usePagination } from "../hooks/usePagination";
 import { Link } from "react-router-dom";
 import "../assets/styles/detalle.css";
 import Spinner from "./UI/Spinner";
+import BackButton from "../components/UI/BackButton";
 
 const GetAgentes = ({ ...props }) => {
   const dispatch = useDispatch();
@@ -41,7 +42,8 @@ const GetAgentes = ({ ...props }) => {
       setAgente(primerArreglo);
     } else {
       const arrayCache = primerArreglo.filter((oper) =>
-        oper.apellido.toLowerCase().includes(value.toLowerCase())
+        oper.apellido.toLowerCase().includes(value.toLowerCase()) ||
+        oper.cuil.toLowerCase().includes(value.toLowerCase())
       );
       setAgente(arrayCache);
     }
@@ -92,7 +94,7 @@ const GetAgentes = ({ ...props }) => {
         <input
           type="text"
           className="form-control"
-          placeholder="Buscar por APELLIDO"
+          placeholder="Buscar por APELLIDO o CUIL"
           onChange={handleOnChange}
           value={search}
           autoComplete="off"
@@ -106,10 +108,13 @@ const GetAgentes = ({ ...props }) => {
         striped
         paginationComponentOptions={paginationOptions}
         noDataComponent={
-          <EmptyTable msg="No se encontro el Agente con ese APELLIDO" />
+          <EmptyTable msg="No se encontro el Agente con los datos ingresados" />
         }
         {...props}
       />
+      <div>
+       <BackButton />
+       </div>
     </div>
   );
 };
