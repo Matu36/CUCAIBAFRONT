@@ -2,27 +2,20 @@ import { useQuery } from "@tanstack/react-query";
 import { AgentesAPI } from "../api/AgentesAPI";
 import { useEffect, useState } from "react";
 
-const getAgentes = async () => {
-  // console.log(args);
+const getAgentes = async (operativoId) => {
+  if (!operativoId) {
+    const { data } = await AgentesAPI.get("/");
 
-  //   const params = new URLSearchParams();
+    return data[0];
+  }
+  if (operativoId) {
+    const { data } = await AgentesAPI.get(`/disponibles/${operativoId}`);
 
-  //   if (state) params.append('state', state);
-
-  //   if (labels.length > 0) {
-  //     const labelString: string = labels.join(',');
-  //     params.append('labels', labelString);
-  //   }
-
-  //   params.append('page', page?.toString());
-  //   params.append('per_page', '5');
-
-  const { data } = await AgentesAPI.get("/");
-
-  return data[0];
+    return data[0];
+  }
 };
 
-export const useAgentes = () => {
+export const useAgentes = (operativoId = 0) => {
   //   const [page, setPage] = useState<number>(1);
 
   //   useEffect(() => {
@@ -44,7 +37,14 @@ export const useAgentes = () => {
     queryFn: () => getAgentes(),
   });
 
+  const agentesDisponiblesQuery = useQuery({
+    queryKey: ["agentes-disponibles", { operativoId }],
+    queryFn: () => getAgentes(operativoId),
+    enabled: operativoId != 0,
+  });
+
   return {
     agentesQuery,
+    agentesDisponiblesQuery,
   };
 };
