@@ -22,7 +22,8 @@ const RowExpandedComponent = ({ data: operativo }) => {
     { name: "CUIL", selector: (row) => row.cuil, sortable: true },
   ];
 
-  const { data: agente } = useAgentes().agentesQuery;
+  const { data: agentesDisponibles, refetch: refetchAgentesDisponibles } =
+    useAgentes(operativo.id || 0).agentesDisponiblesQuery;
 
   const {
     data: agentes,
@@ -75,6 +76,7 @@ const RowExpandedComponent = ({ data: operativo }) => {
   const agregarAgente = () => {
     crearHonorario();
     refetchAgentes();
+    refetchAgentesDisponibles();
   };
 
   const handleSelectChange = (e) => {
@@ -117,6 +119,7 @@ const RowExpandedComponent = ({ data: operativo }) => {
         <PostHonorarios
           handleModuloId={handleChangeModuloId}
           handleClick={crearHonorario}
+          operativoId={operativo.id}
         />
       </Modal>
       <Modal
@@ -129,7 +132,7 @@ const RowExpandedComponent = ({ data: operativo }) => {
             <hr />
             <DataTable
               columns={columns}
-              data={agente}
+              data={agentesDisponibles}
               pagination
               selectableRows
               selectableRowsSingle
@@ -144,6 +147,7 @@ const RowExpandedComponent = ({ data: operativo }) => {
           handleModuloId={handleChangeModuloId}
           handleClick={agregarAgente}
           disabled={!honorarioData.agente_id}
+          operativoId={operativo.id}
         />
       </Modal>
       <div>
