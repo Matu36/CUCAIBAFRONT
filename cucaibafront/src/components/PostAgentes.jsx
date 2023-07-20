@@ -23,7 +23,7 @@ const postAgente = () => {
 
   useEffect(() => {
     setAgentes(primerArreglo);
-  }, [primerArreglo]);
+  }, []);
 
   const handleFindPersona = () => {
     if (agentes.nroDocumento) {
@@ -53,8 +53,8 @@ const postAgente = () => {
     } else {
       Swal.fire({
         position: "center",
-        icon: "error",
-        title: "Por favor, ingresa un número de DNI",
+        icon: "info",
+        title: "El DNI ingresado no se encontró en la base de datos de empleados",
         showConfirmButton: true,
       });
     }
@@ -129,7 +129,7 @@ const postAgente = () => {
             type="button"
             onClick={handleFindPersona}
           >
-            Buscar Persona
+            Buscar
           </button>
         </div>
       </div>
@@ -238,7 +238,7 @@ const postAgente = () => {
       </div>
       
       <button type="submit" className="btn btn-success" style={{maxWidth:"10%"}}>
-        Agregar Agente
+        Agregar
       </button>
       </div>
      

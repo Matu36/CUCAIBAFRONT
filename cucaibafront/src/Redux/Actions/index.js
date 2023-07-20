@@ -114,11 +114,20 @@ export const getHonorarioByAgente = (agenteId) => async (dispatch) => {
 };
 
 export const postHonorario =
-  ({ operativo_id, agente_id, modulo_id, fechaModif }) =>
+  ({
+    operativo_id,
+    agente_id,
+    modulo_id,
+    fechaModif,
+    liquidacion_id,
+    opprovisorio_nro,
+  }) =>
   (dispatch) =>
     HonorariosAPI.post("", {
       operativo_id,
       agente_id,
       modulo_id,
       fechaModif,
+      liquidacion_id,
+      opprovisorio_nro,
     }).then((payload) => dispatch({ type: POST_HONORARIO, payload }));

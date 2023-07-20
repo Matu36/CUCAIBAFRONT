@@ -89,8 +89,6 @@ const GetOperativos = () => {
     { name: "Descripción", selector: (row) => row.descripcion, sortable: true },
   ];
 
-  //--------------------------------- FIN PAGINADO-------------------------------- //
-
   return (
     <div className="card">
       {isLoading && <Spinner />}

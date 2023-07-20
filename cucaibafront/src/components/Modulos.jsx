@@ -6,6 +6,7 @@ import EmptyTable from "./UI/EmptyTable";
 import { usePagination } from "../hooks/usePagination";
 import Moment from "moment";
 import CrearModulo from "./CrearModulo";
+import Spinner from "./UI/Spinner";
 
 const Modulos = ({ ...props }) => {
   const dispatch = useDispatch();
@@ -169,20 +170,11 @@ const Modulos = ({ ...props }) => {
   useEffect(() => {
     setTimeout(() => {
       setShowSpinner(false);
-    }, 2000);
+    });
   }, []);
   if (modulos.length === 0) {
     return (
-      <div className="d-flex justify-content-center align-items-center vh-100">
-        {showSpinner ? (
-          <div
-            className="spinner-border spinner-border-lg text-primary"
-            style={{ width: "5rem", height: "5rem" }}
-            role="status"
-          >
-          </div>
-        ) : null}
-      </div>
+      <Spinner />
     );
   }
 
