@@ -2,8 +2,13 @@ import React, { useState } from "react";
 import { useModulos } from "../hooks/useModulos";
 import { AiOutlinePlus } from "react-icons/ai";
 
-const PostHonorarios = ({ disabled, handleModuloId, handleClick }) => {
-  const { modulosQuery } = useModulos();
+const PostHonorarios = ({
+  disabled,
+  handleModuloId,
+  handleClick,
+  operativoId,
+}) => {
+  const { data, isLoading } = useModulos(operativoId).modulosActivosQuery;
 
   const [value, setValue] = useState(0);
   const handleChange = (e) => {
@@ -46,10 +51,10 @@ const PostHonorarios = ({ disabled, handleModuloId, handleClick }) => {
             <option defaultChecked value={`${0}|${0}`}>
               Elegí una opción
             </option>
-            {modulosQuery.isLoading ? (
+            {isLoading ? (
               <option defaultChecked>Cargando...</option>
             ) : (
-              modulosQuery.data.map((m) => (
+              data.map((m) => (
                 <option value={`${m.id}|${m.valor}`} key={m.id}>
                   {m.descripcion}
                 </option>
