@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from "react";
 import "../assets/styles/detalle.css";
 import { useDispatch, useSelector } from "react-redux";
-import { getHonorario } from "../Redux/Actions";
+import { getHonorario, postHonorario } from "../Redux/Actions";
+import DataTable from "react-data-table-component";
+import EmptyTable from "./UI/EmptyTable";
+import { usePagination } from "../hooks/usePagination";
+import Spinner from "../components/UI/Spinner";
 
-const Liquidaciones = () => {
+const Liquidaciones = ({ ...props }) => {
   let dispatch = useDispatch();
 
   useEffect(() => {
@@ -11,20 +15,71 @@ const Liquidaciones = () => {
   }, []);
 
   const honorarios = useSelector((state) => state.honorario);
+  const { paginationOptions } = usePagination(honorarios);
 
-  const [agentesSeleccionados, setAgentesSeleccionados] = useState([]);
+  const fechaActual = new Date();
+  const fechaConHora = `${fechaActual
+    .toISOString()
+    .slice(
+      0,
+      10
+    )} ${fechaActual.getHours()}:${fechaActual.getMinutes()}`;
 
-  const handleCheckboxChange = (event, agenteId) => {
-    if (event.target.checked) {
-      // Si se selecciona el checkbox, agregar el agente al estado local
-      setAgentesSeleccionados([...agentesSeleccionados, agenteId]);
-    } else {
-      // Si se deselecciona el checkbox, quitar el agente del estado local
-      setAgentesSeleccionados(
-        agentesSeleccionados.filter((id) => id !== agenteId)
-      );
-    }
+  // Estado para almacenar las filas seleccionadas
+  const [selectedRows, setSelectedRows] = useState([]);
+
+  const columns = [
+    { name: "PD Nro", selector: (row) => row.referencia, sortable: true },
+    { name: "APELLIDO", selector: (row) => row.apellido, sortable: true },
+    { name: "NOMBRE", selector: (row) => row.nombre, sortable: true },
+    { name: "CUIL", selector: (row) => row.cuil, sortable: true },
+    { name: "VALOR", selector: (row) => row.valor.toFixed(2), sortable: true },
+    {
+      name: "Seleccionar",
+      cell: (row) => (
+        <input
+          type="checkbox"
+          checked={selectedRows.some((r) => r.id === row.id)}
+          onChange={() =>
+            setSelectedRows((prevSelected) =>
+              prevSelected.some((r) => r.id === row.id)
+                ? prevSelected.filter((r) => r.id !== row.id)
+                : [...prevSelected, row]
+            )
+          }
+        />
+      ),
+    },
+  ];
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const selectedData = selectedRows.map((row) => ({
+      operativo_id: parseInt(row.operativo_id),
+      agente_id: row.agente_id,
+      modulo_id: row.modulo_id,
+      fechaModif: fechaConHora,
+      liquidacion_id: row.liquidacion_id,
+      opprovisorio_nro: row.opprovisorio_nro,
+    }));
+
+    console.log(selectedData);
+    dispatch(postHonorario(selectedData));
   };
+
+  //---------------------------------SPINNER ------------------------------------//
+
+  const [showSpinner, setShowSpinner] = useState(true);
+  useEffect(() => {
+    setTimeout(() => {
+      setShowSpinner(false);
+    });
+  }, []);
+  if (honorarios.length === 0) {
+    return <Spinner />;
+  }
+
+  //---------------------------------FIN SPINNER ------------------------------------//
 
   return (
     <div className="card">
@@ -33,38 +88,23 @@ const Liquidaciones = () => {
         Listado de agentes pendientes de liquidación
       </h5>
       <br />
-      <table>
-        <thead>
-          <tr>
-            <th>PD Nro</th>
-            <th>CUIL</th>
-            <th>Apellido</th>
-            <th>Nombre</th>
-            <th>Valor</th>
-            <th>Seleccionar</th>
-          </tr>
-        </thead>
-        <tbody>
-          {honorarios.map((agente) => (
-            <tr key={agente.id}>
-              <td>{agente.referencia}</td>
-              <td>{agente.cuil}</td>
-              <td>{agente.apellido}</td>
-              <td>{agente.nombre}</td>
-              <td> $ {agente.valor.toFixed(2)}</td>
-              <td>
-                <div className="d-flex">
-                  <input
-                    type="checkbox"
-                    checked={agentesSeleccionados.includes(agente.id)}
-                    onChange={(e) => handleCheckboxChange(e, agente.id)}
-                  />
-                </div>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <form onSubmit={handleSubmit}>
+        <DataTable
+          columns={columns}
+          data={honorarios}
+          pagination
+          striped
+          paginationComponentOptions={paginationOptions}
+          noDataComponent={
+            <EmptyTable msg="No se encontro el Agente con ese CUIL" />
+          }
+          {...props}
+        />
+        <button type="submit" className="btn btn-success">
+          {" "}
+          Generar Orden de Pago{" "}
+        </button>
+      </form>
     </div>
   );
 };

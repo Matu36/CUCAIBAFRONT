@@ -9,6 +9,7 @@ import moment from "moment";
 import { useSelector, useDispatch } from "react-redux";
 import RowExpandedComponent from "../components/UI/Table/RowExpandedComponent";
 import { getHonorario, getOperativos } from "../Redux/Actions";
+import Spinner from "../components/UI/Spinner";
 
 const TablaHonorarios = () => {
   const dispatch = useDispatch();
@@ -17,6 +18,7 @@ const TablaHonorarios = () => {
   const [search, setSearch] = useState("");
   const [honorario, setHonorario] = useState(primerArregloOper);
   const { paginationOptions } = usePagination(primerArregloOper);
+ 
 
   //Renderizado de los operativos //
 
@@ -32,7 +34,7 @@ const TablaHonorarios = () => {
   useEffect(() => {
     setTimeout(() => {
       setShowSpinner(false);
-    }, 2000);
+    });
   }, []);
 
   //Renderizando los honorarios //
@@ -72,21 +74,14 @@ const TablaHonorarios = () => {
 
   //-------------------------------- FIN SEARCHBAR --------------------------- //
 
+  //SPINNER//
+
   if (operativos.length === 0) {
     return (
-      <div className="d-flex justify-content-center align-items-center vh-100">
-        {showSpinner ? 
-          <div
-            className="spinner-border spinner-border-lg text-primary"
-            style={{ width: "5rem", height: "5rem" }}
-            role="status"
-          ></div>
-         : (
-          null
-        )}
-      </div>
+     <Spinner />
     );
   }
+   //SPINNER//
 
   const columns = [
     {
@@ -120,7 +115,7 @@ const TablaHonorarios = () => {
             <input
               type="text"
               className="form-control"
-              placeholder="Buscar por Referencia"
+              placeholder="Buscar por Proceso de Donación"
               onChange={handleOnChange}
               value={search}
               autoComplete="off"

@@ -5,7 +5,8 @@ import DataTable from "react-data-table-component";
 import EmptyTable from "./UI/EmptyTable";
 import { usePagination } from "../hooks/usePagination";
 import { Link } from "react-router-dom";
-import "../assets/styles/detalle.css"
+import "../assets/styles/detalle.css";
+import Spinner from "./UI/Spinner";
 
 const GetAgentes = ({ ...props }) => {
   const dispatch = useDispatch();
@@ -27,7 +28,7 @@ const GetAgentes = ({ ...props }) => {
   //-------------------------------- SEARCHBAR --------------------------- //
 
   useEffect(() => {
-    filterByCuil(search);
+    filterByApellido(search);
   }, [search]);
 
   const handleOnChange = (e) => {
@@ -35,7 +36,7 @@ const GetAgentes = ({ ...props }) => {
     setSearch(e.target.value);
   };
 
-  const filterByCuil = (value) => {
+  const filterByApellido = (value) => {
     if (!value) {
       setAgente(primerArreglo);
     } else {
@@ -48,24 +49,22 @@ const GetAgentes = ({ ...props }) => {
 
   //-------------------------------- FIN SEARCHBAR --------------------------- //
 
-  //----------------------------------PAGINADO ------------------------------//
-
   const columns = [
     { name: "Apellido", selector: (row) => row.apellido, sortable: true },
     { name: "Nombre", selector: (row) => row.nombre, sortable: true },
     { name: "CBU", selector: (row) => row.cbu, sortable: true },
     { name: "CUIL", selector: (row) => row.cuil, sortable: true },
-    { 
+    {
       name: "Acciones",
       cell: (row) => (
         <Link to={`/agentes/agente/${row.id}`}>
-          <button className="btn btn-success btn-md">Ver detalle del Agente</button>
+          <button className="btn btn-success btn-md">
+            Ver detalle del Agente
+          </button>
         </Link>
       ),
     },
   ];
-
-  //------------------------- FIN PAGINADO -----------------------------------//
 
   //---------------------------------SPINNER ------------------------------------//
 
@@ -73,22 +72,10 @@ const GetAgentes = ({ ...props }) => {
   useEffect(() => {
     setTimeout(() => {
       setShowSpinner(false);
-    }, 2000);
+    });
   }, []);
   if (agentes.length === 0) {
-    return (
-      <div className="d-flex justify-content-center align-items-center vh-100">
-        {showSpinner ? (
-          <div
-            className="spinner-border spinner-border-lg text-primary"
-            style={{ width: "5rem", height: "5rem" }}
-            role="status"
-          >
-
-          </div>
-        ) : null}
-      </div>
-    );
+    return <Spinner />;
   }
 
   //---------------------------------FIN SPINNER ------------------------------------//
@@ -119,7 +106,7 @@ const GetAgentes = ({ ...props }) => {
         striped
         paginationComponentOptions={paginationOptions}
         noDataComponent={
-          <EmptyTable msg="No se encontro el Agente con ese CUIL" />
+          <EmptyTable msg="No se encontro el Agente con ese APELLIDO" />
         }
         {...props}
       />
