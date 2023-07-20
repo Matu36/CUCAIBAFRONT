@@ -78,7 +78,7 @@ const PostHonorarios = ({ disabled, handleModuloId, handleClick }) => {
             id="buttonAddModulo"
             type="button"
             className="btn btn-success"
-            disabled={disabled}
+            disabled={value == 0}
             onClick={handleCreateClick}
           >
             <AiOutlinePlus />
