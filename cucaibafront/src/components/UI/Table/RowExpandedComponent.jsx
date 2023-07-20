@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useHonorarios } from "../../../hooks/useHonorarios";
+import { usePagination } from "../../../hooks/usePagination";
 import Modal from "../Modal";
 
 import { FormHonorario } from "../../FormHonorario";
@@ -8,8 +9,21 @@ import { useOperativo } from "../../../hooks/useOperativo";
 import PostHonorarios from "../../PostHonorarios";
 import { useMutation } from "@tanstack/react-query";
 import { HonorariosAPI } from "../../../api/HonorariosAPI";
+import DataTable from "react-data-table-component";
+import { useAgentes } from "../../../hooks/useAgentes";
 
 const RowExpandedComponent = ({ data: operativo }) => {
+  const { paginationOptions } = usePagination();
+
+  const columns = [
+    { name: "Apellido", selector: (row) => row.apellido, sortable: true },
+    { name: "Nombre", selector: (row) => row.nombre, sortable: true },
+    { name: "CBU", selector: (row) => row.cbu, sortable: true },
+    { name: "CUIL", selector: (row) => row.cuil, sortable: true },
+  ];
+
+  const { data: agente } = useAgentes().agentesQuery;
+
   const {
     data: agentes,
     isLoading: loadingAgentes,
@@ -46,8 +60,29 @@ const RowExpandedComponent = ({ data: operativo }) => {
   };
 
   const crearHonorario = () => {
+    if (
+      honorarioData.agente_id == 0 ||
+      honorarioData.modulo_id == 0 ||
+      honorarioData.operativo_id == 0
+    ) {
+      alert("No se puede crear un honorario si falta algun campo");
+      return;
+    }
     mutation.mutate({ ...honorarioData, fechaModif: new Date() });
     refetch();
+  };
+
+  const agregarAgente = () => {
+    crearHonorario();
+    refetchAgentes();
+  };
+
+  const handleSelectChange = (e) => {
+    if (e.selectedCount > 0) {
+      setHonorarioData({ ...honorarioData, agente_id: e.selectedRows[0].id });
+    } else {
+      setHonorarioData({ ...honorarioData, agente_id: 0 });
+    }
   };
 
   return (
@@ -64,6 +99,11 @@ const RowExpandedComponent = ({ data: operativo }) => {
               </tr>
             </thead>
             <tbody>
+              {honorariosLoading && (
+                <tr>
+                  <td colSpan={2}>Cargando...</td>
+                </tr>
+              )}
               {typeof honorariosAgente == "object" &&
                 honorariosAgente.map((h) => (
                   <tr key={h.id}>
@@ -71,11 +111,6 @@ const RowExpandedComponent = ({ data: operativo }) => {
                     <td>$ {h.valor}</td>
                   </tr>
                 ))}
-              {honorariosLoading && (
-                <tr>
-                  <td colSpan={2}>Cargando...</td>
-                </tr>
-              )}
             </tbody>
           </table>
         </div>
@@ -92,11 +127,23 @@ const RowExpandedComponent = ({ data: operativo }) => {
           <div>
             <h5>Agentes Disponibles</h5>
             <hr />
+            <DataTable
+              columns={columns}
+              data={agente}
+              pagination
+              selectableRows
+              selectableRowsSingle
+              selectableRowsHighlight
+              onSelectedRowsChange={handleSelectChange}
+              striped
+              paginationComponentOptions={paginationOptions}
+            />
           </div>
         </div>
         <PostHonorarios
           handleModuloId={handleChangeModuloId}
-          handleClick={crearHonorario}
+          handleClick={agregarAgente}
+          disabled={!honorarioData.agente_id}
         />
       </Modal>
       <div>
