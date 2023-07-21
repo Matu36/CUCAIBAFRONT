@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useHonorarios } from "../../../hooks/useHonorarios";
 import { usePagination } from "../../../hooks/usePagination";
 import Modal from "../Modal";
-
 import { FormHonorario } from "../../FormHonorario";
 import { AiOutlinePlus } from "react-icons/ai";
 import { useOperativo } from "../../../hooks/useOperativo";
