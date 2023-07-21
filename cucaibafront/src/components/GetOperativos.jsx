@@ -12,7 +12,6 @@ import "../assets/styles/detalle.css";
 const GetOperativos = () => {
   const dispatch = useDispatch();
 
-  const [isLoading, setIsLoading] = useState(true);
   const operativos = useSelector((state) => state.operativos);
   const [search, setSearch] = useState("");
   const primerArreglo = operativos.slice(0, 1)[0];
@@ -21,14 +20,11 @@ const GetOperativos = () => {
 
   useEffect(() => {
     dispatch(getOperativos());
-    setTimeout(() => {
-      setIsLoading(false);
-    });
   }, []);
 
   useEffect(() => {
     setOperativo(primerArreglo);
-  }, []);
+  }, [primerArreglo]);
 
   //-------------------------------- SEARCHBAR --------------------------- //
 
@@ -56,6 +52,20 @@ const GetOperativos = () => {
 
   //-------------------------------- FIN SEARCHBAR --------------------------- //
 
+  //---------------------------------SPINNER ------------------------------------//
+
+  const [showSpinner, setShowSpinner] = useState(true);
+  useEffect(() => {
+    setTimeout(() => {
+      setShowSpinner(false);
+    });
+  }, []);
+  if (operativos.length === 0) {
+    return <Spinner />;
+  }
+
+  //---------------------------------FIN SPINNER ------------------------------------//
+
   const columns = [
     {
       name: "Proceso de Donación",
@@ -73,38 +83,36 @@ const GetOperativos = () => {
 
   return (
     <div className="card">
-      {isLoading && <Spinner />}
-      {!isLoading && (
-        <>
-          <h1>Operativos</h1>
-          <h5 className="subtitulo" style={{ color: "#5DADE2" }}>
-            Listado de todos los Operativos
-          </h5>
-          <br />
+      <>
+        <h1>Operativos</h1>
+        <h5 className="subtitulo" style={{ color: "#5DADE2" }}>
+          Listado de todos los Operativos
+        </h5>
+        <br />
 
-          <div className="input-group mb-3" style={{ maxWidth: "40%" }}>
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Buscar por PD o Descripción"
-              onChange={handleOnChange}
-              value={search}
-              autoComplete="off"
-            />
-          </div>
-
-          <DataTable
-            columns={columns}
-            data={operativo}
-            pagination
-            striped
-            paginationComponentOptions={paginationOptions}
-            noDataComponent={<EmptyTable msg="No se encontro el operativo" />}
+        <div className="input-group mb-3" style={{ maxWidth: "40%" }}>
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Buscar por PD o Descripción"
+            onChange={handleOnChange}
+            value={search}
+            autoComplete="off"
           />
-        </>
-      )}
+        </div>
+
+        <DataTable
+          columns={columns}
+          data={operativo}
+          pagination
+          striped
+          paginationComponentOptions={paginationOptions}
+          noDataComponent={<EmptyTable msg="No se encontro el operativo" />}
+        />
+      </>
+
       <div>
-      <BackButton />
+        <BackButton />
       </div>
     </div>
   );

@@ -112,7 +112,7 @@ const postAgente = () => {
           </label>
           <div className="mb-3 d-flex gap-2 align-items-center">
             <input
-              type="text"
+              type="number" oninput="this.value = Math.abs(this.value)"
               className="form-control"
               id="inputDNI"
               aria-describedby="DNIHelp"
@@ -126,8 +126,7 @@ const postAgente = () => {
               }}
             />
             <div id="dniErrorMessage" style={{ color: "red", display: "none" }}>
-              El DNI debe tener más de 7 caracteres y solo debe contener
-              números.
+              El DNI debe tener más de 7 carácteres
             </div>
             &#128269;
             <button

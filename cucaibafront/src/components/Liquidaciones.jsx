@@ -11,20 +11,49 @@ import BackButton from "../components/UI/BackButton";
 const Liquidaciones = ({ ...props }) => {
   let dispatch = useDispatch();
 
+  const honorarios = useSelector((state) => state.honorario);
+  const [search, setSearch] = useState("");
+  const [liquidaciones, setLiquidaciones] = useState(honorarios);
+  const { paginationOptions } = usePagination(honorarios);
+
   useEffect(() => {
     dispatch(getHonorario());
   }, []);
 
-  const honorarios = useSelector((state) => state.honorario);
-  const { paginationOptions } = usePagination(honorarios);
+  useEffect(() => {
+    setLiquidaciones(honorarios);
+  }, [honorarios]);
+
+  //-------------------------------- SEARCHBAR --------------------------- //
+
+  useEffect(() => {
+    filterByApellido(search);
+  }, [search]);
+
+  const handleOnChange = (e) => {
+    e.preventDefault();
+    setSearch(e.target.value);
+  };
+
+  const filterByApellido = (value) => {
+    if (!value) {
+      setLiquidaciones(honorarios);
+    } else {
+      const arrayCache = honorarios.filter(
+        (oper) =>
+          oper.apellido.toLowerCase().includes(value.toLowerCase()) ||
+          oper.cuil.toLowerCase().includes(value.toLowerCase())
+      );
+      setLiquidaciones(arrayCache);
+    }
+  };
+
+  //-------------------------------- FIN SEARCHBAR --------------------------- //
 
   const fechaActual = new Date();
   const fechaConHora = `${fechaActual
     .toISOString()
-    .slice(
-      0,
-      10
-    )} ${fechaActual.getHours()}:${fechaActual.getMinutes()}`;
+    .slice(0, 10)} ${fechaActual.getHours()}:${fechaActual.getMinutes()}`;
 
   // Estado para almacenar las filas seleccionadas
   const [selectedRows, setSelectedRows] = useState([]);
@@ -89,33 +118,42 @@ const Liquidaciones = ({ ...props }) => {
         Listado de agentes pendientes de liquidación
       </h5>
       <br />
+      <div className="input-group mb-3" style={{ maxWidth: "40%" }}>
+        <input
+          type="text"
+          className="form-control"
+          placeholder="Buscar por APELLIDO o CUIL"
+          onChange={handleOnChange}
+          value={search}
+          autoComplete="off"
+        />
+      </div>
       <form onSubmit={handleSubmit}>
         <DataTable
           columns={columns}
-          data={honorarios}
+          data={liquidaciones}
           pagination
           striped
           paginationComponentOptions={paginationOptions}
           noDataComponent={
-            <EmptyTable msg="No se encontro el Agente con ese CUIL" />
+            <EmptyTable msg="No se encontro el Agente con los datos proporcionados" />
           }
           {...props}
         />
         <br />
         <div className="d-flex justify-content-between">
-        <div>
-        <BackButton />
-        </div>
-        <div>
-        <button type="submit" className="btn btn-success">
-          {" "}
-          Generar Orden de Pago{" "}
-        </button>
-        </div>
+          <div>
+            <BackButton />
+          </div>
+          <div>
+            <button type="submit" className="btn btn-success">
+              {" "}
+              Generar Orden de Pago{" "}
+            </button>
+          </div>
         </div>
       </form>
     </div>
-    
   );
 };
 
