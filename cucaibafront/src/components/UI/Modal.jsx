@@ -29,7 +29,7 @@ const Modal = ({ title, referenceID, children }) => {
             >
               Salir
             </button>
-            <button type="button" className="btn btn-primary">
+            <button type="button" className="btn btn-outline-secondary">
               Guardar Cambios
             </button>
           </div>
