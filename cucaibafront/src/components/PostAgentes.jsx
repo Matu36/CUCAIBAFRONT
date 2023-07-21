@@ -44,14 +44,7 @@ const postAgente = () => {
           tipoPago: agentes.tipoPago,
           personaid: foundPersona.id,
         });
-      } else {
-        Swal.fire({
-          position: "center",
-          icon: "error",
-          title: "Persona no encontrada",
-          showConfirmButton: true,
-        });
-      }
+      } 
     } else {
       Swal.fire({
         position: "center",
@@ -96,7 +89,7 @@ const postAgente = () => {
     } else {
       Swal.fire({
         position: "center",
-        icon: "error",
+        icon: "info",
         title: "Por favor, completa todos los campos",
         showConfirmButton: true,
       });
