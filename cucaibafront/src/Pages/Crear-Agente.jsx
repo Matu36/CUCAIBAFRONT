@@ -1,6 +1,5 @@
 import React from "react";
 import PostAgentes from "../components/PostAgentes";
-import BackButton from "../components/UI/BackButton";
 
 const CrearAgente = () => {
   return (
@@ -15,7 +14,6 @@ const CrearAgente = () => {
       </div>
       <PostAgentes />
       <br />
-      <BackButton />
     </div>
   );
 };

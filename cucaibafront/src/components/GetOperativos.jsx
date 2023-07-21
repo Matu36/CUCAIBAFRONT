@@ -5,7 +5,7 @@ import DataTable from "react-data-table-component";
 import EmptyTable from "./UI/EmptyTable";
 import { usePagination } from "../hooks/usePagination";
 import Spinner from "./UI/Spinner";
-import MultiFilter from "./UI/MultiFilter";
+import BackButton from "../components/UI/BackButton";
 import { obtenerMesYAño } from "../utils/MesAño";
 import "../assets/styles/detalle.css";
 
@@ -13,12 +13,8 @@ const GetOperativos = () => {
   const dispatch = useDispatch();
 
   const [isLoading, setIsLoading] = useState(true);
-
   const operativos = useSelector((state) => state.operativos);
-  const [search, setSearch] = useState({
-    ref: "",
-    descripcion: "",
-  });
+  const [search, setSearch] = useState("");
   const primerArreglo = operativos.slice(0, 1)[0];
   const [operativo, setOperativo] = useState(primerArreglo);
   const { paginationOptions } = usePagination(primerArreglo);
@@ -27,52 +23,38 @@ const GetOperativos = () => {
     dispatch(getOperativos());
     setTimeout(() => {
       setIsLoading(false);
-    }, 2000);
+    });
   }, []);
 
   useEffect(() => {
     setOperativo(primerArreglo);
-  }, [primerArreglo]);
+  }, []);
 
   //-------------------------------- SEARCHBAR --------------------------- //
 
-  // useEffect(() => {
-  //   filter(name);
-  // }, [search]);
+  useEffect(() => {
+    filterByPD(search);
+  }, [search]);
 
   const handleOnChange = (e) => {
-    let filteredArray = [];
+    e.preventDefault();
+    setSearch(e.target.value);
+  };
 
-    setSearch({ ...search, [e.target.name]: e.target.value });
-
-    switch (e.target.name) {
-      case "ref":
-        filteredArray = primerArreglo.filter((o) =>
-          o.referencia.includes(search.ref.toLowerCase())
-        );
-        if (filteredArray.length > 0) {
-          setOperativo(filteredArray);
-        } else {
-          setOperativo(primerArreglo);
-        }
-        break;
-
-      case "descripcion":
-        filteredArray = primerArreglo.filter((o) =>
-          o.descripcion.toLowerCase().includes(search.descripcion.toLowerCase())
-        );
-        if (filteredArray.length > 0) {
-          setOperativo(filteredArray);
-        } else {
-          setOperativo(primerArreglo);
-        }
-        break;
-
-      default:
-        setOperativo(primerArreglo);
-        break;
+  const filterByPD = (value) => {
+    if (!value) {
+      setOperativo(primerArreglo);
+    } else {
+      const arrayCache = primerArreglo.filter(
+        (oper) =>
+          oper.referencia.toLowerCase().includes(value.toLowerCase()) ||
+          oper.descripcion.toLowerCase().includes(value.toLowerCase())
+      );
+      setOperativo(arrayCache);
     }
   };
+
+  //-------------------------------- FIN SEARCHBAR --------------------------- //
 
   const columns = [
     {
@@ -100,38 +82,16 @@ const GetOperativos = () => {
           </h5>
           <br />
 
-          <MultiFilter>
-            <div className="mb-3">
-              <label htmlFor="inputRef" className="fw-bold form-label">
-                Proceso de Donación:
-              </label>
-              <input
-                id="inputRef"
-                name="ref"
-                type="text"
-                className="form-control"
-                placeholder="1234"
-                onChange={handleOnChange}
-                value={search.ref}
-                autoComplete="off"
-              />
-            </div>
-            <div className="mb-3">
-              <label htmlFor="inputDesc" className="fw-bold form-label">
-                Descripción:
-              </label>
-              <input
-                id="inputDesc"
-                type="text"
-                name="descripcion"
-                className="form-control"
-                placeholder="Ablación..."
-                onChange={handleOnChange}
-                value={search.descripcion}
-                autoComplete="off"
-              />
-            </div>
-          </MultiFilter>
+          <div className="input-group mb-3" style={{ maxWidth: "40%" }}>
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Buscar por PD o Descripción"
+              onChange={handleOnChange}
+              value={search}
+              autoComplete="off"
+            />
+          </div>
 
           <DataTable
             columns={columns}
@@ -143,6 +103,9 @@ const GetOperativos = () => {
           />
         </>
       )}
+      <div>
+      <BackButton />
+      </div>
     </div>
   );
 };

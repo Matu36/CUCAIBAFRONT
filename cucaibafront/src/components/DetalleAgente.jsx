@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAgentes, getHonorario } from "../Redux/Actions";
 import "../assets/styles/detalle.css";
 import { obtenerMesYAño } from "../utils/MesAño";
+import BackButton from "../components/UI/BackButton";
 
 const DetalleAgente = () => {
   const dispatch = useDispatch();
@@ -112,6 +113,10 @@ const DetalleAgente = () => {
           )}
         </div>
       )}
+<br />
+      <div>
+        <BackButton />
+      </div>
     </div>
   );
 };

@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { useState } from "react";
 import Swal from "sweetalert2";
 import "../assets/styles/detalle.css";
+import BackButton from "../components/UI/BackButton";
 
 const PostOperativos = () => {
   let dispatch = useDispatch();
@@ -110,13 +111,21 @@ const PostOperativos = () => {
           }
         />
       </div>
+      <div className="d-flex justify-content-between">
+      <div>
+      <BackButton />
+      </div>
+      <div>
       <button
         type="submit"
-        className="btn btn-success btn-md" style={{maxWidth:"13%"}}
+        className="btn btn-success btn-md" 
       >
         Agregar Operativo
       </button>
       </div>
+      </div>
+      </div>
+     
     </form>
   );
 };
