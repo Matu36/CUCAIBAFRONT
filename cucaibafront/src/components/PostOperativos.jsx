@@ -48,7 +48,7 @@ const PostOperativos = () => {
     } else {
       Swal.fire({
         position: "center",
-        icon: "error",
+        icon: "info",
         title: "Por favor, completa todos los campos",
         showConfirmButton: true,
       });
@@ -56,76 +56,76 @@ const PostOperativos = () => {
   };
   return (
     <form onSubmit={handleOnSubmit}>
+      <br />
       <div className="card">
-      <div className="mb-3">
-        <label for="inputReferncia" class="form-label">
-          Proceso de Donación
-        </label>
-        <input
-          type="text"
-          class="form-control"
-          id="inputReferencia"
-          aria-describedby="ReferenciaHelp"
-          name="referencia"
-          value={operativo.referencia}
-          autoComplete="off"
-          placeholder="N° de Proceso de Donación"
-          onChange={(e) =>
-            setOperativo({ ...operativo, referencia: e.target.value })
-          }
-        />
+        <div className="mb-3">
+          <label for="inputReferncia" class="form-label">
+            Proceso de Donación
+          </label>
+          <input
+            type="text"
+            class="form-control"
+            id="inputReferencia"
+            aria-describedby="ReferenciaHelp"
+            name="referencia"
+            value={operativo.referencia}
+            autoComplete="off"
+            placeholder="N° de Proceso de Donación"
+            onChange={(e) =>
+              setOperativo({ ...operativo, referencia: e.target.value })
+            }
+          />
+        </div>
+        <div className="mb-3">
+          <label for="inputFecha" className="form-label">
+            Fecha
+          </label>
+          <input
+            type="datetime-local"
+            className="form-control"
+            id="inputFecha"
+            aria-describedby="FechaHelp"
+            name="Fecha"
+            value={operativo.fecha}
+            autoComplete="off"
+            placeholder="Fecha del operativo"
+            onChange={(e) =>
+              setOperativo({ ...operativo, fecha: e.target.value })
+            }
+          />
+        </div>
+        <div className="mb-3">
+          <label for="inputDescripción" className="form-label">
+            Descripción
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            id="inputDescripción"
+            aria-describedby="DescripciónHelp"
+            name="descripción"
+            value={operativo.descripcion}
+            autoComplete="off"
+            placeholder="Descripción"
+            onChange={(e) =>
+              setOperativo({ ...operativo, descripcion: e.target.value })
+            }
+          />
+        </div>
+        <br />
+        <br />
+
+        <div className="d-flex justify-content-between">
+          <div>
+            <BackButton />
+          </div>
+          <div>
+            <button type="submit" className="btn btn-success btn-md">
+              Agregar Operativo
+            </button>
+          </div>
+        </div>
       </div>
-      <div className="mb-3">
-        <label for="inputFecha" className="form-label">
-          Fecha
-        </label>
-        <input
-          type="datetime-local"
-          className="form-control"
-          id="inputFecha"
-          aria-describedby="FechaHelp"
-          name="Fecha"
-          value={operativo.fecha}
-          autoComplete="off"
-          placeholder="Fecha del operativo"
-          onChange={(e) =>
-            setOperativo({ ...operativo, fecha: e.target.value })
-          }
-        />
-      </div>
-      <div className="mb-3">
-        <label for="inputDescripción" className="form-label">
-          Descripción
-        </label>
-        <input
-          type="text"
-          className="form-control"
-          id="inputDescripción"
-          aria-describedby="DescripciónHelp"
-          name="descripción"
-          value={operativo.descripcion}
-          autoComplete="off"
-          placeholder="Descripción"
-          onChange={(e) =>
-            setOperativo({ ...operativo, descripcion: e.target.value })
-          }
-        />
-      </div>
-      <div className="d-flex justify-content-between">
-      <div>
-      <BackButton />
-      </div>
-      <div>
-      <button
-        type="submit"
-        className="btn btn-success btn-md" 
-      >
-        Agregar Operativo
-      </button>
-      </div>
-      </div>
-      </div>
-     
     </form>
   );
 };
