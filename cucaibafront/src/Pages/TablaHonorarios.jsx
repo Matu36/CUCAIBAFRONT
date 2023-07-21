@@ -4,12 +4,13 @@ import "../lib/tooltip";
 import { usePagination } from "../hooks/usePagination";
 import EmptyTable from "../components/UI/EmptyTable";
 import DataTable from "react-data-table-component";
-import "../assets/styles/detalle.css"
+import "../assets/styles/detalle.css";
 import moment from "moment";
 import { useSelector, useDispatch } from "react-redux";
 import RowExpandedComponent from "../components/UI/Table/RowExpandedComponent";
 import { getHonorario, getOperativos } from "../Redux/Actions";
 import Spinner from "../components/UI/Spinner";
+import BackButton from "../components/UI/BackButton";
 
 const TablaHonorarios = () => {
   const dispatch = useDispatch();
@@ -18,7 +19,6 @@ const TablaHonorarios = () => {
   const [search, setSearch] = useState("");
   const [honorario, setHonorario] = useState(primerArregloOper);
   const { paginationOptions } = usePagination(primerArregloOper);
- 
 
   //Renderizado de los operativos //
 
@@ -77,11 +77,9 @@ const TablaHonorarios = () => {
   //SPINNER//
 
   if (operativos.length === 0) {
-    return (
-     <Spinner />
-    );
+    return <Spinner />;
   }
-   //SPINNER//
+  //SPINNER//
 
   const columns = [
     {
@@ -134,6 +132,9 @@ const TablaHonorarios = () => {
           expandableRows
           expandableRowsComponent={RowExpandedComponent}
         />
+        <div>
+          <BackButton />
+        </div>
       </div>
     </>
   );

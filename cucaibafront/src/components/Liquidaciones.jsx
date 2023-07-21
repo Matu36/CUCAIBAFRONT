@@ -6,6 +6,7 @@ import DataTable from "react-data-table-component";
 import EmptyTable from "./UI/EmptyTable";
 import { usePagination } from "../hooks/usePagination";
 import Spinner from "../components/UI/Spinner";
+import BackButton from "../components/UI/BackButton";
 
 const Liquidaciones = ({ ...props }) => {
   let dispatch = useDispatch();
@@ -100,12 +101,21 @@ const Liquidaciones = ({ ...props }) => {
           }
           {...props}
         />
+        <br />
+        <div className="d-flex justify-content-between">
+        <div>
+        <BackButton />
+        </div>
+        <div>
         <button type="submit" className="btn btn-success">
           {" "}
           Generar Orden de Pago{" "}
         </button>
+        </div>
+        </div>
       </form>
     </div>
+    
   );
 };
 
