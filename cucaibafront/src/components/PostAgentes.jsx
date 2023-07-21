@@ -5,6 +5,7 @@ import Swal from "sweetalert2";
 import { getPersonas } from "../Redux/Actions";
 import "../assets/styles/detalle.css";
 import BackButton from "../components/UI/BackButton";
+import { validateDNI } from "../utils/Validaciones";
 
 const postAgente = () => {
   let dispatch = useDispatch();
@@ -119,19 +120,23 @@ const postAgente = () => {
               value={agentes.nroDocumento}
               autoComplete="off"
               placeholder="DNI"
-              onChange={(e) =>
-                setAgentes({ ...agentes, nroDocumento: e.target.value })
-              }
+              onChange={(e) => {
+                setAgentes({ ...agentes, nroDocumento: e.target.value });
+                validateDNI(e.target.value);
+              }}
             />
-             &#128269;
-              <button
-                className="btn btn-dark btn btn-md"
-                type="button"
-                onClick={handleFindPersona}
-              >
-                Buscar
-              </button>
-           
+            <div id="dniErrorMessage" style={{ color: "red", display: "none" }}>
+              El DNI debe tener más de 7 caracteres y solo debe contener
+              números.
+            </div>
+            &#128269;
+            <button
+              className="btn btn-dark btn btn-md"
+              type="button"
+              onClick={handleFindPersona}
+            >
+              Buscar
+            </button>
           </div>
         </div>
         <div className="mb-3">
