@@ -2,47 +2,60 @@ import { postAgentes } from "../Redux/Actions";
 import { useDispatch, useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
-import { getPersonas } from "../Redux/Actions";
 import "../assets/styles/detalle.css";
 import BackButton from "../components/UI/BackButton";
 import { validateDNI } from "../utils/Validaciones";
+import { usePersona } from "../hooks/usePersona";
+
+const INITIALSTATE = {
+  apellido: "",
+  nombre: "",
+  cuil: "",
+  cbu: "",
+  tipoPago: "",
+  personaid: 0,
+  nroDocumento: "",
+};
 
 const postAgente = () => {
   let dispatch = useDispatch();
 
-  const personas = useSelector((state) => state.personas);
-  let primerArreglo = [];
-  if (personas.length > 1) {
-    primerArreglo = personas[0];
-  }
+  // const personas = useSelector((state) => state.personas);
+  // let primerArreglo = [];
+  // if (personas.length > 1) {
+  //   primerArreglo = personas[0];
+  // }
 
-  const [agentes, setAgentes] = useState(primerArreglo);
-  const [persona, setPersona] = useState(null);
+  // const [agentes, setAgentes] = useState(primerArreglo);
+  // const [persona, setPersona] = useState(null);
 
-  useEffect(() => {
-    dispatch(getPersonas());
-  }, []);
+  // useEffect(() => {
+  //   dispatch(getPersonas());
+  // }, []);
 
-  useEffect(() => {
-    setAgentes(primerArreglo);
-  }, []);
+  // useEffect(() => {
+  //   setAgentes(primerArreglo);
+  // }, []);
+
+  const [agente, setAgente] = useState(INITIALSTATE);
+
+  const { data: personaData, refetch } = usePersona(
+    agente.nroDocumento
+  ).personaQuery;
 
   const handleFindPersona = () => {
-    if (agentes.nroDocumento) {
-      const foundPersona = primerArreglo.find(
-        (persona) => persona.nroDocumento === agentes.nroDocumento
-      );
+    if (agente.nroDocumento) {
+      refetch();
 
-      if (foundPersona) {
-        setPersona(foundPersona);
-        setAgentes({
-          ...agentes,
-          apellido: foundPersona.apellido,
-          nombre: foundPersona.nombre,
-          cuil: foundPersona.cuil,
-          cbu: foundPersona.cbuBloque1 + foundPersona.cbuBloque2,
-          tipoPago: agentes.tipoPago,
-          personaid: foundPersona.id,
+      if (personaData) {
+        setAgente({
+          ...agente,
+          apellido: personaData.apellido,
+          nombre: personaData.nombre,
+          cuil: personaData.cuil,
+          cbu: personaData.cbuBloque1 + personaData.cbuBloque2,
+          tipoPago: agente.tipoPago,
+          personaid: personaData.id,
         });
       } 
     } else {
@@ -59,14 +72,14 @@ const postAgente = () => {
   const handleOnSubmit = async (e) => {
     e.preventDefault();
 
-    if (persona) {
+    if (personaData) {
       const newAgente = {
-        apellido: persona.apellido,
-        nombre: persona.nombre,
-        cuil: persona.cuil,
-        cbu: persona.cbuBloque1 + persona.cbuBloque2,
-        tipoPago: agentes.tipoPago,
-        personaid: persona.id,
+        apellido: personaData.apellido,
+        nombre: personaData.nombre,
+        cuil: personaData.cuil,
+        cbu: personaData.cbuBloque1 + personaData.cbuBloque2,
+        tipoPago: agente.tipoPago,
+        personaid: personaData.id,
       };
 
       dispatch(postAgentes(newAgente));
@@ -78,14 +91,7 @@ const postAgente = () => {
         showConfirmButton: false,
         timer: 2000,
       });
-      setAgentes({
-        apellido: "",
-        nombre: "",
-        cuil: "",
-        cbu: "",
-        tipoPago: "",
-        personaid: "",
-      });
+      setAgente(INITIALSTATE);
     } else {
       Swal.fire({
         position: "center",
@@ -110,11 +116,11 @@ const postAgente = () => {
               id="inputDNI"
               aria-describedby="DNIHelp"
               name="DNI"
-              value={agentes.nroDocumento}
+              value={agente.nroDocumento}
               autoComplete="off"
               placeholder="DNI"
               onChange={(e) => {
-                setAgentes({ ...agentes, nroDocumento: e.target.value });
+                setAgente({ ...agente, nroDocumento: e.target.value });
                 validateDNI(e.target.value);
               }}
             />
@@ -141,13 +147,11 @@ const postAgente = () => {
             id="inputApellido"
             aria-describedby="ApellidoHelp"
             name="apellido"
-            value={agentes.apellido}
+            value={agente.apellido}
             autoComplete="off"
             placeholder="Apellido"
             disabled
-            onChange={(e) =>
-              setAgentes({ ...agentes, apellido: e.target.value })
-            }
+            onChange={(e) => setAgente({ ...agente, apellido: e.target.value })}
           />
         </div>
         <div className="mb-3">
@@ -160,11 +164,11 @@ const postAgente = () => {
             id="inputNombre"
             aria-describedby="NombreHelp"
             name="Nombre"
-            value={agentes.nombre}
+            value={agente.nombre}
             autoComplete="off"
             placeholder="Nombre"
             disabled
-            onChange={(e) => setAgentes({ ...agentes, nombre: e.target.value })}
+            onChange={(e) => setAgente({ ...agente, nombre: e.target.value })}
           />
         </div>
         <div className="mb-3">
@@ -177,11 +181,11 @@ const postAgente = () => {
             id="inputCUIL"
             aria-describedby="CUILHelp"
             name="CUIL"
-            value={agentes.cuil}
+            value={agente.cuil}
             autoComplete="off"
             placeholder="CUIL"
             disabled
-            onChange={(e) => setAgentes({ ...agentes, cuil: e.target.value })}
+            onChange={(e) => setAgente({ ...agente, cuil: e.target.value })}
           />
         </div>
         <div className="mb-3">
@@ -194,11 +198,11 @@ const postAgente = () => {
             id="inputCBU"
             aria-describedby="CBUHelp"
             name="CBU"
-            value={agentes.cbu}
+            value={agente.cbu}
             autoComplete="off"
             placeholder="CBU"
             disabled
-            onChange={(e) => setAgentes({ ...agentes, cbu: e.target.value })}
+            onChange={(e) => setAgente({ ...agente, cbu: e.target.value })}
           />
         </div>
         <div className="mb-3">
@@ -209,15 +213,13 @@ const postAgente = () => {
             id="inputTipoPago"
             aria-describedby="TipoPagoHelp"
             name="TipoPago"
-            value={agentes.cbu}
+            value={agente.tipoPago}
             placeholder="tipoPago"
-            disabled
-            onChange={(e) =>
-              setAgentes({ ...agentes, tipoPago: e.target.value })
-            }
+            disabled={!agente.personaid}
+            onChange={(e) => setAgente({ ...agente, tipoPago: e.target.value })}
             className="form-select form-select-md mb-3 form-control"
           >
-            <option selected>Selecciona una opción</option>
+            <option defaultValue="">Selecciona una opción</option>
             <option value="ch">Cheque</option>
             <option value="cb">Cuenta Bancaria</option>
           </select>
@@ -229,12 +231,12 @@ const postAgente = () => {
             id="inputID"
             aria-describedby="IDHelp"
             name="PersId"
-            value={agentes.personaid}
+            value={agente.personaid}
             autoComplete="off"
             placeholder="pERSID"
             disabled
             onChange={(e) =>
-              setAgentes({ ...agentes, personaid: e.target.value })
+              setAgente({ ...agente, personaid: e.target.value })
             }
           />
         </div>
