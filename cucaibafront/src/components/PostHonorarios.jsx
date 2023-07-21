@@ -77,7 +77,7 @@ const PostHonorarios = ({
         </div>
         <div className="mb-3 d-flex flex-column w-30">
           <label className="form-label fw-bold" htmlFor="buttonAddModulo">
-            Agregar Modulo
+            Agregar
           </label>
           <button
             id="buttonAddModulo"

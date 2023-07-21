@@ -91,7 +91,8 @@ const RowExpandedComponent = ({ data: operativo }) => {
     <>
       <Modal title="Agregar función al Agente" referenceID="formModal">
         <div className="p-3">
-          <h4>Modulos Pendientes del Agente</h4>
+        <h4 className="subtitulo" style={{ color: "#5DADE2" }}>
+            Modulos Pendientes del Agente</h4>
           <hr />
           <table className="table table-responsive">
             <thead>
@@ -128,7 +129,8 @@ const RowExpandedComponent = ({ data: operativo }) => {
       >
         <div>
           <div>
-            <h5>Agentes Disponibles</h5>
+          <h5 className="subtitulo" style={{ color: "#5DADE2" }}>
+              Agentes Disponibles</h5>
             <hr />
             <DataTable
               columns={columns}
@@ -155,10 +157,11 @@ const RowExpandedComponent = ({ data: operativo }) => {
           <div className="agentes-container">
             <div>
               <div className="d-flex align-items-center justify-content-between">
-                <h5>Agentes asociados al Operativo</h5>
+                <h5 style={{ color: "#5DADE2" }}>Agentes asociados al Operativo</h5>
+                <div></div>
                 <button
                   type="btn"
-                  className="btn btn-success"
+                  className="btn btn-dark"
                   data-bs-toggle="modal"
                   data-bs-target="#agregarAgenteModal"
                 >
@@ -194,7 +197,7 @@ const RowExpandedComponent = ({ data: operativo }) => {
                         <td>
                           <button
                             type="button"
-                            className="btn btn-primary btn-sm"
+                            className="btn btn-success btn-md"
                             data-bs-toggle="modal"
                             data-bs-target="#formModal"
                             onClick={() => {
