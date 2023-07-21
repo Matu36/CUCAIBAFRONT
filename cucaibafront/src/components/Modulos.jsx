@@ -7,6 +7,8 @@ import { usePagination } from "../hooks/usePagination";
 import Moment from "moment";
 import CrearModulo from "./CrearModulo";
 import Spinner from "./UI/Spinner";
+import "../assets/styles/detalle.css"
+import BackButton from "../components/UI/BackButton";
 
 const Modulos = ({ ...props }) => {
   const dispatch = useDispatch();
@@ -181,7 +183,7 @@ const Modulos = ({ ...props }) => {
   //---------------------------------FIN SPINNER ------------------------------------//
 
   return (
-    <div>
+    <div className="card">
       <h1>Módulos</h1>
       <h5 className="subtitulo" style={{ color: "#5DADE2" }}>
         Listado de todos los módulos
@@ -200,7 +202,7 @@ const Modulos = ({ ...props }) => {
           />
         </div>
         <button
-          className="btn btn-success btn-md"
+          className="btn btn-dark btn-md"
           style={{ marginRight: "4rem", marginBottom: "2rem" }}
           onClick={handleMostrarFormulario}
         >
@@ -232,6 +234,9 @@ const Modulos = ({ ...props }) => {
         noDataComponent={<EmptyTable msg="No se encontro el tipo de Módulo" />}
         {...props}
       />
+      <div>
+      <BackButton />
+      </div>
     </div>
   );
 };
