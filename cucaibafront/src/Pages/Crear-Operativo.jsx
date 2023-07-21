@@ -1,6 +1,5 @@
 import React from "react";
 import PostOperativos from "../components/PostOperativos";
-import BackButton from "../components/UI/BackButton";
 
 export const CrearOperativo = () => {
   return (
@@ -12,7 +11,6 @@ export const CrearOperativo = () => {
 
       <PostOperativos />
       <br />
-      <BackButton />
     </div>
   );
 };

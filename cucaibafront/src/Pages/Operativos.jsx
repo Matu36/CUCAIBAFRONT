@@ -1,6 +1,5 @@
 import React from "react";
 import GetOperativos from "../components/GetOperativos";
-import BackButton from "../components/UI/BackButton";
 
 export const Operativos = () => {
   return (
@@ -8,7 +7,6 @@ export const Operativos = () => {
       <GetOperativos />
 
       <br />
-      <BackButton />
     </div>
   );
 };
