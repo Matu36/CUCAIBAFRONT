@@ -16,22 +16,6 @@ const getAgentes = async (operativoId) => {
 };
 
 export const useAgentes = (operativoId = 0) => {
-  //   const [page, setPage] = useState<number>(1);
-
-  //   useEffect(() => {
-  //     setPage(1);
-  //   }, [state, labels]);
-
-  //   const nextPage = () => {
-  //     if (issuesQuery.data?.length === 0) return;
-  //     setPage((p) => p + 1);
-  //   };
-
-  //   const prevPage = () => {
-  //     if (page > 1) setPage((p) => p - 1);
-  //   };
-
-  // Por medio de los {}, podemos definir keys, pero sin importar el orden, ya que va a saber a cual elemento apunta
   const agentesQuery = useQuery({
     queryKey: ["agentes"],
     queryFn: () => getAgentes(),
