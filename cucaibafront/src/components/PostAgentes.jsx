@@ -58,7 +58,7 @@ const postAgente = () => {
   const handleOnSubmit = async (e) => {
     e.preventDefault();
 
-    if (personaData) {
+    if (typeof personaData == "object" && agente) {
       const newAgente = {
         apellido: personaData.apellido,
         nombre: personaData.nombre,
