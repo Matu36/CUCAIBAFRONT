@@ -11,9 +11,11 @@ const PostHonorarios = ({
   const { data, isLoading } = useModulos(operativoId).modulosActivosQuery;
 
   const [value, setValue] = useState(0);
+  const [selectValue, setSelectValue] = useState("0|0");
   const handleChange = (e) => {
     let arrayValue = e.target.value.split("|");
 
+    setSelectValue(e.target.value);
     setValue(arrayValue[1]);
     handleModuloId(Number(arrayValue[0]));
   };
@@ -23,6 +25,7 @@ const PostHonorarios = ({
       alert("Se tiene que elegir un modulo");
       return;
     }
+    setSelectValue("0|0");
     setValue(0);
     handleModuloId(Number(0));
     handleClick();
@@ -47,18 +50,21 @@ const PostHonorarios = ({
             className="form-select"
             aria-label="Default select example"
             disabled={disabled}
+            value={selectValue}
           >
             <option defaultChecked value={`${0}|${0}`}>
               Elegí una opción
             </option>
             {isLoading ? (
               <option defaultChecked>Cargando...</option>
-            ) : (
+            ) : typeof data == "object" ? (
               data.map((m) => (
                 <option value={`${m.id}|${m.valor}`} key={m.id}>
                   {m.descripcion}
                 </option>
               ))
+            ) : (
+              <option>vacio</option>
             )}
           </select>
         </div>
