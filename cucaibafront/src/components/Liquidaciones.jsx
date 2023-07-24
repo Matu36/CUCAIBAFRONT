@@ -7,9 +7,15 @@ import EmptyTable from "./UI/EmptyTable";
 import { usePagination } from "../hooks/usePagination";
 import Spinner from "../components/UI/Spinner";
 import BackButton from "../components/UI/BackButton";
+import { useMutation } from "@tanstack/react-query";
+import { HonorariosAPI } from "../api/HonorariosAPI";
 
 const Liquidaciones = ({ ...props }) => {
   let dispatch = useDispatch();
+
+  const liquidacionesMutation = useMutation((data) => {
+    return HonorariosAPI.post("/liquidar", data);
+  });
 
   const honorarios = useSelector((state) => state.honorario);
   const [search, setSearch] = useState("");
@@ -80,21 +86,22 @@ const Liquidaciones = ({ ...props }) => {
         />
       ),
     },
+    {
+      name: "Honorario ID",
+      selector: (row) => row.id,
+      omit: true,
+    },
   ];
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const selectedData = selectedRows.map((row) => ({
-      operativo_id: parseInt(row.operativo_id),
-      agente_id: row.agente_id,
-      modulo_id: row.modulo_id,
-      fechaModif: fechaConHora,
-      liquidacion_id: row.liquidacion_id,
-      opprovisorio_nro: row.opprovisorio_nro,
+      honorario_id: row.id,
     }));
 
-    console.log(selectedData);
-    dispatch(postHonorario(selectedData));
+    console.log(JSON.stringify(selectedData));
+    liquidacionesMutation.mutate(JSON.stringify(selectedData));
+    // dispatch(postHonorario(selectedData));
   };
 
   //---------------------------------SPINNER ------------------------------------//
