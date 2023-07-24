@@ -69,6 +69,7 @@ const Liquidaciones = ({ ...props }) => {
     { name: "APELLIDO", selector: (row) => row.apellido, sortable: true },
     { name: "NOMBRE", selector: (row) => row.nombre, sortable: true },
     { name: "CUIL", selector: (row) => row.cuil, sortable: true },
+    { name: "DESCRIPCIÓN", selector: (row) => row.descripcion, sortable: true },
     { name: "VALOR", selector: (row) => row.valor.toFixed(2), sortable: true },
     {
       name: "Seleccionar",

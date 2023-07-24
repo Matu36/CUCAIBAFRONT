@@ -78,34 +78,40 @@ const DetalleAgente = () => {
         </button>
       </div>
       {mostrarDesplegable && (
-        <div style={{ display: "flex", flexWrap: "wrap" }}>
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            gap: "30px",
+            justifyContent: "center",
+          }}
+        >
           {operativosAsociados.length > 0 ? (
             operativosAsociados.map((operativo) => (
               <div
-                key={operativo.operativo_id}
+                className="card"
                 style={{
-                  border: "1px solid gray",
-                  padding: "10px",
-                  paddingTop: "0px",
-                  marginTop: "20px",
-                  marginRight: "10px",
-                  flex: "0 0 calc(50% - 20px)",
+                  width: "18rem;",
+                  marginTop: "1rem",
+                  padding: "1rem",
+                  paddingLeft: "1rem",
                 }}
+                key={operativo.operativo_id}
               >
-                <br />
-                <span style={{ fontWeight: "bold" }}>Número de PD: </span>
-                {operativo.referencia}
-                <br />
-                <span style={{ fontWeight: "bold" }}>
-                  Función Desempeñada:{" "}
-                </span>
-                {operativo.descripcion}
-                <br />
-                <span style={{ fontWeight: "bold" }}>Valor: $ </span>
-                {operativo.valor.toFixed(2)}
-                <br />
-                <span style={{ fontWeight: "bold" }}>Fecha: </span>
-                {obtenerMesYAño(operativo.fecha)}
+                <div class="card-body">
+                  <br />
+                  <h5 className="card_title">Número de PD: </h5>
+                  {operativo.referencia}
+                  <br />
+                  <h5 className="card_title">Función Desempeñada: </h5>
+                  {operativo.descripcion}
+                  <br />
+                  <h5 className="card_title">Valor: $ </h5>
+                  {operativo.valor.toFixed(2)}
+                  <br />
+                  <h5 className="card_title">Fecha: </h5>
+                  {obtenerMesYAño(operativo.fecha)}
+                </div>
               </div>
             ))
           ) : (
@@ -113,7 +119,7 @@ const DetalleAgente = () => {
           )}
         </div>
       )}
-<br />
+      <br />
       <div>
         <BackButton />
       </div>
