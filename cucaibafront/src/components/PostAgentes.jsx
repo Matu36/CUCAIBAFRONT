@@ -20,6 +20,7 @@ const INITIALSTATE = {
 const postAgente = () => {
   let dispatch = useDispatch();
   const [agente, setAgente] = useState(INITIALSTATE);
+  const [showForm, setShowForm] = useState(false);
 
   const { data: personaData, refetch } = usePersona(
     agente.nroDocumento
@@ -29,7 +30,8 @@ const postAgente = () => {
     if (agente.nroDocumento) {
       refetch();
 
-      if (personaData) {
+      if (typeof personaData == "object") {
+        setShowForm(true);
         setAgente({
           ...agente,
           apellido: personaData.apellido,
@@ -39,15 +41,17 @@ const postAgente = () => {
           tipoPago: agente.tipoPago,
           personaid: personaData.id,
         });
+      } else {
+        setShowForm(false);
+        setAgente(INITIALSTATE);
+        Swal.fire({
+          position: "center",
+          icon: "info",
+          title:
+            "El DNI ingresado no se encontró en la base de datos de empleados",
+          showConfirmButton: true,
+        });
       }
-    } else {
-      Swal.fire({
-        position: "center",
-        icon: "info",
-        title:
-          "El DNI ingresado no se encontró en la base de datos de empleados",
-        showConfirmButton: true,
-      });
     }
   };
 
@@ -119,7 +123,7 @@ const postAgente = () => {
             </button>
           </div>
         </div>
-        {personaData && (
+        {showForm && (
           <>
             <div className="mb-3">
               <label htmlFor="inputApellido" className="form-label">
