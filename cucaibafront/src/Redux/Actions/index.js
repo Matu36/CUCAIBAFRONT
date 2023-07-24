@@ -18,6 +18,7 @@ export const POST_MODULO = "POST_MODULO";
 export const UPDATE_MODULO = "UPDATE_MODULO";
 export const GET_PERSONAS = "GET_PERSONAS";
 export const GET_HONORARIO = "GET_HONORARIO";
+export const GET_HONORARIO_OUT_HASH = "GET_HONORARIO_OUT_HASH";
 export const POST_HONORARIO = "POST_HONORARIO";
 
 export const getAgentes = () => async (dispatch) => {
@@ -105,6 +106,12 @@ export const getHonorario = () => async (dispatch) => {
   let response = await HonorariosAPI.get("/props");
 
   return dispatch({ type: GET_HONORARIO, payload: response.data });
+};
+
+export const getHonorarioOutHash = () => async (dispatch) => {
+  let response = await HonorariosAPI.get("/hash");
+
+  return dispatch({ type: GET_HONORARIO_OUT_HASH, payload: response.data });
 };
 
 export const getHonorarioByAgente = (agenteId) => async (dispatch) => {

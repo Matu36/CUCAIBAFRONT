@@ -10,6 +10,7 @@ import {
   UPDATE_MODULO,
   GET_PERSONAS,
   GET_HONORARIO,
+  GET_HONORARIO_OUT_HASH,
   POST_HONORARIO,
 } from "../Actions";
 
@@ -27,6 +28,10 @@ const InitialState = {
   personas: [],
 
   honorario: [],
+
+  honorarioOutHash: []
+
+
 };
 
 function rootReducer(state = InitialState, action) {
@@ -60,6 +65,8 @@ function rootReducer(state = InitialState, action) {
       return { ...state, modulos: updatedModulo };
     case GET_HONORARIO:
       return { ...state, honorario: action.payload };
+      case GET_HONORARIO_OUT_HASH:
+      return { ...state, honorarioOutHash: action.payload };
     case POST_HONORARIO:
       return { ...state, honorario: [...state.honorario, action.payload] };
     default:

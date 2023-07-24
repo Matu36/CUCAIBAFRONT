@@ -1,30 +1,27 @@
 import React, { useEffect, useState } from "react";
-import { getModulos } from "../../Redux/Actions/index";
+import { getHonorarioOutHash } from "../../Redux/Actions/index";
 import { useDispatch, useSelector } from "react-redux";
 import "../../assets/styles/style.css";
 
 const LandingNotificacion = () => {
   let dispatch = useDispatch();
-  const liquidaciones = useSelector((state) => state.modulos);
+  const liquidaciones = useSelector((state) => state.honorarioOutHash);
 
-  let primerArreglo = [];
-  if (liquidaciones.length > 1) {
-    primerArreglo = liquidaciones[1][0];
-  }
+  console.log(liquidaciones);
 
-  const [modulo, setModulo] = useState(primerArreglo);
+  const [modulo, setModulo] = useState(liquidaciones);
 
   useEffect(() => {
-    dispatch(getModulos());
+    dispatch(getHonorarioOutHash());
   }, []);
 
   useEffect(() => {
-    setModulo(primerArreglo);
-  }, [primerArreglo]);
+    setModulo(liquidaciones);
+  }, [liquidaciones]);
 
   return (
     <>
-      {primerArreglo.length > 0 && (
+      {liquidaciones.length > 0 && (
         <div
           style={{
             margin: "20px auto",
@@ -46,7 +43,7 @@ const LandingNotificacion = () => {
             }}
           >
             <span style={{ fontWeight: "bold" }}>
-              Ud tiene {primerArreglo.length} Liquidaciones de Agentes
+              Ud tiene {liquidaciones.length} Liquidaciones de Agentes
               Pendientes
             </span>
           </div>
