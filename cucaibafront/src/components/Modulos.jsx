@@ -24,9 +24,9 @@ const Modulos = ({ ...props }) => {
     .slice()
     .sort((a, b) => a.descripcion.localeCompare(b.descripcion));
 
-  const [modulo, setModulo] = useState(sortedModulos);
+  const [modulo, setModulo] = useState(primerArreglo);
 
-  const { paginationOptions } = usePagination(sortedModulos);
+  const { paginationOptions } = usePagination(primerArreglo);
 
   useEffect(() => {
     dispatch(getModulos());
@@ -40,7 +40,7 @@ const Modulos = ({ ...props }) => {
 
   useEffect(() => {
     filterByDescripcion(search);
-  }, [search]);
+  }, [search, sortedModulos]);
 
   const handleOnChange = (e) => {
     e.preventDefault();
@@ -49,7 +49,7 @@ const Modulos = ({ ...props }) => {
 
   const filterByDescripcion = (value) => {
     if (!value) {
-      setModulo(primerArreglo);
+      setModulo(sortedModulos);
     } else {
       const arrayCache = sortedModulos.filter((mod) =>
         mod.descripcion.toLowerCase().includes(value.toLowerCase())
@@ -103,7 +103,6 @@ const Modulos = ({ ...props }) => {
         showConfirmButton: false,
         timer: 4000,
       });
-      window.location.reload();
     }
   };
 
