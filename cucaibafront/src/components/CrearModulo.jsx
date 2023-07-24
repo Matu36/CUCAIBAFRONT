@@ -138,67 +138,74 @@ const CrearModulo = ({ handleCerrarFormulario }) => {
             ))}
           </select>
         </div> */}
-        <div className="col-md-6">
-          <label htmlFor="descripcion">
-            Descripción{" "}
-            <span style={{ color: "red", marginLeft: "5px", fontSize: "20px" }}>
-              *
-            </span>
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            name="descripcion"
-            value={modulo.descripcion}
-            autoComplete="off"
-            placeholder="Descripción"
-            onChange={(e) =>
-              setModulo({ ...modulo, descripcion: e.target.value })
-            }
-          />
+        <div className="row">
+          <div className="col-md-6">
+            <label htmlFor="descripcion">
+              Descripción{" "}
+              <span
+                style={{ color: "red", marginLeft: "5px", fontSize: "20px" }}
+              >
+                *
+              </span>
+            </label>
+            <input
+              type="text"
+              className="form-control"
+              name="descripcion"
+              value={modulo.descripcion}
+              autoComplete="off"
+              placeholder="Descripción"
+              onChange={(e) =>
+                setModulo({ ...modulo, descripcion: e.target.value })
+              }
+            />
+          </div>
+          <div className="col-md-3">
+            <label htmlFor="valor">
+              Valor{" "}
+              <span
+                style={{ color: "red", marginLeft: "5px", fontSize: "20px" }}
+              >
+                *
+              </span>
+            </label>
+            <input
+              type="number"
+              className="form-control"
+              name="valor"
+              value={modulo.valor}
+              autoComplete="off"
+              placeholder="Valor"
+              onChange={(e) =>
+                setModulo({ ...modulo, valor: Number(e.target.value) })
+              }
+            />
+          </div>
+          <div className="col-md-3">
+            <label htmlFor="fechaDesde">
+              Fecha Desde{" "}
+              <span
+                style={{ color: "red", marginLeft: "5px", fontSize: "20px" }}
+              >
+                *
+              </span>
+            </label>
+            <input
+              type="datetime-local"
+              className="form-control"
+              name="fechaDesde"
+              value={modulo.fechaDesde}
+              autoComplete="off"
+              placeholder="Fecha Desde"
+              onChange={(e) =>
+                setModulo({
+                  ...modulo,
+                  fechaDesde: formatDateTime(e.target.value),
+                })
+              }
+            />
+          </div>
         </div>
-        <div className="col-md-3">
-          <label htmlFor="valor">
-            Valor{" "}
-            <span style={{ color: "red", marginLeft: "5px", fontSize: "20px" }}>
-              *
-            </span>
-          </label>
-          <input
-            type="number"
-            className="form-control"
-            name="valor"
-            value={modulo.valor}
-            autoComplete="off"
-            placeholder="Valor"
-            onChange={(e) =>
-              setModulo({ ...modulo, valor: Number(e.target.value) })
-            }
-          />
-        </div>
-        <div className="col-md-3">
-          <label htmlFor="fechaDesde">
-            Fecha Desde{" "}
-            <span style={{ color: "red", marginLeft: "5px", fontSize: "20px" }}>
-              *
-            </span>
-          </label>
-          <input
-            type="datetime-local"
-            className="form-control"
-            name="fechaDesde"
-            value={modulo.fechaDesde}
-            autoComplete="off"
-            placeholder="Fecha Desde"
-            onChange={(e) =>
-              setModulo({
-                ...modulo,
-                fechaDesde: formatDateTime(e.target.value),
-              })
-            }
-          />
-        </div>
-
         <hr
           style={{
             marginTop: "4rem",
