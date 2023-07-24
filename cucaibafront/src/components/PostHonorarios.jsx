@@ -8,7 +8,8 @@ const PostHonorarios = ({
   handleClick,
   operativoId,
 }) => {
-  const { data, isLoading } = useModulos(operativoId).modulosActivosQuery;
+  const { data, isLoading, refetch } =
+    useModulos(operativoId).modulosActivosQuery;
 
   const [value, setValue] = useState(0);
   const [selectValue, setSelectValue] = useState("0|0");
@@ -28,6 +29,7 @@ const PostHonorarios = ({
     setSelectValue("0|0");
     setValue(0);
     handleModuloId(Number(0));
+    refetch();
     handleClick();
   };
 
