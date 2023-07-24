@@ -7,8 +7,9 @@ import { usePagination } from "../hooks/usePagination";
 import Moment from "moment";
 import CrearModulo from "./CrearModulo";
 import Spinner from "./UI/Spinner";
-import "../assets/styles/detalle.css"
+import "../assets/styles/detalle.css";
 import BackButton from "../components/UI/BackButton";
+import Swal from "sweetalert2";
 
 const Modulos = ({ ...props }) => {
   const dispatch = useDispatch();
@@ -18,17 +19,22 @@ const Modulos = ({ ...props }) => {
   if (modulos.length > 1) {
     primerArreglo = modulos[1][0];
   }
-  const [modulo, setModulo] = useState(primerArreglo);
 
-  const { paginationOptions } = usePagination(primerArreglo);
+  const sortedModulos = primerArreglo
+    .slice()
+    .sort((a, b) => a.descripcion.localeCompare(b.descripcion));
+
+  const [modulo, setModulo] = useState(sortedModulos);
+
+  const { paginationOptions } = usePagination(sortedModulos);
 
   useEffect(() => {
     dispatch(getModulos());
   }, []);
 
   useEffect(() => {
-    setModulo(primerArreglo);
-  }, [primerArreglo]);
+    setModulo(sortedModulos);
+  }, [sortedModulos]);
 
   //-------------------------------- SEARCHBAR --------------------------- //
 
@@ -45,7 +51,7 @@ const Modulos = ({ ...props }) => {
     if (!value) {
       setModulo(primerArreglo);
     } else {
-      const arrayCache = primerArreglo.filter((mod) =>
+      const arrayCache = sortedModulos.filter((mod) =>
         mod.descripcion.toLowerCase().includes(value.toLowerCase())
       );
       setModulo(arrayCache);
@@ -90,6 +96,14 @@ const Modulos = ({ ...props }) => {
       dispatch(getModulos());
       setEditIndex(null);
       setEditPrice(null);
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        title: "El valor del módulo ha sido modificado",
+        showConfirmButton: false,
+        timer: 4000,
+      });
+      window.location.reload();
     }
   };
 
@@ -175,9 +189,7 @@ const Modulos = ({ ...props }) => {
     });
   }, []);
   if (modulos.length === 0) {
-    return (
-      <Spinner />
-    );
+    return <Spinner />;
   }
 
   //---------------------------------FIN SPINNER ------------------------------------//
@@ -235,7 +247,7 @@ const Modulos = ({ ...props }) => {
         {...props}
       />
       <div>
-      <BackButton />
+        <BackButton />
       </div>
     </div>
   );
