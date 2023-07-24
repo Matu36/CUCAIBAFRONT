@@ -10,7 +10,6 @@ const DetalleAgente = () => {
   const dispatch = useDispatch();
 
   const agentes = useSelector((state) => state.agentes);
-  const primerArreglo = agentes.slice(0, 1)[0];
   const { id } = useParams();
   const [agente, setAgente] = useState(null);
   const [mostrarDesplegable, setMostrarDesplegable] = useState(false);
@@ -24,13 +23,13 @@ const DetalleAgente = () => {
   }, []);
 
   useEffect(() => {
-    if (primerArreglo && primerArreglo.length > 0) {
-      const agenteSeleccionado = primerArreglo.find(
+    if (agentes && agentes.length > 0) {
+      const agenteSeleccionado = agentes.find(
         (agente) => agente.id === parseInt(id)
       );
       setAgente(agenteSeleccionado);
     }
-  }, [primerArreglo, id]);
+  }, [agentes, id]);
 
   useEffect(() => {
     if (agente) {

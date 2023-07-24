@@ -13,18 +13,17 @@ const GetAgentes = ({ ...props }) => {
   const dispatch = useDispatch();
   const agentes = useSelector((state) => state.agentes);
   const [search, setSearch] = useState("");
-  const primerArreglo = agentes.slice(0, 1)[0];
-  const [agente, setAgente] = useState(primerArreglo);
+  const [agente, setAgente] = useState(agentes);
 
-  const { paginationOptions } = usePagination(primerArreglo);
+  const { paginationOptions } = usePagination(agentes);
 
   useEffect(() => {
     dispatch(getAgentes());
   }, []);
 
   useEffect(() => {
-    setAgente(primerArreglo);
-  }, [primerArreglo]);
+    setAgente(agentes);
+  }, [agentes]);
 
   //-------------------------------- SEARCHBAR --------------------------- //
 
@@ -39,9 +38,9 @@ const GetAgentes = ({ ...props }) => {
 
   const filterByApellido = (value) => {
     if (!value) {
-      setAgente(primerArreglo);
+      setAgente(agentes);
     } else {
-      const arrayCache = primerArreglo.filter((oper) =>
+      const arrayCache = agentes.filter((oper) =>
         oper.apellido.toLowerCase().includes(value.toLowerCase()) ||
         oper.cuil.toLowerCase().includes(value.toLowerCase())
       );

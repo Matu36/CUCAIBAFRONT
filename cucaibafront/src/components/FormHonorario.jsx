@@ -12,8 +12,7 @@ import Swal from "sweetalert2";
 export const FormHonorario = () => {
   const agentes = useSelector((state) => state.agentes);
   let dispatch = useDispatch();
-  const primerArreglo = agentes.slice(0, 1)[0];
-  const [agente, setAgente] = useState(primerArreglo);
+  const [agente, setAgente] = useState(agentes);
 
   //---------------------------------SPINNER ------------------------------------//
 
@@ -44,8 +43,7 @@ export const FormHonorario = () => {
   }, []);
 
   useEffect(() => {
-    setAgente(primerArreglo);
-    console.log(agente);
+    setAgente(agentes);
   }, []);
 
   //Renderizando los módulos
@@ -180,7 +178,7 @@ export const FormHonorario = () => {
             placeholder="Selecciona un tipo"
           >
             <option value="">Seleccionar</option>
-            {primerArreglo.map((agente) => (
+            {agentes.map((agente) => (
               <option key={agente.id} value={agente.id}>
                 {agente.apellido + ", " + agente.nombre}
               </option>
