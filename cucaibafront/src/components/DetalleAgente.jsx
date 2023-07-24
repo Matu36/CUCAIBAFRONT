@@ -78,44 +78,44 @@ const DetalleAgente = () => {
         </button>
       </div>
       {mostrarDesplegable && (
-        <div style={{ display: "flex", flexWrap: "wrap" }}>
+        <div style={{ display: "flex", flexWrap: "wrap", gap:"30px", justifyContent:"center" }}>
           {operativosAsociados.length > 0 ? (
             operativosAsociados.map((operativo) => (
-              <div
+              <div className="card" style={{width: "18rem;", marginTop:"1rem", padding:"1rem", paddingLeft:"1rem"}}
+              
                 key={operativo.operativo_id}
-                style={{
-                  border: "1px solid gray",
-                  padding: "10px",
-                  paddingTop: "0px",
-                  marginTop: "20px",
-                  marginRight: "10px",
-                  flex: "0 0 calc(50% - 20px)",
-                }}
-              >
+               >
+                <div class="card-body">
+              
                 <br />
-                <span style={{ fontWeight: "bold" }}>Número de PD: </span>
+                <h5 className="card_title">Número de PD: </h5>
                 {operativo.referencia}
                 <br />
-                <span style={{ fontWeight: "bold" }}>
+                <h5 className="card_title"> 
                   Función Desempeñada:{" "}
-                </span>
+                  </h5>
                 {operativo.descripcion}
                 <br />
-                <span style={{ fontWeight: "bold" }}>Valor: $ </span>
+                <h5 className="card_title">Valor: $ </h5>
                 {operativo.valor.toFixed(2)}
                 <br />
-                <span style={{ fontWeight: "bold" }}>Fecha: </span>
+                <h5 className="card_title">Fecha: </h5>
                 {obtenerMesYAño(operativo.fecha)}
               </div>
+              </div>
+              
             ))
           ) : (
             <div>No hay operativos asociados</div>
           )}
         </div>
+        
       )}
 <br />
       <div>
+      
         <BackButton />
+        
       </div>
     </div>
   );
