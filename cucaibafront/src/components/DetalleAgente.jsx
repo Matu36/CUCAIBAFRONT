@@ -78,44 +78,50 @@ const DetalleAgente = () => {
         </button>
       </div>
       {mostrarDesplegable && (
-        <div style={{ display: "flex", flexWrap: "wrap", gap:"30px", justifyContent:"center" }}>
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            gap: "30px",
+            justifyContent: "center",
+          }}
+        >
           {operativosAsociados.length > 0 ? (
             operativosAsociados.map((operativo) => (
-              <div className="card" style={{width: "18rem;", marginTop:"1rem", padding:"1rem", paddingLeft:"1rem"}}
-              
+              <div
+                className="card"
+                style={{
+                  width: "18rem;",
+                  marginTop: "1rem",
+                  padding: "1rem",
+                  paddingLeft: "1rem",
+                }}
                 key={operativo.operativo_id}
-               >
+              >
                 <div class="card-body">
-              
-                <br />
-                <h5 className="card_title">Número de PD: </h5>
-                {operativo.referencia}
-                <br />
-                <h5 className="card_title"> 
-                  Función Desempeñada:{" "}
-                  </h5>
-                {operativo.descripcion}
-                <br />
-                <h5 className="card_title">Valor: $ </h5>
-                {operativo.valor.toFixed(2)}
-                <br />
-                <h5 className="card_title">Fecha: </h5>
-                {obtenerMesYAño(operativo.fecha)}
+                  <br />
+                  <h5 className="card_title">Número de PD: </h5>
+                  {operativo.referencia}
+                  <br />
+                  <h5 className="card_title">Función Desempeñada: </h5>
+                  {operativo.descripcion}
+                  <br />
+                  <h5 className="card_title">Valor: $ </h5>
+                  {operativo.valor.toFixed(2)}
+                  <br />
+                  <h5 className="card_title">Fecha: </h5>
+                  {obtenerMesYAño(operativo.fecha)}
+                </div>
               </div>
-              </div>
-              
             ))
           ) : (
             <div>No hay operativos asociados</div>
           )}
         </div>
-        
       )}
-<br />
+      <br />
       <div>
-      
         <BackButton />
-        
       </div>
     </div>
   );

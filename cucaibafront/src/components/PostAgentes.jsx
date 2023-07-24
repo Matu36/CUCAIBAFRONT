@@ -19,24 +19,6 @@ const INITIALSTATE = {
 
 const postAgente = () => {
   let dispatch = useDispatch();
-
-  // const personas = useSelector((state) => state.personas);
-  // let primerArreglo = [];
-  // if (personas.length > 1) {
-  //   primerArreglo = personas[0];
-  // }
-
-  // const [agentes, setAgentes] = useState(primerArreglo);
-  // const [persona, setPersona] = useState(null);
-
-  // useEffect(() => {
-  //   dispatch(getPersonas());
-  // }, []);
-
-  // useEffect(() => {
-  //   setAgentes(primerArreglo);
-  // }, []);
-
   const [agente, setAgente] = useState(INITIALSTATE);
 
   const { data: personaData, refetch } = usePersona(
@@ -57,7 +39,7 @@ const postAgente = () => {
           tipoPago: agente.tipoPago,
           personaid: personaData.id,
         });
-      } 
+      }
     } else {
       Swal.fire({
         position: "center",
@@ -111,7 +93,8 @@ const postAgente = () => {
           </label>
           <div className="mb-3 d-flex gap-2 align-items-center">
             <input
-              type="number" oninput="this.value = Math.abs(this.value)"
+              type="number"
+              oninput="this.value = Math.abs(this.value)"
               className="form-control"
               id="inputDNI"
               aria-describedby="DNIHelp"
@@ -137,6 +120,8 @@ const postAgente = () => {
             </button>
           </div>
         </div>
+        {personaData && (
+          <>
         <div className="mb-3">
           <label htmlFor="inputApellido" className="form-label">
             Apellido
@@ -239,7 +224,10 @@ const postAgente = () => {
               setAgente({ ...agente, personaid: e.target.value })
             }
           />
+           
         </div>
+        </>
+        )}
         <div className="d-flex justify-content-between">
           <div>
             <BackButton />
