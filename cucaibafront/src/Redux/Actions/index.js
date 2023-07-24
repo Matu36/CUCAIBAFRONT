@@ -77,11 +77,9 @@ export const postAgentes =
     }).then((payload) => dispatch({ type: POST_AGENTES, payload }));
 
 export const postModulo =
-  ({ tipo, categoria, valor, descripcion, fechaDesde }) =>
+  ({ valor, descripcion, fechaDesde }) =>
   (dispatch) =>
     ModulosAPI.post("", {
-      tipo,
-      categoria,
       valor,
       descripcion,
       fechaDesde,
