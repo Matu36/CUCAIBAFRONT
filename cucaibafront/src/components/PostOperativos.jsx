@@ -23,7 +23,7 @@ const PostOperativos = () => {
     if (
       operativo.referencia &&
       operativo.fecha
-      // operativo.fechapago
+      
     ) {
       const newOperativo = {
         ...operativo,
@@ -38,12 +38,14 @@ const PostOperativos = () => {
         showConfirmButton: false,
         timer: 2000,
       });
-      // window.location.reload();
+
+      window.location.href = "http://localhost:5173/operativos/ver-operativos";
+      
       setOperativo({
         referencia: "",
         fecha: "",
         descripcion: "",
-        // fechapago: ""
+        
       });
     } else {
       Swal.fire({
@@ -59,12 +61,12 @@ const PostOperativos = () => {
       <br />
       <div className="card">
         <div className="mb-3">
-          <label for="inputReferncia" class="form-label">
+          <label htmlFor="inputReferncia" className="form-label">
             Proceso de Donación
           </label>
           <input
             type="text"
-            class="form-control"
+            className="form-control"
             id="inputReferencia"
             aria-describedby="ReferenciaHelp"
             name="referencia"
@@ -77,7 +79,7 @@ const PostOperativos = () => {
           />
         </div>
         <div className="mb-3">
-          <label for="inputFecha" className="form-label">
+          <label htmlFor="inputFecha" className="form-label">
             Fecha
           </label>
           <input
@@ -95,7 +97,7 @@ const PostOperativos = () => {
           />
         </div>
         <div className="mb-3">
-          <label for="inputDescripción" className="form-label">
+          <label htmlFor="inputDescripción" className="form-label">
             Descripción
           </label>
           <input

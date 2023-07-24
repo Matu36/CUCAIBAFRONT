@@ -94,7 +94,6 @@ const postAgente = () => {
           <div className="mb-3 d-flex gap-2 align-items-center">
             <input
               type="number"
-              oninput="this.value = Math.abs(this.value)"
               className="form-control"
               id="inputDNI"
               aria-describedby="DNIHelp"
