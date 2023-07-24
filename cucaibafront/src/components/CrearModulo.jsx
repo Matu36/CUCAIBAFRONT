@@ -29,8 +29,6 @@ const CrearModulo = ({ handleCerrarFormulario }) => {
 
   //CREACION DE MODULO //
   const [modulo, setModulo] = useState({
-    tipo: "",
-    categoria: "",
     valor: "",
     descripcion: "",
     fechaDesde: "",
@@ -39,13 +37,7 @@ const CrearModulo = ({ handleCerrarFormulario }) => {
   const handleOnSubmit = async (e) => {
     e.preventDefault();
 
-    if (
-      modulo.tipo &&
-      modulo.categoria &&
-      modulo.valor &&
-      modulo.descripcion &&
-      modulo.fechaDesde
-    ) {
+    if (modulo.valor && modulo.descripcion && modulo.fechaDesde) {
       const newModulo = {
         ...modulo,
       };
@@ -61,8 +53,6 @@ const CrearModulo = ({ handleCerrarFormulario }) => {
       });
       window.location.reload();
       setModulo({
-        tipo: "",
-        categoria: "",
         valor: "",
         descripcion: "",
         fechaDesde: "",
@@ -121,31 +111,9 @@ const CrearModulo = ({ handleCerrarFormulario }) => {
           }}
         />
         <div className="col-md-6">
-          <label htmlFor="tipo">
-            Tipo
-            <span style={{ color: "red", marginLeft: "5px", fontSize: "20px" }}>
-              *
-            </span>
-          </label>
-          <select
-            className="form-select form-select-md mb-3"
-            aria-label=".form-select-lg example"
-            name="tipo"
-            value={modulo.tipo}
-            onChange={(e) =>
-              setModulo({ ...modulo, tipo: Number(e.target.value) })
-            }
-            placeholder="Selecciona un tipo"
-          >
-            <option value="">Seleccionar</option>
-            {destructuring.map((tipo) => (
-              <option key={tipo.id} value={tipo.id}>
-                {tipo.descripcion}
-              </option>
-            ))}
-          </select>
+          <h5> Tipo: Variable</h5>
         </div>
-        <div className="col-md-6">
+        {/* <div className="col-md-6">
           <label htmlFor="categoria">
             Categoria{" "}
             <span style={{ color: "red", marginLeft: "5px", fontSize: "20px" }}>
@@ -169,7 +137,7 @@ const CrearModulo = ({ handleCerrarFormulario }) => {
               </option>
             ))}
           </select>
-        </div>
+        </div> */}
         <div className="col-md-6">
           <label htmlFor="descripcion">
             Descripción{" "}
