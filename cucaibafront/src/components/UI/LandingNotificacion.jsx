@@ -7,8 +7,6 @@ const LandingNotificacion = () => {
   let dispatch = useDispatch();
   const liquidaciones = useSelector((state) => state.honorarioOutHash);
 
-  console.log(liquidaciones);
-
   const [modulo, setModulo] = useState(liquidaciones);
 
   useEffect(() => {
