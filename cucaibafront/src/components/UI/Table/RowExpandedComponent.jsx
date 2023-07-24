@@ -10,6 +10,7 @@ import { useMutation } from "@tanstack/react-query";
 import { HonorariosAPI } from "../../../api/HonorariosAPI";
 import DataTable from "react-data-table-component";
 import { useAgentes } from "../../../hooks/useAgentes";
+import Toast from "../Toast";
 
 const RowExpandedComponent = ({ data: operativo }) => {
   const { paginationOptions } = usePagination();
@@ -39,7 +40,7 @@ const RowExpandedComponent = ({ data: operativo }) => {
   const {
     data: honorariosAgente,
     isLoading: honorariosLoading,
-    isError,
+    isFetching,
     refetch,
   } = useHonorarios(
     operativo.id,
@@ -86,8 +87,11 @@ const RowExpandedComponent = ({ data: operativo }) => {
     }
   };
 
+  const [show, setShow] = useState(false);
+
   return (
     <>
+      <Toast msg="Hola Mundo" show={show} />
       <Modal title="Agregar función al Agente" referenceID="formModal">
         <div className="p-3">
           <h4 className="subtitulo" style={{ color: "#5DADE2" }}>
@@ -102,7 +106,7 @@ const RowExpandedComponent = ({ data: operativo }) => {
               </tr>
             </thead>
             <tbody>
-              {honorariosLoading && (
+              {honorariosLoading && isFetching && (
                 <tr>
                   <td colSpan={2}>Cargando...</td>
                 </tr>
@@ -114,6 +118,11 @@ const RowExpandedComponent = ({ data: operativo }) => {
                     <td>$ {h.valor}</td>
                   </tr>
                 ))}
+              {!honorariosLoading && honorariosAgente == 400 && (
+                <tr>
+                  <td colSpan={2}>No hay ningún modulo pendiente</td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>
