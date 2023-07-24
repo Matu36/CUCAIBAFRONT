@@ -122,122 +122,129 @@ const postAgente = () => {
         </div>
         {personaData && (
           <>
-        <div className="mb-3">
-          <label htmlFor="inputApellido" className="form-label">
-            Apellido
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            id="inputApellido"
-            aria-describedby="ApellidoHelp"
-            name="apellido"
-            value={agente.apellido}
-            autoComplete="off"
-            placeholder="Apellido"
-            disabled
-            onChange={(e) => setAgente({ ...agente, apellido: e.target.value })}
-          />
-        </div>
-        <div className="mb-3">
-          <label htmlFor="inputNombre" className="form-label">
-            Nombre
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            id="inputNombre"
-            aria-describedby="NombreHelp"
-            name="Nombre"
-            value={agente.nombre}
-            autoComplete="off"
-            placeholder="Nombre"
-            disabled
-            onChange={(e) => setAgente({ ...agente, nombre: e.target.value })}
-          />
-        </div>
-        <div className="mb-3">
-          <label htmlFor="inputDescripción" className="form-label">
-            CUIL
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            id="inputCUIL"
-            aria-describedby="CUILHelp"
-            name="CUIL"
-            value={agente.cuil}
-            autoComplete="off"
-            placeholder="CUIL"
-            disabled
-            onChange={(e) => setAgente({ ...agente, cuil: e.target.value })}
-          />
-        </div>
-        <div className="mb-3">
-          <label htmlFor="inputDescripción" className="form-label">
-            CBU
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            id="inputCBU"
-            aria-describedby="CBUHelp"
-            name="CBU"
-            value={agente.cbu}
-            autoComplete="off"
-            placeholder="CBU"
-            disabled
-            onChange={(e) => setAgente({ ...agente, cbu: e.target.value })}
-          />
-        </div>
-        <div className="mb-3">
-          <label htmlFor="inputTipoPago" className="form-label">
-            Tipo de Pago
-          </label>
-          <select
-            id="inputTipoPago"
-            aria-describedby="TipoPagoHelp"
-            name="TipoPago"
-            value={agente.tipoPago}
-            placeholder="tipoPago"
-            disabled={!agente.personaid}
-            onChange={(e) => setAgente({ ...agente, tipoPago: e.target.value })}
-            className="form-select form-select-md mb-3 form-control"
-          >
-            <option defaultValue="">Selecciona una opción</option>
-            <option value="ch">Cheque</option>
-            <option value="cb">Cuenta Bancaria</option>
-          </select>
-        </div>
-        <div className="mb-3">
-          <input
-            type="hidden"
-            className="form-control"
-            id="inputID"
-            aria-describedby="IDHelp"
-            name="PersId"
-            value={agente.personaid}
-            autoComplete="off"
-            placeholder="pERSID"
-            disabled
-            onChange={(e) =>
-              setAgente({ ...agente, personaid: e.target.value })
-            }
-          />
-           
-        </div>
-        </>
+            <div className="mb-3">
+              <label htmlFor="inputApellido" className="form-label">
+                Apellido
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id="inputApellido"
+                aria-describedby="ApellidoHelp"
+                name="apellido"
+                value={agente.apellido}
+                autoComplete="off"
+                placeholder="Apellido"
+                disabled
+                onChange={(e) =>
+                  setAgente({ ...agente, apellido: e.target.value })
+                }
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="inputNombre" className="form-label">
+                Nombre
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id="inputNombre"
+                aria-describedby="NombreHelp"
+                name="Nombre"
+                value={agente.nombre}
+                autoComplete="off"
+                placeholder="Nombre"
+                disabled
+                onChange={(e) =>
+                  setAgente({ ...agente, nombre: e.target.value })
+                }
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="inputDescripción" className="form-label">
+                CUIL
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id="inputCUIL"
+                aria-describedby="CUILHelp"
+                name="CUIL"
+                value={agente.cuil}
+                autoComplete="off"
+                placeholder="CUIL"
+                disabled
+                onChange={(e) => setAgente({ ...agente, cuil: e.target.value })}
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="inputDescripción" className="form-label">
+                CBU
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id="inputCBU"
+                aria-describedby="CBUHelp"
+                name="CBU"
+                value={agente.cbu}
+                autoComplete="off"
+                placeholder="CBU"
+                disabled
+                onChange={(e) => setAgente({ ...agente, cbu: e.target.value })}
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="inputTipoPago" className="form-label">
+                Tipo de Pago
+              </label>
+              <select
+                id="inputTipoPago"
+                aria-describedby="TipoPagoHelp"
+                name="TipoPago"
+                value={agente.tipoPago}
+                placeholder="tipoPago"
+                disabled={!agente.personaid}
+                onChange={(e) =>
+                  setAgente({ ...agente, tipoPago: e.target.value })
+                }
+                className="form-select form-select-md mb-3 form-control"
+              >
+                <option defaultValue="">Selecciona una opción</option>
+                <option value="ch">Cheque</option>
+                <option value="cb">Cuenta Bancaria</option>
+              </select>
+            </div>
+            <div className="mb-3">
+              <input
+                type="hidden"
+                className="form-control"
+                id="inputID"
+                aria-describedby="IDHelp"
+                name="PersId"
+                value={agente.personaid}
+                autoComplete="off"
+                placeholder="pERSID"
+                disabled
+                onChange={(e) =>
+                  setAgente({ ...agente, personaid: e.target.value })
+                }
+              />
+            </div>
+
+            <div className="d-flex justify-content-between">
+              <div>
+                <BackButton />
+              </div>
+
+              <div>
+                <button type="submit" className="btn btn-success btn btn-md">
+                  Agregar
+                </button>
+              </div>
+            </div>
+          </>
         )}
-        <div className="d-flex justify-content-between">
-          <div>
-            <BackButton />
-          </div>
-          <div>
-            <button type="submit" className="btn btn-success btn btn-md">
-              Agregar
-            </button>
-          </div>
-        </div>
       </div>
     </form>
   );
