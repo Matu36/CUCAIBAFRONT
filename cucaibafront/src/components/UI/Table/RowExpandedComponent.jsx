@@ -10,7 +10,8 @@ import { useMutation } from "@tanstack/react-query";
 import { HonorariosAPI } from "../../../api/HonorariosAPI";
 import DataTable from "react-data-table-component";
 import { useAgentes } from "../../../hooks/useAgentes";
-import Toast from "../Toast";
+import Toast, { handleToast } from "../Toast";
+import Swal from "sweetalert2";
 
 const RowExpandedComponent = ({ data: operativo }) => {
   const { paginationOptions } = usePagination();
@@ -47,9 +48,25 @@ const RowExpandedComponent = ({ data: operativo }) => {
     honorarioData.agente_id
   ).honorariosAgenteQuery;
 
-  const mutation = useMutation(async (newHonorario) => {
-    return await HonorariosAPI.post("", newHonorario);
-  });
+  const mutation = useMutation(
+    async (newHonorario) => {
+      return await HonorariosAPI.post("", newHonorario);
+    },
+    {
+      onSuccess: () => {
+        refetch();
+        refetchAgentes();
+        refetchAgentesDisponibles();
+        return Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "Se creó el honorario de manera correcta",
+          showConfirmButton: false,
+          timer: 3000,
+        });
+      },
+    }
+  );
 
   const handleClick = (id) => {
     setHonorarioData({ ...honorarioData, agente_id: id });
@@ -66,17 +83,19 @@ const RowExpandedComponent = ({ data: operativo }) => {
       honorarioData.modulo_id == 0 ||
       honorarioData.operativo_id == 0
     ) {
-      alert("No se puede crear un honorario si falta algun campo");
+      Swal.fire({
+        position: "center",
+        icon: "error",
+        title: "Hubo un error, no se pudo crear el honorario",
+        showConfirmButton: true,
+      });
       return;
     }
     mutation.mutate({ ...honorarioData, fechaModif: new Date() });
-    refetch();
   };
 
   const agregarAgente = () => {
     crearHonorario();
-    refetchAgentes();
-    refetchAgentesDisponibles();
   };
 
   const handleSelectChange = (e) => {
@@ -87,11 +106,8 @@ const RowExpandedComponent = ({ data: operativo }) => {
     }
   };
 
-  const [show, setShow] = useState(false);
-
   return (
     <>
-      <Toast msg="Hola Mundo" show={show} />
       <Modal title="Agregar función al Agente" referenceID="formModal">
         <div className="p-3">
           <h4 className="subtitulo" style={{ color: "#5DADE2" }}>

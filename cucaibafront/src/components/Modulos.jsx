@@ -40,7 +40,8 @@ const Modulos = ({ ...props }) => {
 
   useEffect(() => {
     filterByDescripcion(search);
-  }, [search, sortedModulos]);
+    console.log("render");
+  }, [search]);
 
   const handleOnChange = (e) => {
     e.preventDefault();
@@ -114,7 +115,7 @@ const Modulos = ({ ...props }) => {
   //FIN EDITAR PRECIO
 
   //----------------------------------COLUMNAS ------------------------------//
-
+  Moment.locale("es-mx");
   const columns = [
     { name: "Descripción", selector: (row) => row.descripcion, sortable: true },
     { name: "Valor", selector: (row) => row.valor, sortable: true },
@@ -122,13 +123,13 @@ const Modulos = ({ ...props }) => {
       name: "Fecha Desde",
       selector: (row) => row.fechaDesde,
       sortable: true,
-      format: (row) => Moment(row.fechaDesde).format("L"),
+      format: (row) => Moment(row.fechaDesde).add(1, "days").format("L"),
     },
     {
       name: "Fecha hasta",
       selector: (row) => row.fechaHasta,
       format: (row) =>
-        row.fechaHasta ? Moment(row.fechaHasta).format("L") : "",
+        row.fechaHasta ? Moment(row.fechaHasta).add(1, "days").format("L") : "",
 
       sortable: true,
     },
