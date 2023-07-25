@@ -2,15 +2,14 @@ import { useState } from "react";
 import { useHonorarios } from "../../../hooks/useHonorarios";
 import { usePagination } from "../../../hooks/usePagination";
 import Modal from "../Modal";
-import { FormHonorario } from "../../FormHonorario";
 import { AiOutlinePlus } from "react-icons/ai";
+import { FiTrash } from "react-icons/fi";
 import { useOperativo } from "../../../hooks/useOperativo";
 import PostHonorarios from "../../PostHonorarios";
 import { useMutation } from "@tanstack/react-query";
 import { HonorariosAPI } from "../../../api/HonorariosAPI";
 import DataTable from "react-data-table-component";
 import { useAgentes } from "../../../hooks/useAgentes";
-import Toast, { handleToast } from "../Toast";
 import Swal from "sweetalert2";
 
 const RowExpandedComponent = ({ data: operativo }) => {
@@ -25,11 +24,6 @@ const RowExpandedComponent = ({ data: operativo }) => {
 
   const { data: agentesDisponibles, refetch: refetchAgentesDisponibles } =
     useAgentes(operativo.id || 0).agentesDisponiblesQuery;
-
-    
-const handleDelete = (agente_id) => {
-  dispatch(deleteHonorario(agente_id, operativo.id));
-};
 
   const {
     data: agentes,
@@ -72,6 +66,30 @@ const handleDelete = (agente_id) => {
       },
     }
   );
+
+  const deleteH = useMutation(
+    async (data) => {
+      return await HonorariosAPI.delete("", { data });
+    },
+    {
+      onSuccess: () => {
+        refetch();
+        refetchAgentes();
+        refetchAgentesDisponibles();
+        return Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "Se desvinculo el agente del operativo de manera correcta",
+          showConfirmButton: false,
+          timer: 3000,
+        });
+      },
+    }
+  );
+
+  const handleDelete = (agente_id, operativo_id) => {
+    deleteH.mutate({ agenteID: agente_id, operativoID: operativo_id });
+  };
 
   const handleClick = (id) => {
     setHonorarioData({ ...honorarioData, agente_id: id });
@@ -227,7 +245,7 @@ const handleDelete = (agente_id) => {
                         <td>{agente.apellido}</td>
                         <td>{agente.nombre}</td>
                         <td>{agente.cuil}</td>
-                        <td>
+                        <td className="d-flex gap-3">
                           <button
                             type="button"
                             className="btn btn-success btn-md"
@@ -239,7 +257,15 @@ const handleDelete = (agente_id) => {
                           >
                             <AiOutlinePlus /> Agregar Función
                           </button>
-                          <button onClick={() => handleDelete(agente.id)}>Eliminar Agente</button>
+                          <button
+                            type="button"
+                            className="btn btn-danger btn-md"
+                            onClick={() =>
+                              handleDelete(agente.id, operativo.id)
+                            }
+                          >
+                            <FiTrash /> Eliminar Agente
+                          </button>
                         </td>
                       </tr>
                     ))}
