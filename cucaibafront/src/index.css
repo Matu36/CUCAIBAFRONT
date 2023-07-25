@@ -18,8 +18,18 @@
   background: "#f7f7f7";
 }
 
-
 .rdt_TableCol_Sortable {
   font-weight: bold;
   font-size: 0.8rem;
+}
+
+.showToast {
+  opacity: 1;
+  transform: translateX(-50px);
+  transition: all 250ms ease-in;
+}
+
+.hideToast {
+  opacity: 0;
+  transition: all 250ms ease-in;
 }
