@@ -1,30 +1,29 @@
-import React, { useEffect, useRef } from "react";
+import React from "react";
 
-const Toast = ({ msg, show }) => {
-  const ref = useRef();
+let toastEl = document.getElementById("liveToast");
 
-  let toastEl = document.getElementById("liveToast");
-  let toast = bootstrap.Toast.getOrCreateInstance(toastEl);
+export const handleToast = () => {
+  let toast = new bootstrap.Toast(toastEl, {
+    animation: true,
+    autohide: true,
+    delay: 2500,
+  });
+  toast.show();
+};
 
-  // useEffect(() => {
-  //   toast.show();
-  // }, [show]);
-
+const Toast = ({ msg }) => {
   return (
     <div className="position-fixed bottom-0 end-0 p-3">
       <div
-        ref={ref}
         id="liveToast"
-        className="toast bg-success text-white"
+        className="toast d-flex align-items-center justify-content-between px-3 text-bg-primary"
         role="alert"
-        aria-live="polite"
+        aria-live="assertive"
         aria-atomic="true"
-        data-autohide="true"
-        data-bs-delay="2500"
-        data-animation="true"
+        style={{ zIndex: 1000 }}
       >
-        <div className="d-flex align-items-center justify-content-between toast-body">
-          {msg}
+        <div className="toast-body">
+          <strong className="me-auto">{msg}</strong>
           <button
             type="button"
             className="btn-close"
