@@ -34,7 +34,7 @@ const Modulos = ({ ...props }) => {
 
   useEffect(() => {
     setModulo(sortedModulos);
-  }, []);
+  }, [sortedModulos]);
 
   //-------------------------------- SEARCHBAR --------------------------- //
 
