@@ -20,6 +20,7 @@ export const GET_PERSONAS = "GET_PERSONAS";
 export const GET_HONORARIO = "GET_HONORARIO";
 export const GET_HONORARIO_OUT_HASH = "GET_HONORARIO_OUT_HASH";
 export const POST_HONORARIO = "POST_HONORARIO";
+export const DELETE_HONORARIO_SUCCESS = "DELETE_HONORARIO_SUCCESS";
 
 export const getAgentes = () => async (dispatch) => {
   let response = await AgentesAPI.get("");
@@ -136,3 +137,12 @@ export const postHonorario =
       liquidacion_id,
       opprovisorio_nro,
     }).then((payload) => dispatch({ type: POST_HONORARIO, payload }));
+
+export const deleteHonorario =
+  ({ agenteID, operativoID }) =>
+  (dispatch) =>
+    HonorariosAPI.delete("", {
+      agenteID,
+      operativoID,
+    }).then(res => console.log(res))
+    // .then((payload) => {console.log(payload); dispatch({ type: DELETE_HONORARIO_SUCCESS, payload })});

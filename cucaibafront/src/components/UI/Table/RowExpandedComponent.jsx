@@ -26,6 +26,11 @@ const RowExpandedComponent = ({ data: operativo }) => {
   const { data: agentesDisponibles, refetch: refetchAgentesDisponibles } =
     useAgentes(operativo.id || 0).agentesDisponiblesQuery;
 
+    
+const handleDelete = (agente_id) => {
+  dispatch(deleteHonorario(agente_id, operativo.id));
+};
+
   const {
     data: agentes,
     isLoading: loadingAgentes,
@@ -234,6 +239,7 @@ const RowExpandedComponent = ({ data: operativo }) => {
                           >
                             <AiOutlinePlus /> Agregar Función
                           </button>
+                          <button onClick={() => handleDelete(agente.id)}>Eliminar Agente</button>
                         </td>
                       </tr>
                     ))}
