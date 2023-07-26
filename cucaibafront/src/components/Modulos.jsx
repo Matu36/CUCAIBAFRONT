@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch} from "react-redux";
+import { useDispatch } from "react-redux";
 import { getModulos, updateModulo } from "../Redux/Actions";
 import DataTable from "react-data-table-component";
 import EmptyTable from "./UI/EmptyTable";
@@ -13,7 +13,6 @@ import Swal from "sweetalert2";
 import { useModulos } from "../hooks/useModulos";
 
 const Modulos = ({ ...props }) => {
-
   let dispatch = useDispatch();
   const { data, isFetched } = useModulos().modulosQuery;
 
@@ -188,7 +187,6 @@ const Modulos = ({ ...props }) => {
         ),
     },
   ];
-
 
   return (
     <div className="card">

@@ -13,6 +13,7 @@ import AsignarAgente from "../Pages/AsignarAgente";
 import ModulosVista from "../Pages/ModulosVista";
 import LiquidacionesPendientes from "../Pages/Liquidaciones-Pendientes";
 import Detail from "../Pages/Detail";
+import OrdenPendiente from "../components/OrdenPendiente";
 
 const router = createBrowserRouter([
   {
@@ -94,6 +95,10 @@ const router = createBrowserRouter([
       {
         path:"/liquidaciones",
         element: <LiquidacionesPendientes />
+      },
+      {
+        path:"/ordenes",
+        element: <OrdenPendiente />
       }
     ],
   },
