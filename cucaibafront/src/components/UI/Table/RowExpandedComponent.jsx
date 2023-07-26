@@ -11,6 +11,7 @@ import { HonorariosAPI } from "../../../api/HonorariosAPI";
 import DataTable from "react-data-table-component";
 import { useAgentes } from "../../../hooks/useAgentes";
 import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 
 const RowExpandedComponent = ({ data: operativo }) => {
   const { paginationOptions } = usePagination();
@@ -129,6 +130,16 @@ const RowExpandedComponent = ({ data: operativo }) => {
     }
   };
 
+  const navigate = useNavigate();
+
+  const handleNavigate = () => {
+    navigate("../../agentes/crear-agente");
+
+    let modalEl = document.getElementById("agregarAgenteModal");
+    let modalInstance = bootstrap.Modal.getInstance(modalEl);
+    modalInstance.hide();
+  };
+
   return (
     <>
       <Modal title="Agregar función al Agente" referenceID="formModal">
@@ -181,17 +192,30 @@ const RowExpandedComponent = ({ data: operativo }) => {
               Agentes Disponibles
             </h5>
             <hr />
-            <DataTable
-              columns={columns}
-              data={agentesDisponibles}
-              pagination
-              selectableRows
-              selectableRowsSingle
-              selectableRowsHighlight
-              onSelectedRowsChange={handleSelectChange}
-              striped
-              paginationComponentOptions={paginationOptions}
-            />
+            {typeof agentesDisponibles == "object" ? (
+              <DataTable
+                columns={columns}
+                data={agentesDisponibles}
+                pagination
+                selectableRows
+                selectableRowsSingle
+                selectableRowsHighlight
+                onSelectedRowsChange={handleSelectChange}
+                striped
+                paginationComponentOptions={paginationOptions}
+              />
+            ) : (
+              <div className="d-flex p-2 align-items-center justify-content-center gap-2">
+                <h5>No hay ningun agente disponible</h5>
+                <button
+                  type="button"
+                  className="btn btn-success"
+                  onClick={handleNavigate}
+                >
+                  Crear Agente
+                </button>
+              </div>
+            )}
           </div>
         </div>
         <PostHonorarios
@@ -216,7 +240,7 @@ const RowExpandedComponent = ({ data: operativo }) => {
                   data-bs-toggle="modal"
                   data-bs-target="#agregarAgenteModal"
                 >
-                   <AiOutlinePlus /> Agregar Agente
+                  <AiOutlinePlus /> Agregar Agente
                 </button>
               </div>
               <hr />
