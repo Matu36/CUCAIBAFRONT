@@ -29,3 +29,4 @@ export const useModulos = (operativoId = 0) => {
     modulosActivosQuery,
   };
 };
+
