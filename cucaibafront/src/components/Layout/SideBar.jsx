@@ -6,6 +6,7 @@ import { BsFillPersonFill } from "react-icons/bs";
 import { SiWebmoney } from "react-icons/si";
 import { TbNurse } from "react-icons/tb";
 import { BiMoneyWithdraw } from "react-icons/bi";
+import {CiMoneyCheck1} from "react-icons/ci";
 
 function SideBar({ isOpen }) {
   return (
@@ -118,6 +119,13 @@ function SideBar({ isOpen }) {
             <Link to="/liquidaciones" onClick={() => isOpen(false)}>
               <BiMoneyWithdraw className="sidebarIcons" /> Liquidaciones
               Pendientes
+            </Link>
+          </li>
+        </ul>
+        <ul className="metismenu side-menu" id="side-menu">
+          <li>
+            <Link to="/ordenes" onClick={() => isOpen(false)}>
+              <CiMoneyCheck1 className="sidebarIcons" /> Órdenes Pendientes
             </Link>
           </li>
         </ul>
