@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch} from "react-redux";
 import { getModulos, updateModulo } from "../Redux/Actions";
 import DataTable from "react-data-table-component";
 import EmptyTable from "./UI/EmptyTable";
@@ -10,37 +10,46 @@ import Spinner from "./UI/Spinner";
 import "../assets/styles/detalle.css";
 import BackButton from "../components/UI/BackButton";
 import Swal from "sweetalert2";
+import { useModulos } from "../hooks/useModulos";
 
 const Modulos = ({ ...props }) => {
-  const dispatch = useDispatch();
-  const modulos = useSelector((state) => state.modulos);
-  const [search, setSearch] = useState("");
-  let primerArreglo = [];
-  if (modulos.length > 1) {
-    primerArreglo = modulos[1][0];
-  }
 
-  const sortedModulos = primerArreglo
-    .slice()
-    .sort((a, b) => a.descripcion.localeCompare(b.descripcion));
+  let dispatch = useDispatch();
+  const { data, isFetched } = useModulos().modulosQuery;
 
-  const [modulo, setModulo] = useState(primerArreglo);
+  const orderData = (data) => {
+    if (data && data.length > 0) {
+      return data
+        .slice()
+        .sort((a, b) => a.descripcion.localeCompare(b.descripcion));
+    }
+    return [];
+  };
 
-  const { paginationOptions } = usePagination(primerArreglo);
+  const [showSpinner, setShowSpinner] = useState(true);
+  useEffect(() => {
+    if (isFetched) {
+      const orderedData = orderData(data);
+      setModulo(orderedData);
+      setShowSpinner(false);
+    }
+  }, [isFetched, data]);
+
+  const { paginationOptions } = usePagination(orderData);
+
+  const [modulo, setModulo] = useState(orderData);
 
   useEffect(() => {
-    dispatch(getModulos());
+    if (isFetched) {
+      setModulo(orderData);
+    }
   }, []);
 
-  useEffect(() => {
-    setModulo(sortedModulos);
-  }, [sortedModulos]);
-
-  //-------------------------------- SEARCHBAR --------------------------- //
+  // SEARCHBAR
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     filterByDescripcion(search);
-    console.log("render");
   }, [search]);
 
   const handleOnChange = (e) => {
@@ -50,9 +59,9 @@ const Modulos = ({ ...props }) => {
 
   const filterByDescripcion = (value) => {
     if (!value) {
-      setModulo(sortedModulos);
+      setModulo(orderData);
     } else {
-      const arrayCache = sortedModulos.filter((mod) =>
+      const arrayCache = data.filter((mod) =>
         mod.descripcion.toLowerCase().includes(value.toLowerCase())
       );
       setModulo(arrayCache);
@@ -180,22 +189,10 @@ const Modulos = ({ ...props }) => {
     },
   ];
 
-  //---------------------------------SPINNER ------------------------------------//
-
-  const [showSpinner, setShowSpinner] = useState(true);
-  useEffect(() => {
-    setTimeout(() => {
-      setShowSpinner(false);
-    });
-  }, []);
-  if (modulos.length === 0) {
-    return <Spinner />;
-  }
-
-  //---------------------------------FIN SPINNER ------------------------------------//
 
   return (
     <div className="card">
+      {showSpinner && <Spinner />}
       <h1>Módulos</h1>
       <h5 className="subtitulo" style={{ color: "#5DADE2" }}>
         Listado de todos los módulos
