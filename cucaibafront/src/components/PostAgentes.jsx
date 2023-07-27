@@ -6,6 +6,7 @@ import "../assets/styles/detalle.css";
 import BackButton from "../components/UI/BackButton";
 import { validateDNI } from "../utils/Validaciones";
 import { usePersona } from "../hooks/usePersona";
+import { useMutation } from "@tanstack/react-query";
 
 const INITIALSTATE = {
   apellido: "",
@@ -21,6 +22,8 @@ const postAgente = () => {
   let dispatch = useDispatch();
   const [agente, setAgente] = useState(INITIALSTATE);
   const [showForm, setShowForm] = useState(false);
+
+  const [statusForm, setStatusForm] = useState("create");
 
   const { data: personaData, refetch } = usePersona(
     agente.nroDocumento
@@ -38,9 +41,31 @@ const postAgente = () => {
           nombre: personaData.nombre,
           cuil: personaData.cuil,
           cbu: personaData.cbuBloque1 + personaData.cbuBloque2,
-          tipoPago: agente.tipoPago,
+          tipoPago: personaData.tipoPago == 7 ? "cb" : "ch",
           personaid: personaData.id,
         });
+
+        if (personaData[0] == "update") {
+          setStatusForm("update");
+          setAgente({
+            ...agente,
+            apellido: personaData[1].apellido,
+            nombre: personaData[1].nombre,
+            cuil: personaData[1].cuil,
+            cbu: personaData[1].cbu,
+            tipoPago: personaData[1].tipoPago == 7 ? "cb" : "ch",
+            personaid: personaData[1].id,
+          });
+          Swal.fire({
+            position: "center",
+            icon: "info",
+            title: "Se actualizaron los datos del agente",
+            showConfirmButton: false,
+            timer: 2000,
+          });
+        } else {
+          setStatusForm("create");
+        }
       } else {
         setShowForm(false);
         setAgente(INITIALSTATE);
@@ -60,10 +85,10 @@ const postAgente = () => {
 
     if (typeof personaData == "object" && agente) {
       const newAgente = {
-        apellido: personaData.apellido,
-        nombre: personaData.nombre,
-        cuil: personaData.cuil,
-        cbu: personaData.cbuBloque1 + personaData.cbuBloque2,
+        apellido: agente.apellido,
+        nombre: agente.nombre,
+        cuil: agente.cuil,
+        cbu: agente.cbu,
         tipoPago: agente.tipoPago,
         personaid: personaData.id,
       };
@@ -207,7 +232,7 @@ const postAgente = () => {
                 name="TipoPago"
                 value={agente.tipoPago}
                 placeholder="tipoPago"
-                disabled={!agente.personaid}
+                disabled
                 onChange={(e) =>
                   setAgente({ ...agente, tipoPago: e.target.value })
                 }
@@ -241,9 +266,11 @@ const postAgente = () => {
               </div>
 
               <div>
-                <button type="submit" className="btn btn-success btn btn-md">
-                  Agregar
-                </button>
+                {statusForm != "update" && (
+                  <button type="submit" className="btn btn-success btn btn-md">
+                    Cargar Agente
+                  </button>
+                )}
               </div>
             </div>
           </>
