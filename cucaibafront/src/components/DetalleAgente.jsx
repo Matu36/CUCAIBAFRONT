@@ -5,8 +5,17 @@ import { getAgentes, getHonorario } from "../Redux/Actions";
 import "../assets/styles/detalle.css";
 import { obtenerMesYAño } from "../utils/MesAño";
 import BackButton from "../components/UI/BackButton";
+import { useAgentesPorId } from "../hooks/useAgentes";
 
 const DetalleAgente = () => {
+
+const agenteid = 305;
+const {agentesPorIdQuery} = useAgentesPorId(agenteid);
+
+const agenteData = agentesPorIdQuery.data;
+
+console.log(agenteData);
+
   const dispatch = useDispatch();
 
   const agentes = useSelector((state) => state.agentes);

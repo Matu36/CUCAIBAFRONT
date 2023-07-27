@@ -65,12 +65,6 @@ const Liquidaciones = ({ ...props }) => {
   const [selectedRows, setSelectedRows] = useState([]);
 
   const columns = [
-    { name: "PD Nro", selector: (row) => row.referencia, sortable: true },
-    { name: "APELLIDO", selector: (row) => row.apellido, sortable: true },
-    { name: "NOMBRE", selector: (row) => row.nombre, sortable: true },
-    { name: "CUIL", selector: (row) => row.cuil, sortable: true },
-    { name: "DESCRIPCIÓN", selector: (row) => row.descripcion, sortable: true },
-    { name: "VALOR", selector: (row) => row.valor.toFixed(2), sortable: true },
     {
       name: "Seleccionar",
       cell: (row) => (
@@ -92,6 +86,13 @@ const Liquidaciones = ({ ...props }) => {
       selector: (row) => row.id,
       omit: true,
     },
+    { name: "PD Nro", selector: (row) => row.referencia, sortable: true },
+    { name: "APELLIDO", selector: (row) => row.apellido, sortable: true },
+    { name: "NOMBRE", selector: (row) => row.nombre, sortable: true },
+    { name: "CUIL", selector: (row) => row.cuil, sortable: true },
+    { name: "DESCRIPCIÓN", selector: (row) => row.descripcion, sortable: true },
+    { name: "VALOR", selector: (row) => row.valor.toFixed(2), sortable: true },
+    
   ];
 
   const handleSubmit = (event) => {

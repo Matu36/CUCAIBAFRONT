@@ -1,6 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
 import { AgentesAPI } from "../api/AgentesAPI";
-import { useEffect, useState } from "react";
 
 const getAgentes = async (operativoId) => {
   if (!operativoId) {
@@ -15,7 +14,7 @@ const getAgentes = async (operativoId) => {
   }
 };
 
-export const useAgentes = (operativoId = 0) => {
+export const useAgentes = (operativoId = 0, agenteId = 0) => {
   const agentesQuery = useQuery({
     queryKey: ["agentes"],
     queryFn: () => getAgentes(),
@@ -27,8 +26,33 @@ export const useAgentes = (operativoId = 0) => {
     enabled: operativoId != 0,
   });
 
+  const agenteQuery = useQuery({
+    queryKey: ["agente", {agenteId}],
+    queryFn: () => getAgenteById(agenteId),
+    enabled: agenteId != 0
+  })
+
   return {
     agentesQuery,
     agentesDisponiblesQuery,
+    agenteQuery
+  };
+};
+
+
+const getAgenteById = async (id) => {
+  const { data } = await AgentesAPI.get(`/${id}`);
+  return data;
+};
+
+export const useAgentesPorId = (id) => {
+  const agentesPorIdQuery = useQuery({
+    queryKey: ["agentes-por-id", { id }],
+    queryFn: () => getAgenteById(id),
+    enabled: !!id,
+  });
+
+  return {
+    agentesPorIdQuery, 
   };
 };
