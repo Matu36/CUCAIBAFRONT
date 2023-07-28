@@ -1,21 +1,34 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import "../assets/styles/detalle.css";
 import { obtenerMesYAño } from "../utils/MesAño";
 import BackButton from "../components/UI/BackButton";
 import { useAgentesPorId } from "../hooks/useAgentes";
+import Spinner from "./UI/Spinner";
+import Swal from "sweetalert2";
+
 
 const DetalleAgente = () => {
   const { id } = useParams();
 
   const { agentesPorIdQuery } = useAgentesPorId(id);
 
-  const agenteData = agentesPorIdQuery.data;
+  const {data: agenteData, isLoading} = agentesPorIdQuery;
 
   const [mostrarDesplegable, setMostrarDesplegable] = useState(false);
 
-  if (!agenteData) {
-    return <div>Cargando...</div>;
+  if (isLoading) {
+    return  <Spinner />
+  }
+
+  if(!agenteData){
+    Swal.fire({
+      position: "center",
+      icon: "info",
+      title:
+        "El agente seleccionado no tiene datos para mostrar",
+      showConfirmButton: true,
+    });
   }
 
   const toggleDesplegable = () => {
