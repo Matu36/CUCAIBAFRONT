@@ -4,9 +4,64 @@ import { useState } from "react";
 import Swal from "sweetalert2";
 import "../assets/styles/detalle.css";
 import BackButton from "../components/UI/BackButton";
+import { useMutation } from "@tanstack/react-query";
+import { OperativosAPI } from "../api/OperativosAPI";
 
 const PostOperativos = () => {
   let dispatch = useDispatch();
+
+  const { mutate } = useMutation(
+    async (data) => {
+      return await OperativosAPI.post("", data);
+    },
+    {
+      onSuccess: () => {
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "El operativo ha sido creado",
+          showConfirmButton: false,
+          timer: 2000,
+        });
+      },
+      onError: () => {
+        Swal.fire({
+          position: "center",
+          icon: "warning",
+          title: "Ya existe un operativo con ese Proceso de Donación",
+          showConfirmButton: false,
+          timer: 2000,
+        });
+      },
+    }
+  );
+
+  const [showError, setShowError] = useState({
+    referencia: false,
+    // descripcion: false, //Momentaneamente
+  });
+
+  const validateString = (inputName, value) => {
+    switch (inputName) {
+      case "referencia":
+        const regexReferencia = /^[0-9]+$/;
+        if (!regexReferencia.test(value)) {
+          setShowError({ ...showError, referencia: true });
+        } else {
+          setShowError({ ...showError, referencia: false });
+        }
+        break;
+
+      // case "descripción":
+      //   const regexDescripcion = /^[A-Za-z\s]+$/;
+      //   if (!regexDescripcion.test(value)) {
+      //     setShowError({ ...showError, descripcion: true });
+      //   } else {
+      //     setShowError({ ...showError, descripcion: false });
+      //   }
+      //   break;
+    }
+  };
 
   //---------------------------- CREACION OPERATIVO ---------------------------- //
 
@@ -20,32 +75,23 @@ const PostOperativos = () => {
   const handleOnSubmit = async (e) => {
     e.preventDefault();
 
-    if (
-      operativo.referencia &&
-      operativo.fecha
-      
-    ) {
+    if (operativo.referencia && operativo.fecha) {
       const newOperativo = {
         ...operativo,
-        fecha: operativo.fecha.replace("T", " "),
+        fecha: operativo.fecha,
       };
 
-      dispatch(postOperativo(newOperativo));
-      await Swal.fire({
-        position: "center",
-        icon: "success",
-        title: "El operativo ha sido creado",
-        showConfirmButton: false,
-        timer: 2000,
-      });
+      console.log(newOperativo);
 
-      window.location.href = "http://localhost:5173/operativos/ver-operativos";
-      
+      // dispatch(postOperativo(newOperativo));
+      mutate(newOperativo);
+
+      // window.location.href = "http://localhost:5173/operativos/ver-operativos";
+
       setOperativo({
         referencia: "",
         fecha: "",
         descripcion: "",
-        
       });
     } else {
       Swal.fire({
@@ -62,7 +108,7 @@ const PostOperativos = () => {
       <div className="card">
         <div className="mb-3">
           <label htmlFor="inputReferncia" className="form-label">
-            Proceso de Donación
+            Proceso de Donación <span style={{ color: "red" }}>*</span>
           </label>
           <input
             type="text"
@@ -73,17 +119,23 @@ const PostOperativos = () => {
             value={operativo.referencia}
             autoComplete="off"
             placeholder="N° de Proceso de Donación"
-            onChange={(e) =>
-              setOperativo({ ...operativo, referencia: e.target.value })
-            }
+            onChange={(e) => {
+              setOperativo({ ...operativo, referencia: e.target.value });
+              validateString(e.target.name, e.target.value);
+            }}
           />
+          {showError.referencia && (
+            <div style={{ color: "red" }}>
+              El proceso de donación no tener letras
+            </div>
+          )}
         </div>
         <div className="mb-3">
           <label htmlFor="inputFecha" className="form-label">
-            Fecha
+            Fecha <span style={{ color: "red" }}>*</span>
           </label>
           <input
-            type="datetime-local"
+            type="date"
             className="form-control"
             id="inputFecha"
             aria-describedby="FechaHelp"
@@ -109,10 +161,16 @@ const PostOperativos = () => {
             value={operativo.descripcion}
             autoComplete="off"
             placeholder="Descripción"
-            onChange={(e) =>
-              setOperativo({ ...operativo, descripcion: e.target.value })
-            }
+            onChange={(e) => {
+              setOperativo({ ...operativo, descripcion: e.target.value });
+              validateString(e.target.name, e.target.value);
+            }}
           />
+          {/* {showError.descripcion && (
+            <div style={{ color: "red" }}>
+              La descripción no pueder estar vacía y no debe contener números
+            </div>
+          )} */}
         </div>
         <br />
         <br />
