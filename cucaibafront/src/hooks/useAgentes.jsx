@@ -27,18 +27,17 @@ export const useAgentes = (operativoId = 0, agenteId = 0) => {
   });
 
   const agenteQuery = useQuery({
-    queryKey: ["agente", {agenteId}],
+    queryKey: ["agente", { agenteId }],
     queryFn: () => getAgenteById(agenteId),
-    enabled: agenteId != 0
-  })
+    enabled: agenteId != 0,
+  });
 
   return {
     agentesQuery,
     agentesDisponiblesQuery,
-    agenteQuery
+    agenteQuery,
   };
 };
-
 
 const getAgenteById = async (id) => {
   const { data } = await AgentesAPI.get(`/${id}`);
@@ -53,6 +52,6 @@ export const useAgentesPorId = (id) => {
   });
 
   return {
-    agentesPorIdQuery, 
+    agentesPorIdQuery,
   };
 };

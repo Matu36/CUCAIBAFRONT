@@ -1,55 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { getAgentes, getHonorario } from "../Redux/Actions";
 import "../assets/styles/detalle.css";
 import { obtenerMesYAño } from "../utils/MesAño";
 import BackButton from "../components/UI/BackButton";
 import { useAgentesPorId } from "../hooks/useAgentes";
 
 const DetalleAgente = () => {
-
-const agenteid = 305;
-const {agentesPorIdQuery} = useAgentesPorId(agenteid);
-
-const agenteData = agentesPorIdQuery.data;
-
-console.log(agenteData);
-
-  const dispatch = useDispatch();
-
-  const agentes = useSelector((state) => state.agentes);
   const { id } = useParams();
-  const [agente, setAgente] = useState(null);
+
+  const { agentesPorIdQuery } = useAgentesPorId(id);
+
+  const agenteData = agentesPorIdQuery.data;
+
   const [mostrarDesplegable, setMostrarDesplegable] = useState(false);
 
-  const honorarios = useSelector((state) => state.honorario);
-  const [operativosAsociados, setOperativosAsociados] = useState([]);
-
-  useEffect(() => {
-    dispatch(getHonorario());
-    dispatch(getAgentes());
-  }, []);
-
-  useEffect(() => {
-    if (agentes && agentes.length > 0) {
-      const agenteSeleccionado = agentes.find(
-        (agente) => agente.id === parseInt(id)
-      );
-      setAgente(agenteSeleccionado);
-    }
-  }, [agentes, id]);
-
-  useEffect(() => {
-    if (agente) {
-      const operativosAgente = honorarios.filter(
-        (honorario) => honorario.agente_id === agente.id
-      );
-      setOperativosAsociados(operativosAgente);
-    }
-  }, [agente, honorarios]);
-
-  if (!agente) {
+  if (!agenteData) {
     return <div>Cargando...</div>;
   }
 
@@ -65,19 +30,19 @@ console.log(agenteData);
       <div className="card-body">
         <div className="data-row">
           <div className="label">Apellido:</div>
-          <div className="value">{agente.apellido}</div>
+          <div className="value">{agenteData[0].apellido}</div>
         </div>
         <div className="data-row">
           <div className="label">Nombre:</div>
-          <div className="value">{agente.nombre}</div>
+          <div className="value">{agenteData[0].nombre}</div>
         </div>
         <div className="data-row">
           <div className="label">CBU:</div>
-          <div className="value">{agente.cbu}</div>
+          <div className="value">{agenteData[0].cbu}</div>
         </div>
         <div className="data-row">
           <div className="label">CUIL:</div>
-          <div className="value">{agente.cuil}</div>
+          <div className="value">{agenteData[0].cuil}</div>
         </div>
       </div>
       <div>
@@ -94,8 +59,8 @@ console.log(agenteData);
             justifyContent: "center",
           }}
         >
-          {operativosAsociados.length > 0 ? (
-            operativosAsociados.map((operativo) => (
+          {agenteData[0].operativo_id ? (
+            agenteData.map((operativo) => (
               <div
                 className="card"
                 style={{
