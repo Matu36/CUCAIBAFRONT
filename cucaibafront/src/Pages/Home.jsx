@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "../assets/styles/style.css";
 import Notificacion from "../components/UI/LandingNotificacion.jsx";
-import Toast from "../components/UI/Toast";
-import useToast from "../hooks/useToast";
 
 export const Home = () => {
   const [fechaActual, setFechaActual] = useState("");
@@ -18,8 +16,6 @@ export const Home = () => {
     obtenerFechaActual();
   }, []);
 
-  const { handleShow } = useToast();
-
   return (
     <div className="container-fluid container-lg pt-3 pb-5">
       <div className="titulo-principal d-flex align-items-center mb-3">
@@ -28,8 +24,6 @@ export const Home = () => {
             <i className="far fa-circle fa-stack-2x text-info"></i>
             <i className="fas fa-hospital-symbol fa-stack-1x text-muted"></i>
           </span>
-          <button onClick={() => handleShow()}>Show</button>
-          <Toast msg="hola" />
         </div>
         <div>
           <h4 className="font-weight-bold text-muted text-uppercase mb-0">

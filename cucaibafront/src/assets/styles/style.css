@@ -667,4 +667,3 @@ span.select2-selection.is-invalid > span.select2-selection__rendered {
 .data-table-container .dataTables_info::before {
   content: "Filas por página: ";
 }
-
