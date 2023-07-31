@@ -240,7 +240,7 @@ const RowExpandedComponent = ({ data: operativo }) => {
                   data-bs-toggle="modal"
                   data-bs-target="#agregarAgenteModal"
                 >
-                  + Agregar Agente
+                  <AiOutlinePlus /> Agregar Agente
                 </button>
               </div>
               <hr />
