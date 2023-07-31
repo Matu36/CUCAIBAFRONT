@@ -1,6 +1,6 @@
 import React from "react";
 
-const Modal = ({ title, referenceID, children }) => {
+const Modal = ({ title, referenceID, children, customFooter }) => {
   return (
     <div
       className="modal fade modal-lg"
@@ -21,15 +21,17 @@ const Modal = ({ title, referenceID, children }) => {
             ></button>
           </div>
           <div className="modal-body">{children}</div>
-          <div className="modal-footer">
-            <button
-              type="button"
-              className="btn btn-secondary"
-              data-bs-dismiss="modal"
-            >
-              Salir
-            </button>
-          </div>
+          {!customFooter && (
+            <div className="modal-footer">
+              <button
+                type="button"
+                className="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Salir
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>

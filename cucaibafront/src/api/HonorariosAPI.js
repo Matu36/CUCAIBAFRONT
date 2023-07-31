@@ -6,7 +6,7 @@ export const HonorariosAPI = axios.create({
     mode: "cors",
     headers: {
         'Access-Control-Allow-Origin': '*',
-        'allow_methods': ["GET", "POST", "DELETE"],
+        'allow_methods': ["GET", "POST", "DELETE", "PUT"],
         "Access-Control-Allow-Credentials": true
     }
 })
