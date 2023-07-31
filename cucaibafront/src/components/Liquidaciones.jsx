@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
 import "../assets/styles/detalle.css";
-import { useDispatch, useSelector } from "react-redux";
-import { getHonorario, postHonorario } from "../Redux/Actions";
 import DataTable from "react-data-table-component";
 import EmptyTable from "./UI/EmptyTable";
 import { usePagination } from "../hooks/usePagination";
@@ -9,26 +7,27 @@ import Spinner from "../components/UI/Spinner";
 import BackButton from "../components/UI/BackButton";
 import { useMutation } from "@tanstack/react-query";
 import { HonorariosAPI } from "../api/HonorariosAPI";
+import { useHonorariosPendientes } from "../hooks/useHonorarios";
 
 const Liquidaciones = ({ ...props }) => {
-  let dispatch = useDispatch();
+  const { data, isFetched } =
+    useHonorariosPendientes().honorariosPendientesQuery;
 
   const liquidacionesMutation = useMutation((data) => {
     return HonorariosAPI.post("/liquidar", data);
   });
 
-  const honorarios = useSelector((state) => state.honorario);
   const [search, setSearch] = useState("");
-  const [liquidaciones, setLiquidaciones] = useState(honorarios);
-  const { paginationOptions } = usePagination(honorarios);
+
+  const [liquidaciones, setLiquidaciones] = useState(data);
+
+  const { paginationOptions } = usePagination(data);
 
   useEffect(() => {
-    dispatch(getHonorario());
+    if (isFetched) {
+      setLiquidaciones(data);
+    }
   }, []);
-
-  useEffect(() => {
-    setLiquidaciones(honorarios);
-  }, [honorarios]);
 
   //-------------------------------- SEARCHBAR --------------------------- //
 
@@ -43,9 +42,9 @@ const Liquidaciones = ({ ...props }) => {
 
   const filterByApellido = (value) => {
     if (!value) {
-      setLiquidaciones(honorarios);
+      setLiquidaciones(data);
     } else {
-      const arrayCache = honorarios.filter(
+      const arrayCache = data.filter(
         (oper) =>
           oper.apellido.toLowerCase().includes(value.toLowerCase()) ||
           oper.cuil.toLowerCase().includes(value.toLowerCase())
@@ -92,7 +91,6 @@ const Liquidaciones = ({ ...props }) => {
     { name: "CUIL", selector: (row) => row.cuil, sortable: true },
     { name: "DESCRIPCIÓN", selector: (row) => row.descripcion, sortable: true },
     { name: "VALOR", selector: (row) => row.valor.toFixed(2), sortable: true },
-    
   ];
 
   const handleSubmit = (event) => {
@@ -110,23 +108,22 @@ const Liquidaciones = ({ ...props }) => {
 
   const [showSpinner, setShowSpinner] = useState(true);
   useEffect(() => {
-    setTimeout(() => {
+    if (isFetched) {
+      setLiquidaciones(data);
       setShowSpinner(false);
-    });
-  }, []);
-  if (honorarios.length === 0) {
-    return <Spinner />;
-  }
+    }
+  }, [isFetched, data]);
 
   //---------------------------------FIN SPINNER ------------------------------------//
 
   return (
     <div className="card">
-      <h1>Liquidaciones Pendientes</h1>
+      <h1>Órdenes de Pago</h1>
       <h5 className="subtitulo" style={{ color: "#5DADE2" }}>
-        Listado de agentes pendientes de liquidación
+        Listado de agentes Pendientes de Orden de Pago 
       </h5>
       <br />
+      {showSpinner && <Spinner />}
       <div className="input-group mb-3" style={{ maxWidth: "40%" }}>
         <input
           type="text"
