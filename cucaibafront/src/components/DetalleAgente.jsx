@@ -35,6 +35,8 @@ const DetalleAgente = () => {
     setMostrarDesplegable(!mostrarDesplegable);
   };
 
+
+
   return (
     <div className="card">
       <div className="card-header">
@@ -97,6 +99,9 @@ const DetalleAgente = () => {
                   <br />
                   <h5 className="card_title">Fecha: </h5>
                   {obtenerMesYAño(operativo.fecha)}
+                  <h5 className="card_title">Estado del Operativo: </h5>
+                  {operativo.liquidacion_id ? "Orden de pago generada" : "Sin órden de pago generada"}
+                  <br />
                 </div>
               </div>
             ))

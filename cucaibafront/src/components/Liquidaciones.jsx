@@ -13,6 +13,7 @@ const Liquidaciones = ({ ...props }) => {
   const { data, isFetched } =
     useHonorariosPendientes().honorariosPendientesQuery;
 
+
   const liquidacionesMutation = useMutation((data) => {
     return HonorariosAPI.post("/liquidar", data);
   });
@@ -23,11 +24,6 @@ const Liquidaciones = ({ ...props }) => {
 
   const { paginationOptions } = usePagination(data);
 
-  useEffect(() => {
-    if (isFetched) {
-      setLiquidaciones(data);
-    }
-  }, []);
 
   //-------------------------------- SEARCHBAR --------------------------- //
 
@@ -55,12 +51,7 @@ const Liquidaciones = ({ ...props }) => {
 
   //-------------------------------- FIN SEARCHBAR --------------------------- //
 
-  const fechaActual = new Date();
-  const fechaConHora = `${fechaActual
-    .toISOString()
-    .slice(0, 10)} ${fechaActual.getHours()}:${fechaActual.getMinutes()}`;
-
-  // Estado para almacenar las filas seleccionadas
+ 
   const [selectedRows, setSelectedRows] = useState([]);
 
   const columns = [
@@ -135,6 +126,7 @@ const Liquidaciones = ({ ...props }) => {
         />
       </div>
       <form onSubmit={handleSubmit}>
+      {typeof data == "object" ? (
         <DataTable
           columns={columns}
           data={liquidaciones}
@@ -146,6 +138,7 @@ const Liquidaciones = ({ ...props }) => {
           }
           {...props}
         />
+        ) : <EmptyTable msg="No se encontro el Agente con los datos proporcionados" /> }
         <br />
         <div className="d-flex justify-content-between">
           <div>
