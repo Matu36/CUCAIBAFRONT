@@ -46,12 +46,12 @@ function SideBar({ isOpen, setIsOpen }) {
           </a>
           <ul className="collapse sub-menu" id="collapseAgentes">
             <li>
-              <Link to="/agentes/crear-agente" onClick={() => isOpen(false)}>
+              <Link to="/agentes/crear-agente" onClick={() => setIsOpen(false)}>
                 Cargar Agente
               </Link>
             </li>
             <li>
-              <Link to="/agentes/ver-agentes" onClick={() => isOpen(false)}>
+              <Link to="/agentes/ver-agentes" onClick={() => setIsOpen(false)}>
                 Ver Agentes
               </Link>
             </li>
@@ -72,7 +72,7 @@ function SideBar({ isOpen, setIsOpen }) {
             <li>
               <Link
                 to="/operativos/nuevo-operativo"
-                onClick={() => isOpen(false)}
+                onClick={() => setIsOpen(false)}
               >
                 Cargar operativos
               </Link>
@@ -80,7 +80,7 @@ function SideBar({ isOpen, setIsOpen }) {
             <li>
               <Link
                 to="/operativos/ver-operativos"
-                onClick={() => isOpen(false)}
+                onClick={() => setIsOpen(false)}
               >
                 Ver operativos
               </Link>
@@ -101,7 +101,7 @@ function SideBar({ isOpen, setIsOpen }) {
 
           <ul className="collapse sub-menu" id="collapseHonorarios">
             <li>
-              <Link to="/honorarios/variables" onClick={() => isOpen(false)}>
+              <Link to="/honorarios/variables" onClick={() => setIsOpen(false)}>
                 Variables
               </Link>
             </li>
@@ -109,25 +109,44 @@ function SideBar({ isOpen, setIsOpen }) {
         </li>
         <ul className="metismenu side-menu" id="side-menu">
           <li>
-            <Link to="/modulos" onClick={() => isOpen(false)}>
+            <Link to="/modulos" onClick={() => setIsOpen(false)}>
               <TbNurse className="sidebarIcons" /> Módulos
             </Link>
           </li>
         </ul>
-        <ul className="metismenu side-menu" id="side-menu">
-          <li>
-            <Link to="/liquidaciones" onClick={() => isOpen(false)}>
-              <BiMoneyWithdraw className="sidebarIcons" /> Órdenes Pendientes
-            </Link>
-          </li>
-        </ul>
-        <ul className="metismenu side-menu" id="side-menu">
-          <li>
-            <Link to="/ordenes" onClick={() => isOpen(false)}>
-              <CiMoneyCheck1 className="sidebarIcons" /> Ver Órdenes de Pago
-            </Link>
-          </li>
-        </ul>
+        <li>
+          <a
+            aria-controls="collapseExample"
+            aria-expanded="false"
+            className="nav-link dropdown-toggle"
+            data-bs-toggle="collapse"
+            href="#collapseOrdenes"
+            role="button"
+          >
+            <BiMoneyWithdraw className="sidebarIcons" /> Órdenes de Pago
+          </a>
+
+          <ul className="collapse sub-menu" id="collapseOrdenes">
+            <li>
+              <Link to="/ordenes/pendientes" onClick={() => setIsOpen(false)}>
+                Generar Órdenes de Pago
+              </Link>
+            </li>
+            <li>
+              <Link to="/ordenes/ver-ordenes" onClick={() => setIsOpen(false)}>
+                Ver Órdenes de Pago
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/ordenes/eliminar-ordenes"
+                onClick={() => setIsOpen(false)}
+              >
+                Eliminar Órdenes de Pago
+              </Link>
+            </li>
+          </ul>
+        </li>
       </ul>
     </div>
   );

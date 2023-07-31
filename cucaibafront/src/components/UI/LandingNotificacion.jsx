@@ -3,13 +3,12 @@ import "../../assets/styles/style.css";
 import { useHonorariosPendientesHome } from "../../hooks/useHonorarios";
 
 const LandingNotificacion = () => {
-
   const { data, isFetched } =
-  useHonorariosPendientesHome().honorariosPendientesHomeQuery;
+    useHonorariosPendientesHome().honorariosPendientesHomeQuery;
 
   return (
     <>
-      {isFetched > 0 && (
+      {isFetched && (
         <div
           style={{
             margin: "20px auto",
@@ -31,8 +30,7 @@ const LandingNotificacion = () => {
             }}
           >
             <span style={{ fontWeight: "bold" }}>
-              Ud tiene {data.length} Órdenes de pago 
-              Pendientes
+              Ud tiene {data.length} Órdenes de pago Pendientes
             </span>
           </div>
         </div>

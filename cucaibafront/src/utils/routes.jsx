@@ -90,16 +90,30 @@ const router = createBrowserRouter([
       },
       {
         path: "/modulos",
-        element: <ModulosVista />
+        element: <ModulosVista />,
       },
       {
-        path:"/liquidaciones",
-        element: <LiquidacionesPendientes />
+        path: "/liquidaciones",
+        element: <LiquidacionesPendientes />,
       },
       {
-        path:"/ordenes",
-        element: <OrdenPendiente />
-      }
+        path: "ordenes",
+        element: <LayoutHonorarios />,
+        children: [
+          {
+            path: "/ordenes/pendientes",
+            element: <LiquidacionesPendientes />,
+          },
+          {
+            path: "/ordenes/ver-ordenes",
+            element: <h1>ver ordenes</h1>,
+          },
+          {
+            path: "/ordenes/eliminar-ordenes",
+            element: <h1>eliminar ordenes</h1>,
+          },
+        ],
+      },
     ],
   },
 ]);
