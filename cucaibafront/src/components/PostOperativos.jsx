@@ -78,10 +78,10 @@ const PostOperativos = () => {
     if (operativo.referencia && operativo.fecha) {
       const newOperativo = {
         ...operativo,
-        fecha: operativo.fecha,
+        fecha: operativo.fecha + " 00:00",
       };
 
-      console.log(newOperativo);
+      // console.log(newOperativo);
 
       // dispatch(postOperativo(newOperativo));
       mutate(newOperativo);
