@@ -51,7 +51,7 @@ const CrearModulo = ({ handleCerrarFormulario }) => {
         showConfirmButton: false,
         timer: 3000,
       });
-      window.location.reload();
+      // window.location.reload();
       setModulo({
         valor: "",
         descripcion: "",
@@ -66,17 +66,6 @@ const CrearModulo = ({ handleCerrarFormulario }) => {
       });
     }
   };
-
-  function formatDateTime(dateTime) {
-    const date = new Date(dateTime);
-    const year = date.getFullYear();
-    const month = padZero(date.getMonth() + 1);
-    const day = padZero(date.getDate());
-    const hours = padZero(date.getHours());
-    const minutes = padZero(date.getMinutes());
-
-    return `${year}-${month}-${day} ${hours}:${minutes}`;
-  }
 
   function padZero(number) {
     return number.toString().padStart(2, "0");
@@ -191,7 +180,7 @@ const CrearModulo = ({ handleCerrarFormulario }) => {
               </span>
             </label>
             <input
-              type="datetime-local"
+              type="date"
               className="form-control"
               name="fechaDesde"
               value={modulo.fechaDesde}
@@ -200,7 +189,7 @@ const CrearModulo = ({ handleCerrarFormulario }) => {
               onChange={(e) =>
                 setModulo({
                   ...modulo,
-                  fechaDesde: formatDateTime(e.target.value),
+                  fechaDesde: e.target.value,
                 })
               }
             />

@@ -109,7 +109,7 @@ function Header() {
           </div>
         </div>
 
-        <SideBar isOpen={isOpen} />
+        <SideBar isOpen={isOpen} setIsOpen={setIsOpen} />
       </nav>
     </header>
   );

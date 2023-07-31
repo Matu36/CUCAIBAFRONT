@@ -295,13 +295,15 @@ const RowExpandedComponent = ({ data: operativo }) => {
                     ))}
                   </tbody>
                 ) : (
-                  <tbody>
-                    <tr>
-                      <td colSpan={4}>
-                        No hay ningún Agente Asociado al Operativo
-                      </td>
-                    </tr>
-                  </tbody>
+                  !loadingAgentes && (
+                    <tbody>
+                      <tr>
+                        <td colSpan={4}>
+                          No hay ningún Agente Asociado al Operativo
+                        </td>
+                      </tr>
+                    </tbody>
+                  )
                 )}
               </table>
             </div>
