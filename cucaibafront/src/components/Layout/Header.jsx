@@ -27,8 +27,8 @@ function Header() {
   }, [isOpen]);
 
   return (
-    <header>
-      <nav className="navbar position-relative top-0 navbar-offcanvas navbar-ms">
+    <header className="position-fixed vw-100 z-2">
+      <nav className="navbar top-0 navbar-offcanvas navbar-ms">
         <div className="row w-100 mx-auto flex-nowrap align-items-center justify-content-between">
           <button
             className="navbar-toggler border-0"
