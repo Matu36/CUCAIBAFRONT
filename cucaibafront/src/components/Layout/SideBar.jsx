@@ -117,7 +117,7 @@ function SideBar({ isOpen }) {
         <ul className="metismenu side-menu" id="side-menu">
           <li>
             <Link to="/liquidaciones" onClick={() => isOpen(false)}>
-              <BiMoneyWithdraw className="sidebarIcons" /> Liquidaciones
+              <BiMoneyWithdraw className="sidebarIcons" /> Órdenes
               Pendientes
             </Link>
           </li>
@@ -125,7 +125,7 @@ function SideBar({ isOpen }) {
         <ul className="metismenu side-menu" id="side-menu">
           <li>
             <Link to="/ordenes" onClick={() => isOpen(false)}>
-              <CiMoneyCheck1 className="sidebarIcons" /> Órdenes Pendientes
+              <CiMoneyCheck1 className="sidebarIcons" /> Ver Órdenes de Pago
             </Link>
           </li>
         </ul>

@@ -50,3 +50,19 @@ export const useHonorariosPendientes = () => {
     honorariosPendientesQuery,
   };
 };
+
+const getHonorariosPendientesHome = async () => {
+  const { data } = await HonorariosAPI.get("/pendienteshome");
+
+  return data[0];
+};
+
+export const useHonorariosPendientesHome = () => {
+  const honorariosPendientesHomeQuery = useQuery({
+    queryKey: ["honorariosPendientes"],
+    queryFn: () => getHonorariosPendientesHome(),
+  });
+  return {
+    honorariosPendientesHomeQuery,
+  };
+};

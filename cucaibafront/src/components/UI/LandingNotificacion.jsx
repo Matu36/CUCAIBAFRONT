@@ -1,25 +1,15 @@
-import React, { useEffect, useState } from "react";
-import { getHonorarioOutHash } from "../../Redux/Actions/index";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useState, useEffect } from "react";
 import "../../assets/styles/style.css";
+import { useHonorariosPendientesHome } from "../../hooks/useHonorarios";
 
 const LandingNotificacion = () => {
-  let dispatch = useDispatch();
-  const liquidaciones = useSelector((state) => state.honorarioOutHash);
 
-  const [modulo, setModulo] = useState(liquidaciones);
-
-  useEffect(() => {
-    dispatch(getHonorarioOutHash());
-  }, []);
-
-  useEffect(() => {
-    setModulo(liquidaciones);
-  }, [liquidaciones]);
+  const { data, isFetched } =
+  useHonorariosPendientesHome().honorariosPendientesHomeQuery;
 
   return (
     <>
-      {liquidaciones.length > 0 && (
+      {isFetched > 0 && (
         <div
           style={{
             margin: "20px auto",
@@ -41,7 +31,7 @@ const LandingNotificacion = () => {
             }}
           >
             <span style={{ fontWeight: "bold" }}>
-              Ud tiene {liquidaciones.length} Liquidaciones de Agentes
+              Ud tiene {data.length} Órdenes de pago 
               Pendientes
             </span>
           </div>
