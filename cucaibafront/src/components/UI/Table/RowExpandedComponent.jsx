@@ -236,7 +236,7 @@ const RowExpandedComponent = ({ data: operativo }) => {
                 <div></div>
                 <button
                   type="btn"
-                  className="btn btn-dark"
+                  className="btn btn-outline-success"
                   data-bs-toggle="modal"
                   data-bs-target="#agregarAgenteModal"
                 >
@@ -272,7 +272,7 @@ const RowExpandedComponent = ({ data: operativo }) => {
                         <td className="d-flex gap-3">
                           <button
                             type="button"
-                            className="btn btn-success btn-sm"
+                            className="btn btn-outline-secondary"
                             data-bs-toggle="modal"
                             data-bs-target="#formModal"
                             onClick={() => {
@@ -283,7 +283,7 @@ const RowExpandedComponent = ({ data: operativo }) => {
                           </button>
                           <button
                             type="button"
-                            className="btn btn-secondary btn-sm"
+                            className="btn btn-secondary"
                             onClick={() =>
                               handleDelete(agente.id, operativo.id)
                             }

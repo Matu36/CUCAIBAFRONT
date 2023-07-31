@@ -190,13 +190,12 @@ const Modulos = ({ ...props }) => {
 
   return (
     <div className="card">
-      {showSpinner && <Spinner />}
       <h1>Módulos</h1>
       <h5 className="subtitulo" style={{ color: "#5DADE2" }}>
         Listado de todos los módulos
       </h5>
       <br />
-
+      {showSpinner && <Spinner />}
       <div style={{ display: "flex", justifyContent: "space-between" }}>
         <div className="input-group mb-3" style={{ maxWidth: "40%" }}>
           <input

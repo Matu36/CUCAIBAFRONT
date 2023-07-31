@@ -34,3 +34,19 @@ export const useHonorarios = (operativoId = 0, agenteId = 0) => {
     honorariosAgenteQuery,
   };
 };
+
+const getHonorariosPendientes = async () => {
+  const { data } = await HonorariosAPI.get("/pendientes");
+
+  return data[0];
+};
+
+export const useHonorariosPendientes = () => {
+  const honorariosPendientesQuery = useQuery({
+    queryKey: ["honorariosPendientes"],
+    queryFn: () => getHonorariosPendientes(),
+  });
+  return {
+    honorariosPendientesQuery,
+  };
+};
