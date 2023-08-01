@@ -106,7 +106,6 @@ const Liquidaciones = ({ ...props }) => {
     }));
 
     const data = { array: selectedData, nroFolio };
-    console.log(data);
     if (nroFolio.length > 0) {
       liquidacionesMutation.mutate(data);
     }
