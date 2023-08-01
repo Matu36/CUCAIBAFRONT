@@ -14,6 +14,7 @@ import ModulosVista from "../Pages/ModulosVista";
 import LiquidacionesPendientes from "../Pages/Liquidaciones-Pendientes";
 import Detail from "../Pages/Detail";
 import OrdenPendiente from "../components/OrdenPendiente";
+import OrdenesDetail from "../Pages/OrdenesDetail";
 
 const router = createBrowserRouter([
   {
@@ -111,6 +112,10 @@ const router = createBrowserRouter([
           {
             path: "/ordenes/eliminar-ordenes",
             element: <h1>eliminar ordenes</h1>,
+          },
+          {
+            path: "/ordenes/ver-ordenes/:liquidacion_id",
+            element: <OrdenesDetail />,
           },
         ],
       },
