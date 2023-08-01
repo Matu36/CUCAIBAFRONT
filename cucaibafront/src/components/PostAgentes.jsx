@@ -91,6 +91,7 @@ const postAgente = () => {
         cbu: agente.cbu,
         tipoPago: agente.tipoPago,
         personaid: personaData.id,
+        dni: agente.nroDocumento,
       };
 
       dispatch(postAgentes(newAgente));
