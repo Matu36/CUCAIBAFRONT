@@ -1,14 +1,14 @@
 import React from 'react';
 import "../assets/styles/detalle.css";
 import { useOrdenPorLiquidacionId } from '../hooks/useOrdenesDePago';
+import Spinner from "../components/UI/Spinner";
 
 export const OrdenDetail = () => {
   const liquidacion_id = 41;
   const { data, isFetched } = useOrdenPorLiquidacionId(liquidacion_id).ordenesPorIdQuery;
 
-
-  const personas = Array.isArray(data) ? data[0] : {};
-  console.log(personas);
+  // Verificar si data es un array y no un objeto
+  const personasArray = Array.isArray(data) ? data[0] : []; // Si data es undefined o null, personasArray será un array vacío
 
   return (
     <div className='card'>
@@ -16,31 +16,38 @@ export const OrdenDetail = () => {
         <table>
           <thead>
             <tr>
-              <th>Apellido y Nombre</th>
-              <th>Referencia</th>
+              <th>Nombre</th>
+              <th>PD nro</th>
               <th>CUIL</th>
+              <th>Detalles</th>
               <th>Valor Total</th>
             </tr>
           </thead>
           <tbody>
-            {Object.entries(personas).map(([nombre, persona], index) => (
-              <tr key={index}>
-                <td>{nombre}</td>
-                <td>{persona.referencia}</td>
-                <td>{persona.cuil}</td>
-                {/* <td>{persona.items.map((item, i) => (
-                  <div key={i}>
-                    <span>Función: {item.funcion}</span>
-                    <span>Valor Unitario: {item.valor_unitario}</span>
-                    <span>Valor Total: {item.valor_total}</span>
-                  </div>
-                ))}</td> */}
-              </tr>
-            ))}
+            {personasArray.map((personasData, index) => {
+              return Object.entries(personasData).map(([nombre, detalles]) => {
+                return (
+                  <tr key={index}>
+                    <td>{nombre.split(':')[1]}</td>
+                    <td>{detalles.referencia}</td>
+                    <td>{detalles.cuil}</td>
+                    <td>
+                      {detalles.items.map((item, itemIndex) => (
+                        <div key={itemIndex}>
+                          <span>Descripción: {item.descripcion}</span>
+                          <span>Valor Unitario: {item.valor_unitario}</span>
+                        </div>
+                      ))}
+                    </td>
+                    <td>{detalles.valor_total}</td>
+                  </tr>
+                );
+              });
+            })}
           </tbody>
         </table>
       ) : (
-        <div>Loading...</div>
+        <Spinner />
       )}
     </div>
   );
