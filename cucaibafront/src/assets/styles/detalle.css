@@ -26,3 +26,22 @@
   .value {
     margin-left: 10px;
   }
+
+  
+.styled-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #f9f9f9; 
+}
+
+.styled-table th,
+.styled-table td {
+  border: 1px solid #dddddd; 
+  padding: 8px;
+  text-align: left;
+}
+
+
+.styled-table th {
+  background-color: #e0e0e0; 
+}
