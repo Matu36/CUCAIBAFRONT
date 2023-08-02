@@ -31,6 +31,9 @@ const Liquidaciones = ({ ...props }) => {
           position: "center",
           icon: "success",
         });
+        let modalEl = document.getElementById("opModal");
+        let modalInstance = bootstrap.Modal.getInstance(modalEl);
+        modalInstance.hide();
       },
     }
   );
@@ -107,7 +110,9 @@ const Liquidaciones = ({ ...props }) => {
 
     const data = { array: selectedData, nroFolio };
     if (nroFolio.length > 0) {
+      setNroFolio("");
       liquidacionesMutation.mutate(data);
+      setSelectedRows([]);
     }
   };
 
@@ -171,7 +176,7 @@ const Liquidaciones = ({ ...props }) => {
           Listado de agentes Pendientes de Orden de Pago
         </h5>
         <br />
-        {showSpinner && <Spinner />}
+
         <div className="input-group mb-3" style={{ maxWidth: "40%" }}>
           <input
             type="text"
@@ -183,7 +188,8 @@ const Liquidaciones = ({ ...props }) => {
           />
         </div>
         <div>
-          {typeof data == "object" ? (
+          {showSpinner && <Spinner />}
+          {!showSpinner && typeof data == "object" ? (
             <DataTable
               columns={columns}
               data={liquidaciones}
@@ -196,8 +202,9 @@ const Liquidaciones = ({ ...props }) => {
               {...props}
             />
           ) : (
-            <EmptyTable msg="No se encontro el Agente con los datos proporcionados" />
+            <EmptyTable msg="No hay ningun Agente pendiente de pago" />
           )}
+
           <br />
           <div className="d-flex justify-content-between">
             <div>

@@ -28,7 +28,7 @@ function Header() {
 
   return (
     <header className="position-fixed vw-100 z-2">
-      <nav className="navbar top-0 navbar-offcanvas navbar-ms">
+      <nav className="navbar top-0 navbar-offcanvas navbar-ms px-3">
         <div className="row w-100 mx-auto flex-nowrap align-items-center justify-content-between">
           <button
             className="navbar-toggler border-0"
@@ -50,8 +50,8 @@ function Header() {
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-                <BiUserCircle size="2rem" />
                 <span className="username"> Alejandro Oslovski </span>
+                <BiUserCircle size="2rem" />
               </button>
               <div
                 className="dropdown-user dropdown-menu pt-4"

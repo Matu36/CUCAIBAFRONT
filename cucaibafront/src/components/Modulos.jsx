@@ -11,10 +11,29 @@ import "../assets/styles/detalle.css";
 import BackButton from "../components/UI/BackButton";
 import Swal from "sweetalert2";
 import { useModulos } from "../hooks/useModulos";
+import { useMutation } from "@tanstack/react-query";
+import { ModulosAPI } from "../api/ModulosAPI";
 
 const Modulos = ({ ...props }) => {
   let dispatch = useDispatch();
-  const { data, isFetched } = useModulos().modulosQuery;
+  const { data, isFetched, refetch } = useModulos().modulosQuery;
+  const { mutate } = useMutation(
+    async (id) => {
+      return await ModulosAPI.put(`/baja/${id}`);
+    },
+    {
+      onSuccess: () => {
+        refetch();
+        Swal.fire({
+          position: "center",
+          icon: "info",
+          title: "Se dio de baja el modulo",
+          showConfirmButton: false,
+          timer: 4000,
+        });
+      },
+    }
+  );
 
   const orderData = (data) => {
     if (data && data.length > 0) {
@@ -102,7 +121,7 @@ const Modulos = ({ ...props }) => {
       };
 
       dispatch(updateModulo(updatedModulo));
-      dispatch(getModulos());
+      refetch();
       setEditIndex(null);
       setEditPrice(null);
       Swal.fire({
@@ -120,9 +139,14 @@ const Modulos = ({ ...props }) => {
     setEditPrice(null);
   };
 
+  const handleBaja = (id) => {
+    mutate(id);
+  };
+
   //FIN EDITAR PRECIO
 
   //----------------------------------COLUMNAS ------------------------------//
+
   Moment.locale("es-mx");
   const columns = [
     { name: "Descripción", selector: (row) => row.descripcion, sortable: true },
@@ -177,13 +201,26 @@ const Modulos = ({ ...props }) => {
             </div>
           </>
         ) : (
-          <button
-            className="btn btn-success btn-sm"
-            onClick={() => handleEdit(row.id, row.valor)}
-          >
-            {" "}
-            Editar Valor
-          </button>
+          <div className="d-flex gap-3">
+            <button
+              className={`btn btn-success btn-sm ${
+                row.fechaHasta ? "d-none" : "d-block"
+              }`}
+              onClick={() => handleEdit(row.id, row.valor)}
+            >
+              {" "}
+              Editar Valor
+            </button>
+            <button
+              className={`btn btn-danger btn-sm ${
+                row.fechaHasta ? "d-none" : "d-block"
+              }`}
+              onClick={() => handleBaja(row.id)}
+            >
+              {" "}
+              Dar de Baja
+            </button>
+          </div>
         ),
     },
   ];
@@ -195,7 +232,7 @@ const Modulos = ({ ...props }) => {
         Listado de todos los módulos
       </h5>
       <br />
-      {showSpinner && <Spinner />}
+
       <div style={{ display: "flex", justifyContent: "space-between" }}>
         <div className="input-group mb-3" style={{ maxWidth: "40%" }}>
           <input
@@ -204,6 +241,7 @@ const Modulos = ({ ...props }) => {
             placeholder="Buscar por Descripción"
             onChange={handleOnChange}
             value={search}
+            disabled={showSpinner}
             autoComplete="off"
           />
         </div>
@@ -211,6 +249,7 @@ const Modulos = ({ ...props }) => {
           className="btn btn-dark btn-md"
           style={{ marginRight: "4rem", marginBottom: "2rem" }}
           onClick={handleMostrarFormulario}
+          disabled={showSpinner}
         >
           + Crear Módulo
         </button>
@@ -230,16 +269,21 @@ const Modulos = ({ ...props }) => {
           </div>
         )}
       </div>
+      {showSpinner && <Spinner />}
+      {!showSpinner && (
+        <DataTable
+          columns={columns}
+          data={modulo}
+          pagination
+          striped
+          paginationComponentOptions={paginationOptions}
+          noDataComponent={
+            <EmptyTable msg="No se encontro el tipo de Módulo" />
+          }
+          {...props}
+        />
+      )}
 
-      <DataTable
-        columns={columns}
-        data={modulo}
-        pagination
-        striped
-        paginationComponentOptions={paginationOptions}
-        noDataComponent={<EmptyTable msg="No se encontro el tipo de Módulo" />}
-        {...props}
-      />
       <div>
         <BackButton />
       </div>

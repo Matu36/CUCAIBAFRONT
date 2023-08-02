@@ -110,6 +110,9 @@
   overflow: hidden;
   text-overflow: ellipsis;
   text-align: right;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .btn-user i {
@@ -125,7 +128,11 @@
 }
 
 .username {
-  display: none;
+  color: #f2f2f2;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  text-align: right;
 }
 
 .dropdown-user.dropdown-menu {

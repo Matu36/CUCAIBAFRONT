@@ -30,7 +30,7 @@ const LandingNotificacion = () => {
             }}
           >
             <span style={{ fontWeight: "bold" }}>
-              Ud tiene {data.length} Órdenes de pago Pendientes
+              Ud. tiene {data.length ?? 0} Órdenes de pago Pendientes
             </span>
           </div>
         </div>
