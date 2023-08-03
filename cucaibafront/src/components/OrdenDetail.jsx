@@ -5,7 +5,7 @@ import Spinner from "../components/UI/Spinner";
 import "../assets/styles/detalle.css"
 
 export const OrdenDetail = () => {
-  const liquidacion_id = 41;
+  const liquidacion_id = 113;
   const { data, isFetched } = useOrdenPorLiquidacionId(liquidacion_id).ordenesPorIdQuery;
 
  
@@ -18,9 +18,9 @@ export const OrdenDetail = () => {
           <thead>
             <tr>
               <th>Nombre</th>
-              <th>PD nro</th>
               <th>CUIL</th>
-              <th>Detalles</th>
+              <th>PD Nro</th>
+              <th>Descripción</th>
               <th>Valor Total</th>
             </tr>
           </thead>
@@ -30,17 +30,17 @@ export const OrdenDetail = () => {
                 return (
                   <tr key={index}>
                     <td>{nombre.split(':')[1]}</td>
-                    <td>{detalles.referencia}</td>
                     <td>{detalles.cuil}</td>
+                    <td>{detalles.referencia}</td>
                     <td>
                       {detalles.items.map((item, itemIndex) => (
-                        <div key={itemIndex}>
+                        <div key={itemIndex} style={{display:"flex", justifyContent:"space-between"}}>
                           <span>Función: {item.descripcion}</span>
-                          <span>Valor Unitario: $ {item.valor_unitario}</span>
+                          <span>Valor: ${item.valor_unitario.toFixed(2)}</span>
                         </div>
                       ))}
                     </td>
-                    <td>$ {detalles.valor_total}</td>
+                    <td>$ {detalles.valor_total.toFixed(2)}</td>
                   </tr>
                 );
               });
