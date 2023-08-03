@@ -16,4 +16,21 @@ const getOrdenByLiquidacionId = async (liquidacion_id) => {
     return {
         ordenesPorIdQuery,
     };
-}
+  }
+
+
+  const verOrdenDePago = async () => {
+    const {data} = await OrdenesDePagoAPI.get("/ver/all");
+    return data;
+  };
+
+  export const useVerOrdenDePago = () => {
+    const verOrdenesQuery = useQuery({
+      queryKey: ["ordenes-all"],
+      queryFn: () => verOrdenDePago()
+    });
+
+  return {
+    verOrdenesQuery,
+  };
+};
