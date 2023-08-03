@@ -15,6 +15,7 @@ import LiquidacionesPendientes from "../Pages/Liquidaciones-Pendientes";
 import Detail from "../Pages/Detail";
 import OrdenPendiente from "../components/OrdenPendiente";
 import OrdenesDetail from "../Pages/OrdenesDetail";
+import { VerOrdenes } from "../Pages/Ver-Ordenes";
 
 const router = createBrowserRouter([
   {
@@ -107,7 +108,7 @@ const router = createBrowserRouter([
           },
           {
             path: "/ordenes/ver-ordenes",
-            element: <h1>ver ordenes</h1>,
+            element: <VerOrdenes />
           },
           {
             path: "/ordenes/eliminar-ordenes",

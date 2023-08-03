@@ -2,10 +2,11 @@ import React from 'react';
 import "../assets/styles/detalle.css";
 import { useOrdenPorLiquidacionId } from '../hooks/useOrdenesDePago';
 import Spinner from "../components/UI/Spinner";
-import "../assets/styles/detalle.css"
+import "../assets/styles/detalle.css";
+import { useParams } from "react-router-dom";
 
 export const OrdenDetail = () => {
-  const liquidacion_id = 113;
+  const { liquidacion_id } = useParams();
   const { data, isFetched } = useOrdenPorLiquidacionId(liquidacion_id).ordenesPorIdQuery;
 
  

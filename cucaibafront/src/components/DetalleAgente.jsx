@@ -7,26 +7,24 @@ import { useAgentesPorId } from "../hooks/useAgentes";
 import Spinner from "./UI/Spinner";
 import Swal from "sweetalert2";
 
-
 const DetalleAgente = () => {
   const { id } = useParams();
 
   const { agentesPorIdQuery } = useAgentesPorId(id);
 
-  const {data: agenteData, isLoading} = agentesPorIdQuery;
+  const { data: agenteData, isLoading } = agentesPorIdQuery;
 
   const [mostrarDesplegable, setMostrarDesplegable] = useState(false);
 
   if (isLoading) {
-    return  <Spinner />
+    return <Spinner />;
   }
 
-  if(!agenteData){
+  if (!agenteData) {
     Swal.fire({
       position: "center",
       icon: "info",
-      title:
-        "El agente seleccionado no tiene datos para mostrar",
+      title: "El agente seleccionado no tiene datos para mostrar",
       showConfirmButton: true,
     });
   }
@@ -34,8 +32,6 @@ const DetalleAgente = () => {
   const toggleDesplegable = () => {
     setMostrarDesplegable(!mostrarDesplegable);
   };
-
-
 
   return (
     <div className="card">
@@ -87,20 +83,22 @@ const DetalleAgente = () => {
                 key={operativo.operativo_id}
               >
                 <div class="card-body">
-                  <br />
                   <h5 className="card_title">Número de PD: </h5>
                   {operativo.referencia}
-                  <br />
+
                   <h5 className="card_title">Función Desempeñada: </h5>
-                  {operativo.descripcion}
-                  <br />
-                  <h5 className="card_title">Valor: $ </h5>
-                  {operativo.valor.toFixed(2)}
-                  <br />
+                  {operativo.descripciones.map((descripcion, index) => (
+                    <div key={index}>{descripcion}</div>
+                  ))}
+                  <h5 className="card_title">Valor Total: $ </h5>
+                  {operativo.total_valor.toFixed(2)}
+
                   <h5 className="card_title">Fecha: </h5>
                   {obtenerMesYAño(operativo.fecha)}
                   <h5 className="card_title">Estado del Operativo: </h5>
-                  {operativo.liquidacion_id ? "Orden de pago generada" : "Sin órden de pago generada"}
+                  {operativo.liquidacion_id
+                    ? "Orden de pago generada"
+                    : "Sin órden de pago generada"}
                   <br />
                 </div>
               </div>
