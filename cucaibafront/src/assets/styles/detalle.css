@@ -12,21 +12,27 @@
   .card-header h2 {
     font-size: 24px;
   }
+
   
   .data-row {
     display: flex;
     margin-bottom: 10px;
+    align-items: start;
+    flex-direction: column;
+    flex-basis: 45%;
+    box-sizing: border-box;
   }
   
   .label {
-    font-weight: bold;
-    width: 100px;
-  }
-  
-  .value {
-    margin-left: 10px;
+    color: #aaaaaa;
+    border-top: 0.00400rem solid #969a9e;
+    width: 100%;
   }
 
+  .value {
+    font-weight: 600;
+  }
+  
   
 .styled-table {
   width: 100%;
@@ -44,4 +50,13 @@
 
 .styled-table th {
   background-color: #e0e0e0; 
+}
+
+#triangleIcon {
+  transition: all 250ms ease-in;
+}
+
+.showDesplegable {
+  transform: rotate(180deg);
+  transition: all 250ms ease-in;
 }
