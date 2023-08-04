@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import "../assets/styles/detalle.css";
 import { obtenerMesYAño } from "../utils/MesAño";
@@ -6,6 +6,8 @@ import BackButton from "../components/UI/BackButton";
 import { useAgentesPorId } from "../hooks/useAgentes";
 import Spinner from "./UI/Spinner";
 import Swal from "sweetalert2";
+import { GoTriangleDown } from "react-icons/go";
+import CardDetalleAgente from "./UI/CardDetalleAgente";
 
 const DetalleAgente = () => {
   const { id } = useParams();
@@ -14,9 +16,20 @@ const DetalleAgente = () => {
 
   const { data: agenteData, isLoading } = agentesPorIdQuery;
 
-  console.log(agenteData);
+
 
   const [mostrarDesplegable, setMostrarDesplegable] = useState(false);
+
+  document.addEventListener("show.bs.collapse", () => {
+    let triangleIcon = document.getElementById("triangleIcon");
+    triangleIcon.classList.add("showDesplegable");
+  });
+
+  document.addEventListener("hide.bs.collapse", () => {
+    let triangleIcon = document.getElementById("triangleIcon");
+    triangleIcon.classList.remove("showDesplegable");
+  });
+
 
   if (isLoading) {
     return <Spinner />;
@@ -31,85 +44,74 @@ const DetalleAgente = () => {
     });
   }
 
-  const toggleDesplegable = () => {
-    setMostrarDesplegable(!mostrarDesplegable);
-  };
-
   return (
     <div className="card">
-      <div className="card-header">
-        <h2>Detalle del Agente</h2>
+      <div className="card p-0 mb-3">
+        <div className="card-header">
+          <h4 className="fw-bold">Ver detalles del Agente</h4>
+        </div>
+        <div className="card-body justify-content-evenly  d-flex gap-2 flex-wrap">
+          <div className="data-row">
+            <div className="value">{agenteData[0].apellido}</div>
+            <div className="label">Apellido</div>
+          </div>
+          <div className="data-row">
+            <div className="value">{agenteData[0].nombre}</div>
+            <div className="label">Nombre</div>
+          </div>
+          <div className="data-row">
+            <div className="value">{agenteData[0].cbu}</div>
+            <div className="label">CBU</div>
+          </div>
+          <div className="data-row">
+            <div className="value">{agenteData[0].cuil}</div>
+            <div className="label">CUIL</div>
+          </div>
+        </div>
       </div>
-      <div className="card-body">
-        <div className="data-row">
-          <div className="label">Apellido:</div>
-          <div className="value">{agenteData[0].apellido}</div>
-        </div>
-        <div className="data-row">
-          <div className="label">Nombre:</div>
-          <div className="value">{agenteData[0].nombre}</div>
-        </div>
-        <div className="data-row">
-          <div className="label">CBU:</div>
-          <div className="value">{agenteData[0].cbu}</div>
-        </div>
-        <div className="data-row">
-          <div className="label">CUIL:</div>
-          <div className="value">{agenteData[0].cuil}</div>
-        </div>
-      </div>
-      <div>
-        <button onClick={toggleDesplegable} className="btn btn-success btn-md">
-          Ver Operativos Asociados
-        </button>
-      </div>
-      {mostrarDesplegable && (
-        <div
-          style={{
-            display: "flex",
-            flexWrap: "wrap",
-            gap: "30px",
-            justifyContent: "center",
-          }}
-        >
-          {agenteData[0].operativo_id ? (
-            agenteData.map((operativo) => (
-              <div
-                className="card"
-                style={{
-                  width: "18rem;",
-                  marginTop: "1rem",
-                  padding: "1rem",
-                  paddingLeft: "1rem",
-                }}
-                key={operativo.operativo_id}
+
+      <div id="accordion">
+        <div className="card p-0">
+          <div className="card-header mb-0" id="headingOne">
+            <h5 className="mb-0">
+              <button
+                className="btn btn-md fw-bold"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#collapseOne"
+                aria-expanded="false"
+                aria-controls="collapseOne"
               >
-                <div class="card-body">
-                  <h5 className="card_title">Número de PD: </h5>
-                  {operativo.referencia}
+                Ver Operativos Asociados{" "}
+                <span>
+                  <GoTriangleDown id="triangleIcon" />
+                </span>
+              </button>
+            </h5>
+          </div>
 
-                  <h5 className="card_title">Función Desempeñada: </h5>
-                  {operativo.descripciones.map((descripcion, index) => (
-                    <div key={index}>{descripcion}</div>
-                  ))}
-                  <h5 className="card_title">Valor Total: $ </h5>
-                  {operativo.total_valor.toFixed(2)}
-
-                  <h5 className="card_title">Fecha: </h5>
-                  {obtenerMesYAño(operativo.fecha)}
-                  <h5 className="card_title">Estado del Operativo: </h5>
-                  {operativo.liquidacion_id
-                    ? "Orden de pago generada"
-                    : "Sin órden de pago generada"}
-                  <br />
-                </div>
-              </div>
-            ))
-          ) : (
-            <div>No hay operativos asociados</div>
-          )}
+          <div
+            id="collapseOne"
+            className="collapse"
+            aria-labelledby="headingOne"
+            data-parent="#accordion"
+          >
+            <div class="row row-cols-1 row-cols-md-5 g-4 p-3">
+              {agenteData[0].operativo_id ? (
+                agenteData.map((operativo) => (
+                  <CardDetalleAgente
+                    data={operativo}
+                    key={operativo.operativo_id}
+                  />
+                ))
+              ) : (
+                <div>No hay operativos asociados</div>
+              )}
+            </div>
+          </div>
         </div>
-      )}
+      </div>
+
       <br />
       <div>
         <BackButton />
