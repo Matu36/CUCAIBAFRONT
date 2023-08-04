@@ -14,6 +14,8 @@ const DetalleAgente = () => {
 
   const { data: agenteData, isLoading } = agentesPorIdQuery;
 
+  console.log(agenteData);
+
   const [mostrarDesplegable, setMostrarDesplegable] = useState(false);
 
   if (isLoading) {
