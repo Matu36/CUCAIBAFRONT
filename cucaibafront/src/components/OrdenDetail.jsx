@@ -3,7 +3,9 @@ import "../assets/styles/detalle.css";
 import { useOrdenPorLiquidacionId } from '../hooks/useOrdenesDePago';
 import Spinner from "../components/UI/Spinner";
 import "../assets/styles/detalle.css";
+// import { PDFDownloadLink, Document, Page, Text } from '@react-pdf/renderer';
 import { useParams } from "react-router-dom";
+
 
 export const OrdenDetail = () => {
   const { liquidacion_id } = useParams();
