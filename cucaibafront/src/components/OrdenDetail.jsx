@@ -65,7 +65,7 @@ export const OrdenDetail = () => {
 
   const personasArray = Array.isArray(data) ? data[0] : [];
 
-  // console.log({arrayDescripcion, arrayValores})
+ 
 
   const generatePDFContent = (data) => (
     <Document>
@@ -86,32 +86,29 @@ export const OrdenDetail = () => {
                   <Text style={styles.cell}>{nombre.split(":")[1]}</Text>
                   <Text style={styles.cell}>{detalles.cuil}</Text>
                   <Text style={styles.cell}>{detalles.referencia}</Text>
-                  {}
-                    {detalles.items.map((item, itemIndex) => 
-                    // (
-                    //   <>
-                    //     <View key={itemIndex}>
-                    //       <Text style={{ textTransform: "lowercase" }}>
-                    //         {item.descripcion}
-                    //       </Text>
-                    //     </View>
-                    //     <View style={styles.cell}>
-                    //       <Text>${item.valor_unitario.toFixed(2)}a</Text>
-                    //     </View>
-                    //   </>
-                    // )
-                    {
-                      const arrayDescripcion = detalles.items.map((objeto) => objeto.descripcion);
-                      const arrayValores = detalles.items.map((objeto) => objeto.valor_unitario);
-                      return ( arrayDescripcion.map((v, i) => <>
-                      <Text style={styles.cell}>{v}</Text>
-                      {/* <Text style={styles.cell}>{arrayValores[i]}</Text> */}
-                    </>))
-                    })}
-                 
+                  <View style={styles.cell}>
+                    {detalles.items.map((item, itemIndex) => (
+                      <>
+                      <View key={itemIndex}>
+                        <Text style={{ textTransform: "lowercase" }}>
+                          {item.descripcion}
+                        </Text>
+                      </View>
+                        </>
+                    ))}
+                  </View>
+                  <View style={styles.cell}>
+                    {detalles.items.map((item, itemIndex) => (
+                      <>
+                      <View key={itemIndex}>
+                      </View>
+                        <Text>$ {item.valor_unitario.toFixed(2)}</Text>
+                        </>
+                    ))}
+                  </View>
 
                   <Text style={styles.cell}>
-                    ${detalles.valor_total.toFixed(2)}
+                    $ {detalles.valor_total.toFixed(2)}
                   </Text>
                 </View>
               );
