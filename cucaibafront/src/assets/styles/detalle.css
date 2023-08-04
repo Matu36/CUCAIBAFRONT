@@ -52,6 +52,8 @@
   background-color: #e0e0e0; 
 }
 
+
+
 #triangleIcon {
   transition: all 250ms ease-in;
 }
@@ -60,3 +62,4 @@
   transform: rotate(180deg);
   transition: all 250ms ease-in;
 }
+
