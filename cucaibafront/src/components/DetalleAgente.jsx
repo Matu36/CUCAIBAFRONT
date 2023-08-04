@@ -17,20 +17,6 @@ const DetalleAgente = () => {
   const { data: agenteData, isLoading } = agentesPorIdQuery;
 
 
-
-  const [mostrarDesplegable, setMostrarDesplegable] = useState(false);
-
-  document.addEventListener("show.bs.collapse", () => {
-    let triangleIcon = document.getElementById("triangleIcon");
-    triangleIcon.classList.add("showDesplegable");
-  });
-
-  document.addEventListener("hide.bs.collapse", () => {
-    let triangleIcon = document.getElementById("triangleIcon");
-    triangleIcon.classList.remove("showDesplegable");
-  });
-
-
   if (isLoading) {
     return <Spinner />;
   }
