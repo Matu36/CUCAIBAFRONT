@@ -16,8 +16,6 @@ const DetalleAgente = () => {
 
   const { data: agenteData, isLoading } = agentesPorIdQuery;
 
-  console.log(agenteData);
-
   if (isLoading) {
     return <Spinner />;
   }
