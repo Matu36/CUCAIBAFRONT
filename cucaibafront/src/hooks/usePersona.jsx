@@ -4,7 +4,7 @@ import { PersonasAPI } from "../api/PersonasAPI";
 const getPersonaByDNI = async (dni) => {
   const { data } = await PersonasAPI.get(`/${dni}`);
 
-  return data[0];
+  return data;
 };
 
 export const usePersona = (dni = 0) => {
