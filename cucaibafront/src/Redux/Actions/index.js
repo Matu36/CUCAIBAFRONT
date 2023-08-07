@@ -66,7 +66,7 @@ export const postOperativo =
     }).then((payload) => dispatch({ type: POST_OPERATIVO, payload }));
 
 export const postAgentes =
-  ({ apellido, nombre, cbu, cuil, tipoPago, personaid, dni }) =>
+  ({ apellido, nombre, cbu, cuil, tipoPago, personaid, dni, legajo }) =>
   (dispatch) =>
     AgentesAPI.post("", {
       apellido,
@@ -75,7 +75,8 @@ export const postAgentes =
       cuil,
       tipoPago,
       personaid,
-      dni
+      dni,
+      legajo
     }).then((payload) => dispatch({ type: POST_AGENTES, payload }));
 
 export const postModulo =
