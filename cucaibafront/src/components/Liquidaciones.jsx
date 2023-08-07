@@ -23,13 +23,24 @@ const Liquidaciones = ({ ...props }) => {
       return HonorariosAPI.put("/liquidar", data);
     },
     {
-      onSuccess: () => {
+      onSuccess: (data) => {
         refetch();
         Swal.fire({
           title: "Se genero la orden de pago",
-          timer: 2000,
+          html:
+            "<div>" +
+            "<h5>" +
+            "Nro. O.P Provisorio:" +
+            `<span style={{ fontWeight: "bold" }}> ${data.data[1][2]}</span>` +
+            "</h5>" +
+            "<p>" +
+            "Monto de la Ordén de Pago: $" +
+            `<span style={{ fontWeight: "bold" }}> ${data.data[1][1]}</span>` +
+            "</p>" +
+            "</div>",
           position: "center",
           icon: "success",
+          confirmButtonText: "Cerrar",
         });
         let modalEl = document.getElementById("opModal");
         let modalInstance = bootstrap.Modal.getInstance(modalEl);
