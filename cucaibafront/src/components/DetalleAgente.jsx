@@ -16,6 +16,7 @@ const DetalleAgente = () => {
 
   const { data: agenteData, isLoading } = agentesPorIdQuery;
 
+  console.log(agenteData);
 
   if (isLoading) {
     return <Spinner />;
@@ -53,6 +54,14 @@ const DetalleAgente = () => {
             <div className="value">{agenteData[0].cuil}</div>
             <div className="label">CUIL</div>
           </div>
+          <div className="data-row">
+            <div className="value">{agenteData[0].legajo}</div>
+            <div className="label">Legajo</div>
+          </div>
+          <div className="data-row">
+            <div className="value">{agenteData[0].dni}</div>
+            <div className="label">DNI</div>
+          </div>
         </div>
       </div>
 
@@ -82,7 +91,7 @@ const DetalleAgente = () => {
             aria-labelledby="headingOne"
             data-parent="#accordion"
           >
-            <div class="row row-cols-1 row-cols-md-5 g-4 p-3">
+            <div className="row row-cols-1 row-cols-md-5 g-4 p-3">
               {agenteData[0].operativo_id ? (
                 agenteData.map((operativo) => (
                   <CardDetalleAgente

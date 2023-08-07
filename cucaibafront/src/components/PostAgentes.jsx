@@ -16,6 +16,7 @@ const INITIALSTATE = {
   tipoPago: "",
   personaid: 0,
   nroDocumento: "",
+  legajo: 0,
 };
 
 const postAgente = () => {
@@ -43,6 +44,7 @@ const postAgente = () => {
           cbu: personaData.cbuBloque1 + personaData.cbuBloque2,
           tipoPago: personaData.tipoPago == 7 ? "cb" : "ch",
           personaid: personaData.id,
+          legajo: personaData.legajo,
         });
 
         if (personaData[0] == "update") {
@@ -55,6 +57,7 @@ const postAgente = () => {
             cbu: personaData[1].cbu,
             tipoPago: personaData[1].tipoPago == 7 ? "cb" : "ch",
             personaid: personaData[1].id,
+            legajo: personaData[1].legajo,
           });
           Swal.fire({
             position: "center",
@@ -92,6 +95,7 @@ const postAgente = () => {
         tipoPago: agente.tipoPago,
         personaid: personaData.id,
         dni: agente.nroDocumento,
+        legajo: agente.legajo,
       };
 
       dispatch(postAgentes(newAgente));
@@ -186,6 +190,25 @@ const postAgente = () => {
                 disabled
                 onChange={(e) =>
                   setAgente({ ...agente, nombre: e.target.value })
+                }
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="inputLegajo" className="form-label">
+                Legajo
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id="inputLegajo"
+                aria-describedby="LegajoHelp"
+                name="legajo"
+                value={agente.legajo}
+                autoComplete="off"
+                placeholder="Legajo"
+                disabled
+                onChange={(e) =>
+                  setAgente({ ...agente, legajo: e.target.value })
                 }
               />
             </div>

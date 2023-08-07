@@ -5,7 +5,7 @@ export function validateDNI(inputValue) {
   const dniInput = document.getElementById("inputDNI");
   const errorMessage = document.getElementById("dniErrorMessage");
 
-  if (inputValue.length < 8 || isNaN(inputValue)) {
+  if (inputValue.length < 7 || isNaN(inputValue)) {
     dniInput.style.border = "1px solid red";
     errorMessage.style.display = "block";
   } else {

@@ -32,6 +32,30 @@ const Modulos = ({ ...props }) => {
           timer: 4000,
         });
       },
+      onError: (error) => {
+        switch (error.response.status) {
+          case 405:
+            Swal.fire({
+              position: "center",
+              icon: "warning",
+              title: "Hubo un problema",
+              html: error.response.data,
+              showConfirmButton: false,
+              timer: 4000,
+            });
+            break;
+
+          default:
+            Swal.fire({
+              position: "center",
+              icon: "warning",
+              title: "Hubo un problema",
+              showConfirmButton: false,
+              timer: 4000,
+            });
+            break;
+        }
+      },
     }
   );
 
