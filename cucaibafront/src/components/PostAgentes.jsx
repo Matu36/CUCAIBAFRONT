@@ -26,12 +26,16 @@ const postAgente = () => {
 
   const [statusForm, setStatusForm] = useState("create");
 
+  const [clicked, setClicked] = useState(false);
+
   const { data: personaData, refetch } = usePersona(
-    agente.nroDocumento
+    agente.nroDocumento,
+    clicked
   ).personaQuery;
 
   const handleFindPersona = () => {
     if (agente.nroDocumento) {
+      setClicked(true);
       refetch();
 
       if (typeof personaData == "object") {
@@ -79,6 +83,7 @@ const postAgente = () => {
             "El DNI ingresado no se encontró en la base de datos de empleados",
           showConfirmButton: true,
         });
+        setClicked(false);
       }
     }
   };
