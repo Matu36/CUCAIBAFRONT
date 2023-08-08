@@ -1,5 +1,8 @@
 import React, { useState } from "react";
-import { useVerOrdenDePago } from "../hooks/useOrdenesDePago";
+import {
+  useOrdenesMutation,
+  useVerOrdenDePago,
+} from "../hooks/useOrdenesDePago";
 import DataTable from "react-data-table-component";
 import EmptyTable from "../components/UI/EmptyTable";
 import { usePagination } from "../hooks/usePagination";
@@ -9,6 +12,9 @@ import Spinner from "../components/UI/Spinner";
 import BackButton from "../components/UI/BackButton";
 import Modal from "../components/UI/Modal";
 import InputField from "../components/UI/InputField";
+
+const NUMBER_REGEX = /^[0-9]+$/;
+const STRING_REGEX = /^[a-zA-Z]+$/;
 
 const labels = [
   {
@@ -24,16 +30,16 @@ const labels = [
     inputType: "number",
   },
   {
-    label: "Nro. O.P Provisorio",
+    label: "Año O.P Definitivo",
     disabled: false,
     inputKey: "anio_op",
     inputType: "number",
   },
   {
-    label: "Nro. O.P Provisorio",
+    label: "Tipo Acto",
     disabled: false,
     inputKey: "tipo_acto",
-    inputType: "number",
+    inputType: "string",
   },
   {
     label: "Nro. Acto",
@@ -51,17 +57,19 @@ const labels = [
     label: "Gdeba Acto",
     disabled: false,
     inputKey: "gdeba_acto",
-    inputType: "number",
+    inputType: "string",
   },
   {
     label: "Reparticion Acto",
     disabled: false,
     inputKey: "reparticion_acto",
-    inputType: "number",
+    inputType: "string",
   },
 ];
 
-const INITIAL_STATE = {};
+const INITIAL_STATE = {
+  liquidacion_id: 0,
+};
 
 labels.forEach((key) => {
   INITIAL_STATE[key.inputKey] = "";
@@ -70,12 +78,44 @@ labels.forEach((key) => {
 export const VerOrdenes = ({ ...props }) => {
   const { data, isFetched, refetch } = useVerOrdenDePago().verOrdenesQuery;
 
+  const { mutate } = useOrdenesMutation().asignarDefinitivo;
+
   const [OP, setOP] = useState(INITIAL_STATE);
+  const [error, setError] = useState(INITIAL_STATE);
 
   const { paginationOptions } = usePagination(data);
 
   const handleInputChange = (e) => {
+    switch (e.target.type) {
+      case "string":
+        setError({
+          ...error,
+          [e.target.name]: !STRING_REGEX.test(e.target.value),
+        });
+        break;
+
+      case "number":
+        setError({
+          ...error,
+          [e.target.name]: !NUMBER_REGEX.test(e.target.value),
+        });
+        break;
+    }
     setOP({ ...OP, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    let count = 0;
+    for (const key in OP) {
+      if (OP[key] == "") count++;
+    }
+    if (count > 0) {
+      return;
+    } else {
+      mutate(OP);
+      setOP(INITIAL_STATE);
+    }
   };
 
   const columns = [
@@ -123,7 +163,11 @@ export const VerOrdenes = ({ ...props }) => {
                 data-bs-toggle="modal"
                 data-bs-target="#opDefinitiva"
                 onClick={() =>
-                  setOP({ ...OP, op_provisorio: row.opprovisorio_nro })
+                  setOP({
+                    ...OP,
+                    op_provisorio: row.opprovisorio_nro,
+                    liquidacion_id: row.liquidacion_id,
+                  })
                 }
                 onMouseOver={(e) =>
                   (e.currentTarget.style.backgroundColor = "#d3d3d3")
@@ -145,7 +189,7 @@ export const VerOrdenes = ({ ...props }) => {
     <>
       <Modal title="Asignar Numeración Definitiva" referenceID="opDefinitiva">
         <div>
-          <form>
+          <form onSubmit={handleSubmit}>
             {labels.map((el, i) => (
               <InputField
                 label={el.label}
@@ -153,10 +197,14 @@ export const VerOrdenes = ({ ...props }) => {
                 inputKey={el.inputKey}
                 value={OP[el.inputKey]}
                 disabled={el.disabled}
+                error={error[el.inputKey]}
                 inputType={el.inputType}
                 handleChange={handleInputChange}
               />
             ))}
+            <button className="btn btn-success btn-md" type="submit">
+              Asignar
+            </button>
           </form>
         </div>
       </Modal>
