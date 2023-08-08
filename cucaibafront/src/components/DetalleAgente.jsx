@@ -35,7 +35,7 @@ const DetalleAgente = () => {
         <div className="card-header">
           <h4 className="fw-bold">Ver detalles del Agente</h4>
         </div>
-        <div className="card-body justify-content-evenly  d-flex gap-2 flex-wrap">
+        <div className="card-body justify-content-evenly d-flex gap-2 flex-wrap detalleAgente">
           <div className="data-row">
             <div className="value">{agenteData[0].apellido}</div>
             <div className="label">Apellido</div>
@@ -88,7 +88,7 @@ const DetalleAgente = () => {
             data-parent="#accordion"
             style={{ overflowY: "auto", overflowX: "clip" }}
           >
-            <div className="row row-cols-1 row-cols-md-5 g-4 p-3">
+            <div className="row row-cols-1 row-cols-md-5 g-4 p-md-3 p-1">
               {agenteData[0].operativo_id ? (
                 agenteData.map((operativo) => (
                   <CardDetalleAgente

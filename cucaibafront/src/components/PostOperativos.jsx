@@ -1,40 +1,11 @@
-import { postOperativo } from "../Redux/Actions";
-import { useDispatch } from "react-redux";
 import { useState } from "react";
 import Swal from "sweetalert2";
 import "../assets/styles/detalle.css";
 import BackButton from "../components/UI/BackButton";
-import { useMutation } from "@tanstack/react-query";
-import { OperativosAPI } from "../api/OperativosAPI";
+import { useOperativo } from "../hooks/useOperativo";
 
 const PostOperativos = () => {
-  let dispatch = useDispatch();
-
-  const { mutate } = useMutation(
-    async (data) => {
-      return await OperativosAPI.post("", data);
-    },
-    {
-      onSuccess: () => {
-        Swal.fire({
-          position: "center",
-          icon: "success",
-          title: "El operativo ha sido creado",
-          showConfirmButton: false,
-          timer: 2000,
-        });
-      },
-      onError: () => {
-        Swal.fire({
-          position: "center",
-          icon: "warning",
-          title: "Ya existe un operativo con ese Proceso de Donación",
-          showConfirmButton: false,
-          timer: 2000,
-        });
-      },
-    }
-  );
+  const { mutate } = useOperativo().operativoMutation;
 
   const [showError, setShowError] = useState({
     referencia: false,

@@ -11,8 +11,6 @@ const LandingNotificacion = () => {
       {isFetched && (
         <div
           style={{
-            margin: "20px auto",
-            padding: "40px",
             border: "1px solid rgba(2, 2, 2, 0.2)",
             borderRadius: "4px",
             boxShadow: "2px 2px 4px rgba(0, 0, 0, 0.1)",
@@ -20,11 +18,12 @@ const LandingNotificacion = () => {
             opacity: 0,
             animation: "fadeIn 3s forwards",
           }}
+          className="mx-auto my-4 p-3"
         >
           <div
             className="mx-auto text-center"
             style={{
-              padding: "20px",
+              padding: "20px 10px",
               backgroundColor: "rgba(0, 0, 0, 0.05)",
               borderRadius: "4px",
             }}

@@ -40,9 +40,10 @@ const GetAgentes = ({ ...props }) => {
     if (!value) {
       setAgente(agentes);
     } else {
-      const arrayCache = agentes.filter((oper) =>
-        oper.apellido.toLowerCase().includes(value.toLowerCase()) ||
-        oper.cuil.toLowerCase().includes(value.toLowerCase())
+      const arrayCache = agentes.filter(
+        (oper) =>
+          oper.apellido.toLowerCase().includes(value.toLowerCase()) ||
+          oper.cuil.toLowerCase().includes(value.toLowerCase())
       );
       setAgente(arrayCache);
     }
@@ -59,7 +60,7 @@ const GetAgentes = ({ ...props }) => {
       name: "Acciones",
       cell: (row) => (
         <Link to={`/agentes/agente/${row.id}`}>
-          <button className="btn btn-success btn-md">
+          <button className="btn btn-success btn-md btnSearch">
             Ver detalle del Agente
           </button>
         </Link>
@@ -89,7 +90,7 @@ const GetAgentes = ({ ...props }) => {
       </h5>
       <br />
 
-      <div className="input-group mb-3" style={{ maxWidth: "40%" }}>
+      <div className="input-group mb-3 inputSearch" style={{ maxWidth: "40%" }}>
         <input
           type="text"
           className="form-control"
@@ -112,8 +113,8 @@ const GetAgentes = ({ ...props }) => {
         {...props}
       />
       <div>
-       <BackButton />
-       </div>
+        <BackButton />
+      </div>
     </div>
   );
 };

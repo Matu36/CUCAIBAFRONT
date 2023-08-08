@@ -7,11 +7,11 @@ const getPersonaByDNI = async (dni) => {
   return data;
 };
 
-export const usePersona = (dni = 0) => {
+export const usePersona = (dni = 0, clicked = false) => {
   const personaQuery = useQuery({
     queryKey: ["persona", dni],
     queryFn: () => getPersonaByDNI(dni),
-    enabled: dni != 0,
+    enabled: dni != 0 && clicked,
   });
 
   return {
