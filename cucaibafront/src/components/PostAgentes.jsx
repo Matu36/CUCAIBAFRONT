@@ -125,7 +125,7 @@ const postAgente = () => {
           <label htmlFor="inputFechadePago" className="form-label">
             DNI
           </label>
-          <div className="mb-3 d-flex gap-2 align-items-center">
+          <div className="mb-3 d-flex flex-md-row formAgente gap-2 align-items-center">
             <input
               type="number"
               className="form-control"

@@ -90,7 +90,10 @@ const GetOperativos = () => {
         </h5>
         <br />
 
-        <div className="input-group mb-3" style={{ maxWidth: "40%" }}>
+        <div
+          className="input-group mb-3 inputSearch"
+          style={{ maxWidth: "40%" }}
+        >
           <input
             type="text"
             className="form-control"

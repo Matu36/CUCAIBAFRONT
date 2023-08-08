@@ -62,3 +62,18 @@
   transition: all 250ms ease-in;
 }
 
+@media (max-width: 768px) {
+  .inputSearch {
+    max-width: 80% !important;
+  }
+  .btnSearch {
+    font-size: 0.75rem;
+    max-height: 80% !important;
+  }
+  .detalleAgente {
+    flex-direction: column;
+  }
+  .formAgente {
+    flex-direction: column;
+  }
+}
