@@ -15,8 +15,6 @@ const Liquidaciones = ({ ...props }) => {
   const { data, isFetched, refetch } =
     useHonorariosPendientes().honorariosPendientesQuery;
 
-  
-
   const [nroFolio, setNroFolio] = useState("");
   const [error, setError] = useState(false);
 

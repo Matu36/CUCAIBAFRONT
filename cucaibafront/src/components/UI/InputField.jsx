@@ -6,6 +6,7 @@ const InputField = ({
   inputKey,
   value,
   handleChange,
+  error,
   ...props
 }) => {
   return (
@@ -25,6 +26,12 @@ const InputField = ({
         onChange={handleChange}
         {...props}
       />
+      {error && (
+        <p style={{ color: "red" }}>
+          El campo no puede estar vacio y debe ser de tipo{" "}
+          {inputType == "string" ? "texto" : "numerico"}
+        </p>
+      )}
     </div>
   );
 };
