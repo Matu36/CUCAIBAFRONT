@@ -14,6 +14,7 @@ import {
 } from "@react-pdf/renderer";
 import { useParams } from "react-router-dom";
 import Logo from "../assets/images/LOGOSAMO.jpg";
+import LOGOPCIA from "../assets/images/LOGOPCIA.png";
 
 const styles = StyleSheet.create({
   page: {
@@ -25,7 +26,7 @@ const styles = StyleSheet.create({
     margin: 10,
     padding: 10,
     flexGrow: 1,
-    backgroundColor: "#F1F1F1",
+    // backgroundColor: "#F1F1F1",
     borderWidth: 1,
     borderColor: "#000",
     borderRadius: 5,
@@ -43,7 +44,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     borderBottomWidth: 1,
     borderBottomColor: "#000",
-    backgroundColor: "#F1F1F1",
+    // backgroundColor: "#F1F1F1",
   },
   cell: {
     padding: 5,
@@ -64,11 +65,16 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   logo: {
-    maxWidth: "40%",
-    maxHeight: "70%",
+    width: 150,
+    height: 40,
   },
 
   hr: {
+    borderBottomWidth: 2,
+    borderBottomColor: "black",
+    width: "100%",
+  },
+  hr1: {
     borderBottomWidth: 2,
     borderBottomColor: "black",
     width: "100%",
@@ -108,6 +114,15 @@ const styles = StyleSheet.create({
     borderRightWidth: 1,
     borderColor: "#000",
   },
+  logopcia: {
+    maxWidth: "70%",
+    marginLeft: 60,
+  },
+  cell1: {
+    fontSize: 10,
+    fontWeight: "bold",
+    marginLeft: 80,
+  },
 });
 
 export const OrdenDetail = () => {
@@ -123,11 +138,18 @@ export const OrdenDetail = () => {
       <Page size="A4">
         <View>
           <View style={{ marginTop: 40, marginLeft: 60 }}>
-            <Image src={Logo} style={styles.logo} />
-            <br />
-            <br />
-            <View style={{ marginTop: 20 }}>
-              <Text style={styles.text}>FORMULARIO 20 EOC </Text>
+            <View
+              style={{ flexDirection: "row", justifyContent: "space-between" }}
+            >
+              <View style={{ marginRight: 20 }}>
+                <Image src={Logo} style={styles.logo} />
+              </View>
+              <View>
+                <Image src={LOGOPCIA} style={styles.logopcia} />
+              </View>
+            </View>
+            <View style={{ marginLeft: 60 }}>
+              <Text style={styles.text}>FORMULARIO 20 EOC</Text>
             </View>
 
             <View style={{ marginTop: 40, maxWidth: "90%" }}>
@@ -191,7 +213,7 @@ export const OrdenDetail = () => {
                 <Text style={styles.cellText}>INTERVENCION</Text>
               </View>
               <View style={styles.tableCell}>
-                <Text style={styles.cellText}>Vº Bº</Text>
+                <Text style={styles.cell1}>Vº Bº</Text>
               </View>
             </View>
             <View style={styles.tableRow}>
@@ -204,7 +226,7 @@ export const OrdenDetail = () => {
             <View style={styles.tableRow}>
               <View style={styles.tableCell}>
                 <Text style={styles.cellText}>
-                  2 Fecha Imputación: 31/12/2022
+                  2 Fecha Imputación 31/12/2022
                 </Text>
               </View>
               <View style={styles.tableCell}>{/* Celda vacía */}</View>
@@ -231,7 +253,7 @@ export const OrdenDetail = () => {
                 { alignItems: "flex-end", marginTop: 100 },
               ]}
             >
-              {/* Adjust the styling of this cell */}
+              <View style={[styles.hr1, { marginBottom: 10 }]}></View>
               <Text style={styles.cellText}>
                 Firma y Sello del Administrador
               </Text>
