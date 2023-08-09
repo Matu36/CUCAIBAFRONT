@@ -26,12 +26,16 @@ const postAgente = () => {
 
   const [statusForm, setStatusForm] = useState("create");
 
+  const [clicked, setClicked] = useState(false);
+
   const { data: personaData, refetch } = usePersona(
-    agente.nroDocumento
+    agente.nroDocumento,
+    clicked
   ).personaQuery;
 
   const handleFindPersona = () => {
     if (agente.nroDocumento) {
+      setClicked(true);
       refetch();
 
       if (typeof personaData == "object") {
@@ -79,6 +83,7 @@ const postAgente = () => {
             "El DNI ingresado no se encontró en la base de datos de empleados",
           showConfirmButton: true,
         });
+        setClicked(false);
       }
     }
   };
@@ -125,7 +130,7 @@ const postAgente = () => {
           <label htmlFor="inputFechadePago" className="form-label">
             DNI
           </label>
-          <div className="mb-3 d-flex gap-2 align-items-center">
+          <div className="mb-3 d-flex flex-md-row formAgente gap-2 align-items-center">
             <input
               type="number"
               className="form-control"

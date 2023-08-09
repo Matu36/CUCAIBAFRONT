@@ -35,7 +35,7 @@ const DetalleAgente = () => {
         <div className="card-header">
           <h4 className="fw-bold">Ver detalles del Agente</h4>
         </div>
-        <div className="card-body justify-content-evenly  d-flex gap-2 flex-wrap">
+        <div className="card-body justify-content-evenly d-flex gap-2 flex-wrap detalleAgente">
           <div className="data-row">
             <div className="value">{agenteData[0].apellido}</div>
             <div className="label">Apellido</div>
@@ -61,21 +61,19 @@ const DetalleAgente = () => {
             <div className="label">DNI</div>
           </div>
         </div>
-      </div>
 
-      <div id="accordion">
-        <div className="card p-0">
-          <div className="card-header mb-0" id="headingOne">
-            <h5 className="mb-0">
+        <div id="accordion" className="m-4">
+          <div className=" mb-0" id="headingOne">
+            <h5 className="ml-2 mb-0">
               <button
-                className="btn btn-md fw-bold"
+                className="btn btn-outline-dark btn-md ml-4 fw-bold"
                 type="button"
                 data-bs-toggle="collapse"
                 data-bs-target="#collapseOne"
                 aria-expanded="false"
                 aria-controls="collapseOne"
               >
-                Ver Operativos Asociados{" "}
+                Ver Ultimos Operativos asociados{" "}
                 <span>
                   <GoTriangleDown id="triangleIcon" />
                 </span>
@@ -88,8 +86,9 @@ const DetalleAgente = () => {
             className="collapse"
             aria-labelledby="headingOne"
             data-parent="#accordion"
+            style={{ overflowY: "auto", overflowX: "clip" }}
           >
-            <div className="row row-cols-1 row-cols-md-5 g-4 p-3">
+            <div className="row row-cols-1 row-cols-md-5 g-4 p-md-3 p-1">
               {agenteData[0].operativo_id ? (
                 agenteData.map((operativo) => (
                   <CardDetalleAgente
