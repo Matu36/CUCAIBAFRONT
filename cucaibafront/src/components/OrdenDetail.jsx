@@ -19,14 +19,14 @@ import LOGOPCIA from "../assets/images/LOGOPCIA.png";
 const styles = StyleSheet.create({
   page: {
     flexDirection: "row",
-    // backgroundColor: "#E4E4E4",
+
     padding: 10,
   },
   section: {
     margin: 10,
     padding: 10,
     flexGrow: 1,
-    // backgroundColor: "#F1F1F1",
+
     borderWidth: 1,
     borderColor: "#000",
     borderRadius: 5,
@@ -44,7 +44,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     borderBottomWidth: 1,
     borderBottomColor: "#000",
-    // backgroundColor: "#F1F1F1",
   },
   cell: {
     padding: 5,
@@ -272,38 +271,30 @@ export const OrdenDetail = () => {
             <Text style={[styles.cell, styles.header]}>Valor Total</Text>
           </View>
           {personasArray.map((personasData, index) => {
-            return Object.entries(personasData).map(([nombre, detalles]) => {
-              return (
-                <View style={styles.row} key={index}>
-                  <Text style={styles.cell}>{nombre.split(":")[1]}</Text>
-                  <Text style={styles.cell}>{detalles.cuil}</Text>
-                  <Text style={styles.cell}>{detalles.referencia}</Text>
-                  <View style={styles.cell}>
-                    {detalles.items.map((item, itemIndex) => (
-                      <>
-                        <View key={itemIndex}>
-                          <Text style={{ textTransform: "lowercase" }}>
-                            {item.descripcion}
-                          </Text>
-                        </View>
-                      </>
-                    ))}
-                  </View>
-                  <View style={styles.cell}>
-                    {detalles.items.map((item, itemIndex) => (
-                      <>
-                        <View key={itemIndex}></View>
-                        <Text>$ {item.valor_unitario.toFixed(2)}</Text>
-                      </>
-                    ))}
-                  </View>
+          const { nombre, cuil, items, valor_total } = personasData;
 
-                  <Text style={styles.cell}>
-                    $ {detalles.valor_total.toFixed(2)}
-                  </Text>
-                </View>
-              );
-            });
+            return (
+              <View style={styles.row} key={index}>
+              <Text style={styles.cell}>{nombre}</Text>
+              <Text style={styles.cell}>{cuil}</Text>
+              <View style={styles.cell}>
+                {items.map((item, itemIndex) => (
+                  <Text key={itemIndex}>{item.referencia}</Text>
+                ))}
+              </View>
+              <View style={styles.cell}>
+                {items.map((item, itemIndex) => (
+                  <Text key={itemIndex}>{item.descripciones[0].descripcion}</Text>
+                ))}
+              </View>
+              <View style={styles.cell}>
+                {items.map((item, itemIndex) => (
+                  <Text key={itemIndex}>$ {item.descripciones[0].valor_unitario.toFixed(2)}</Text>
+                ))}
+              </View>
+              <Text style={styles.cell}>$ {valor_total.toFixed(2)}</Text>
+            </View>
+            );
           })}
         </View>
       </Page>
@@ -315,57 +306,50 @@ export const OrdenDetail = () => {
       {isFetched ? (
         <>
           <table className="styled-table">
-            <thead>
-              <tr>
-                <th>Nombre</th>
-                <th>CUIL</th>
-                <th>PD Nro</th>
-                <th>Descripción</th>
-                <th>Valor Total</th>
-              </tr>
-            </thead>
-            <tbody>
-              {personasArray.map((personasData, index) => {
-                return Object.entries(personasData).map(
-                  ([nombre, detalles]) => {
-                    return (
-                      <tr key={index}>
-                        <td>{nombre.split(":")[1]}</td>
-                        <td>{detalles.cuil}</td>
-                        <td>{detalles.referencia}</td>
-                        <td>
-                          {detalles.items.map((item, itemIndex) => (
-                            <div
-                              key={itemIndex}
-                              style={{
-                                display: "flex",
-                                justifyContent: "space-between",
-                              }}
-                            >
-                              <span>Función: {item.descripcion}</span>
-                              <span>
-                                Valor: ${item.valor_unitario.toFixed(2)}
-                              </span>
-                            </div>
-                          ))}
-                        </td>
-                        <td>$ {detalles.valor_total.toFixed(2)}</td>
-                      </tr>
-                    );
-                  }
-                );
-              })}
-            </tbody>
-          </table>
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>CUIL</th>
+      <th>PD Nro</th>
+      <th>Descripción</th>
+      <th>Valor Total</th>
+    </tr>
+  </thead>
+  <tbody>
+    {personasArray.map((personasData, index) => {
+      const { nombre, cuil, valor_total, items } = personasData;
+
+      return (
+        <tr key={index}>
+          <td>{nombre}</td>
+          <td>{cuil}</td>
+          <td>
+            {items.map((item, itemIndex) => (
+              <div key={itemIndex}>{item.referencia}</div>
+            ))}
+          </td>
+          <td>
+            {items.map((item, itemIndex) => (
+              <div key={itemIndex}>
+                <div>{item.descripciones[0].descripcion}</div>
+                <div>$ {item.descripciones[0].valor_unitario.toFixed(2)}</div>
+              </div>
+            ))}
+          </td>
+          <td>$ {valor_total.toFixed(2)}</td>
+        </tr>
+      );
+    })}
+  </tbody>
+</table>
+
 
           <PDFDownloadLink
             document={generatePDFContent(personasArray)}
             file
             fileName="detalle_orden_pago.pdf"
           >
-            {({ blob, url, loading, error }) =>
-              loading ? "Cargando documento..." : "Descargar"
-            }
+            {({ loading }) => (loading ? 'Cargando documento...' : 'Descargar')}
           </PDFDownloadLink>
         </>
       ) : (
