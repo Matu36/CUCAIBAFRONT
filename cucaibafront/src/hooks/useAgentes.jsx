@@ -14,6 +14,11 @@ const getAgentes = async (operativoId) => {
   }
 };
 
+const getAgenteById = async (id) => {
+  const { data } = await AgentesAPI.get(`/${id}`);
+  return data;
+};
+
 export const useAgentes = (operativoId = 0, agenteId = 0) => {
   const agentesQuery = useQuery({
     queryKey: ["agentes"],
@@ -36,22 +41,5 @@ export const useAgentes = (operativoId = 0, agenteId = 0) => {
     agentesQuery,
     agentesDisponiblesQuery,
     agenteQuery,
-  };
-};
-
-const getAgenteById = async (id) => {
-  const { data } = await AgentesAPI.get(`/${id}`);
-  return data;
-};
-
-export const useAgentesPorId = (id) => {
-  const agentesPorIdQuery = useQuery({
-    queryKey: ["agentes-por-id", { id }],
-    queryFn: () => getAgenteById(id),
-    enabled: !!id,
-  });
-
-  return {
-    agentesPorIdQuery,
   };
 };

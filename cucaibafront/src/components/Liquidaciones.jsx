@@ -5,49 +5,17 @@ import EmptyTable from "./UI/EmptyTable";
 import { usePagination } from "../hooks/usePagination";
 import Spinner from "../components/UI/Spinner";
 import BackButton from "../components/UI/BackButton";
-import { useMutation } from "@tanstack/react-query";
-import { HonorariosAPI } from "../api/HonorariosAPI";
-import { useHonorariosPendientes } from "../hooks/useHonorarios";
-import Swal from "sweetalert2";
 import Modal from "./UI/Modal";
+import { useHonorarios } from "../hooks/useHonorarios";
 
 const Liquidaciones = ({ ...props }) => {
-  const { data, isFetched, refetch } =
-    useHonorariosPendientes().honorariosPendientesQuery;
+  const { data, isFetched } = useHonorarios().honorariosPendientesQuery;
 
+  const [total, setTotal] = useState(0);
   const [nroFolio, setNroFolio] = useState("");
   const [error, setError] = useState(false);
 
-  const liquidacionesMutation = useMutation(
-    (data) => {
-      return HonorariosAPI.put("/liquidar", data);
-    },
-    {
-      onSuccess: (data) => {
-        refetch();
-        Swal.fire({
-          title: "Se genero la orden de pago",
-          html:
-            "<div>" +
-            "<h5>" +
-            "Nro. O.P Provisorio:" +
-            `<span style={{ fontWeight: "bold" }}> ${data.data[1][2]}</span>` +
-            "</h5>" +
-            "<p>" +
-            "Monto de la Ordén de Pago: $" +
-            `<span style={{ fontWeight: "bold" }}> ${data.data[1][1]}</span>` +
-            "</p>" +
-            "</div>",
-          position: "center",
-          icon: "success",
-          confirmButtonText: "Cerrar",
-        });
-        let modalEl = document.getElementById("opModal");
-        let modalInstance = bootstrap.Modal.getInstance(modalEl);
-        modalInstance.hide();
-      },
-    }
-  );
+  const { mutate } = useHonorarios().liquidacionesMutation;
 
   const [search, setSearch] = useState("");
 
@@ -90,13 +58,24 @@ const Liquidaciones = ({ ...props }) => {
         <input
           type="checkbox"
           checked={selectedRows.some((r) => r.id === row.id)}
-          onChange={() =>
+          onChange={() => {
             setSelectedRows((prevSelected) =>
               prevSelected.some((r) => r.id === row.id)
                 ? prevSelected.filter((r) => r.id !== row.id)
-                : [...prevSelected, row]
-            )
-          }
+                : [
+                    ...prevSelected,
+                    {
+                      ...row,
+                      isClicked: true,
+                    },
+                  ]
+            );
+            setTotal((prevTotal) =>
+              selectedRows.some((r) => r.id === row.id)
+                ? prevTotal - Number(row.valor)
+                : prevTotal + Number(row.valor)
+            );
+          }}
         />
       ),
     },
@@ -122,7 +101,7 @@ const Liquidaciones = ({ ...props }) => {
     const data = { array: selectedData, nroFolio };
     if (nroFolio.length > 0) {
       setNroFolio("");
-      liquidacionesMutation.mutate(data);
+      mutate(data);
       setSelectedRows([]);
     }
   };
@@ -222,6 +201,11 @@ const Liquidaciones = ({ ...props }) => {
               <BackButton />
             </div>
             <div>
+              <div>
+                <h5>
+                  Total: $<span>{total}</span>
+                </h5>
+              </div>
               <button
                 type="submit"
                 className="btn btn-success"

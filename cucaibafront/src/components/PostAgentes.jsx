@@ -1,12 +1,11 @@
 import { postAgentes } from "../Redux/Actions";
-import { useDispatch, useSelector } from "react-redux";
-import { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { useState } from "react";
 import Swal from "sweetalert2";
 import "../assets/styles/detalle.css";
 import BackButton from "../components/UI/BackButton";
 import { validateDNI } from "../utils/Validaciones";
 import { usePersona } from "../hooks/usePersona";
-import { useMutation } from "@tanstack/react-query";
 
 const INITIALSTATE = {
   apellido: "",

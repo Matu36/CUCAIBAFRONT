@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
 import "../../assets/styles/style.css";
-import { useHonorariosPendientesHome } from "../../hooks/useHonorarios";
+import { useHonorarios } from "../../hooks/useHonorarios";
 
 const LandingNotificacion = () => {
-  const { data, isFetched } =
-    useHonorariosPendientesHome().honorariosPendientesHomeQuery;
+  const { data, isFetched } = useHonorarios().honorariosPendientesHomeQuery;
 
   return (
     <>

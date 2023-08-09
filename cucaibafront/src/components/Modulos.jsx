@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { getModulos, updateModulo } from "../Redux/Actions";
+import { updateModulo } from "../Redux/Actions";
 import DataTable from "react-data-table-component";
 import EmptyTable from "./UI/EmptyTable";
 import { usePagination } from "../hooks/usePagination";
@@ -11,53 +11,11 @@ import "../assets/styles/detalle.css";
 import BackButton from "../components/UI/BackButton";
 import Swal from "sweetalert2";
 import { useModulos } from "../hooks/useModulos";
-import { useMutation } from "@tanstack/react-query";
-import { ModulosAPI } from "../api/ModulosAPI";
 
 const Modulos = ({ ...props }) => {
   let dispatch = useDispatch();
   const { data, isFetched, refetch } = useModulos().modulosQuery;
-  const { mutate } = useMutation(
-    async (id) => {
-      return await ModulosAPI.put(`/baja/${id}`);
-    },
-    {
-      onSuccess: () => {
-        refetch();
-        Swal.fire({
-          position: "center",
-          icon: "info",
-          title: "Se dio de baja el modulo",
-          showConfirmButton: false,
-          timer: 4000,
-        });
-      },
-      onError: (error) => {
-        switch (error.response.status) {
-          case 405:
-            Swal.fire({
-              position: "center",
-              icon: "warning",
-              title: "Hubo un problema",
-              html: error.response.data,
-              showConfirmButton: false,
-              timer: 4000,
-            });
-            break;
-
-          default:
-            Swal.fire({
-              position: "center",
-              icon: "warning",
-              title: "Hubo un problema",
-              showConfirmButton: false,
-              timer: 4000,
-            });
-            break;
-        }
-      },
-    }
-  );
+  const { mutate } = useModulos().modulosMutation;
 
   const orderData = (data) => {
     if (data && data.length > 0) {

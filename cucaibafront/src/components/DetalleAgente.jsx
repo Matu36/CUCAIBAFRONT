@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useParams } from "react-router-dom";
 import "../assets/styles/detalle.css";
-import { obtenerMesYAño } from "../utils/MesAño";
 import BackButton from "../components/UI/BackButton";
-import { useAgentesPorId } from "../hooks/useAgentes";
+import { useAgentes } from "../hooks/useAgentes";
 import Spinner from "./UI/Spinner";
 import Swal from "sweetalert2";
 import { GoTriangleDown } from "react-icons/go";
@@ -12,9 +11,7 @@ import CardDetalleAgente from "./UI/CardDetalleAgente";
 const DetalleAgente = () => {
   const { id } = useParams();
 
-  const { agentesPorIdQuery } = useAgentesPorId(id);
-
-  const { data: agenteData, isLoading } = agentesPorIdQuery;
+  const { data: agenteData, isLoading } = useAgentes(0, id).agenteQuery;
 
   if (isLoading) {
     return <Spinner />;

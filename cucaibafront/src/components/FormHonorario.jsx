@@ -1,12 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  getOperativos,
-  getAgentes,
-  getModulos,
-  getHonorario,
-  postHonorario,
-} from "../Redux/Actions";
+import { getAgentes, getModulos, postHonorario } from "../Redux/Actions";
 import Swal from "sweetalert2";
 
 export const FormHonorario = () => {
