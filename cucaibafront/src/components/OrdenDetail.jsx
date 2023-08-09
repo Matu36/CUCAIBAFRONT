@@ -122,6 +122,27 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginLeft: 80,
   },
+  line: {
+    borderTopWidth: 1,
+    borderTopColor: '#000',
+    marginVertical: 5,
+  },
+
+  pdfdownloadbutton: {
+    color: "white",
+    backgroundColor: "#419bf6",
+    padding: 10,
+    border: "none",
+    borderRadius: 4,
+    cursor: "pointer",
+    fontSize: 16,
+    textDecoration: "none",
+    maxWidth: "12%",
+    marginTop: 20,
+    transition: "background-color 0.8s",
+    marginRight: 10,
+    textAlign: "center",
+  },
 });
 
 export const OrdenDetail = () => {
@@ -130,7 +151,6 @@ export const OrdenDetail = () => {
     useOrdenPorLiquidacionId(liquidacion_id).ordenesPorIdQuery;
 
   const personasArray = Array.isArray(data) ? data[0] : [];
-  console.log(personasArray);
 
   const generatePDFContent = (personasArray) => (
     <Document>
@@ -268,32 +288,36 @@ export const OrdenDetail = () => {
             <Text style={[styles.cell, styles.header]}>PD Nro</Text>
             <Text style={[styles.cell, styles.header]}>Descripción</Text>
             <Text style={[styles.cell, styles.header]}>Monto</Text>
-            <Text style={[styles.cell, styles.header]}>Valor Total</Text>
+            <Text style={[styles.cell, styles.header]}>Monto Total</Text>
           </View>
           {personasArray.map((personasData, index) => {
-          const { nombre, cuil, items, valor_total } = personasData;
+            const { nombre, cuil, items, valor_total } = personasData;
 
             return (
               <View style={styles.row} key={index}>
-              <Text style={styles.cell}>{nombre}</Text>
-              <Text style={styles.cell}>{cuil}</Text>
-              <View style={styles.cell}>
-                {items.map((item, itemIndex) => (
-                  <Text key={itemIndex}>{item.referencia}</Text>
-                ))}
+                <Text style={styles.cell}>{nombre}</Text>
+                <Text style={styles.cell}>{cuil}</Text>
+                <View style={styles.cell}>
+                  {items.map((item, itemIndex) => (
+                    <Text key={itemIndex}>{item.referencia}</Text>
+                  ))}
+                </View>
+                <View style={styles.cell}>
+                  {items.map((item, itemIndex) => (
+                    <Text key={itemIndex}>
+                      {item.descripciones[0].descripcion}
+                    </Text>
+                  ))}
+                </View>
+                <View style={styles.cell}>
+                  {items.map((item, itemIndex) => (
+                    <Text key={itemIndex}>
+                      $ {item.descripciones[0].valor_unitario.toFixed(2)}
+                    </Text>
+                  ))}
+                </View>
+                <Text style={styles.cell}>$ {valor_total.toFixed(2)}</Text>
               </View>
-              <View style={styles.cell}>
-                {items.map((item, itemIndex) => (
-                  <Text key={itemIndex}>{item.descripciones[0].descripcion}</Text>
-                ))}
-              </View>
-              <View style={styles.cell}>
-                {items.map((item, itemIndex) => (
-                  <Text key={itemIndex}>$ {item.descripciones[0].valor_unitario.toFixed(2)}</Text>
-                ))}
-              </View>
-              <Text style={styles.cell}>$ {valor_total.toFixed(2)}</Text>
-            </View>
             );
           })}
         </View>
@@ -305,52 +329,62 @@ export const OrdenDetail = () => {
     <div className="card">
       {isFetched ? (
         <>
-          <table className="styled-table">
+       <table className="styled-table">
   <thead>
     <tr>
       <th>Nombre</th>
       <th>CUIL</th>
       <th>PD Nro</th>
       <th>Descripción</th>
-      <th>Valor Total</th>
+      <th>Monto</th>
+      <th>Monto Total</th>
     </tr>
   </thead>
   <tbody>
     {personasArray.map((personasData, index) => {
       const { nombre, cuil, valor_total, items } = personasData;
+      const rowSpan = items.length;
 
-      return (
-        <tr key={index}>
-          <td>{nombre}</td>
-          <td>{cuil}</td>
+      return items.map((item, itemIndex) => (
+        <tr key={index + "-" + itemIndex}>
+          {itemIndex === 0 && (
+            <td rowSpan={rowSpan}>{nombre}</td>
+          )}
+          {itemIndex === 0 && (
+            <td rowSpan={rowSpan}>{cuil}</td>
+          )}
+          <td>{item.referencia}</td>
           <td>
-            {items.map((item, itemIndex) => (
-              <div key={itemIndex}>{item.referencia}</div>
-            ))}
+            <div>{item.descripciones[0].descripcion}</div>
           </td>
           <td>
-            {items.map((item, itemIndex) => (
-              <div key={itemIndex}>
-                <div>{item.descripciones[0].descripcion}</div>
-                <div>$ {item.descripciones[0].valor_unitario.toFixed(2)}</div>
-              </div>
-            ))}
+            $ {item.descripciones[0].valor_unitario.toFixed(2)}
           </td>
-          <td>$ {valor_total.toFixed(2)}</td>
+          {itemIndex === 0 && (
+            <td rowSpan={rowSpan}>
+              $ {valor_total.toFixed(2)}
+            </td>
+          )}
         </tr>
-      );
+      ));
     })}
   </tbody>
 </table>
 
 
-          <PDFDownloadLink
-            document={generatePDFContent(personasArray)}
-            file
-            fileName="detalle_orden_pago.pdf"
-          >
-            {({ loading }) => (loading ? 'Cargando documento...' : 'Descargar')}
-          </PDFDownloadLink>
+
+          <div className="w-100 d-flex justify-content-end align-items-center">
+            <PDFDownloadLink
+              document={generatePDFContent(personasArray)}
+              file
+              fileName="detalle_orden_pago.pdf"
+              style={styles.pdfdownloadbutton}
+            >
+              {({ loading }) =>
+                loading ? "Cargando documento..." : "Descargar"
+              }
+            </PDFDownloadLink>
+          </div>
         </>
       ) : (
         <Spinner />
