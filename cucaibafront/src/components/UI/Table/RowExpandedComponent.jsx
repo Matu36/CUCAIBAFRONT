@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useHonorarios } from "../../../hooks/useHonorarios";
 import { usePagination } from "../../../hooks/usePagination";
 import Modal from "../Modal";
@@ -62,6 +62,15 @@ const RowExpandedComponent = ({ data: operativo }) => {
           icon: "success",
           title: "Se creó el honorario de manera correcta",
           showConfirmButton: false,
+          timer: 3000,
+        });
+      },
+      onError: () => {
+        return Swal.fire({
+          position: "center",
+          icon: "error",
+          title: "Hubo un error al momento de crear el honorario",
+          showConfirmButton: true,
           timer: 3000,
         });
       },
