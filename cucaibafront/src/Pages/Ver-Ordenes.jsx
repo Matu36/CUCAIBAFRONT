@@ -187,7 +187,11 @@ export const VerOrdenes = ({ ...props }) => {
 
   return (
     <>
-      <Modal title="Asignar Numeración Definitiva" referenceID="opDefinitiva">
+      <Modal
+        title="Asignar Numeración Definitiva"
+        referenceID="opDefinitiva"
+        customFooter={true}
+      >
         <div>
           <form onSubmit={handleSubmit}>
             {labels.map((el, i) => (
@@ -202,10 +206,19 @@ export const VerOrdenes = ({ ...props }) => {
                 handleChange={handleInputChange}
               />
             ))}
+          </form>
+          <div className="modal-footer">
+            <button
+              type="button"
+              className="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Salir
+            </button>
             <button className="btn btn-success btn-md" type="submit">
               Asignar
             </button>
-          </form>
+          </div>
         </div>
       </Modal>
       <div className="card">

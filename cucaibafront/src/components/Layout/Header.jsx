@@ -27,7 +27,7 @@ function Header() {
   }, [isOpen]);
 
   return (
-    <header className="position-fixed vw-100 z-2">
+    <header className="position-fixed vw-100" style={{ zIndex: 100 }}>
       <nav className="navbar top-0 navbar-offcanvas navbar-ms px-3">
         <div className="row w-100 mx-auto flex-nowrap align-items-center justify-content-between">
           <button

@@ -257,11 +257,22 @@ const Modulos = ({ ...props }) => {
       </h5>
       <br />
 
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
-        <div className="input-group mb-3" style={{ maxWidth: "40%" }}>
+      <div
+        className="d-flex gap-2 w-100 justify-content-between align-items-center"
+        style={{ flexDirection: window.innerWidth < 1000 ? "column" : "row" }}
+      >
+        <div
+          className="input-group mb-3"
+          style={{
+            zIndex: 1,
+            width: window.innerWidth < 1000 ? "100%" : "45%",
+          }}
+        >
           <input
             type="text"
-            className="form-control"
+            className={`form-control ${
+              window.innerWidth < 1000 ? "" : "inputSearch"
+            }`}
             placeholder="Buscar por Descripción"
             onChange={handleOnChange}
             value={search}
@@ -270,8 +281,9 @@ const Modulos = ({ ...props }) => {
           />
         </div>
         <button
-          className="btn btn-dark btn-md"
-          style={{ marginRight: "4rem", marginBottom: "2rem" }}
+          className={`btn btn-dark ${
+            window.innerWidth < 1000 ? "btn-sm" : "btn-md"
+          }`}
           onClick={handleMostrarFormulario}
           disabled={showSpinner}
         >
@@ -287,6 +299,8 @@ const Modulos = ({ ...props }) => {
               transform: "translate(-50%, -50%)",
               backgroundColor: "white",
               zIndex: "999",
+              boxShadow: "0px 0px 48px 100vw rgba(0,0,0,0.29)",
+              borderRadius: "15px",
             }}
           >
             <CrearModulo handleCerrarFormulario={handleCerrarFormulario} />

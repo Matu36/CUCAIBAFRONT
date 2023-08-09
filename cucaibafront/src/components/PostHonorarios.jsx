@@ -40,9 +40,10 @@ const PostHonorarios = ({
         style={{
           backgroundColor: "#edede9",
           boxShadow: "0px 0px 18px -28px rgba(0,0,0,0.2)",
+          flexDirection: window.innerWidth < 1000 ? "column" : "row",
         }}
       >
-        <div className="mb-3 w-50 ">
+        <div className="mb-3 w-60 ">
           <label htmlFor="funcionSelect" className="form-label fw-bold">
             Seleccionar Función
           </label>

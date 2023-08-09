@@ -14,7 +14,9 @@ function SideBar({ isOpen, setIsOpen }) {
       className={`sidebar-nav navbar-collapse offcanvas-collapse ${
         isOpen ? "open" : "null"
       }`}
-      style={{ zIndex: 1000 }}
+      style={{
+        zIndex: 10,
+      }}
     >
       <label
         style={{
