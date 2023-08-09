@@ -78,6 +78,8 @@ const CrearModulo = ({ handleCerrarFormulario }) => {
         padding: "20px",
         boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
         border: "1px solid gray",
+        minWidth: window.innerWidth < 1000 && "90vw",
+        borderRadius: "15px",
       }}
     >
       <form onSubmit={handleOnSubmit} className="row g-3 pt-4">
