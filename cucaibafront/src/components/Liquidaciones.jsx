@@ -167,7 +167,10 @@ const Liquidaciones = ({ ...props }) => {
         </h5>
         <br />
 
-        <div className="input-group mb-3" style={{ maxWidth: "40%" }}>
+        <div
+          className="input-group mb-3"
+          style={{ width: window.innerWidth < 1000 ? "100%" : "45%" }}
+        >
           <input
             type="text"
             className="form-control"
