@@ -183,7 +183,13 @@ const Modulos = ({ ...props }) => {
             </div>
           </>
         ) : (
-          <div className="d-flex gap-3">
+          <div
+            className={`d-flex gap-3 ${
+              window.innerWidth < 1000
+                ? " p-2 flex-column justify-content-around"
+                : "flex-row"
+            }`}
+          >
             <button
               className={`btn btn-success btn-sm ${
                 row.fechaHasta ? "d-none" : "d-block"
