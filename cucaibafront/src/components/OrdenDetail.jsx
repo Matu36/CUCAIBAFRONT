@@ -284,47 +284,54 @@ export const OrdenDetail = () => {
         </View>
       </Page>
       <Page size="A4" style={styles.page}>
-        <View style={styles.section}>
-          <View style={styles.row}>
-            <Text style={[styles.cell, styles.header]}>Nombre</Text>
-            <Text style={[styles.cell, styles.header]}>CUIL</Text>
-            <Text style={[styles.cell, styles.header]}>PD Nro</Text>
-            <Text style={[styles.cell, styles.header]}>Descripción</Text>
-            <Text style={[styles.cell, styles.header]}>Monto</Text>
-            <Text style={[styles.cell, styles.header]}>Monto Total</Text>
-          </View>
-          {personasExceptLast.map((personasData, index) => {
-            const { nombre, cuil, items, valor_total } = personasData;
+  <View style={styles.section}>
+    <View style={styles.row}>
+      <Text style={[styles.cell, styles.header]}>Nombre</Text>
+      <Text style={[styles.cell, styles.header]}>CUIL</Text>
+      <Text style={[styles.cell, styles.header]}>PD Nro</Text>
+      <Text style={[styles.cell, styles.header]}>Descripción</Text>
+      <Text style={[styles.cell, styles.header]}>Monto</Text>
+      <Text style={[styles.cell, styles.header]}>Monto Total</Text>
+    </View>
+    {personasExceptLast.map((personasData, index) => {
+      const { nombre, cuil, items, valor_total } = personasData;
 
-            return (
-              <View style={styles.row} key={index}>
-                <Text style={styles.cell}>{nombre}</Text>
-                <Text style={styles.cell}>{cuil}</Text>
-                <View style={styles.cell}>
-                  {items.map((item, itemIndex) => (
-                    <Text key={itemIndex}>{item.referencia}</Text>
-                  ))}
-                </View>
-                <View style={styles.cell}>
-                  {items.map((item, itemIndex) => (
-                    <Text key={itemIndex}>
-                      {item.descripciones[0].descripcion}
-                    </Text>
-                  ))}
-                </View>
-                <View style={styles.cell}>
-                  {items.map((item, itemIndex) => (
-                    <Text key={itemIndex}>
-                      $ {item.descripciones[0].valor_unitario.toFixed(2)}
-                    </Text>
-                  ))}
-                </View>
-                <Text style={styles.cell}>$ {valor_total.toFixed(2)}</Text>
+      return (
+        <View style={styles.row} key={index}>
+          <Text style={styles.cell}>{nombre}</Text>
+          <Text style={styles.cell}>{cuil}</Text>
+          <View style={styles.cell}>
+            {items.map((item, itemIndex) => (
+              <Text key={itemIndex}>{item.referencia}</Text>
+            ))}
+          </View>
+          <View style={styles.cell}>
+            {items.map((item, itemIndex) => (
+              <View key={itemIndex}>
+                {item.descripciones.map((descripcion, descIndex) => (
+                  <Text key={descIndex}>{descripcion.descripcion}</Text>
+                ))}
               </View>
-            );
-          })}
+            ))}
+          </View>
+          <View style={styles.cell}>
+            {items.map((item, itemIndex) => (
+              <View key={itemIndex}>
+                {item.descripciones.map((descripcion, descIndex) => (
+                  <Text key={descIndex}>
+                    $ {descripcion.valor_unitario.toFixed(2)}
+                  </Text>
+                ))}
+              </View>
+            ))}
+          </View>
+          <Text style={styles.cell}>$ {valor_total.toFixed(2)}</Text>
         </View>
-      </Page>
+      );
+    })}
+  </View>
+</Page>
+
     </Document>
   );
 
@@ -333,39 +340,49 @@ export const OrdenDetail = () => {
       {isFetched ? (
         <>
         <div className="table-container">
-          <table className="styled-table">
-            <thead>
-              <tr>
-                <th>Nombre</th>
-                <th>CUIL</th>
-                <th>PD Nro</th>
-                <th>Descripción</th>
-                <th>Monto</th>
-                <th>Monto Total</th>
-              </tr>
-            </thead>
-            <tbody>
-              {personasExceptLast.map((personasData, index) => {
-                const { nombre, cuil, valor_total, items } = personasData;
-                const rowSpan = items.length;
+        <table className="styled-table">
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>CUIL</th>
+              <th>PD Nro</th>
+              <th>Descripción</th>
+              <th>Monto</th>
+              <th>Monto Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            {personasExceptLast.map((personasData, index) => {
+              const { nombre, cuil, valor_total, items } = personasData;
+              const rowSpan = items.length;
 
-                return items.map((item, itemIndex) => (
-                  <tr key={index + "-" + itemIndex}>
-                    {itemIndex === 0 && <td rowSpan={rowSpan}>{nombre}</td>}
-                    {itemIndex === 0 && <td rowSpan={rowSpan}>{cuil}</td>}
-                    <td>{item.referencia}</td>
-                    <td>
-                      <div>{item.descripciones[0].descripcion}</div>
-                    </td>
-                    <td>$ {item.descripciones[0].valor_unitario.toFixed(2)}</td>
-                    {itemIndex === 0 && (
-                      <td rowSpan={rowSpan}>$ {valor_total.toFixed(2)}</td>
-                    )}
-                  </tr>
-                ));
-              })}
-            </tbody>
-          </table>
+              return items.map((item, itemIndex) => (
+                <tr key={index + "-" + itemIndex}>
+                  {itemIndex === 0 && <td rowSpan={rowSpan}>{nombre}</td>}
+                  {itemIndex === 0 && <td rowSpan={rowSpan}>{cuil}</td>}
+                  <td>{item.referencia}</td>
+                  <td>
+                   
+                    {item.descripciones.map((descripcion, descIndex) => (
+                      <div key={descIndex}>{descripcion.descripcion}</div>
+                    ))}
+                  </td>
+                  <td>
+                    
+                    {item.descripciones.map((descripcion, descIndex) => (
+                      <div key={descIndex}>
+                        $ {descripcion.valor_unitario.toFixed(2)}
+                      </div>
+                    ))}
+                  </td>
+                  {itemIndex === 0 && (
+                    <td rowSpan={rowSpan}>$ {valor_total.toFixed(2)}</td>
+                  )}
+                </tr>
+              ));
+            })}
+          </tbody>
+        </table>
 
           <div className="w-100 d-flex justify-content-end align-items-center">
             <PDFDownloadLink
