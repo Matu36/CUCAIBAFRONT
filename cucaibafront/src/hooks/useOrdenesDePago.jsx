@@ -49,6 +49,20 @@ export const useOrdenesMutation = () => {
         timer: 5000,
         icon: "success",
       });
+      let modalEl = document.getElementById("opDefinitiva");
+      let modalInstance = bootstrap.Modal.getInstance(modalEl);
+      modalInstance.hide();
+    },
+    onError: (error) => {
+      Swal.fire({
+        title: "Hubo un error",
+        timer: 5000,
+        html: error.response.data,
+        icon: "error",
+      });
+      let modalEl = document.getElementById("opDefinitiva");
+      let modalInstance = bootstrap.Modal.getInstance(modalEl);
+      modalInstance.hide();
     },
   });
 
