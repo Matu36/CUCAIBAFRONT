@@ -69,7 +69,7 @@ const DetalleAgente = () => {
             aria-expanded="false"
             aria-controls="collapseOne"
           >
-            Ver Ultimos Operativos asociados{" "}
+            Ver Ultimos 15 Operativos asociados{" "}
             <span>
               <GoTriangleDown id="triangleIcon" />
             </span>

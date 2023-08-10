@@ -78,6 +78,17 @@ export const useHonorarios = (operativoId = 0, agenteId = 0) => {
       let modalInstance = bootstrap.Modal.getInstance(modalEl);
       modalInstance.hide();
     },
+    onError: () => {
+      Swal.fire({
+        title: "Hubo un error",
+        position: "center",
+        icon: "error",
+        confirmButtonText: "Cerrar",
+      });
+      let modalEl = document.getElementById("opModal");
+      let modalInstance = bootstrap.Modal.getInstance(modalEl);
+      modalInstance.hide();
+    },
   });
 
   return {
