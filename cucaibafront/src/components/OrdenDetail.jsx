@@ -151,8 +151,11 @@ export const OrdenDetail = () => {
     useOrdenPorLiquidacionId(liquidacion_id).ordenesPorIdQuery;
 
   const personasArray = Array.isArray(data) ? data[0] : [];
+  const personasExceptLast = personasArray.slice(0, -1);
 
-  const generatePDFContent = (personasArray) => (
+  const ultimoObjeto = personasArray[personasArray.length - 1];
+  
+  const generatePDFContent = (personasExceptLast) => (
     <Document>
       <Page size="A4">
         <View>
@@ -290,7 +293,7 @@ export const OrdenDetail = () => {
             <Text style={[styles.cell, styles.header]}>Monto</Text>
             <Text style={[styles.cell, styles.header]}>Monto Total</Text>
           </View>
-          {personasArray.map((personasData, index) => {
+          {personasExceptLast.map((personasData, index) => {
             const { nombre, cuil, items, valor_total } = personasData;
 
             return (
@@ -341,7 +344,7 @@ export const OrdenDetail = () => {
     </tr>
   </thead>
   <tbody>
-    {personasArray.map((personasData, index) => {
+    {personasExceptLast.map((personasData, index) => {
       const { nombre, cuil, valor_total, items } = personasData;
       const rowSpan = items.length;
 
@@ -375,7 +378,7 @@ export const OrdenDetail = () => {
 
           <div className="w-100 d-flex justify-content-end align-items-center">
             <PDFDownloadLink
-              document={generatePDFContent(personasArray)}
+              document={generatePDFContent(personasExceptLast)}
               file
               fileName="detalle_orden_pago.pdf"
               style={styles.pdfdownloadbutton}
