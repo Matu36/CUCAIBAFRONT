@@ -193,7 +193,7 @@ export const VerOrdenes = ({ ...props }) => {
         customFooter={true}
       >
         <div>
-          <form onSubmit={handleSubmit}>
+          <form>
             {labels.map((el, i) => (
               <InputField
                 label={el.label}
@@ -215,7 +215,11 @@ export const VerOrdenes = ({ ...props }) => {
             >
               Salir
             </button>
-            <button className="btn btn-success btn-md" type="submit">
+            <button
+              className="btn btn-success btn-md"
+              onClick={handleSubmit}
+              type="submit"
+            >
               Asignar
             </button>
           </div>
