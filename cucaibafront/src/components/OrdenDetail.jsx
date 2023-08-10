@@ -16,6 +16,7 @@ import { useParams } from "react-router-dom";
 import Logo from "../assets/images/LOGOSAMO.jpg";
 import LOGOPCIA from "../assets/images/LOGOPCIA.png";
 
+
 const styles = StyleSheet.create({
   page: {
     flexDirection: "row",
@@ -26,7 +27,6 @@ const styles = StyleSheet.create({
     margin: 10,
     padding: 10,
     flexGrow: 1,
-
     borderWidth: 1,
     borderColor: "#000",
     borderRadius: 5,
@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
   },
   line: {
     borderTopWidth: 1,
-    borderTopColor: '#000',
+    borderTopColor: "#000",
     marginVertical: 5,
   },
 
@@ -137,7 +137,7 @@ const styles = StyleSheet.create({
     cursor: "pointer",
     fontSize: 16,
     textDecoration: "none",
-    maxWidth: "12%",
+    width: "120px",
     marginTop: 20,
     transition: "background-color 0.8s",
     marginRight: 10,
@@ -153,8 +153,10 @@ export const OrdenDetail = () => {
   const personasArray = Array.isArray(data) ? data[0] : [];
   const personasExceptLast = personasArray.slice(0, -1);
 
-  const ultimoObjeto = personasArray[personasArray.length - 1];
+  const gastos = personasArray[personasArray.length - 1];
+
   
+
   const generatePDFContent = (personasExceptLast) => (
     <Document>
       <Page size="A4">
@@ -183,16 +185,15 @@ export const OrdenDetail = () => {
               <Text style={[styles.text, { marginBottom: 10 }]}>
                 POR TESORERIA PAGUESE: VARIABLES OPERATIVOS{" "}
               </Text>{" "}
-              //dinamico
               <Text style={[styles.text, { marginBottom: 10 }]}>
-                CANTIDAD DE PESOS: 1.736,11
+                CANTIDAD DE PESOS: $ {gastos.gastos.op_monto? gastos.gastos.op_monto : null}
               </Text>{" "}
               //dinamico
               <Text style={[styles.text, { marginBottom: 10 }]}>
-                POR LA SUMA DE PESOS:mil setecientos treinta y seis con once
+                POR LA SUMA DE PESOS: mil setecientos treinta y seis con once
                 centavos.-
               </Text>{" "}
-              //dinamico
+             
               <Text style={[styles.text, { marginBottom: 10 }]}>
                 EN CONCEPTO DE PAGOS DE VARIABLES DE PROCURACION
               </Text>
@@ -202,13 +203,12 @@ export const OrdenDetail = () => {
               </Text>
               <Text style={styles.text}>SAMO DECRETO LEY 8801/77</Text>
               <Text style={styles.text}>
-                EJERCICIO 2022//DINAMICO//, C.INSTITUCIONAL 1.1.1. JURISD 12
-                JURIS AUXILIAR 01 ENTIDAD 0 CATEGORIA PROG:
+                EJERCICIO 2022//DINAMICO//, {gastos.gastos.op_codinstitucional? gastos.gastos.op_codinstitucional : null} {gastos.gastos.op_jurisdiccion ? gastos.gastos.op_jurisdiccion : null}
+                {gastos.gastos.op_jurisauxiliar? gastos.gastos.op_jurisauxiliar : null} {gastos.gastos.op_entidad ? gastos.gastos.entidad : null} CATEGORIA PROG:
               </Text>{" "}
               //ORDENPAGOH
               <Text style={styles.text}>
-                PRG 022 ACT 1 FONDOS PROVINCIALES DE LA SALUD - ART 22° LEY
-                8801. FINALIDAD 3 - FUNCION 1.
+                {gastos.gastos.op_programa? gastos.gastos.op_programa : null}
               </Text>{" "}
               //ORDENPAGOH
               <Text style={[styles.text, { marginBottom: 10 }]}>
@@ -217,13 +217,13 @@ export const OrdenDetail = () => {
               //ORDENPAGOH
               <Text style={styles.text}>Inciso 3</Text>
               <Text style={[styles.text, { marginBottom: 10 }]}>
-                3.5.5 : 1.736,11
+                3.5.5 : $ {gastos.gastos.op_monto? gastos.gastos.op_monto : null}
               </Text>{" "}
-              //DINAMICO
+             
               <Text style={[styles.text, { marginLeft: 60, marginBottom: 10 }]}>
-                TOTAL IMPUTADO: 1.736,11
+                TOTAL IMPUTADO: $ {gastos.gastos.op_monto? gastos.gastos.op_monto : null}
               </Text>{" "}
-              //DINAMICO
+             
             </View>
           </View>
         </View>
@@ -332,49 +332,40 @@ export const OrdenDetail = () => {
     <div className="card">
       {isFetched ? (
         <>
-       <table className="styled-table">
-  <thead>
-    <tr>
-      <th>Nombre</th>
-      <th>CUIL</th>
-      <th>PD Nro</th>
-      <th>Descripción</th>
-      <th>Monto</th>
-      <th>Monto Total</th>
-    </tr>
-  </thead>
-  <tbody>
-    {personasExceptLast.map((personasData, index) => {
-      const { nombre, cuil, valor_total, items } = personasData;
-      const rowSpan = items.length;
+        <div className="table-container">
+          <table className="styled-table">
+            <thead>
+              <tr>
+                <th>Nombre</th>
+                <th>CUIL</th>
+                <th>PD Nro</th>
+                <th>Descripción</th>
+                <th>Monto</th>
+                <th>Monto Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              {personasExceptLast.map((personasData, index) => {
+                const { nombre, cuil, valor_total, items } = personasData;
+                const rowSpan = items.length;
 
-      return items.map((item, itemIndex) => (
-        <tr key={index + "-" + itemIndex}>
-          {itemIndex === 0 && (
-            <td rowSpan={rowSpan}>{nombre}</td>
-          )}
-          {itemIndex === 0 && (
-            <td rowSpan={rowSpan}>{cuil}</td>
-          )}
-          <td>{item.referencia}</td>
-          <td>
-            <div>{item.descripciones[0].descripcion}</div>
-          </td>
-          <td>
-            $ {item.descripciones[0].valor_unitario.toFixed(2)}
-          </td>
-          {itemIndex === 0 && (
-            <td rowSpan={rowSpan}>
-              $ {valor_total.toFixed(2)}
-            </td>
-          )}
-        </tr>
-      ));
-    })}
-  </tbody>
-</table>
-
-
+                return items.map((item, itemIndex) => (
+                  <tr key={index + "-" + itemIndex}>
+                    {itemIndex === 0 && <td rowSpan={rowSpan}>{nombre}</td>}
+                    {itemIndex === 0 && <td rowSpan={rowSpan}>{cuil}</td>}
+                    <td>{item.referencia}</td>
+                    <td>
+                      <div>{item.descripciones[0].descripcion}</div>
+                    </td>
+                    <td>$ {item.descripciones[0].valor_unitario.toFixed(2)}</td>
+                    {itemIndex === 0 && (
+                      <td rowSpan={rowSpan}>$ {valor_total.toFixed(2)}</td>
+                    )}
+                  </tr>
+                ));
+              })}
+            </tbody>
+          </table>
 
           <div className="w-100 d-flex justify-content-end align-items-center">
             <PDFDownloadLink
@@ -388,10 +379,13 @@ export const OrdenDetail = () => {
               }
             </PDFDownloadLink>
           </div>
+          </div>
         </>
       ) : (
         <Spinner />
       )}
+      
     </div>
+    
   );
 };
