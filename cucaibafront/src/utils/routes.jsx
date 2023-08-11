@@ -108,7 +108,7 @@ const router = createBrowserRouter([
           },
           {
             path: "/ordenes/ver-ordenes",
-            element: <VerOrdenes />
+            element: <VerOrdenes />,
           },
           {
             path: "/ordenes/eliminar-ordenes",

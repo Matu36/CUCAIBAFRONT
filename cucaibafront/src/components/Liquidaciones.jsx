@@ -178,6 +178,7 @@ const Liquidaciones = ({ ...props }) => {
             onChange={handleOnChange}
             value={search}
             autoComplete="off"
+            disabled={liquidaciones == 400}
           />
         </div>
         <div>
