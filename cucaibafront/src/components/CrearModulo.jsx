@@ -3,6 +3,7 @@ import Swal from "sweetalert2";
 import { getCategorias, getTipoModulo, postModulo } from "../Redux/Actions";
 import { useDispatch, useSelector } from "react-redux";
 import "../assets/styles/style.css";
+import { validateFecha } from "../utils/Validaciones";
 
 const CrearModulo = ({ handleCerrarFormulario }) => {
   const dispatch = useDispatch();
@@ -13,6 +14,8 @@ const CrearModulo = ({ handleCerrarFormulario }) => {
   if (categorias.length > 1) {
     primerArreglo = categorias[1][0];
   }
+
+  const [showError, setShowError] = useState({ fecha: false });
 
   let destructuring = [];
   if (tipoModulo.length > 1) {
@@ -38,6 +41,8 @@ const CrearModulo = ({ handleCerrarFormulario }) => {
     e.preventDefault();
 
     if (modulo.valor && modulo.descripcion && modulo.fechaDesde) {
+      if (showError.fecha) return;
+
       const newModulo = {
         ...modulo,
       };
@@ -188,13 +193,22 @@ const CrearModulo = ({ handleCerrarFormulario }) => {
               value={modulo.fechaDesde}
               autoComplete="off"
               placeholder="Fecha Desde"
-              onChange={(e) =>
+              onChange={(e) => {
                 setModulo({
                   ...modulo,
                   fechaDesde: e.target.value,
-                })
-              }
+                });
+                setShowError({
+                  ...showError,
+                  fecha: validateFecha(e.target.value),
+                });
+              }}
             />
+            {showError.fecha && (
+              <div style={{ color: "red" }}>
+                La fecha no puede ser posterior al día de hoy
+              </div>
+            )}
           </div>
         </div>
         <hr
