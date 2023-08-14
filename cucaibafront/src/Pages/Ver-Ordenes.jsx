@@ -151,7 +151,7 @@ export const VerOrdenes = ({ ...props }) => {
             Ver Acciones
           </button>
           <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-            <li>
+            <li key="detalle-link">
               <Link
                 className="dropdown-item"
                 onMouseOver={(e) =>
@@ -165,29 +165,31 @@ export const VerOrdenes = ({ ...props }) => {
                 Ver detalle de la Orden de pago
               </Link>
             </li>
-            <li>
-              <button
-                className="dropdown-item"
-                type="button"
-                data-bs-toggle="modal"
-                data-bs-target="#opDefinitiva"
-                onClick={() =>
-                  setOP({
-                    ...OP,
-                    op_provisorio: row.opprovisorio_nro,
-                    liquidacion_id: row.liquidacion_id,
-                  })
-                }
-                onMouseOver={(e) =>
-                  (e.currentTarget.style.backgroundColor = "#d3d3d3")
-                }
-                onMouseOut={(e) =>
-                  (e.currentTarget.style.backgroundColor = "#fff")
-                }
-              >
-                Asignar Numeración Definitiva
-              </button>
-            </li>
+            {!row.op_nro && (
+              <li key="definitiva-link">
+                <button
+                  className="dropdown-item"
+                  type="button"
+                  data-bs-toggle="modal"
+                  data-bs-target="#opDefinitiva"
+                  onClick={() =>
+                    setOP({
+                      ...OP,
+                      op_provisorio: row.opprovisorio_nro,
+                      liquidacion_id: row.liquidacion_id,
+                    })
+                  }
+                  onMouseOver={(e) =>
+                    (e.currentTarget.style.backgroundColor = "#d3d3d3")
+                  }
+                  onMouseOut={(e) =>
+                    (e.currentTarget.style.backgroundColor = "#fff")
+                  }
+                >
+                  Asignar Numeración Definitiva
+                </button>
+              </li>
+            )}
           </ul>
         </div>
       ),
@@ -216,7 +218,7 @@ export const VerOrdenes = ({ ...props }) => {
                       <InputField
                         inputKey={l.inputKey}
                         value={OP[l.inputKey]}
-                        key={i}
+                        key={l.inputKey}
                         label={l.label}
                         error={error[l.inputKey]}
                         disabled={l.disabled}
@@ -230,6 +232,7 @@ export const VerOrdenes = ({ ...props }) => {
             </div>
             <InputField
               label="Nro. O.P"
+              key="nro_op"
               inputType="text"
               inputKey="nro_op"
               value={OP["nro_op"]}
