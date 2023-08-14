@@ -144,6 +144,12 @@ const postAgente = () => {
                 setAgente({ ...agente, nroDocumento: e.target.value });
                 validateDNI(e.target.value);
               }}
+              onPaste={(e) => {
+                setAgente({
+                  ...agente,
+                  nroDocumento: e.clipboardData.getData("text"),
+                });
+              }}
             />
             <div id="dniErrorMessage" style={{ color: "red", display: "none" }}>
               El DNI debe tener más de 7 carácteres
