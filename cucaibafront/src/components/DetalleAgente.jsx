@@ -28,10 +28,6 @@ const DetalleAgente = () => {
 
   return (
     <div className="card p-0 mb-3">
-      <div className="card-header">
-        <h4 className="fw-bold">Ver detalles del Agente</h4>
-      </div>
-
       <div className="card-body justify-content-evenly d-flex gap-2 flex-wrap detalleAgente">
         <div className="data-row">
           <div className="value">{agenteData[0].apellido}</div>
@@ -99,7 +95,7 @@ const DetalleAgente = () => {
       </div>
 
       <br />
-      <div>
+      <div style={{ marginLeft: "1rem", marginBottom: "1rem" }}>
         <BackButton />
       </div>
     </div>
