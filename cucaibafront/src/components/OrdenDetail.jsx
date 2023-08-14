@@ -17,7 +17,6 @@ import Logo from "../assets/images/LOGOSAMO.jpg";
 import LOGOPCIA from "../assets/images/LOGOPCIA.png";
 import { NumerosALetras } from "numero-a-letras";
 
-//FECHA LIQUIDACION DEL GASTO - FECHA DE IMPUTACION - CATEGORIA PROG
 
 const styles = StyleSheet.create({
   page: {
@@ -279,7 +278,7 @@ export const OrdenDetail = () => {
               <View style={styles.tableCell}>
                 <Text style={styles.cellText}>
                   2 Fecha Imputación{" "}
-                  {formatDate(gastos.gastos.op_fecha_emision)}
+                  {formatDate(gastos.gastos.da_fecha_dispo)}
                 </Text>
               </View>
               <View style={styles.tableCell}>{/* Celda vacía */}</View>
@@ -350,13 +349,13 @@ export const OrdenDetail = () => {
                     <View key={itemIndex}>
                       {item.descripciones.map((descripcion, descIndex) => (
                         <Text key={descIndex}>
-                          $ {descripcion.valor_unitario.toFixed(2)}
+                          $ {descripcion.valor_unitario.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                         </Text>
                       ))}
                     </View>
                   ))}
                 </View>
-                <Text style={styles.cell}>$ {valor_total.toFixed(2)}</Text>
+                <Text style={styles.cell}>$ {valor_total.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</Text>
               </View>
             );
           })}
@@ -399,12 +398,12 @@ export const OrdenDetail = () => {
                       <td>
                         {item.descripciones.map((descripcion, descIndex) => (
                           <div key={descIndex}>
-                            $ {descripcion.valor_unitario.toFixed(2)}
+                            $ {descripcion.valor_unitario.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                           </div>
                         ))}
                       </td>
                       {itemIndex === 0 && (
-                        <td rowSpan={rowSpan}>$ {valor_total.toFixed(2)}</td>
+                        <td rowSpan={rowSpan}>$ {valor_total.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</td>
                       )}
                     </tr>
                   ));
