@@ -100,7 +100,12 @@ const Liquidaciones = ({ ...props }) => {
     { name: "NOMBRE", selector: (row) => row.nombre, sortable: true },
     { name: "CUIL", selector: (row) => row.cuil, sortable: true },
     { name: "DESCRIPCIÓN", selector: (row) => row.descripcion, sortable: true },
-    { name: "VALOR", selector: (row) => row.valor.toFixed(2), sortable: true },
+    {
+      name: "VALOR",
+      selector: (row) => `$ ${row.valor.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`,
+      sortable: true
+    }
+    
   ];
 
   const handleClick = (event) => {

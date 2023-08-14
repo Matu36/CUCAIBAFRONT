@@ -132,7 +132,7 @@ const Modulos = ({ ...props }) => {
   Moment.locale("es-mx");
   const columns = [
     { name: "Descripción", selector: (row) => row.descripcion, sortable: true },
-    { name: "Valor", selector: (row) => row.valor, sortable: true },
+    { name: "Valor", selector: (row) => `$ ${row.valor.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`, sortable: true },
     {
       name: "Fecha Desde",
       selector: (row) => row.fechaDesde,
