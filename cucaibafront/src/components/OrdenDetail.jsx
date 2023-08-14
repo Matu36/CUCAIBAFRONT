@@ -83,6 +83,16 @@ const styles = StyleSheet.create({
   text: {
     fontSize: "10px",
   },
+
+  detalletitle: {
+fontSize:"18px",
+ color:"gray",
+ paddingBottom:"15px",
+ 
+
+
+  },
+
   container: {
     border: 2,
     borderColor: "#000",
@@ -270,7 +280,7 @@ export const OrdenDetail = () => {
               <View style={styles.tableCell}>
                 <Text style={styles.cellText}>
                   1 Fecha Liquidación del gasto{" "}
-                  {formatDate(gastos.gastos.op_fecha_emision)}
+                  {formatDate(gastos.gastos.op_fecha_emision ? gastos.gastos.op_fecha_emision : null )}
                 </Text>
               </View>
             </View>
@@ -278,7 +288,7 @@ export const OrdenDetail = () => {
               <View style={styles.tableCell}>
                 <Text style={styles.cellText}>
                   2 Fecha Imputación{" "}
-                  {formatDate(gastos.gastos.da_fecha_dispo)}
+                  {formatDate(gastos.gastos.da_fecha_dispo ? gastos.gastos.da_fecha_dispo : null)}
                 </Text>
               </View>
               <View style={styles.tableCell}>{/* Celda vacía */}</View>
@@ -315,6 +325,9 @@ export const OrdenDetail = () => {
       </Page>
       <Page size="A4" style={styles.page}>
         <View style={styles.section}>
+        <View style={{justifyContent: "center", alignItems: "center"}}>
+          <Text style={[styles.detalletitle]}> Detalle de la Orden de Pago </Text>
+          </View>
           <View style={styles.row}>
             <Text style={[styles.cell, styles.header]}>Nombre</Text>
             <Text style={[styles.cell, styles.header]}>CUIL</Text>
@@ -366,6 +379,11 @@ export const OrdenDetail = () => {
 
   return (
     <div className="card">
+      <h1> Órden de Pago </h1>
+      <h5 className="subtitulo" style={{ color: "#5DADE2" }}>
+        Detalle de la órden de pago
+      </h5>
+      <br />
       {isFetched ? (
         <>
           <div className="table-container">
