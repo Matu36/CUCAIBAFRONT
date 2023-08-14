@@ -22,58 +22,65 @@ const labels = [
     disabled: true,
     inputKey: "op_provisorio",
     inputType: "number",
+    show: false,
   },
-  {
-    label: "Nro. O.P Definitivo",
-    disabled: false,
-    inputKey: "nro_op",
-    inputType: "number",
-  },
-  {
-    label: "Año O.P Definitivo",
-    disabled: false,
-    inputKey: "anio_op",
-    inputType: "number",
-  },
+
   {
     label: "Tipo Acto",
     disabled: false,
     inputKey: "tipo_acto",
-    inputType: "string",
-  },
-  {
-    label: "Nro. Acto",
-    disabled: false,
-    inputKey: "nro_acto",
-    inputType: "number",
+    inputType: "text",
+    show: true,
   },
   {
     label: "Año Acto",
     disabled: false,
     inputKey: "anio_acto",
     inputType: "number",
+    show: true,
+  },
+  {
+    label: "Nro. Acto",
+    disabled: false,
+    inputKey: "nro_acto",
+    inputType: "number",
+    show: true,
   },
   {
     label: "Gdeba Acto",
-    disabled: false,
+    disabled: true,
     inputKey: "gdeba_acto",
-    inputType: "string",
+    inputType: "text",
+    show: true,
+    value: "GDEBA",
   },
   {
     label: "Reparticion Acto",
     disabled: false,
     inputKey: "reparticion_acto",
     inputType: "string",
+    show: true,
+  },
+  {
+    label: "Nro. O.P Definitivo",
+    disabled: false,
+    inputKey: "nro_op",
+    inputType: "number",
+    show: true,
+  },
+  {
+    label: "Año O.P Definitivo",
+    disabled: false,
+    inputKey: "anio_op",
+    inputType: "number",
+    show: false,
   },
 ];
 
-const INITIAL_STATE = {
-  liquidacion_id: 0,
-};
+const INITIAL_STATE = {};
 
-labels.forEach((key) => {
-  INITIAL_STATE[key.inputKey] = "";
-});
+labels.map((l) => (INITIAL_STATE[l.inputKey] = l.value));
+INITIAL_STATE["liquidacion_id"] = 0;
 
 export const VerOrdenes = ({ ...props }) => {
   const { data, isFetched, refetch } = useVerOrdenDePago().verOrdenesQuery;
@@ -87,7 +94,7 @@ export const VerOrdenes = ({ ...props }) => {
 
   const handleInputChange = (e) => {
     switch (e.target.type) {
-      case "string":
+      case "text":
         setError({
           ...error,
           [e.target.name]: !STRING_REGEX.test(e.target.value),
@@ -107,9 +114,11 @@ export const VerOrdenes = ({ ...props }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     let count = 0;
+    OP["anio_op"] = OP["anio_acto"];
     for (const key in OP) {
-      if (OP[key] == "") count++;
+      if (!OP[key]) count++;
     }
+
     if (count > 0) {
       return;
     } else {
@@ -194,18 +203,38 @@ export const VerOrdenes = ({ ...props }) => {
       >
         <div>
           <form>
-            {labels.map((el, i) => (
-              <InputField
-                label={el.label}
-                key={i}
-                inputKey={el.inputKey}
-                value={OP[el.inputKey]}
-                disabled={el.disabled}
-                error={error[el.inputKey]}
-                inputType={el.inputType}
-                handleChange={handleInputChange}
-              />
-            ))}
+            <div
+              className="d-flex gap-2 align-items-center"
+              style={{
+                flexDirection: window.innerWidth < 1000 ? "column" : "row",
+              }}
+            >
+              {labels.slice(0, 6).map(
+                (l, i) =>
+                  l.show && (
+                    <>
+                      <InputField
+                        inputKey={l.inputKey}
+                        value={OP[l.inputKey]}
+                        key={i}
+                        label={l.label}
+                        error={error[l.inputKey]}
+                        disabled={l.disabled}
+                        inputType={l.inputType}
+                        handleChange={handleInputChange}
+                      />
+                      {i != 5 && <span>-</span>}
+                    </>
+                  )
+              )}
+            </div>
+            <InputField
+              label="Nro. O.P"
+              inputType="text"
+              inputKey="nro_op"
+              value={OP["nro_op"]}
+              handleChange={handleInputChange}
+            />
           </form>
           <div className="modal-footer">
             <button

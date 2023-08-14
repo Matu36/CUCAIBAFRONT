@@ -10,7 +10,7 @@ const InputField = ({
   ...props
 }) => {
   return (
-    <div className="mb-3">
+    <div className="mb-3" style={{ flex: 1 }}>
       <label htmlFor={label} className="form-label">
         {label}:
       </label>
@@ -26,10 +26,10 @@ const InputField = ({
         onChange={handleChange}
         {...props}
       />
-      {error && (
+      {error && !props.disabled && (
         <p style={{ color: "red" }}>
           El campo no puede estar vacio y debe ser de tipo{" "}
-          {inputType == "string" ? "texto" : "numerico"}
+          {inputType == "text" ? "texto" : "numerico"}
         </p>
       )}
     </div>
