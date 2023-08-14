@@ -29,7 +29,6 @@ const PostHonorarios = ({
     setSelectValue("0|0");
     setValue(0);
     handleModuloId(Number(0));
-    refetch();
     handleClick();
   };
 
@@ -93,7 +92,10 @@ const PostHonorarios = ({
             type="button"
             className="btn btn-success"
             disabled={value == 0}
-            onClick={handleCreateClick}
+            onClick={() => {
+              handleCreateClick();
+              refetch();
+            }}
           >
             <AiOutlinePlus />
           </button>
