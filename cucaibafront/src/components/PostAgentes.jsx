@@ -6,6 +6,7 @@ import "../assets/styles/detalle.css";
 import BackButton from "../components/UI/BackButton";
 import { validateDNI } from "../utils/Validaciones";
 import { usePersona } from "../hooks/usePersona";
+import { FaSearch } from "react-icons/fa";
 
 const INITIALSTATE = {
   apellido: "",
@@ -147,13 +148,14 @@ const postAgente = () => {
             <div id="dniErrorMessage" style={{ color: "red", display: "none" }}>
               El DNI debe tener más de 7 carácteres
             </div>
-            &#128269;
+
             <button
               className="btn btn-dark btn btn-md"
               type="button"
               onClick={handleFindPersona}
+              style={{ display: "inline-flex", alignItems: "center" }}
             >
-              Buscar
+              <FaSearch style={{ marginRight: "5px" }} /> Buscar
             </button>
           </div>
         </div>
