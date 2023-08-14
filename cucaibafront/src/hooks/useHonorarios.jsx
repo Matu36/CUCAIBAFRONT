@@ -73,6 +73,8 @@ export const useHonorarios = (operativoId = 0, agenteId = 0) => {
         position: "center",
         icon: "success",
         confirmButtonText: "Cerrar",
+        confirmButtonColor: "#4CAF50"
+
       });
       let modalEl = document.getElementById("opModal");
       let modalInstance = bootstrap.Modal.getInstance(modalEl);
@@ -84,6 +86,7 @@ export const useHonorarios = (operativoId = 0, agenteId = 0) => {
         position: "center",
         icon: "error",
         confirmButtonText: "Cerrar",
+        confirmButtonColor: "#4CAF50"
       });
       let modalEl = document.getElementById("opModal");
       let modalInstance = bootstrap.Modal.getInstance(modalEl);

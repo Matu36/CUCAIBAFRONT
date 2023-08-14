@@ -12,7 +12,7 @@ const Modal = ({ title, referenceID, children, customFooter }) => {
       <div className="modal-dialog">
         <div className="modal-content">
           <div className="modal-header">
-            <h5 className="modal-title">{title}</h5>
+            <h5 className="modal-title" style={{ color: "#5DADE2" }}>{title}</h5>
             <button
               type="button"
               className="btn-close"

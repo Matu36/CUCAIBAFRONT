@@ -27,7 +27,7 @@ export const Home = () => {
         </div>
         <div>
           <h4 className="font-weight-bold text-muted text-uppercase mb-0">
-            Liquidación Honorarios
+            Variables de Procuración
           </h4>
           <h6 className="text-info mb-0"> CUCAIBA</h6>
         </div>
