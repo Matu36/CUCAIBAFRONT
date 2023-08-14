@@ -330,6 +330,7 @@ export const OrdenDetail = () => {
           </View>
           <View style={styles.row}>
             <Text style={[styles.cell, styles.header]}>Nombre</Text>
+            <Text style={[styles.cell, styles.header]}>Legajo</Text>
             <Text style={[styles.cell, styles.header]}>CUIL</Text>
             <Text style={[styles.cell, styles.header]}>PD Nro</Text>
             <Text style={[styles.cell, styles.header]}>Descripción</Text>
@@ -337,11 +338,12 @@ export const OrdenDetail = () => {
             <Text style={[styles.cell, styles.header]}>Monto Total</Text>
           </View>
           {personasExceptLast.map((personasData, index) => {
-            const { nombre, cuil, items, valor_total } = personasData;
+            const { nombre, cuil, items, valor_total, legajo } = personasData;
 
             return (
               <View style={styles.row} key={index}>
                 <Text style={styles.cell}>{nombre}</Text>
+                <Text style={styles.cell}>{legajo}</Text>
                 <Text style={styles.cell}>{cuil}</Text>
                 <View style={styles.cell}>
                   {items.map((item, itemIndex) => (
@@ -391,6 +393,7 @@ export const OrdenDetail = () => {
               <thead>
                 <tr>
                   <th>Nombre</th>
+                  <th>Legajo</th>
                   <th>CUIL</th>
                   <th>PD Nro</th>
                   <th>Descripción</th>
@@ -400,12 +403,13 @@ export const OrdenDetail = () => {
               </thead>
               <tbody>
                 {personasExceptLast.map((personasData, index) => {
-                  const { nombre, cuil, valor_total, items } = personasData;
+                  const { nombre, legajo, cuil, valor_total, items } = personasData;
                   const rowSpan = items.length;
 
                   return items.map((item, itemIndex) => (
                     <tr key={index + "-" + itemIndex}>
                       {itemIndex === 0 && <td rowSpan={rowSpan}>{nombre}</td>}
+                      {itemIndex === 0 && <td rowSpan={rowSpan}>{legajo}</td>}
                       {itemIndex === 0 && <td rowSpan={rowSpan}>{cuil}</td>}
                       <td>{item.referencia}</td>
                       <td>
