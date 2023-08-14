@@ -3,12 +3,14 @@ import Swal from "sweetalert2";
 import "../assets/styles/detalle.css";
 import BackButton from "../components/UI/BackButton";
 import { useOperativo } from "../hooks/useOperativo";
+import { validateFecha } from "../utils/Validaciones";
 
 const PostOperativos = () => {
   const { mutate } = useOperativo().operativoMutation;
 
   const [showError, setShowError] = useState({
     referencia: false,
+    fecha: false,
     // descripcion: false, //Momentaneamente
   });
 
@@ -47,6 +49,10 @@ const PostOperativos = () => {
     e.preventDefault();
 
     if (operativo.referencia && operativo.fecha) {
+      if (showError.fecha) {
+        return;
+      }
+
       const newOperativo = {
         ...operativo,
         fecha: operativo.fecha,
@@ -64,6 +70,7 @@ const PostOperativos = () => {
         fecha: "",
         descripcion: "",
       });
+      setShowError({ fecha: false, referencia: false });
     } else {
       Swal.fire({
         position: "center",
@@ -114,10 +121,19 @@ const PostOperativos = () => {
             value={operativo.fecha}
             autoComplete="off"
             placeholder="Fecha del operativo"
-            onChange={(e) =>
-              setOperativo({ ...operativo, fecha: e.target.value })
-            }
+            onChange={(e) => {
+              setOperativo({ ...operativo, fecha: e.target.value });
+              setShowError({
+                ...showError,
+                fecha: validateFecha(e.target.value),
+              });
+            }}
           />
+          {showError.fecha && (
+            <div style={{ color: "red" }}>
+              No se puede elegir una fecha posterior a la de hoy
+            </div>
+          )}
         </div>
         <div className="mb-3">
           <label htmlFor="inputDescripción" className="form-label">

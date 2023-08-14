@@ -14,4 +14,14 @@ export function validateDNI(inputValue) {
   }
 };
 
+export function validateFecha(fecha) {
+  let fechaElegida = new Date(fecha);
+  let fechaHoy = new Date();
+
+  if (fechaElegida > fechaHoy) {
+    return true;
+  }
+
+  return false;
+}
 

@@ -44,7 +44,8 @@ const GetOperativos = () => {
       const arrayCache = primerArreglo.filter(
         (oper) =>
           oper.referencia.toLowerCase().includes(value.toLowerCase()) ||
-          oper.descripcion.toLowerCase().includes(value.toLowerCase())
+          (oper.descripcion &&
+            oper.descripcion.toLowerCase().includes(value.toLowerCase()))
       );
       setOperativo(arrayCache);
     }
@@ -78,7 +79,12 @@ const GetOperativos = () => {
       sortable: true,
       format: (row) => obtenerMesYAño(row.fecha),
     },
-    { name: "Descripción", selector: (row) => row.descripcion, sortable: true },
+    {
+      name: "Descripción",
+      selector: (row) => row.descripcion,
+      sortable: true,
+      format: (row) => row.descripcion ?? <i>Sin descripción</i>,
+    },
   ];
 
   return (
