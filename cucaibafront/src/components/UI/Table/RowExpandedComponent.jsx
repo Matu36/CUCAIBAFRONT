@@ -197,10 +197,9 @@ const RowExpandedComponent = ({ data: operativo }) => {
       >
         <div>
           <div>
-            <h5 className="subtitulo" style={{ color: "#5DADE2" }}>
-              Agentes Disponibles
-            </h5>
-            <hr />
+           
+           
+         
             {typeof agentesDisponibles == "object" ? (
               <DataTable
                 columns={columns}

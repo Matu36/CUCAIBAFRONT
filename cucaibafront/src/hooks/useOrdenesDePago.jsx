@@ -48,6 +48,7 @@ export const useOrdenesMutation = () => {
         title: "Se asigno la numeración definitiva a la O.P",
         timer: 5000,
         icon: "success",
+        confirmButtonColor: "#4CAF50"
       });
       let modalEl = document.getElementById("opDefinitiva");
       let modalInstance = bootstrap.Modal.getInstance(modalEl);
@@ -59,6 +60,7 @@ export const useOrdenesMutation = () => {
         timer: 5000,
         html: error.response.data,
         icon: "error",
+        confirmButtonColor: "#4CAF50"
       });
       let modalEl = document.getElementById("opDefinitiva");
       let modalInstance = bootstrap.Modal.getInstance(modalEl);
