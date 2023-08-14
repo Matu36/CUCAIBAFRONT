@@ -53,7 +53,7 @@ const CardDetalleAgente = ({ data }) => {
             <CardItem title="Funciones" value={data.descripciones} />
             <CardItem
               title="Total Valor"
-              value={`$${Number.parseFloat(data.total_valor).toFixed(2)}`}
+              value={`$${Number.parseFloat(data.total_valor).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`}
             />
           </ul>
         </div>
