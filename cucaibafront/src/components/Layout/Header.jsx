@@ -52,22 +52,28 @@ function Header() {
           <div></div>
 
           <div className="position-relative ml-3">
-  <span
-    className="d-inline-block text-center position-relative"
-    data-bs-toggle="tooltip"
-    data-bs-placement="bottom"
-    title={`Ud. tiene ${honorariosPendientesCount} órdenes de pago pendientes`}
-  >
-    <ImNotification style={{ fontSize: '1.5rem', cursor: 'pointer', color: 'white' }} />
-    {honorariosPendientesCount > 0 && (
-      <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-        {honorariosPendientesCount}
-        <span className="visually-hidden">
-          Ud tiene {honorariosPendientesCount} órdenes de pago pendientes
-        </span>
+          <span
+  className="d-inline-block text-center position-relative"
+  data-bs-toggle="tooltip"
+  data-bs-placement="bottom"
+  title={
+    honorariosPendientesCount > 0
+      ? `Ud. tiene ${honorariosPendientesCount} órdenes de pago pendientes`
+      : 'Ud. no tiene ninguna órden de pago pendiente'
+  }
+>
+  <ImNotification style={{ fontSize: '1.5rem', cursor: 'pointer', color: 'white' }} />
+  {honorariosPendientesCount > 0 && (
+    <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+      {honorariosPendientesCount}
+      <span className="visually-hidden">
+        Ud. no tiene órdenes de pago pendientes
       </span>
-    )}
-  </span>
+    </span>
+  )}
+</span>
+
+
 </div>
 
             <div>

@@ -78,10 +78,11 @@
 
 .intranet-logo {
   display: flex;
+  position: absolute;
   flex-direction: column;
   align-items: start;
   justify-content: center;
-  margin-left: -6rem;
+  margin-left: 3rem;
 }
 
 .intranet-logo > span {
