@@ -1,13 +1,18 @@
 import React, { useState, useEffect } from "react";
-
 import { GiHamburgerMenu } from "react-icons/gi";
 import { BiUserCircle } from "react-icons/bi";
 import "./styles/header.css";
-
 import SideBar from "./Sidebar";
+import { useHonorarios } from "../../hooks/useHonorarios";
+import { ImNotification } from "react-icons/im";
+
 
 function Header() {
   const [isOpen, setIsOpen] = useState(false);
+
+  const { data, isFetched } = useHonorarios().honorariosPendientesHomeQuery;
+  
+  const honorariosPendientesCount = isFetched ? data.length : 0;
 
   // ----------------------- CADA VEZ QUE SE HACE CLICK SE CIERRA LA SIDEBAR -------- //
 
@@ -38,11 +43,33 @@ function Header() {
           >
             <GiHamburgerMenu size="2rem" />
           </button>
-          <div className="col-8 pl-0 intranet-logo">
+          <div className="col-8 intranet-logo">
             <span className="fst-line">INTRANET</span>
             <span className="snd-line">MINISTERIO DE SALUD</span>
           </div>
           <div className="col-3 d-flex justify-content-end align-items-center">
+
+          <div></div>
+
+          <div className="position-relative ml-3">
+  <span
+    className="d-inline-block text-center position-relative"
+    data-bs-toggle="tooltip"
+    data-bs-placement="bottom"
+    title={`Ud. tiene ${honorariosPendientesCount} órdenes de pago pendientes`}
+  >
+    <ImNotification style={{ fontSize: '1.5rem', cursor: 'pointer', color: 'white' }} />
+    {honorariosPendientesCount > 0 && (
+      <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+        {honorariosPendientesCount}
+        <span className="visually-hidden">
+          Ud tiene {honorariosPendientesCount} órdenes de pago pendientes
+        </span>
+      </span>
+    )}
+  </span>
+</div>
+
             <div>
               <button
                 className="btn btn-user font-weight-medium dropdown-toggle"
