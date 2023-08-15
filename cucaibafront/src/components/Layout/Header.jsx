@@ -6,13 +6,26 @@ import SideBar from "./Sidebar";
 import { useHonorarios } from "../../hooks/useHonorarios";
 import { ImNotification } from "react-icons/im";
 
-
 function Header() {
   const [isOpen, setIsOpen] = useState(false);
 
   const { data, isFetched } = useHonorarios().honorariosPendientesHomeQuery;
-  
+
   const honorariosPendientesCount = isFetched ? data.length : 0;
+
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   // ----------------------- CADA VEZ QUE SE HACE CLICK SE CIERRA LA SIDEBAR -------- //
 
@@ -48,33 +61,71 @@ function Header() {
             <span className="snd-line">MINISTERIO DE SALUD</span>
           </div>
           <div className="col-3 d-flex justify-content-end align-items-center">
+            <div></div>
 
-          <div></div>
+            <div className="position-relative ml-3 notification-component">
+              <span
+                className="d-inline-block text-center position-relative"
+                data-bs-toggle="tooltip"
+                data-bs-placement="bottom"
+                title={`Ud. tiene ${honorariosPendientesCount} órdenes de pago pendientes`}
+              >
+                <ImNotification
+                  style={{
+                    fontSize: "1.5rem",
+                    cursor: "pointer",
+                    color: "white",
+                  }}
+                />
+                {honorariosPendientesCount > 0 ? (
+                  <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                    {honorariosPendientesCount}
+                    <span className="visually-hidden">
+                      Ud. no tiene órdenes de pago pendientes
+                    </span>
+                  </span>
+                ) : (
+                  <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                    0
+                    <span className="visually-hidden">
+                      Ud. no tiene ninguna órden de pago pendiente
+                    </span>
+                  </span>
+                )}
+              </span>
+            </div>
 
-          <div className="position-relative ml-3">
-          <span
-  className="d-inline-block text-center position-relative"
-  data-bs-toggle="tooltip"
-  data-bs-placement="bottom"
-  title={
-    honorariosPendientesCount > 0
-      ? `Ud. tiene ${honorariosPendientesCount} órdenes de pago pendientes`
-      : 'Ud. no tiene ninguna órden de pago pendiente'
-  }
->
-  <ImNotification style={{ fontSize: '1.5rem', cursor: 'pointer', color: 'white' }} />
-  {honorariosPendientesCount > 0 && (
-    <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-      {honorariosPendientesCount}
-      <span className="visually-hidden">
-        Ud. no tiene órdenes de pago pendientes
-      </span>
-    </span>
-  )}
-</span>
-
-
-</div>
+            <div className="position-relative ml-3 user-circle-component">
+              <span
+                className="d-inline-block text-center position-relative"
+                data-bs-toggle="tooltip"
+                data-bs-placement="bottom"
+                title={`Ud. tiene ${honorariosPendientesCount} órdenes de pago pendientes`}
+              >
+                <BiUserCircle
+                  style={{
+                    fontSize: "2rem",
+                    cursor: "pointer",
+                    color: "white",
+                  }}
+                />
+                {honorariosPendientesCount > 0 ? (
+                  <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                    {honorariosPendientesCount}
+                    <span className="visually-hidden">
+                      Ud. no tiene órdenes de pago pendientes
+                    </span>
+                  </span>
+                ) : (
+                  <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                    0
+                    <span className="visually-hidden">
+                      Ud. no tiene ninguna órden de pago pendiente
+                    </span>
+                  </span>
+                )}
+              </span>
+            </div>
 
             <div>
               <button
@@ -84,7 +135,6 @@ function Header() {
                 aria-expanded="false"
               >
                 <span className="username"> Alejandro Oslovski </span>
-                <BiUserCircle size="2rem" />
               </button>
               <div
                 className="dropdown-user dropdown-menu pt-4"

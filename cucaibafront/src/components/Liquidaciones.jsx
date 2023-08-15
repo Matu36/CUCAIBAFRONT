@@ -32,6 +32,21 @@ const Liquidaciones = ({ ...props }) => {
 
   const { paginationOptions } = usePagination(data);
 
+  //---------------------------------SPINNER ------------------------------------//
+
+  const [showSpinner, setShowSpinner] = useState(true);
+
+  useEffect(() => {
+    if (isFetched) {
+      if (data) {
+        setLiquidaciones(data);
+      }
+      setShowSpinner(false);
+    }
+  }, [isFetched, data]);
+
+  //---------------------------------FIN SPINNER ------------------------------------//
+
   //-------------------------------- SEARCHBAR --------------------------- //
 
   useEffect(() => {
@@ -133,156 +148,209 @@ const Liquidaciones = ({ ...props }) => {
     setError({ ...error, [e.target.name]: e.target.value.length == 0 });
   };
 
-  //---------------------------------SPINNER ------------------------------------//
-
-  const [showSpinner, setShowSpinner] = useState(true);
-  useEffect(() => {
-    if (isFetched) {
-      setLiquidaciones(data);
-      setShowSpinner(false);
-    }
-  }, [isFetched, data]);
-
-  //---------------------------------FIN SPINNER ------------------------------------//
-
   return (
     <>
-      <Modal
-        title="Generar Orden de Pago"
-        referenceID="opModal"
-        customFooter={true}
-      >
-        <div>
-          <div className="d-flex w-full justify-content-evenly">
-            <div className="mb-3">
-              <label htmlFor="inputFolio" className="form-label">
-                Nro de Folio Banco: <span style={{ color: "red" }}>*</span>
-              </label>
-              <input
-                type="number"
-                className="form-control"
-                id="inputFolio"
-                aria-describedby="inputFolioHelp"
-                name="nroFolio"
-                value={inputValue.nroFolio}
-                autoComplete="off"
-                placeholder="N° de Folio Banco"
-                onChange={handleChange}
-              />
-              {error.nroFolio && (
-                <div style={{ color: "red" }}>
-                  El nro de Folio es obligatorio
+      {isFetched ? (
+        <>
+          <Modal
+            title="Generar Orden de Pago"
+            referenceID="opModal"
+            customFooter={true}
+          >
+            <div>
+              <div className="d-flex w-full justify-content-evenly">
+                <div className="mb-3">
+                  <label htmlFor="inputFolio" className="form-label">
+                    Nro de Folio Banco: <span style={{ color: "red" }}>*</span>
+                  </label>
+                  <input
+                    type="number"
+                    className="form-control"
+                    id="inputFolio"
+                    aria-describedby="inputFolioHelp"
+                    name="nroFolio"
+                    value={inputValue.nroFolio}
+                    autoComplete="off"
+                    placeholder="N° de Folio Banco"
+                    onChange={handleChange}
+                  />
+                  {error.nroFolio && (
+                    <div style={{ color: "red" }}>
+                      El nro de Folio es obligatorio
+                    </div>
+                  )}
                 </div>
-              )}
+                <div className="mb-3">
+                  <label
+                    htmlFor="inputCheque-Transferencia"
+                    className="form-label"
+                  >
+                    Nro de Cheque/Transferencia:{" "}
+                    <span style={{ color: "red" }}>*</span>
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="inputCheque-Transferencia"
+                    aria-describedby="inputCheque-TransferenciaHelp"
+                    name="nroChequeTransferencia"
+                    value={inputValue.nroChequeTransferencia}
+                    autoComplete="off"
+                    placeholder="N° de Cheque/Transferencia"
+                    onChange={handleChange}
+                  />
+                  {error.nroChequeTransferencia && (
+                    <div style={{ color: "red" }}>
+                      El Nro de Cheque/Transferencia es obligatorio
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              <div className="modal-footer">
+                <button
+                  type="button"
+                  className="btn btn-success"
+                  onClick={handleClick}
+                  disabled={
+                    inputValue.nroFolio.length == 0 ||
+                    inputValue.nroChequeTransferencia.length == 0
+                  }
+                >
+                  Generar OP
+                </button>
+              </div>
             </div>
-            <div className="mb-3">
-              <label htmlFor="inputCheque-Transferencia" className="form-label">
-                Nro de Cheque/Transferencia:{" "}
-                <span style={{ color: "red" }}>*</span>
-              </label>
+          </Modal>
+          <div className="card">
+            <h1>Órdenes de Pago</h1>
+            <h5 className="subtitulo" style={{ color: "#5DADE2" }}>
+              Listado de agentes Pendientes de Orden de Pago
+            </h5>
+            <br />
+
+            <div
+              className="input-group mb-3"
+              style={{ width: window.innerWidth < 1000 ? "100%" : "45%" }}
+            >
               <input
                 type="text"
                 className="form-control"
-                id="inputCheque-Transferencia"
-                aria-describedby="inputCheque-TransferenciaHelp"
-                name="nroChequeTransferencia"
-                value={inputValue.nroChequeTransferencia}
+                placeholder="Buscar por APELLIDO o CUIL"
+                onChange={handleOnChange}
+                value={search}
                 autoComplete="off"
-                placeholder="N° de Cheque/Transferencia"
-                onChange={handleChange}
+                disabled={liquidaciones == 400}
               />
-              {error.nroChequeTransferencia && (
-                <div style={{ color: "red" }}>
-                  El Nro de Cheque/Transferencia es obligatorio
-                </div>
+            </div>
+            <div>
+              {showSpinner ? (
+                <Spinner />
+              ) : typeof liquidaciones === "object" &&
+                liquidaciones.length > 0 ? (
+                <DataTable
+                  columns={columns}
+                  data={liquidaciones}
+                  pagination
+                  striped
+                  paginationComponentOptions={paginationOptions}
+                  noDataComponent={
+                    <EmptyTable msg="No se encontró el Agente con los datos proporcionados" />
+                  }
+                  {...props}
+                />
+              ) : (
+                <EmptyTable msg="No hay ningún Agente pendiente de pago" />
               )}
             </div>
-          </div>
 
-          <div className="modal-footer">
-            <button
-              type="button"
-              className="btn btn-success"
-              onClick={handleClick}
-              disabled={
-                inputValue.nroFolio.length == 0 ||
-                inputValue.nroChequeTransferencia.length == 0
-              }
-            >
-              Generar OP
-            </button>
-          </div>
-        </div>
-      </Modal>
-      <div className="card">
-        <h1>Órdenes de Pago</h1>
-        <h5 className="subtitulo" style={{ color: "#5DADE2" }}>
-          Listado de agentes Pendientes de Orden de Pago
-        </h5>
-        <br />
-
-        <div
-          className="input-group mb-3"
-          style={{ width: window.innerWidth < 1000 ? "100%" : "45%" }}
-        >
-          <input
-            type="text"
-            className="form-control"
-            placeholder="Buscar por APELLIDO o CUIL"
-            onChange={handleOnChange}
-            value={search}
-            autoComplete="off"
-            disabled={liquidaciones == 400}
-          />
-        </div>
-        <div>
-          {showSpinner && <Spinner />}
-          {!showSpinner && typeof data == "object" ? (
-            <DataTable
-              columns={columns}
-              data={liquidaciones}
-              pagination
-              striped
-              paginationComponentOptions={paginationOptions}
-              noDataComponent={
-                <EmptyTable msg="No se encontro el Agente con los datos proporcionados" />
-              }
-              {...props}
-            />
-          ) : (
-            <EmptyTable msg="No hay ningun Agente pendiente de pago" />
-          )}
-
-          <br />
-          <div className="d-flex justify-content-between">
-            <div>
-              <BackButton />
-            </div>
-            <div>
-              <div>
-                <h5>
-                  Total: $<span>{NumberFormatter(total)}</span>
-                </h5>
-                {total > LIMITE && (
-                  <span style={{ color: "red" }}>
-                    <p>Te estas excediendo del limite de $3,500,000.00</p>
-                  </span>
-                )}
-              </div>
+            <div className="modal-footer">
               <button
-                type="submit"
+                type="button"
                 className="btn btn-success"
-                disabled={selectedRows.length == 0 || total > LIMITE}
-                data-bs-toggle="modal"
-                data-bs-target="#opModal"
+                onClick={handleClick}
+                disabled={
+                  inputValue.nroFolio.length == 0 ||
+                  inputValue.nroChequeTransferencia.length == 0
+                }
               >
-                {" "}
-                Generar Orden de Pago{" "}
+                Generar OP
               </button>
             </div>
           </div>
-        </div>
-      </div>
+          <div className="card">
+            <h1>Órdenes de Pago</h1>
+            <h5 className="subtitulo" style={{ color: "#5DADE2" }}>
+              Listado de agentes Pendientes de Orden de Pago
+            </h5>
+            <br />
+
+            <div
+              className="input-group mb-3"
+              style={{ width: window.innerWidth < 1000 ? "100%" : "45%" }}
+            >
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Buscar por APELLIDO o CUIL"
+                onChange={handleOnChange}
+                value={search}
+                autoComplete="off"
+                disabled={liquidaciones == 400}
+              />
+            </div>
+            <div>
+              {showSpinner && <Spinner />}
+              {!showSpinner && typeof data == "object" ? (
+                <DataTable
+                  columns={columns}
+                  data={liquidaciones}
+                  pagination
+                  striped
+                  paginationComponentOptions={paginationOptions}
+                  noDataComponent={
+                    <EmptyTable msg="No se encontro el Agente con los datos proporcionados" />
+                  }
+                  {...props}
+                />
+              ) : (
+                <EmptyTable msg="No hay ningun Agente pendiente de pago" />
+              )}
+
+              <br />
+              <div className="d-flex justify-content-between">
+                <div>
+                  <BackButton />
+                </div>
+                <div>
+                  <div>
+                    <h5>
+                      Total: $<span>{NumberFormatter(total)}</span>
+                    </h5>
+                    {total > LIMITE && (
+                      <span style={{ color: "red" }}>
+                        <p>Te estas excediendo del limite de $3,500,000.00</p>
+                      </span>
+                    )}
+                  </div>
+                  <button
+                    type="submit"
+                    className="btn btn-success"
+                    disabled={selectedRows.length == 0 || total > LIMITE}
+                    data-bs-toggle="modal"
+                    data-bs-target="#opModal"
+                  >
+                    {" "}
+                    Generar Orden de Pago{" "}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </>
+      ) : (
+        <Spinner />
+      )}
     </>
   );
 };
