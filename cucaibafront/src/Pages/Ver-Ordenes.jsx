@@ -82,11 +82,9 @@ const INITIAL_STATE = {};
 labels.map((l) => (INITIAL_STATE[l.inputKey] = l.value));
 INITIAL_STATE["liquidacion_id"] = 0;
 
-
-
 export const VerOrdenes = ({ ...props }) => {
   const { data, isFetched, refetch } = useVerOrdenDePago().verOrdenesQuery;
-  
+
   const { mutate } = useOrdenesMutation().asignarDefinitivo;
 
   const [OP, setOP] = useState(INITIAL_STATE);
@@ -198,27 +196,30 @@ export const VerOrdenes = ({ ...props }) => {
     },
   ];
 
-  
-   const [Op, setOp] = useState(data);
-   const [search, setSearch] = useState("");
+  const [Op, setOp] = useState(data);
+  const [search, setSearch] = useState("");
 
-   useEffect(() => {
-     filterByOp(search);
-   }, [search]);
- 
-   const handleOnChange = (e) => {
-     e.preventDefault();
-     setSearch(e.target.value);
-   };
- 
-   const filterByOp = (value) => {
+  useEffect(() => {
+    setOp(data);
+  }, [data]);
+
+  useEffect(() => {
+    filterByOp(search);
+  }, [search]);
+
+  const handleOnChange = (e) => {
+    e.preventDefault();
+    setSearch(e.target.value);
+  };
+
+  const filterByOp = (value) => {
     if (!value) {
       setOp(data);
     } else {
       const arrayCache = data.filter((mod) => {
-        if (mod.hasOwnProperty('opprovisorio_nro')) {
+        if (mod.hasOwnProperty("opprovisorio_nro")) {
           const opNumber = mod.opprovisorio_nro;
-          if (typeof opNumber === 'number') {
+          if (typeof opNumber === "number") {
             return opNumber.toString().includes(value);
           }
         }
@@ -227,9 +228,6 @@ export const VerOrdenes = ({ ...props }) => {
       setOp(arrayCache);
     }
   };
-  
-  
-   
 
   return (
     <>
@@ -249,7 +247,7 @@ export const VerOrdenes = ({ ...props }) => {
               {labels.slice(0, 6).map(
                 (l, i) =>
                   l.show && (
-                    <>
+                    <React.Fragment key={i}>
                       <InputField
                         inputKey={l.inputKey}
                         value={OP[l.inputKey]}
@@ -262,7 +260,7 @@ export const VerOrdenes = ({ ...props }) => {
                         required={true}
                       />
                       {i != 5 && <span>-</span>}
-                    </>
+                    </React.Fragment>
                   )
               )}
             </div>
@@ -304,15 +302,15 @@ export const VerOrdenes = ({ ...props }) => {
             <br />
 
             <div className="input-group mb-3" style={{ maxWidth: "40%" }}>
-          <input
-            type="text"
-            className="form-control"
-            placeholder="Buscar por Número de OP"
-            onChange={handleOnChange}
-            value={search}
-            autoComplete="off"
-          />
-        </div>
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Buscar por Número de OP"
+                onChange={handleOnChange}
+                value={search}
+                autoComplete="off"
+              />
+            </div>
 
             <DataTable
               columns={columns}
@@ -321,7 +319,6 @@ export const VerOrdenes = ({ ...props }) => {
               striped
               paginationComponentOptions={paginationOptions}
               noDataComponent={<EmptyTable msg="No hay órdenes de pago" />}
-              {...props}
             />
             <div>
               <BackButton />

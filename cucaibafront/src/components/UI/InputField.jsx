@@ -13,7 +13,7 @@ const InputField = ({
   return (
     <div className="mb-3" style={{ flex: 1 }}>
       <label htmlFor={label} className="form-label">
-        {label}: {required && <span style={{color:"red"}}> * </span>}
+        {label}: {required && <span style={{ color: "red" }}> * </span>}
       </label>
       <input
         type={inputType}
