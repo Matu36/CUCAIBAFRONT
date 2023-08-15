@@ -120,6 +120,10 @@ const router = createBrowserRouter([
           },
         ],
       },
+      {
+        path: "/archivos",
+        element: <h1>Generar Archivos</h1>,
+      },
     ],
   },
 ]);
