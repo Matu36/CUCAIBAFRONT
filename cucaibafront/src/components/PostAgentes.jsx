@@ -7,7 +7,6 @@ import BackButton from "../components/UI/BackButton";
 import { validateDNI } from "../utils/Validaciones";
 import { usePersona } from "../hooks/usePersona";
 import { FaSearch } from "react-icons/fa";
-import Spinner from "./UI/Spinner";
 
 const INITIALSTATE = {
   apellido: "",
@@ -91,15 +90,12 @@ const postAgente = () => {
             "El DNI ingresado no se encontró en la base de datos de empleados",
           showConfirmButton: true,
           confirmButtonText: "Cerrar",
+          confirmButtonColor: "#4CAF50",
         });
         setClicked(false);
       }
     }
   }, [isFetched]);
-
-  // useEffect(() => {
-
-  // }, [personaData]);
 
   const handleOnSubmit = async (e) => {
     e.preventDefault();
@@ -124,6 +120,7 @@ const postAgente = () => {
         title: "El Agente ha sido creado",
         showConfirmButton: false,
         confirmButtonText: "Cerrar",
+        confirmButtonColor: "#4CAF50",
         timer: 2000,
       });
       setAgente(INITIALSTATE);
@@ -134,6 +131,7 @@ const postAgente = () => {
         title: "Por favor, completa todos los campos",
         showConfirmButton: true,
         confirmButtonText: "Cerrar",
+        confirmButtonColor: "#4CAF50",
       });
     }
   };

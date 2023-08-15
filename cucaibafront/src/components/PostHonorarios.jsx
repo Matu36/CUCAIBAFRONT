@@ -59,14 +59,13 @@ const PostHonorarios = ({
             </option>
             {isLoading ? (
               <option defaultChecked>Cargando...</option>
-            ) : typeof data == "object" ? (
+            ) : (
+              typeof data == "object" &&
               data.map((m) => (
                 <option value={`${m.id}|${m.valor}`} key={m.id}>
                   {m.descripcion}
                 </option>
               ))
-            ) : (
-              <option>vacio</option>
             )}
           </select>
         </div>
