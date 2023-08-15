@@ -263,62 +263,7 @@ const Liquidaciones = ({ ...props }) => {
                 <EmptyTable msg="No hay ningún Agente pendiente de pago" />
               )}
             </div>
-
-            <div className="modal-footer">
-              <button
-                type="button"
-                className="btn btn-success"
-                onClick={handleClick}
-                disabled={
-                  inputValue.nroFolio.length == 0 ||
-                  inputValue.nroChequeTransferencia.length == 0
-                }
-              >
-                Generar OP
-              </button>
-            </div>
-          </div>
-          <div className="card">
-            <h1>Órdenes de Pago</h1>
-            <h5 className="subtitulo" style={{ color: "#5DADE2" }}>
-              Listado de agentes Pendientes de Orden de Pago
-            </h5>
-            <br />
-
-            <div
-              className="input-group mb-3"
-              style={{ width: window.innerWidth < 1000 ? "100%" : "45%" }}
-            >
-              <input
-                type="text"
-                className="form-control"
-                placeholder="Buscar por APELLIDO o CUIL"
-                onChange={handleOnChange}
-                value={search}
-                autoComplete="off"
-                disabled={liquidaciones == 400}
-              />
-            </div>
-            <div>
-              {showSpinner && <Spinner />}
-              {!showSpinner && typeof data == "object" ? (
-                <DataTable
-                  columns={columns}
-                  data={liquidaciones}
-                  pagination
-                  striped
-                  paginationComponentOptions={paginationOptions}
-                  noDataComponent={
-                    <EmptyTable msg="No se encontro el Agente con los datos proporcionados" />
-                  }
-                  {...props}
-                />
-              ) : (
-                <EmptyTable msg="No hay ningun Agente pendiente de pago" />
-              )}
-
-              <br />
-              <div className="d-flex justify-content-between">
+            <div className="d-flex justify-content-between">
                 <div>
                   <BackButton />
                 </div>
@@ -345,7 +290,6 @@ const Liquidaciones = ({ ...props }) => {
                   </button>
                 </div>
               </div>
-            </div>
           </div>
         </>
       ) : (
