@@ -95,7 +95,16 @@ function Header() {
               </span>
             </div>
 
-            <div className="position-relative ml-3 user-circle-component">
+            
+
+            <div>
+              <button
+                className="btn btn-user font-weight-medium dropdown-toggle"
+                type="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <div className="position-relative ml-3 user-circle-component">
               <span
                 className="d-inline-block text-center position-relative"
                 data-bs-toggle="tooltip"
@@ -126,14 +135,6 @@ function Header() {
                 )}
               </span>
             </div>
-
-            <div>
-              <button
-                className="btn btn-user font-weight-medium dropdown-toggle"
-                type="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
                 <span className="username"> Alejandro Oslovski </span>
               </button>
               <div
