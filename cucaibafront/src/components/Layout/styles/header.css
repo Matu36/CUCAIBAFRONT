@@ -13,6 +13,19 @@
   margin-left: 1rem;
 }
 
+@media (max-width: 769px) {
+  .notification-component {
+    display: none;
+  }
+}
+
+@media (min-width: 770px) {
+  .user-circle-component {
+    display: none;
+  }
+}
+
+
 .offcanvas-collapse {
   position: fixed;
   top: 80px;
