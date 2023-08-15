@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   useOrdenesMutation,
   useVerOrdenDePago,
@@ -82,9 +82,11 @@ const INITIAL_STATE = {};
 labels.map((l) => (INITIAL_STATE[l.inputKey] = l.value));
 INITIAL_STATE["liquidacion_id"] = 0;
 
+
+
 export const VerOrdenes = ({ ...props }) => {
   const { data, isFetched, refetch } = useVerOrdenDePago().verOrdenesQuery;
-
+  
   const { mutate } = useOrdenesMutation().asignarDefinitivo;
 
   const [OP, setOP] = useState(INITIAL_STATE);
@@ -196,6 +198,39 @@ export const VerOrdenes = ({ ...props }) => {
     },
   ];
 
+  
+   const [Op, setOp] = useState(data);
+   const [search, setSearch] = useState("");
+
+   useEffect(() => {
+     filterByOp(search);
+   }, [search]);
+ 
+   const handleOnChange = (e) => {
+     e.preventDefault();
+     setSearch(e.target.value);
+   };
+ 
+   const filterByOp = (value) => {
+    if (!value) {
+      setOp(data);
+    } else {
+      const arrayCache = data.filter((mod) => {
+        if (mod.hasOwnProperty('opprovisorio_nro')) {
+          const opNumber = mod.opprovisorio_nro;
+          if (typeof opNumber === 'number') {
+            return opNumber.toString().includes(value);
+          }
+        }
+        return false;
+      });
+      setOp(arrayCache);
+    }
+  };
+  
+  
+   
+
   return (
     <>
       <Modal
@@ -224,6 +259,7 @@ export const VerOrdenes = ({ ...props }) => {
                         disabled={l.disabled}
                         inputType={l.inputType}
                         handleChange={handleInputChange}
+                        required={true}
                       />
                       {i != 5 && <span>-</span>}
                     </>
@@ -237,6 +273,7 @@ export const VerOrdenes = ({ ...props }) => {
               inputKey="nro_op"
               value={OP["nro_op"]}
               handleChange={handleInputChange}
+              required={true}
             />
           </form>
           <div className="modal-footer">
@@ -266,20 +303,20 @@ export const VerOrdenes = ({ ...props }) => {
             </h5>
             <br />
 
-            {/* <div className="input-group mb-3" style={{ maxWidth: "40%" }}>
+            <div className="input-group mb-3" style={{ maxWidth: "40%" }}>
           <input
             type="text"
             className="form-control"
-            placeholder="Buscar por APELLIDO o CUIL"
+            placeholder="Buscar por Número de OP"
             onChange={handleOnChange}
             value={search}
             autoComplete="off"
           />
-        </div> */}
+        </div>
 
             <DataTable
               columns={columns}
-              data={data}
+              data={Op}
               pagination
               striped
               paginationComponentOptions={paginationOptions}
