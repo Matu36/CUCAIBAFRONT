@@ -16,7 +16,7 @@ import { useParams } from "react-router-dom";
 import Logo from "../assets/images/LOGOSAMO.jpg";
 import LOGOPCIA from "../assets/images/LOGOPCIA.png";
 import { NumerosALetras } from "numero-a-letras";
-
+import NumberFormatter from "../utils/NumberFormatter";
 
 const styles = StyleSheet.create({
   page: {
@@ -85,12 +85,9 @@ const styles = StyleSheet.create({
   },
 
   detalletitle: {
-fontSize:"18px",
- color:"gray",
- paddingBottom:"15px",
- 
-
-
+    fontSize: "18px",
+    color: "gray",
+    paddingBottom: "15px",
   },
 
   container: {
@@ -280,7 +277,11 @@ export const OrdenDetail = () => {
               <View style={styles.tableCell}>
                 <Text style={styles.cellText}>
                   1 Fecha Liquidación del gasto{" "}
-                  {formatDate(gastos.gastos.op_fecha_emision ? gastos.gastos.op_fecha_emision : null )}
+                  {formatDate(
+                    gastos.gastos.op_fecha_emision
+                      ? gastos.gastos.op_fecha_emision
+                      : null
+                  )}
                 </Text>
               </View>
             </View>
@@ -288,7 +289,11 @@ export const OrdenDetail = () => {
               <View style={styles.tableCell}>
                 <Text style={styles.cellText}>
                   2 Fecha Imputación{" "}
-                  {formatDate(gastos.gastos.da_fecha_dispo ? gastos.gastos.da_fecha_dispo : null)}
+                  {formatDate(
+                    gastos.gastos.da_fecha_dispo
+                      ? gastos.gastos.da_fecha_dispo
+                      : null
+                  )}
                 </Text>
               </View>
               <View style={styles.tableCell}>{/* Celda vacía */}</View>
@@ -325,8 +330,11 @@ export const OrdenDetail = () => {
       </Page>
       <Page size="A4" style={styles.page}>
         <View style={styles.section}>
-        <View style={{justifyContent: "center", alignItems: "center"}}>
-          <Text style={[styles.detalletitle]}> Detalle de la Orden de Pago </Text>
+          <View style={{ justifyContent: "center", alignItems: "center" }}>
+            <Text style={[styles.detalletitle]}>
+              {" "}
+              Detalle de la Orden de Pago{" "}
+            </Text>
           </View>
           <View style={styles.row}>
             <Text style={[styles.cell, styles.header]}>Nombre</Text>
@@ -364,13 +372,15 @@ export const OrdenDetail = () => {
                     <View key={itemIndex}>
                       {item.descripciones.map((descripcion, descIndex) => (
                         <Text key={descIndex}>
-                          $ {descripcion.valor_unitario.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                          $ {NumberFormatter(descripcion.valor_unitario)}
                         </Text>
                       ))}
                     </View>
                   ))}
                 </View>
-                <Text style={styles.cell}>$ {valor_total.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</Text>
+                <Text style={styles.cell}>
+                  $ {NumberFormatter(valor_total)}
+                </Text>
               </View>
             );
           })}
@@ -403,7 +413,8 @@ export const OrdenDetail = () => {
               </thead>
               <tbody>
                 {personasExceptLast.map((personasData, index) => {
-                  const { nombre, legajo, cuil, valor_total, items } = personasData;
+                  const { nombre, legajo, cuil, valor_total, items } =
+                    personasData;
                   const rowSpan = items.length;
 
                   return items.map((item, itemIndex) => (
@@ -420,12 +431,20 @@ export const OrdenDetail = () => {
                       <td>
                         {item.descripciones.map((descripcion, descIndex) => (
                           <div key={descIndex}>
-                            $ {descripcion.valor_unitario.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                            ${" "}
+                            {descripcion.valor_unitario
+                              .toFixed(2)
+                              .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                           </div>
                         ))}
                       </td>
                       {itemIndex === 0 && (
-                        <td rowSpan={rowSpan}>$ {valor_total.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</td>
+                        <td rowSpan={rowSpan}>
+                          ${" "}
+                          {valor_total
+                            .toFixed(2)
+                            .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                        </td>
                       )}
                     </tr>
                   ));

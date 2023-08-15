@@ -11,6 +11,7 @@ import "../assets/styles/detalle.css";
 import BackButton from "../components/UI/BackButton";
 import Swal from "sweetalert2";
 import { useModulos } from "../hooks/useModulos";
+import NumberFormatter from "../utils/NumberFormatter";
 
 const Modulos = ({ ...props }) => {
   let dispatch = useDispatch();
@@ -132,7 +133,11 @@ const Modulos = ({ ...props }) => {
   Moment.locale("es-mx");
   const columns = [
     { name: "Descripción", selector: (row) => row.descripcion, sortable: true },
-    { name: "Valor", selector: (row) => `$ ${row.valor.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`, sortable: true },
+    {
+      name: "Valor",
+      selector: (row) => `$ ${NumberFormatter(row.valor)}`,
+      sortable: true,
+    },
     {
       name: "Fecha Desde",
       selector: (row) => row.fechaDesde,
@@ -143,7 +148,11 @@ const Modulos = ({ ...props }) => {
       name: "Fecha hasta",
       selector: (row) => row.fechaHasta,
       format: (row) =>
-        row.fechaHasta ? Moment(row.fechaHasta).add(1, "days").format("L") : "",
+        row.fechaHasta ? (
+          Moment(row.fechaHasta).add(1, "days").format("L")
+        ) : (
+          <i>En Vigencia</i>
+        ),
 
       sortable: true,
     },

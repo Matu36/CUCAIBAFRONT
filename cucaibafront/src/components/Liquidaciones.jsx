@@ -7,6 +7,9 @@ import Spinner from "../components/UI/Spinner";
 import BackButton from "../components/UI/BackButton";
 import Modal from "./UI/Modal";
 import { useHonorarios } from "../hooks/useHonorarios";
+import NumberFormatter from "../utils/NumberFormatter";
+
+const LIMITE = 3350000;
 
 const Liquidaciones = ({ ...props }) => {
   const { data, isFetched } = useHonorarios().honorariosPendientesQuery;
@@ -102,10 +105,9 @@ const Liquidaciones = ({ ...props }) => {
     { name: "DESCRIPCIÓN", selector: (row) => row.descripcion, sortable: true },
     {
       name: "VALOR",
-      selector: (row) => `$ ${row.valor.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`,
-      sortable: true
-    }
-    
+      selector: (row) => `$ ${NumberFormatter(row.valor)}`,
+      sortable: true,
+    },
   ];
 
   const handleClick = (event) => {
@@ -117,7 +119,8 @@ const Liquidaciones = ({ ...props }) => {
     const data = { array: selectedData, ...inputValue };
     if (
       inputValue.nroFolio.length > 0 &&
-      inputValue.nroChequeTransferencia.length > 0
+      inputValue.nroChequeTransferencia.length > 0 &&
+      total <= LIMITE
     ) {
       setInputValue({ nroFolio: "", nroChequeTransferencia: "" });
       mutate(data);
@@ -258,13 +261,18 @@ const Liquidaciones = ({ ...props }) => {
             <div>
               <div>
                 <h5>
-                  Total: $<span>{total}</span>
+                  Total: $<span>{NumberFormatter(total)}</span>
                 </h5>
+                {total > LIMITE && (
+                  <span style={{ color: "red" }}>
+                    <p>Te estas excediendo del limite de $3,500,000.00</p>
+                  </span>
+                )}
               </div>
               <button
                 type="submit"
                 className="btn btn-success"
-                disabled={selectedRows.length == 0}
+                disabled={selectedRows.length == 0 || total > LIMITE}
                 data-bs-toggle="modal"
                 data-bs-target="#opModal"
               >
