@@ -1,12 +1,13 @@
 import { postAgentes } from "../Redux/Actions";
 import { useDispatch } from "react-redux";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import "../assets/styles/detalle.css";
 import BackButton from "../components/UI/BackButton";
 import { validateDNI } from "../utils/Validaciones";
 import { usePersona } from "../hooks/usePersona";
 import { FaSearch } from "react-icons/fa";
+import Spinner from "./UI/Spinner";
 
 const INITIALSTATE = {
   apellido: "",
@@ -28,16 +29,22 @@ const postAgente = () => {
 
   const [clicked, setClicked] = useState(false);
 
-  const { data: personaData, refetch } = usePersona(
-    agente.nroDocumento,
-    clicked
-  ).personaQuery;
+  const {
+    data: personaData,
+    refetch,
+    isFetched,
+    isFetching,
+  } = usePersona(agente.nroDocumento, clicked).personaQuery;
 
   const handleFindPersona = () => {
     if (agente.nroDocumento) {
       setClicked(true);
       refetch();
+    }
+  };
 
+  useEffect(() => {
+    if (isFetched) {
       if (typeof personaData == "object") {
         setShowForm(true);
         setAgente({
@@ -73,6 +80,7 @@ const postAgente = () => {
         } else {
           setStatusForm("create");
         }
+        setClicked(false);
       } else {
         setShowForm(false);
         setAgente(INITIALSTATE);
@@ -82,11 +90,16 @@ const postAgente = () => {
           title:
             "El DNI ingresado no se encontró en la base de datos de empleados",
           showConfirmButton: true,
+          confirmButtonText: "Cerrar",
         });
         setClicked(false);
       }
     }
-  };
+  }, [isFetched]);
+
+  // useEffect(() => {
+
+  // }, [personaData]);
 
   const handleOnSubmit = async (e) => {
     e.preventDefault();
@@ -110,6 +123,7 @@ const postAgente = () => {
         icon: "success",
         title: "El Agente ha sido creado",
         showConfirmButton: false,
+        confirmButtonText: "Cerrar",
         timer: 2000,
       });
       setAgente(INITIALSTATE);
@@ -119,6 +133,7 @@ const postAgente = () => {
         icon: "info",
         title: "Por favor, completa todos los campos",
         showConfirmButton: true,
+        confirmButtonText: "Cerrar",
       });
     }
   };
@@ -127,9 +142,15 @@ const postAgente = () => {
     <form onSubmit={handleOnSubmit}>
       <div className="card">
         <div className="mb-3">
-          <label htmlFor="inputFechadePago" className="form-label">
-            DNI
-          </label>
+          <div className="d-flex gap-3 mb-2">
+            <label htmlFor="inputFechadePago" className="form-label">
+              DNI
+            </label>
+            {isFetching && (
+              <div className="spinner-border text-primary" role="status"></div>
+            )}
+          </div>
+
           <div className="mb-3 d-flex flex-md-row formAgente gap-2 align-items-center">
             <input
               type="number"
@@ -160,6 +181,7 @@ const postAgente = () => {
               type="button"
               onClick={handleFindPersona}
               style={{ display: "inline-flex", alignItems: "center" }}
+              disabled={isFetching}
             >
               <FaSearch style={{ marginRight: "5px" }} /> Buscar
             </button>

@@ -1,4 +1,5 @@
 import React from "react";
+import NumberFormatter from "../../utils/NumberFormatter";
 
 function formatText(value) {
   let lowercase = value.toLowerCase();
@@ -53,7 +54,7 @@ const CardDetalleAgente = ({ data }) => {
             <CardItem title="Funciones" value={data.descripciones} />
             <CardItem
               title="Total Valor"
-              value={`$${Number.parseFloat(data.total_valor).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`}
+              value={`$${NumberFormatter(Number.parseFloat(data.total_valor))}`}
             />
           </ul>
         </div>

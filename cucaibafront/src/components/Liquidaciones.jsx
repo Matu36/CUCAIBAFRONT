@@ -7,10 +7,12 @@ import Spinner from "../components/UI/Spinner";
 import BackButton from "../components/UI/BackButton";
 import Modal from "./UI/Modal";
 import { useHonorarios } from "../hooks/useHonorarios";
+import NumberFormatter from "../utils/NumberFormatter";
+
+const LIMITE = 3350000;
 
 const Liquidaciones = ({ ...props }) => {
   const { data, isFetched } = useHonorarios().honorariosPendientesQuery;
-  console.log(data);
 
   const [total, setTotal] = useState(0);
   const [inputValue, setInputValue] = useState({
@@ -118,8 +120,7 @@ const Liquidaciones = ({ ...props }) => {
     { name: "DESCRIPCIÓN", selector: (row) => row.descripcion, sortable: true },
     {
       name: "VALOR",
-      selector: (row) =>
-        `$ ${row.valor.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`,
+      selector: (row) => `$ ${NumberFormatter(row.valor)}`,
       sortable: true,
     },
   ];
@@ -133,7 +134,8 @@ const Liquidaciones = ({ ...props }) => {
     const data = { array: selectedData, ...inputValue };
     if (
       inputValue.nroFolio.length > 0 &&
-      inputValue.nroChequeTransferencia.length > 0
+      inputValue.nroChequeTransferencia.length > 0 &&
+      total <= LIMITE
     ) {
       setInputValue({ nroFolio: "", nroChequeTransferencia: "" });
       mutate(data);
@@ -260,6 +262,60 @@ const Liquidaciones = ({ ...props }) => {
               ) : (
                 <EmptyTable msg="No hay ningún Agente pendiente de pago" />
               )}
+            </div>
+
+            <div className="modal-footer">
+              <button
+                type="button"
+                className="btn btn-success"
+                onClick={handleClick}
+                disabled={
+                  inputValue.nroFolio.length == 0 ||
+                  inputValue.nroChequeTransferencia.length == 0
+                }
+              >
+                Generar OP
+              </button>
+            </div>
+          </div>
+          <div className="card">
+            <h1>Órdenes de Pago</h1>
+            <h5 className="subtitulo" style={{ color: "#5DADE2" }}>
+              Listado de agentes Pendientes de Orden de Pago
+            </h5>
+            <br />
+
+            <div
+              className="input-group mb-3"
+              style={{ width: window.innerWidth < 1000 ? "100%" : "45%" }}
+            >
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Buscar por APELLIDO o CUIL"
+                onChange={handleOnChange}
+                value={search}
+                autoComplete="off"
+                disabled={liquidaciones == 400}
+              />
+            </div>
+            <div>
+              {showSpinner && <Spinner />}
+              {!showSpinner && typeof data == "object" ? (
+                <DataTable
+                  columns={columns}
+                  data={liquidaciones}
+                  pagination
+                  striped
+                  paginationComponentOptions={paginationOptions}
+                  noDataComponent={
+                    <EmptyTable msg="No se encontro el Agente con los datos proporcionados" />
+                  }
+                  {...props}
+                />
+              ) : (
+                <EmptyTable msg="No hay ningun Agente pendiente de pago" />
+              )}
 
               <br />
               <div className="d-flex justify-content-between">
@@ -269,13 +325,18 @@ const Liquidaciones = ({ ...props }) => {
                 <div>
                   <div>
                     <h5>
-                      Total: $<span>{total}</span>
+                      Total: $<span>{NumberFormatter(total)}</span>
                     </h5>
+                    {total > LIMITE && (
+                      <span style={{ color: "red" }}>
+                        <p>Te estas excediendo del limite de $3,500,000.00</p>
+                      </span>
+                    )}
                   </div>
                   <button
                     type="submit"
                     className="btn btn-success"
-                    disabled={selectedRows.length == 0}
+                    disabled={selectedRows.length == 0 || total > LIMITE}
                     data-bs-toggle="modal"
                     data-bs-target="#opModal"
                   >

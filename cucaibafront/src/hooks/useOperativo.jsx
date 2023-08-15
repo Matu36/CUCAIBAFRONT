@@ -39,14 +39,29 @@ export const useOperativo = (operativoId = 0) => {
         timer: 2000,
       });
     },
-    onError: () => {
-      Swal.fire({
-        position: "center",
-        icon: "warning",
-        title: "Ya existe un operativo con ese Proceso de Donación",
-        showConfirmButton: false,
-        timer: 2000,
-      });
+    onError: (data) => {
+      switch (data.response.status) {
+        case 302:
+          Swal.fire({
+            position: "center",
+            icon: "warning",
+            text: "Ya existe un operativo con ese Proceso de Donación",
+            title: "Hubo un error",
+            showConfirmButton: false,
+            timer: 2000,
+          });
+          break;
+
+        default:
+          Swal.fire({
+            position: "center",
+            icon: "warning",
+            title: "Hubo un error",
+            showConfirmButton: false,
+            timer: 2000,
+          });
+          break;
+      }
     },
   });
 
