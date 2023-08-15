@@ -58,7 +58,7 @@ const labels = [
     label: "Reparticion Acto",
     disabled: false,
     inputKey: "reparticion_acto",
-    inputType: "string",
+    inputType: "text",
     show: true,
   },
   {

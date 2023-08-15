@@ -40,17 +40,20 @@ const asignarDefinitivoOP = async (data) => {
 };
 
 export const useOrdenesMutation = () => {
+  const { refetch } = useVerOrdenDePago().verOrdenesQuery;
   const asignarDefinitivo = useMutation({
     mutationKey: ["asignarDefinitivo"],
     mutationFn: (data) => asignarDefinitivoOP(data),
     onSuccess: (data) => {
+      refetch();
       Swal.fire({
         title: "Se asigno la numeración definitiva a la O.P",
         timer: 5000,
         icon: "success",
         confirmButtonText: "Cerrar",
-        confirmButtonColor: "#4CAF50"
+        confirmButtonColor: "#4CAF50",
       });
+
       let modalEl = document.getElementById("opDefinitiva");
       let modalInstance = bootstrap.Modal.getInstance(modalEl);
       modalInstance.hide();
@@ -62,7 +65,7 @@ export const useOrdenesMutation = () => {
         html: error.response.data,
         icon: "error",
         confirmButtonText: "Cerrar",
-        confirmButtonColor: "#4CAF50"
+        confirmButtonColor: "#4CAF50",
       });
       let modalEl = document.getElementById("opDefinitiva");
       let modalInstance = bootstrap.Modal.getInstance(modalEl);
