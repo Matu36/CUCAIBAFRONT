@@ -211,7 +211,7 @@ export const OrdenDetail = () => {
               </Text>{" "}
               <Text style={[styles.text, { marginBottom: 10 }]}>
                 CANTIDAD DE PESOS: ${" "}
-                {gastos.gastos.op_monto ? gastos.gastos.op_monto : null}
+                {(gastos.gastos.op_monto) ? NumberFormatter(gastos.gastos.op_monto) : null}
               </Text>{" "}
               <Text style={[styles.text, { marginBottom: 10 }]}>
                 POR LA SUMA DE PESOS:{" "}
@@ -258,7 +258,7 @@ export const OrdenDetail = () => {
               </Text>{" "}
               <Text style={[styles.text, { marginLeft: 60, marginBottom: 10 }]}>
                 TOTAL IMPUTADO: ${" "}
-                {gastos.gastos.op_monto ? gastos.gastos.op_monto : null}
+                {(gastos.gastos.op_monto) ? NumberFormatter(gastos.gastos.op_monto) : null}
               </Text>{" "}
             </View>
           </View>
