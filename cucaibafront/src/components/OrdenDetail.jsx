@@ -17,6 +17,7 @@ import Logo from "../assets/images/LOGOSAMO.jpg";
 import LOGOPCIA from "../assets/images/LOGOPCIA.png";
 import { NumerosALetras } from "numero-a-letras";
 import NumberFormatter from "../utils/NumberFormatter";
+import BackButton from "../components/UI/BackButton";
 
 const styles = StyleSheet.create({
   page: {
@@ -463,6 +464,9 @@ export const OrdenDetail = () => {
                   loading ? "Cargando documento..." : "Descargar"
                 }
               </PDFDownloadLink>
+            </div>
+            <div>
+              <BackButton />
             </div>
           </div>
         </>
