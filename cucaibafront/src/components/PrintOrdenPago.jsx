@@ -22,7 +22,7 @@ export const PrintOrdenPago = ({ liquidacionId }) => {
 
 
   return (
-    <PDFDownloadLink style={{textDecoration:"none", color:"black"}}
+    <PDFDownloadLink style={{textDecoration:"none", color:"black", marginLeft:"15px"}}
       document={
         <Document>
           <Page size="A4" style={styles.page}>
