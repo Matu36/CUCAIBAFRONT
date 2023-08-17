@@ -6,6 +6,7 @@ import { BsFillPersonFill } from "react-icons/bs";
 import { SiWebmoney } from "react-icons/si";
 import { TbNurse } from "react-icons/tb";
 import { BiMoneyWithdraw } from "react-icons/bi";
+import { HiOutlineDocumentText } from "react-icons/hi";
 
 function SideBar({ isOpen, setIsOpen }) {
   return (
@@ -147,6 +148,12 @@ function SideBar({ isOpen, setIsOpen }) {
               </Link>
             </li>
           </ul>
+        </li>
+        <li>
+          <Link to="/archivos" onClick={() => setIsOpen(false)}>
+            <HiOutlineDocumentText className="sidebarIcons" /> Archivos de
+            Transferencia
+          </Link>
         </li>
       </ul>
     </div>

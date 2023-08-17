@@ -145,6 +145,12 @@ export const VerOrdenes = ({ ...props }) => {
       sortable: true,
     },
     {
+      name: "Nro O.P Definitivo",
+      selector: (row) => row.op_nro,
+      sortable: true,
+      format: (row) => row.op_nro ?? <i>Sin Asignar</i>,
+    },
+    {
       cell: (row) => (
         <div className="dropdown dropend">
           <button

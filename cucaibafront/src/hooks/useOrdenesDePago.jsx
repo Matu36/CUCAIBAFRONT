@@ -19,15 +19,17 @@ export const useOrdenPorLiquidacionId = (liquidacion_id) => {
   };
 };
 
-const verOrdenDePago = async () => {
-  const { data } = await OrdenesDePagoAPI.get("/ver/all");
+const verOrdenDePago = async (definitivo) => {
+  const { data } = await OrdenesDePagoAPI.get(
+    `/ver/all?definitivo=${definitivo}`
+  );
   return data;
 };
 
-export const useVerOrdenDePago = () => {
+export const useVerOrdenDePago = (definitivo = false) => {
   const verOrdenesQuery = useQuery({
-    queryKey: ["ordenes-all"],
-    queryFn: () => verOrdenDePago(),
+    queryKey: ["ordenes-all", { definitivo }],
+    queryFn: () => verOrdenDePago(definitivo),
   });
 
   return {
