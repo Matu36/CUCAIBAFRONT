@@ -16,6 +16,7 @@ import Detail from "../Pages/Detail";
 import OrdenPendiente from "../components/OrdenPendiente";
 import OrdenesDetail from "../Pages/OrdenesDetail";
 import { VerOrdenes } from "../Pages/Ver-Ordenes";
+import Archivos from "../Pages/Archivos";
 
 const router = createBrowserRouter([
   {
@@ -122,7 +123,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/archivos",
-        element: <h1>Generar Archivos</h1>,
+        element: <Archivos />,
       },
     ],
   },
