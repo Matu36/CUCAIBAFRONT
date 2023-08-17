@@ -12,6 +12,9 @@ import Spinner from "../components/UI/Spinner";
 import BackButton from "../components/UI/BackButton";
 import Modal from "../components/UI/Modal";
 import InputField from "../components/UI/InputField";
+import PrintOrdenPago from "../components/PrintOrdenPago";
+import { useOrdenPorLiquidacionId } from "../hooks/useOrdenesDePago";
+import { useParams } from "react-router-dom";
 
 const NUMBER_REGEX = /^[0-9]+$/;
 const STRING_REGEX = /^[a-zA-Z]+$/;
@@ -83,7 +86,10 @@ labels.map((l) => (INITIAL_STATE[l.inputKey] = l.value));
 INITIAL_STATE["liquidacion_id"] = 0;
 
 export const VerOrdenes = ({ ...props }) => {
+
   const { data, isFetched, refetch } = useVerOrdenDePago().verOrdenesQuery;
+
+  const [openPDF, setOpenPDF] = useState(false);
 
   const { mutate } = useOrdenesMutation().asignarDefinitivo;
 
@@ -196,12 +202,26 @@ export const VerOrdenes = ({ ...props }) => {
                 </button>
               </li>
             )}
+      <li>
+        
+  <button
+    className="dropdown-item w-100 d-flex justify-content-end align-items-center"
+    onClick={() => setOpenPDF(true) }
+  >
+  </button>
+</li>
+{openPDF && (
+  <PrintOrdenPago personasExceptLast={row.personasExceptLast}
+   liquidacionId={row.liquidacion_id} /> 
+)}
+
           </ul>
         </div>
       ),
     },
   ];
 
+  
   const [Op, setOp] = useState(data);
   const [search, setSearch] = useState("");
 

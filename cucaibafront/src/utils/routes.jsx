@@ -15,6 +15,7 @@ import LiquidacionesPendientes from "../Pages/Liquidaciones-Pendientes";
 import Detail from "../Pages/Detail";
 import OrdenPendiente from "../components/OrdenPendiente";
 import OrdenesDetail from "../Pages/OrdenesDetail";
+import  PrintOrdenPago  from "../components/PrintOrdenPago";
 import { VerOrdenes } from "../Pages/Ver-Ordenes";
 import Archivos from "../Pages/Archivos";
 
