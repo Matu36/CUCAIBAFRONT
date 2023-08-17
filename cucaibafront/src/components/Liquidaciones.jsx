@@ -140,6 +140,7 @@ const Liquidaciones = ({ ...props }) => {
       setInputValue({ nroFolio: "", nroChequeTransferencia: "" });
       mutate(data);
       setSelectedRows([]);
+      setTotal(0);
     }
   };
 
@@ -264,32 +265,32 @@ const Liquidaciones = ({ ...props }) => {
               )}
             </div>
             <div className="d-flex justify-content-between">
-                <div>
-                  <BackButton />
-                </div>
-                <div>
-                  <div>
-                    <h5>
-                      Total: $<span>{NumberFormatter(total)}</span>
-                    </h5>
-                    {total > LIMITE && (
-                      <span style={{ color: "red" }}>
-                        <p>Te estas excediendo del limite de $3,500,000.00</p>
-                      </span>
-                    )}
-                  </div>
-                  <button
-                    type="submit"
-                    className="btn btn-success"
-                    disabled={selectedRows.length == 0 || total > LIMITE}
-                    data-bs-toggle="modal"
-                    data-bs-target="#opModal"
-                  >
-                    {" "}
-                    Generar Orden de Pago{" "}
-                  </button>
-                </div>
+              <div>
+                <BackButton />
               </div>
+              <div>
+                <div>
+                  <h5>
+                    Total: $<span>{NumberFormatter(total)}</span>
+                  </h5>
+                  {total > LIMITE && (
+                    <span style={{ color: "red" }}>
+                      <p>Te estas excediendo del limite de $3,500,000.00</p>
+                    </span>
+                  )}
+                </div>
+                <button
+                  type="submit"
+                  className="btn btn-success"
+                  disabled={selectedRows.length == 0 || total > LIMITE}
+                  data-bs-toggle="modal"
+                  data-bs-target="#opModal"
+                >
+                  {" "}
+                  Generar Orden de Pago{" "}
+                </button>
+              </div>
+            </div>
           </div>
         </>
       ) : (

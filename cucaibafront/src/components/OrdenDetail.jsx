@@ -17,6 +17,7 @@ import Logo from "../assets/images/LOGOSAMO.jpg";
 import LOGOPCIA from "../assets/images/LOGOPCIA.png";
 import { NumerosALetras } from "numero-a-letras";
 import NumberFormatter from "../utils/NumberFormatter";
+import BackButton from "../components/UI/BackButton";
 
 const styles = StyleSheet.create({
   page: {
@@ -210,7 +211,7 @@ export const OrdenDetail = () => {
               </Text>{" "}
               <Text style={[styles.text, { marginBottom: 10 }]}>
                 CANTIDAD DE PESOS: ${" "}
-                {gastos.gastos.op_monto ? gastos.gastos.op_monto : null}
+                {(gastos.gastos.op_monto) ? NumberFormatter(gastos.gastos.op_monto) : null}
               </Text>{" "}
               <Text style={[styles.text, { marginBottom: 10 }]}>
                 POR LA SUMA DE PESOS:{" "}
@@ -257,7 +258,7 @@ export const OrdenDetail = () => {
               </Text>{" "}
               <Text style={[styles.text, { marginLeft: 60, marginBottom: 10 }]}>
                 TOTAL IMPUTADO: ${" "}
-                {gastos.gastos.op_monto ? gastos.gastos.op_monto : null}
+                {(gastos.gastos.op_monto) ? NumberFormatter(gastos.gastos.op_monto) : null}
               </Text>{" "}
             </View>
           </View>
@@ -463,6 +464,9 @@ export const OrdenDetail = () => {
                   loading ? "Cargando documento..." : "Descargar"
                 }
               </PDFDownloadLink>
+            </div>
+            <div>
+              <BackButton />
             </div>
           </div>
         </>

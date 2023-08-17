@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   useOrdenesMutation,
   useVerOrdenDePago,
@@ -58,7 +58,7 @@ const labels = [
     label: "Reparticion Acto",
     disabled: false,
     inputKey: "reparticion_acto",
-    inputType: "string",
+    inputType: "text",
     show: true,
   },
   {
@@ -196,6 +196,39 @@ export const VerOrdenes = ({ ...props }) => {
     },
   ];
 
+  const [Op, setOp] = useState(data);
+  const [search, setSearch] = useState("");
+
+  useEffect(() => {
+    setOp(data);
+  }, [data]);
+
+  useEffect(() => {
+    filterByOp(search);
+  }, [search]);
+
+  const handleOnChange = (e) => {
+    e.preventDefault();
+    setSearch(e.target.value);
+  };
+
+  const filterByOp = (value) => {
+    if (!value) {
+      setOp(data);
+    } else {
+      const arrayCache = data.filter((mod) => {
+        if (mod.hasOwnProperty("opprovisorio_nro")) {
+          const opNumber = mod.opprovisorio_nro;
+          if (typeof opNumber === "number") {
+            return opNumber.toString().includes(value);
+          }
+        }
+        return false;
+      });
+      setOp(arrayCache);
+    }
+  };
+
   return (
     <>
       <Modal
@@ -214,7 +247,7 @@ export const VerOrdenes = ({ ...props }) => {
               {labels.slice(0, 6).map(
                 (l, i) =>
                   l.show && (
-                    <>
+                    <React.Fragment key={i}>
                       <InputField
                         inputKey={l.inputKey}
                         value={OP[l.inputKey]}
@@ -224,9 +257,10 @@ export const VerOrdenes = ({ ...props }) => {
                         disabled={l.disabled}
                         inputType={l.inputType}
                         handleChange={handleInputChange}
+                        required={true}
                       />
                       {i != 5 && <span>-</span>}
-                    </>
+                    </React.Fragment>
                   )
               )}
             </div>
@@ -237,6 +271,7 @@ export const VerOrdenes = ({ ...props }) => {
               inputKey="nro_op"
               value={OP["nro_op"]}
               handleChange={handleInputChange}
+              required={true}
             />
           </form>
           <div className="modal-footer">
@@ -266,25 +301,24 @@ export const VerOrdenes = ({ ...props }) => {
             </h5>
             <br />
 
-            {/* <div className="input-group mb-3" style={{ maxWidth: "40%" }}>
-          <input
-            type="text"
-            className="form-control"
-            placeholder="Buscar por APELLIDO o CUIL"
-            onChange={handleOnChange}
-            value={search}
-            autoComplete="off"
-          />
-        </div> */}
+            <div className="input-group mb-3" style={{ maxWidth: "40%" }}>
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Buscar por Número de OP"
+                onChange={handleOnChange}
+                value={search}
+                autoComplete="off"
+              />
+            </div>
 
             <DataTable
               columns={columns}
-              data={data}
+              data={Op}
               pagination
               striped
               paginationComponentOptions={paginationOptions}
               noDataComponent={<EmptyTable msg="No hay órdenes de pago" />}
-              {...props}
             />
             <div>
               <BackButton />
