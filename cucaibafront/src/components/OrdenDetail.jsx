@@ -19,7 +19,7 @@ import { NumerosALetras } from "numero-a-letras";
 import NumberFormatter from "../utils/NumberFormatter";
 import BackButton from "../components/UI/BackButton";
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
   page: {
     flexDirection: "row",
 
@@ -33,6 +33,19 @@ const styles = StyleSheet.create({
     borderColor: "#000",
     borderRadius: 5,
   },
+
+  cbu: {
+    
+      padding: 2,
+      flex: 1,
+      borderWidth: 0.5,
+      borderColor: "gray",
+      fontSize: "8px",
+      flexShrink: 1,
+      flexWrap: "wrap",
+
+  },
+
   header: {
     fontWeight: "bold",
     fontSize: "12px",
@@ -56,6 +69,17 @@ const styles = StyleSheet.create({
     flexShrink: 1,
     flexWrap: "wrap",
   },
+
+  totalRow: {
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    marginTop: 10,
+  },
+  totalText: {
+    fontWeight: "bold",
+    fontSize: 12,
+  },
+
   label: {
     fontWeight: "bold",
     fontSize: "10px",
@@ -152,6 +176,8 @@ const styles = StyleSheet.create({
     marginRight: 10,
     textAlign: "center",
   },
+  
+  
 });
 
 const numberInWords = (number) => NumerosALetras(number);
@@ -211,7 +237,9 @@ export const OrdenDetail = () => {
               </Text>{" "}
               <Text style={[styles.text, { marginBottom: 10 }]}>
                 CANTIDAD DE PESOS: ${" "}
-                {(gastos.gastos.op_monto) ? NumberFormatter(gastos.gastos.op_monto) : null}
+                {gastos.gastos.op_monto
+                  ? NumberFormatter(gastos.gastos.op_monto)
+                  : null}
               </Text>{" "}
               <Text style={[styles.text, { marginBottom: 10 }]}>
                 POR LA SUMA DE PESOS:{" "}
@@ -258,7 +286,9 @@ export const OrdenDetail = () => {
               </Text>{" "}
               <Text style={[styles.text, { marginLeft: 60, marginBottom: 10 }]}>
                 TOTAL IMPUTADO: ${" "}
-                {(gastos.gastos.op_monto) ? NumberFormatter(gastos.gastos.op_monto) : null}
+                {gastos.gastos.op_monto
+                  ? NumberFormatter(gastos.gastos.op_monto)
+                  : null}
               </Text>{" "}
             </View>
           </View>
