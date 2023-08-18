@@ -1,4 +1,10 @@
-import { createBrowserRouter } from "react-router-dom";
+import {
+  Navigate,
+  Outlet,
+  createBrowserRouter,
+  redirect,
+  useLocation,
+} from "react-router-dom";
 
 import { Home } from "../Pages/Home";
 import Layout from "../components/Layout/Layout";
@@ -15,9 +21,29 @@ import LiquidacionesPendientes from "../Pages/Liquidaciones-Pendientes";
 import Detail from "../Pages/Detail";
 import OrdenPendiente from "../components/OrdenPendiente";
 import OrdenesDetail from "../Pages/OrdenesDetail";
-import  PrintOrdenPago  from "../components/PrintOrdenPago";
+import PrintOrdenPago from "../components/PrintOrdenPago";
 import { VerOrdenes } from "../Pages/Ver-Ordenes";
 import Archivos from "../Pages/Archivos";
+
+const RedirectComponent = () => {
+  const location = useLocation();
+
+  switch (location.pathname) {
+    case "/agentes":
+      return <Navigate to="/agentes/ver-agentes" />;
+
+    case "/operativos":
+      return <Navigate to="/operativos/ver-operativos" />;
+
+    case "/honorarios":
+      return <Navigate to="/honorarios/variables" />;
+
+    case "/ordenes":
+      return <Navigate to="/ordenes/ver-ordenes" />;
+  }
+
+  return <Outlet />;
+};
 
 const router = createBrowserRouter([
   {
@@ -30,6 +56,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/agentes",
+        element: <RedirectComponent />,
         children: [
           {
             path: "/agentes/ver-agentes",
@@ -46,7 +73,8 @@ const router = createBrowserRouter([
         ],
       },
       {
-        path: "operativos",
+        path: "/operativos",
+        element: <RedirectComponent />,
         children: [
           {
             path: "/operativos/ver-operativos",
@@ -56,8 +84,12 @@ const router = createBrowserRouter([
         ],
       },
       {
-        path: "honorarios",
-        element: <LayoutHonorarios />,
+        path: "/honorarios",
+        element: (
+          <div className="container p-4">
+            <RedirectComponent />
+          </div>
+        ),
         children: [
           {
             path: "/honorarios/variables",
@@ -65,28 +97,6 @@ const router = createBrowserRouter([
               {
                 index: true,
                 element: <TablaHonorarios />,
-              },
-              {
-                path: "/honorarios/variables/crear-honorario",
-                element: <CrearHonorarios />,
-                children: [
-                  {
-                    index: true,
-                    element: <AsignarAgente />,
-                  },
-                  {
-                    path: "/honorarios/variables/crear-honorario/:id/agregar",
-                    element: (
-                      <>
-                        <div>
-                          <h1>Agregar honorario al Agente</h1>
-                          <hr />
-                        </div>
-                        <TablaHonorarios />
-                      </>
-                    ),
-                  },
-                ],
               },
             ],
           },
@@ -97,12 +107,12 @@ const router = createBrowserRouter([
         element: <ModulosVista />,
       },
       {
-        path: "/liquidaciones",
-        element: <LiquidacionesPendientes />,
-      },
-      {
-        path: "ordenes",
-        element: <LayoutHonorarios />,
+        path: "/ordenes",
+        element: (
+          <div className="container p-4">
+            <RedirectComponent />
+          </div>
+        ),
         children: [
           {
             path: "/ordenes/pendientes",

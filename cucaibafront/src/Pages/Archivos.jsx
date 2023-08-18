@@ -111,8 +111,8 @@ const Archivos = () => {
       setOp(data);
     } else {
       const arrayCache = data.filter((mod) => {
-        if (mod.hasOwnProperty("opprovisorio_nro")) {
-          const opNumber = mod.opprovisorio_nro;
+        if (mod.hasOwnProperty("op_nro")) {
+          const opNumber = mod.op_nro;
           if (typeof opNumber === "number") {
             return opNumber.toString().includes(value);
           }
@@ -128,9 +128,9 @@ const Archivos = () => {
       <div className="card">
         {isFetched && !isFetching ? (
           <>
-            <h1>Órdenes de Pago</h1>
+            <h1>Archivos de Transferencia</h1>
             <h5 className="subtitulo" style={{ color: "#5DADE2" }}>
-              Listado de todas las órdenes de pago
+              Listado de todas las órdenes de pago con numeración definitiva
             </h5>
             <br />
 
@@ -138,7 +138,7 @@ const Archivos = () => {
               <input
                 type="text"
                 className="form-control"
-                placeholder="Buscar por Número de OP"
+                placeholder="Buscar por Número de OP Definitivo"
                 onChange={handleOnChange}
                 value={search}
                 autoComplete="off"

@@ -57,25 +57,50 @@ const postAgente = () => {
           legajo: personaData.legajo,
         });
 
-        if (personaData[0] == "update") {
-          setStatusForm("update");
-          setAgente({
-            ...agente,
-            apellido: personaData[1].apellido,
-            nombre: personaData[1].nombre,
-            cuil: personaData[1].cuil,
-            cbu: personaData[1].cbu,
-            tipoPago: personaData[1].tipoPago == 7 ? "cb" : "ch",
-            personaid: personaData[1].id,
-            legajo: personaData[1].legajo,
-          });
-          Swal.fire({
-            position: "center",
-            icon: "info",
-            title: "Se actualizaron los datos del agente",
-            showConfirmButton: false,
-            timer: 2000,
-          });
+        if (typeof personaData[0] == "string") {
+          switch (personaData[0]) {
+            case "update":
+              setStatusForm("update");
+              setAgente({
+                ...agente,
+                apellido: personaData[1].apellido,
+                nombre: personaData[1].nombre,
+                cuil: personaData[1].cuil,
+                cbu: personaData[1].cbu,
+                tipoPago: personaData[1].tipoPago == 7 ? "cb" : "ch",
+                personaid: personaData[1].id,
+                legajo: personaData[1].legajo,
+              });
+              Swal.fire({
+                position: "center",
+                icon: "info",
+                title: "Se actualizaron los datos del agente",
+                showConfirmButton: false,
+                timer: 2000,
+              });
+              break;
+
+            case "found":
+              setStatusForm("found");
+              setAgente({
+                ...agente,
+                apellido: personaData[1].apellido,
+                nombre: personaData[1].nombre,
+                cuil: personaData[1].cuil,
+                cbu: personaData[1].cbu,
+                tipoPago: personaData[1].tipoPago == 7 ? "cb" : "ch",
+                personaid: personaData[1].id,
+                legajo: personaData[1].legajo,
+              });
+              Swal.fire({
+                position: "center",
+                icon: "warning",
+                title: "Ya Existe la persona indicada",
+                showConfirmButton: false,
+                timer: 2000,
+              });
+              break;
+          }
         } else {
           setStatusForm("create");
         }
@@ -95,7 +120,7 @@ const postAgente = () => {
         setClicked(false);
       }
     }
-  }, [isFetched]);
+  }, [isFetched, clicked]);
 
   const handleOnSubmit = async (e) => {
     e.preventDefault();
@@ -124,6 +149,7 @@ const postAgente = () => {
         timer: 2000,
       });
       setAgente(INITIALSTATE);
+      setClicked(false);
     } else {
       Swal.fire({
         position: "center",
@@ -322,7 +348,7 @@ const postAgente = () => {
               </div>
 
               <div>
-                {statusForm != "update" && (
+                {statusForm == "create" && (
                   <button type="submit" className="btn btn-success btn btn-md">
                     Cargar Agente
                   </button>
