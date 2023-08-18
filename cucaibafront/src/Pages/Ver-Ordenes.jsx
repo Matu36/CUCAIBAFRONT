@@ -86,7 +86,6 @@ labels.map((l) => (INITIAL_STATE[l.inputKey] = l.value));
 INITIAL_STATE["liquidacion_id"] = 0;
 
 export const VerOrdenes = ({ ...props }) => {
-
   const { data, isFetched, refetch } = useVerOrdenDePago().verOrdenesQuery;
 
   const [openPDF, setOpenPDF] = useState(false);
@@ -202,26 +201,31 @@ export const VerOrdenes = ({ ...props }) => {
                 </button>
               </li>
             )}
-      <li>
-        
-  <button
-    className="dropdown-item w-100 d-flex justify-content-end align-items-center"
-    onClick={() => setOpenPDF(true) }
-  >
-  </button>
-</li>
-{openPDF && (
-  <PrintOrdenPago personasExceptLast={row.personasExceptLast}
-   liquidacionId={row.liquidacion_id} /> 
-)}
-
+            <li>
+              {row.op_nro === null && (
+                <button
+                  className="dropdown-item w-100 d-flex justify-content-end align-items-center"
+                  onMouseOver={(e) =>
+                    (e.currentTarget.style.backgroundColor = "#d3d3d3")
+                  }
+                  onMouseOut={(e) =>
+                    (e.currentTarget.style.backgroundColor = "#fff")
+                  }
+                >
+                  <PrintOrdenPago
+                    personasExceptLast={row.personasExceptLast}
+                    liquidacionId={row.liquidacion_id}
+                    opProvisoria={row.opprovisorio_nro}
+                  />
+                </button>
+              )}
+            </li>
           </ul>
         </div>
       ),
     },
   ];
 
-  
   const [Op, setOp] = useState(data);
   const [search, setSearch] = useState("");
 
