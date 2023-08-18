@@ -1,5 +1,5 @@
 import React from "react";
-import { useParams } from "react-router-dom";
+import { Navigate, redirect, useParams } from "react-router-dom";
 import "../assets/styles/detalle.css";
 import BackButton from "../components/UI/BackButton";
 import { useAgentes } from "../hooks/useAgentes";
@@ -11,19 +11,18 @@ import CardDetalleAgente from "./UI/CardDetalleAgente";
 const DetalleAgente = () => {
   const { id } = useParams();
 
-  const { data: agenteData, isLoading } = useAgentes(0, id).agenteQuery;
+  const {
+    data: agenteData,
+    isLoading,
+    isError,
+  } = useAgentes(0, id).agenteQuery;
 
   if (isLoading) {
     return <Spinner />;
   }
 
-  if (!agenteData) {
-    Swal.fire({
-      position: "center",
-      icon: "info",
-      title: "El agente seleccionado no tiene datos para mostrar",
-      showConfirmButton: true,
-    });
+  if (!agenteData[0]) {
+    return <Navigate to="../../*" replace={true} />;
   }
 
   return (

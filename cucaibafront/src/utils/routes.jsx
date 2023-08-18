@@ -2,7 +2,6 @@ import {
   Navigate,
   Outlet,
   createBrowserRouter,
-  redirect,
   useLocation,
 } from "react-router-dom";
 
@@ -11,19 +10,15 @@ import Layout from "../components/Layout/Layout";
 import Operativos from "../Pages/Operativos";
 import CrearAgente from "../Pages/Crear-Agente";
 import { CrearOperativo } from "../Pages/Crear-Operativo";
-import { CrearHonorarios } from "../Pages/Crear-Honorarios";
 import Agentes from "../Pages/Agentes";
-import LayoutHonorarios from "../components/Layout/LayoutHonorarios";
 import TablaHonorarios from "../Pages/TablaHonorarios";
-import AsignarAgente from "../Pages/AsignarAgente";
 import ModulosVista from "../Pages/ModulosVista";
 import LiquidacionesPendientes from "../Pages/Liquidaciones-Pendientes";
 import Detail from "../Pages/Detail";
-import OrdenPendiente from "../components/OrdenPendiente";
 import OrdenesDetail from "../Pages/OrdenesDetail";
-import PrintOrdenPago from "../components/PrintOrdenPago";
 import { VerOrdenes } from "../Pages/Ver-Ordenes";
 import Archivos from "../Pages/Archivos";
+import ErrorPage from "../Pages/ErrorPage";
 
 const RedirectComponent = () => {
   const location = useLocation();
@@ -135,6 +130,10 @@ const router = createBrowserRouter([
       {
         path: "/archivos",
         element: <Archivos />,
+      },
+      {
+        path: "*",
+        element: <ErrorPage />,
       },
     ],
   },
