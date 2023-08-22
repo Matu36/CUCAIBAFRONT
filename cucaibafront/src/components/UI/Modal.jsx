@@ -1,5 +1,7 @@
 import React from "react";
 
+//Modal que se utiliza en los componentes: Ver-Ordenes, RowExpandedComponent, Liquidaciones
+
 const Modal = ({ title, referenceID, children, customFooter }) => {
   return (
     <div

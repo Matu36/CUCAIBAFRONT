@@ -1,5 +1,7 @@
 import React from "react";
 
+// Usado en el componente Ver-Ordenes
+
 const InputField = ({
   label,
   inputType,

@@ -22,11 +22,15 @@ export const GET_HONORARIO_OUT_HASH = "GET_HONORARIO_OUT_HASH";
 export const POST_HONORARIO = "POST_HONORARIO";
 export const DELETE_HONORARIO_SUCCESS = "DELETE_HONORARIO_SUCCESS";
 
+// La mayoría no se usó porque migramos a React-Query
+
 export const getAgentes = () => async (dispatch) => {
   let response = await AgentesAPI.get("");
 
   return dispatch({ type: GET_AGENTES, payload: response.data });
 };
+
+// TRAE LA DATA DE PERSONAS DEL SQLSERVER
 
 export const getPersonas = () => async (dispatch) => {
   let response = await PersonasAPI.get("");
@@ -34,26 +38,36 @@ export const getPersonas = () => async (dispatch) => {
   return dispatch({ type: GET_PERSONAS, payload: response.data });
 };
 
+// TRAE LA DATA DE LOS OPERATIVOS
+
 export const getOperativos = () => async (dispatch) => {
   let response = await OperativosAPI.get("");
 
   return dispatch({ type: GET_OPERATIVOS, payload: response.data });
 };
 
+//TRAE LA DATA DE LOS MODULOS
+
 export const getModulos = () => async (dispatch) => {
   let response = await ModulosAPI.get();
   return dispatch({ type: GET_MODULOS, payload: response.data });
 };
+
+//TRAE LA DATA DE LAS CATEGORIAS (NI SIQUIERA SE USÓ EN EL SISTEMA)
 
 export const getCategorias = () => async (dispatch) => {
   let response = await CategoriasAPI.get();
   return dispatch({ type: GET_CATEGORIAS, payload: response.data });
 };
 
+//TRAE LA DATA DEL TIPOMODULO (NI SIQUIERA SE USO EN EL SISTEMA)
+
 export const getTipoModulo = () => async (dispatch) => {
   let response = await TipoAPI.get();
   return dispatch({ type: GET_TIPOMODULO, payload: response.data });
 };
+
+// ENDPOINT PARA CREAR EL OPERATIVO
 
 export const postOperativo =
   ({ referencia, fecha, descripcion, fechapago }) =>
@@ -64,6 +78,8 @@ export const postOperativo =
       descripcion,
       fechapago,
     }).then((payload) => dispatch({ type: POST_OPERATIVO, payload }));
+
+// ENDPOINT PARA CREAR EL AGENTE
 
 export const postAgentes =
   ({ apellido, nombre, cbu, cuil, tipoPago, personaid, dni, legajo }) =>
@@ -76,8 +92,10 @@ export const postAgentes =
       tipoPago,
       personaid,
       dni,
-      legajo
+      legajo,
     }).then((payload) => dispatch({ type: POST_AGENTES, payload }));
+
+// ENDPOINT PARA CREAR EL MODULO
 
 export const postModulo =
   ({ valor, descripcion, fechaDesde }) =>
@@ -88,6 +106,7 @@ export const postModulo =
       fechaDesde,
     }).then((payload) => dispatch({ type: POST_MODULO, payload }));
 
+// ENDPOINT PARA MODIFICAR EL OPERATIVO
 export const updateModulo = (modulo) => {
   return (dispatch) => {
     ModulosAPI.put(`/${modulo.id}/update-value`, { ...modulo })
@@ -102,6 +121,8 @@ export const updateModulo = (modulo) => {
       });
   };
 };
+
+// TRAE LA DATA DEL HONORARIO
 
 export const getHonorario = () => async (dispatch) => {
   let response = await HonorariosAPI.get("/props");
@@ -120,6 +141,8 @@ export const getHonorarioByAgente = (agenteId) => async (dispatch) => {
 
   return dispatch({ type: GET_HONORARIO, payload: response.data });
 };
+
+//ENDPOINT PARA CREAR EL HONORARIO
 
 export const postHonorario =
   ({
@@ -140,11 +163,12 @@ export const postHonorario =
       opprovisorio_nro,
     }).then((payload) => dispatch({ type: POST_HONORARIO, payload }));
 
+// ENDPOINT PARA ELIMINAR EL HONORARIO CREADO
+
 export const deleteHonorario =
   ({ agenteID, operativoID }) =>
   (dispatch) =>
     HonorariosAPI.delete("", {
       agenteID,
       operativoID,
-    }).then(res => console.log(res))
-    // .then((payload) => {console.log(payload); dispatch({ type: DELETE_HONORARIO_SUCCESS, payload })});
+    }).then((res) => console.log(res));

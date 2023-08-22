@@ -2,16 +2,19 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { OperativosAPI } from "../api/OperativosAPI";
 import Swal from "sweetalert2";
 
+// Función para obtener operativos
 const getOperativos = async () => {
   const { data } = await OperativosAPI.get("/");
   return data[0];
 };
 
+// Función para obtener agentes por operativo
 const getAgentesByOperativo = async (operativoId) => {
   const { data } = await OperativosAPI.get(`/${operativoId}/agentes`);
   return data[0];
 };
 
+// Función para crear un nuevo operativo
 const postOperativo = async (data) => {
   return await OperativosAPI.post("", data);
 };
@@ -27,6 +30,7 @@ export const useOperativo = (operativoId = 0) => {
     queryFn: () => getAgentesByOperativo(operativoId),
   });
 
+  // Mutación para crear un nuevo operativo
   const operativoMutation = useMutation({
     mutationKey: ["operativo-mutation"],
     mutationFn: (data) => postOperativo(data),
@@ -40,6 +44,7 @@ export const useOperativo = (operativoId = 0) => {
       });
     },
     onError: (data) => {
+      // Manejar errores de manera diferente según el status de la respuesta
       switch (data.response.status) {
         case 302:
           Swal.fire({

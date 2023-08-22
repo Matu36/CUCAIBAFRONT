@@ -1,7 +1,7 @@
 import React from "react";
-import { VerOrdenes } from "../Pages/Ver-Ordenes";
+import { VerOrdenes } from "../components/Ver-Ordenes";
 
-const VerOrdenes = () => {
+const VerOrden = () => {
   return (
     <div className="container p-4">
       <VerOrdenes />
@@ -9,4 +9,4 @@ const VerOrdenes = () => {
   );
 };
 
-export default VerOrdenes;
+export default VerOrden;

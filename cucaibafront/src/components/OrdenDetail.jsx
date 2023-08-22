@@ -19,6 +19,12 @@ import { NumerosALetras } from "numero-a-letras";
 import NumberFormatter from "../utils/NumberFormatter";
 import BackButton from "../components/UI/BackButton";
 
+//Componente, que dentro de Ver órdenes de Pago, muestra los datos del agente dentro del Honorario creado, el operativo y las funciones que 
+//desempeñó, asi como el monto unitario y el monto total; Da la posibilidad de Descargar el PDF.
+
+
+//Estilos para el PDF
+
 export const styles = StyleSheet.create({
   page: {
     flexDirection: "row",
@@ -197,6 +203,9 @@ export const OrdenDetail = () => {
   const personasExceptLast = personasArray.slice(0, -1);
 
   const gastos = personasArray[personasArray.length - 1];
+
+
+  //PDF
 
   const generatePDFContent = (personasExceptLast) => (
     <Document>
@@ -419,6 +428,8 @@ export const OrdenDetail = () => {
       </Page>
     </Document>
   );
+
+//Vista de la pagina en el navegador
 
   return (
     <div className="card">

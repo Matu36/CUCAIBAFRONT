@@ -10,6 +10,8 @@ import {
 import { styles } from "./OrdenDetail";
 import NumberFormatter from "../utils/NumberFormatter";
 
+//Componente que muestra PDF de los agentes sumariados cuando el Honorario no tiene la OP definitiva.
+
 
 export const PrintOrdenPago = ({ liquidacionId, opProvisoria }) => {
   const { data, isFetched, isLoading  } =
