@@ -5,13 +5,15 @@ import BackButton from "../components/UI/BackButton";
 import { useOperativo } from "../hooks/useOperativo";
 import { validateFecha } from "../utils/Validaciones";
 
+
+//Componente para crear el OPERATIVO
+
 const PostOperativos = () => {
   const { mutate } = useOperativo().operativoMutation;
 
   const [showError, setShowError] = useState({
     referencia: false,
     fecha: false,
-    // descripcion: false, //Momentaneamente
   });
 
   const validateString = (inputName, value) => {
@@ -25,14 +27,6 @@ const PostOperativos = () => {
         }
         break;
 
-      // case "descripción":
-      //   const regexDescripcion = /^[A-Za-z\s]+$/;
-      //   if (!regexDescripcion.test(value)) {
-      //     setShowError({ ...showError, descripcion: true });
-      //   } else {
-      //     setShowError({ ...showError, descripcion: false });
-      //   }
-      //   break;
     }
   };
 
@@ -58,13 +52,9 @@ const PostOperativos = () => {
         fecha: operativo.fecha,
       };
 
-      // console.log(newOperativo);
-
-      // dispatch(postOperativo(newOperativo));
       mutate(newOperativo);
 
-      // window.location.href = "http://localhost:5173/operativos/ver-operativos";
-
+      
       setOperativo({
         referencia: "",
         fecha: "",
@@ -153,11 +143,6 @@ const PostOperativos = () => {
               validateString(e.target.name, e.target.value);
             }}
           />
-          {/* {showError.descripcion && (
-            <div style={{ color: "red" }}>
-              La descripción no pueder estar vacía y no debe contener números
-            </div>
-          )} */}
         </div>
         <br />
         <br />

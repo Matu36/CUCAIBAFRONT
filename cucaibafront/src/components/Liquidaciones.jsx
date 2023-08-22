@@ -9,6 +9,8 @@ import Modal from "./UI/Modal";
 import { useHonorarios } from "../hooks/useHonorarios";
 import NumberFormatter from "../utils/NumberFormatter";
 
+// Componente que se encarga de mostrar y de Generar las Ordenes de Pago
+
 const LIMITE = 3350000;
 
 const Liquidaciones = ({ ...props }) => {

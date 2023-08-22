@@ -13,6 +13,9 @@ import { useAgentes } from "../../../hooks/useAgentes";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 
+
+// Se usa en el componente TablaHonorarios al hacer click en los operativos.
+
 const RowExpandedComponent = ({ data: operativo }) => {
   const { paginationOptions } = usePagination();
 

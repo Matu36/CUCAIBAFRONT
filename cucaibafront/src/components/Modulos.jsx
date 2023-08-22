@@ -13,6 +13,8 @@ import Swal from "sweetalert2";
 import { useModulos } from "../hooks/useModulos";
 import NumberFormatter from "../utils/NumberFormatter";
 
+//Componente que muestra los MODULOS y que permite la edición de los mismos.
+
 const Modulos = ({ ...props }) => {
   let dispatch = useDispatch();
   const { data, isFetched, refetch } = useModulos().modulosQuery;

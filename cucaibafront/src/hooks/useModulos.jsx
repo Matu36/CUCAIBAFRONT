@@ -3,13 +3,16 @@ import { ModulosAPI } from "../api/ModulosAPI";
 import { HonorariosAPI } from "../api/HonorariosAPI";
 import Swal from "sweetalert2";
 
+// Función para obtener módulos según el operativo
 const getModulos = async (operativoId) => {
   if (!operativoId) {
+    // Obtener todos los módulos
     const { data } = await ModulosAPI.get("/");
     return data[0];
   }
 
   if (operativoId) {
+    // Obtener módulos activos para el operativo
     const { data } = await ModulosAPI.get(`/activos/${operativoId}`);
     return data[0];
   }
@@ -26,6 +29,7 @@ export const useModulos = (operativoId = 0) => {
     queryFn: () => getModulos(operativoId),
   });
 
+  // Mutación para dar de baja un módulo
   const modulosMutation = useMutation({
     mutationKey: ["baja-modulo"],
     mutationFn: async (id) => await HonorariosAPI.put(`/baja/${id}`),
@@ -40,6 +44,7 @@ export const useModulos = (operativoId = 0) => {
       });
     },
     onError: (error) => {
+      // Manejar errores de manera diferente según el status de la respuesta
       switch (error.response.status) {
         case 405:
           Swal.fire({

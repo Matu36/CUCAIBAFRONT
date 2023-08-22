@@ -9,7 +9,9 @@ import {
 } from "@react-pdf/renderer";
 import { styles } from "./OrdenDetail";
 import NumberFormatter from "../utils/NumberFormatter";
-import Spinner from "./UI/Spinner";
+
+//Componente que muestra PDF de los agentes sumariados cuando el Honorario no tiene la OP definitiva.
+
 
 export const PrintOrdenPago = ({ liquidacionId, opProvisoria }) => {
   const { data, isFetched, isLoading  } =
@@ -41,7 +43,6 @@ export const PrintOrdenPago = ({ liquidacionId, opProvisoria }) => {
                 <Text style={[styles.cell, styles.header]}>Legajo</Text>
                 <Text style={[styles.cell, styles.header]}>CUIL</Text>
                 <Text style={[styles.cell, styles.header]}>CBU</Text>
-
                 <Text style={[styles.cell, styles.header]}>Monto Total</Text>
               </View>
               {personasExceptLast.map((personasData, index) => {

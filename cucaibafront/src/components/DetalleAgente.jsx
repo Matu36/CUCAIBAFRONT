@@ -4,9 +4,10 @@ import "../assets/styles/detalle.css";
 import BackButton from "../components/UI/BackButton";
 import { useAgentes } from "../hooks/useAgentes";
 import Spinner from "./UI/Spinner";
-import Swal from "sweetalert2";
 import { GoTriangleDown } from "react-icons/go";
 import CardDetalleAgente from "./UI/CardDetalleAgente";
+
+//Detalle del agente que a su vez usa el componente CardDetalle
 
 const DetalleAgente = () => {
   const { id } = useParams();

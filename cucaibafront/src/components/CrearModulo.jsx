@@ -5,6 +5,8 @@ import { useDispatch, useSelector } from "react-redux";
 import "../assets/styles/style.css";
 import { validateFecha } from "../utils/Validaciones";
 
+//Componente para crear el módulo
+
 const CrearModulo = ({ handleCerrarFormulario }) => {
   const dispatch = useDispatch();
 
@@ -56,7 +58,7 @@ const CrearModulo = ({ handleCerrarFormulario }) => {
         showConfirmButton: false,
         timer: 3000,
       });
-      // window.location.reload();
+      
       setModulo({
         valor: "",
         descripcion: "",
@@ -109,31 +111,7 @@ const CrearModulo = ({ handleCerrarFormulario }) => {
         <div className="col-md-6">
           <h5> Tipo: Variable</h5>
         </div>
-        {/* <div className="col-md-6">
-          <label htmlFor="categoria">
-            Categoria{" "}
-            <span style={{ color: "red", marginLeft: "5px", fontSize: "20px" }}>
-              *
-            </span>
-          </label>
-          <select
-            className="form-select form-select-md mb-3"
-            aria-label=".form-select-lg example"
-            name="categoria"
-            value={modulo.categoria}
-            onChange={(e) =>
-              setModulo({ ...modulo, categoria: Number(e.target.value) })
-            }
-            placeholder="Selecciona una categoria"
-          >
-            <option value="">Seleccionar</option>
-            {primerArreglo.map((mod) => (
-              <option key={mod.id} value={mod.id}>
-                {mod.descripcion}
-              </option>
-            ))}
-          </select>
-        </div> */}
+       
         <div className="row">
           <div className="col-md-6">
             <label htmlFor="descripcion">

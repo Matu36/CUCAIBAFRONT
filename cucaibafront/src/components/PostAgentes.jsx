@@ -8,6 +8,8 @@ import { validateDNI } from "../utils/Validaciones";
 import { usePersona } from "../hooks/usePersona";
 import { FaSearch } from "react-icons/fa";
 
+//Componente que busca la persona en el SQLServer y autocompleta los campos del formulario para la creación del agente
+
 const INITIALSTATE = {
   apellido: "",
   nombre: "",

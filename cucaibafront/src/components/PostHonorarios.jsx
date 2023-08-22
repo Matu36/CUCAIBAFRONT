@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import { useModulos } from "../hooks/useModulos";
 import { AiOutlinePlus } from "react-icons/ai";
 
+
+//Componente para agregar Función al agente
+
 const PostHonorarios = ({
   disabled,
   handleModuloId,
