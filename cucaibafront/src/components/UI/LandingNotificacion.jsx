@@ -3,7 +3,7 @@ import "../../assets/styles/style.css";
 import { useHonorarios } from "../../hooks/useHonorarios";
 
 const LandingNotificacion = () => {
-  const { data, isFetched } = useHonorarios().honorariosPendientesHomeQuery;
+  const { data, isFetched } = useHonorarios().honorariosPendientesQuery;
 
   return (
     <>
