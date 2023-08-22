@@ -8,7 +8,7 @@ const BackButton = () => {
   return (
     <button
       onClick={() => navigate(-1)}
-      className="btn btn-secondary outline-primary"
+      className="btn btn-outline-dark"
     >
       Volver
     </button>

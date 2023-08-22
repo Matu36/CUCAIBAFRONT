@@ -82,6 +82,7 @@ function Header() {
                       fontSize: "2rem",
                       cursor: "pointer",
                       color: "white",
+                      marginRight: "5px",
                     }}
                   />
                   {honorariosPendientesCount > 0 ? (
