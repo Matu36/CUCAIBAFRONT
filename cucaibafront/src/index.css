@@ -33,3 +33,17 @@
   opacity: 0;
   transition: all 250ms ease-in;
 }
+
+.Titulo {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #5b5b5b;
+  letter-spacing: 1px;
+}
+
+.Subtitulo {
+  font-size: 1.5rem;
+  color: #0078b3;
+  letter-spacing: 0.5px;
+}
+
