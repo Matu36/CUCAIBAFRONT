@@ -5,7 +5,6 @@ import BackButton from "../components/UI/BackButton";
 import { useOperativo } from "../hooks/useOperativo";
 import { validateFecha } from "../utils/Validaciones";
 
-
 //Componente para crear el OPERATIVO
 
 const PostOperativos = () => {
@@ -26,7 +25,6 @@ const PostOperativos = () => {
           setShowError({ ...showError, referencia: false });
         }
         break;
-
     }
   };
 
@@ -54,7 +52,6 @@ const PostOperativos = () => {
 
       mutate(newOperativo);
 
-      
       setOperativo({
         referencia: "",
         fecha: "",
@@ -71,9 +68,10 @@ const PostOperativos = () => {
     }
   };
   return (
-    <form onSubmit={handleOnSubmit}>
-      <br />
-      <div className="card">
+    <div className="card">
+      <form onSubmit={handleOnSubmit}>
+        <br />
+
         <div className="mb-3">
           <label htmlFor="inputReferncia" className="form-label">
             Proceso de Donación <span style={{ color: "red" }}>*</span>
@@ -94,7 +92,7 @@ const PostOperativos = () => {
           />
           {showError.referencia && (
             <div style={{ color: "red" }}>
-              El proceso de donación no tener letras
+              El proceso de donación no puede tener letras
             </div>
           )}
         </div>
@@ -147,18 +145,22 @@ const PostOperativos = () => {
         <br />
         <br />
 
-        <div className="d-flex justify-content-between">
+        <div className="d-flex justify-content-end">
           <div>
-            <BackButton />
-          </div>
-          <div>
-            <button type="submit" className="btn btn-success btn-md">
+            <button
+              type="submit"
+              className="btn btn-success btn-md"
+              disabled={showError.referencia}
+            >
               Agregar Operativo
             </button>
           </div>
         </div>
+      </form>
+      <div>
+        <BackButton />
       </div>
-    </form>
+    </div>
   );
 };
 
