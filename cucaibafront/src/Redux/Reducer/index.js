@@ -1,3 +1,5 @@
+//TRAIGO TODAS LAS ACCIONES
+
 import {
   GET_AGENTES,
   GET_OPERATIVOS,
@@ -13,6 +15,8 @@ import {
   GET_HONORARIO_OUT_HASH,
   POST_HONORARIO,
 } from "../Actions";
+
+//DEFINO LOS ESTADOS GLOBALES Y ALMACENO LA INFORMACIÓN AHI.
 
 const InitialState = {
   agentes: [],

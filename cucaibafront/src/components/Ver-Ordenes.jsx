@@ -4,17 +4,16 @@ import {
   useVerOrdenDePago,
 } from "../hooks/useOrdenesDePago";
 import DataTable from "react-data-table-component";
-import EmptyTable from "../components/UI/EmptyTable";
+import EmptyTable from "./UI/EmptyTable";
 import { usePagination } from "../hooks/usePagination";
 import { Link } from "react-router-dom";
 import "../assets/styles/detalle.css";
-import Spinner from "../components/UI/Spinner";
-import BackButton from "../components/UI/BackButton";
-import Modal from "../components/UI/Modal";
-import InputField from "../components/UI/InputField";
-import PrintOrdenPago from "../components/PrintOrdenPago";
-import { useOrdenPorLiquidacionId } from "../hooks/useOrdenesDePago";
-import { useParams } from "react-router-dom";
+import Spinner from "./UI/Spinner";
+import BackButton from "./UI/BackButton";
+import Modal from "./UI/Modal";
+import InputField from "./UI/InputField";
+import PrintOrdenPago from "./PrintOrdenPago";
+
 
 const NUMBER_REGEX = /^[0-9]+$/;
 const STRING_REGEX = /^[a-zA-Z]+$/;
@@ -87,8 +86,6 @@ INITIAL_STATE["liquidacion_id"] = 0;
 
 export const VerOrdenes = ({ ...props }) => {
   const { data, isFetched, refetch } = useVerOrdenDePago().verOrdenesQuery;
-
-  const [openPDF, setOpenPDF] = useState(false);
 
   const { mutate } = useOrdenesMutation().asignarDefinitivo;
 

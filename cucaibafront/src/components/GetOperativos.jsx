@@ -9,6 +9,8 @@ import BackButton from "../components/UI/BackButton";
 import { obtenerMesYAño } from "../utils/MesAño";
 import "../assets/styles/detalle.css";
 
+// Componente que muestra los OPERATIVOS
+
 const GetOperativos = () => {
   const dispatch = useDispatch();
 

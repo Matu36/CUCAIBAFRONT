@@ -16,7 +16,7 @@ import ModulosVista from "../Pages/ModulosVista";
 import LiquidacionesPendientes from "../Pages/Liquidaciones-Pendientes";
 import Detail from "../Pages/Detail";
 import OrdenesDetail from "../Pages/OrdenesDetail";
-import { VerOrdenes } from "../Pages/Ver-Ordenes";
+import  VerOrden  from "../Pages/VerOrdenes";
 import Archivos from "../Pages/Archivos";
 import ErrorPage from "../Pages/ErrorPage";
 
@@ -115,7 +115,7 @@ const router = createBrowserRouter([
           },
           {
             path: "/ordenes/ver-ordenes",
-            element: <VerOrdenes />,
+            element: <VerOrden />,
           },
           {
             path: "/ordenes/eliminar-ordenes",

@@ -2,6 +2,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { HonorariosAPI } from "../api/HonorariosAPI";
 import Swal from "sweetalert2";
 
+// Función para obtener honorarios según el operativo
 const getHonorarios = async (operativoId) => {
   const { data } = await HonorariosAPI.get(
     `/${operativoId != 0 ? `operativo/${operativoId}` : ""}`
@@ -9,6 +10,8 @@ const getHonorarios = async (operativoId) => {
 
   return data[0];
 };
+
+// Función para obtener honorarios por agente y operativo
 
 const getHonorariosByAgente = async (agenteId, operativoId) => {
   const { data } = await HonorariosAPI.get(
@@ -18,6 +21,7 @@ const getHonorariosByAgente = async (agenteId, operativoId) => {
   return data[0];
 };
 
+// Funciones para obtener honorarios pendientes
 const getHonorariosPendientes = async () => {
   const { data } = await HonorariosAPI.get("/pendientes");
 
@@ -41,11 +45,14 @@ export const useHonorarios = (operativoId = 0, agenteId = 0) => {
     queryFn: () => getHonorariosPendientes(),
   });
 
+  // Mutación para liquidar honorarios
   const liquidacionesMutation = useMutation({
     mutationKey: ["liquidar-honorarios"],
     mutationFn: async (data) => await HonorariosAPI.put("/liquidar", data),
     onSuccess: (data) => {
+      // Refrescar la consulta de honorarios pendientes
       honorariosPendientesQuery.refetch();
+      // Mostrar SweetAlert si hubo éxito
       Swal.fire({
         title: "Se genero la orden de pago",
         html:
@@ -69,6 +76,7 @@ export const useHonorarios = (operativoId = 0, agenteId = 0) => {
       modalInstance.hide();
     },
     onError: () => {
+      //Muestra mensaje de error
       Swal.fire({
         title: "Hubo un error",
         position: "center",
