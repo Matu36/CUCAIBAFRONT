@@ -197,6 +197,7 @@ const postAgente = () => {
 
             <div className="mb-3 d-flex flex-md-row formAgente gap-2 align-items-center">
     <input
+      maxlength="9" min="0"
       type="number"
       className="form-control"
       id="inputDNI"
@@ -207,9 +208,11 @@ const postAgente = () => {
       placeholder="DNI"
       onInput={(e) => {
         const newValue = e.target.value;
-        setAgente({ ...agente, nroDocumento: newValue });
-        validateDNI(newValue);
-
+        if (newValue >= 0 && newValue.length <= 9) { 
+          setAgente({ ...agente, nroDocumento: newValue });
+          validateDNI(newValue);
+        }
+        
         const dniErrorMessage = document.getElementById("dniErrorMessage");
         const dniErrorEmpty = document.getElementById("dniErrorEmpty");
         if (newValue.trim() === "") {
