@@ -28,12 +28,6 @@ const getHonorariosPendientes = async () => {
   return data[0];
 };
 
-const getHonorariosPendientesHome = async () => {
-  const { data } = await HonorariosAPI.get("/pendienteshome");
-
-  return data[0];
-};
-
 export const useHonorarios = (operativoId = 0, agenteId = 0) => {
   const honorariosQuery = useQuery({
     queryKey: ["honorarios", { operativoId }],
@@ -49,11 +43,6 @@ export const useHonorarios = (operativoId = 0, agenteId = 0) => {
   const honorariosPendientesQuery = useQuery({
     queryKey: ["honorariosPendientes"],
     queryFn: () => getHonorariosPendientes(),
-  });
-
-  const honorariosPendientesHomeQuery = useQuery({
-    queryKey: ["honorariosPendientes"],
-    queryFn: () => getHonorariosPendientesHome(),
   });
 
   // Mutación para liquidar honorarios
@@ -106,6 +95,5 @@ export const useHonorarios = (operativoId = 0, agenteId = 0) => {
     honorariosAgenteQuery,
     honorariosPendientesQuery,
     liquidacionesMutation,
-    honorariosPendientesHomeQuery,
   };
 };

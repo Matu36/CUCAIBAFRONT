@@ -3,7 +3,7 @@ import PostAgentes from "../components/PostAgentes";
 
 const CrearAgente = () => {
   return (
-    <div className="container p-4">
+    <div className="container p-4 card mt-5">
       <div>
         <span className="Titulo">Creación de Agente </span> 
         <div>

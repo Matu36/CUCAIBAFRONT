@@ -18,7 +18,7 @@ const GetOperativos = () => {
   const [search, setSearch] = useState("");
   const primerArreglo = operativos.slice(0, 1)[0];
   const [operativo, setOperativo] = useState(primerArreglo);
-  const { paginationOptions } = usePagination(primerArreglo);
+  const { paginationOptions, customStyles } = usePagination(primerArreglo);
 
   useEffect(() => {
     dispatch(getOperativos());
@@ -92,12 +92,10 @@ const GetOperativos = () => {
   return (
     <div className="card">
       <>
-      <div>
-        <span className="Titulo"> Operativos </span>
+        <div>
+          <span className="Titulo"> Operativos </span>
         </div>
-        <span className="Subtitulo">
-          Listado de todos los Operativos
-        </span>
+        <span className="Subtitulo">Listado de todos los Operativos</span>
         <br />
 
         <div
@@ -121,6 +119,7 @@ const GetOperativos = () => {
           striped
           paginationComponentOptions={paginationOptions}
           noDataComponent={<EmptyTable msg="No se encontro el operativo" />}
+          customStyles={customStyles}
         />
       </>
 

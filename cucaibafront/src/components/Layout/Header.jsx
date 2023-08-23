@@ -8,7 +8,7 @@ import { useHonorarios } from "../../hooks/useHonorarios";
 function Header() {
   const [isOpen, setIsOpen] = useState(false);
 
-  const { data, isFetched } = useHonorarios().honorariosPendientesHomeQuery;
+  const { data, isFetched } = useHonorarios().honorariosPendientesQuery;
 
   const honorariosPendientesCount = isFetched ? data.length : 0;
 

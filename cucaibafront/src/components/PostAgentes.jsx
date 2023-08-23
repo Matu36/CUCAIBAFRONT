@@ -138,7 +138,7 @@ const postAgente = () => {
 
   const handleOnSubmit = async (e) => {
     e.preventDefault();
-  
+
     if (isFormValid && typeof personaData == "object" && agente) {
       const newAgente = {
         apellido: agente.apellido,
@@ -150,9 +150,9 @@ const postAgente = () => {
         dni: agente.nroDocumento,
         legajo: agente.legajo,
       };
-  
+
       dispatch(postAgentes(newAgente));
-  
+
       await Swal.fire({
         position: "center",
         icon: "success",
@@ -165,7 +165,6 @@ const postAgente = () => {
       setAgente(INITIALSTATE);
       setClicked(false);
     } else if (!agente.nroDocumento) {
-      
       Swal.fire({
         position: "center",
         icon: "info",
@@ -176,11 +175,10 @@ const postAgente = () => {
       });
     }
   };
-  
 
   return (
     <>
-      <div className="card">
+      <div>
         <form onSubmit={handleOnSubmit}>
           <div className="mb-3">
             <div className="d-flex gap-3 mb-2">
@@ -196,60 +194,57 @@ const postAgente = () => {
             </div>
 
             <div className="mb-3 d-flex flex-md-row formAgente gap-2 align-items-center">
-    <input
-      maxlength="9" min="0"
-      type="number"
-      className="form-control"
-      id="inputDNI"
-      aria-describedby="DNIHelp"
-      name="DNI"
-      value={agente.nroDocumento}
-      autoComplete="off"
-      placeholder="DNI"
-      onInput={(e) => {
-        const newValue = e.target.value;
-        if (newValue >= 0 && newValue.length <= 9) { 
-          setAgente({ ...agente, nroDocumento: newValue });
-          validateDNI(newValue);
-        }
-        
-        const dniErrorMessage = document.getElementById("dniErrorMessage");
-        const dniErrorEmpty = document.getElementById("dniErrorEmpty");
-        if (newValue.trim() === "") {
-          dniErrorMessage.style.display = "none";
-          dniErrorEmpty.style.display = "none";
-        }
-      }}
-      onKeyDown={(e) => {
-        if (e.key === "Enter") {
-          handleFindPersona();
-        }
-      }}
-    />
-    <button
-      className="btn btn-dark btn btn-md"
-      type="button"
-      onClick={handleFindPersona}
-      style={{ display: "inline-flex", alignItems: "center" }}
-      disabled={isFetching}
-    >
-      <FaSearch style={{ marginRight: "5px" }} /> Buscar
-    </button>
-  </div>
+              <input
+                maxlength="9"
+                min="0"
+                type="number"
+                className="form-control"
+                id="inputDNI"
+                aria-describedby="DNIHelp"
+                name="DNI"
+                value={agente.nroDocumento}
+                autoComplete="off"
+                placeholder="DNI"
+                onInput={(e) => {
+                  const newValue = e.target.value;
+                  if (newValue >= 0 && newValue.length <= 9) {
+                    setAgente({ ...agente, nroDocumento: newValue });
+                    validateDNI(newValue);
+                  }
 
-  <div
-    id="dniErrorMessage"
-    style={{ color: "red", display: "none" }}
-  >
-    El DNI debe tener más de 7 caracteres
-  </div>
-  <div
-    id="dniErrorEmpty"
-    style={{ color: "red", display: "none" }}
-  >
-    El campo DNI no puede estar vacío
-  </div>
-</div>
+                  const dniErrorMessage =
+                    document.getElementById("dniErrorMessage");
+                  const dniErrorEmpty =
+                    document.getElementById("dniErrorEmpty");
+                  if (newValue.trim() === "" || newValue.length > 7) {
+                    dniErrorMessage.style.display = "none";
+                    dniErrorEmpty.style.display = "none";
+                  }
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    handleFindPersona();
+                  }
+                }}
+              />
+              <button
+                className="btn btn-dark btn btn-md"
+                type="button"
+                onClick={handleFindPersona}
+                style={{ display: "inline-flex", alignItems: "center" }}
+                disabled={isFetching}
+              >
+                <FaSearch style={{ marginRight: "5px" }} /> Buscar
+              </button>
+            </div>
+
+            <div id="dniErrorMessage" style={{ color: "red", display: "none" }}>
+              El DNI debe tener más de 7 caracteres
+            </div>
+            <div id="dniErrorEmpty" style={{ color: "red", display: "none" }}>
+              El campo DNI no puede estar vacío
+            </div>
+          </div>
           {showForm && (
             <>
               <div className="mb-3">

@@ -17,7 +17,7 @@ const GetAgentes = ({ ...props }) => {
   const [search, setSearch] = useState("");
   const [agente, setAgente] = useState(agentes);
 
-  const { paginationOptions } = usePagination(agentes);
+  const { paginationOptions, customStyles } = usePagination(agentes);
 
   useEffect(() => {
     dispatch(getAgentes());
@@ -87,22 +87,26 @@ const GetAgentes = ({ ...props }) => {
   return (
     <div className="card">
       <div>
-      <span className="Titulo"> Agentes </span>
-      </div>
-      <span className="Subtitulo">
-        Listado de todos los Agentes cargados
-      </span>
-      <br />
+        <div>
+          <span className="Titulo"> Agentes </span>
+        </div>
+        <span className="Subtitulo">Listado de todos los Agentes cargados</span>
+        <br />
 
-      <div className="input-group mb-3 inputSearch" style={{ maxWidth: "40%" }}>
-        <input
-          type="text"
-          className="form-control"
-          placeholder="Buscar por APELLIDO o CUIL"
-          onChange={handleOnChange}
-          value={search}
-          autoComplete="off"
-        />
+        <div
+          className="input-group mb-3 inputSearch"
+          style={{ maxWidth: "40%" }}
+        >
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Buscar por APELLIDO o CUIL"
+            onChange={handleOnChange}
+            value={search}
+            autoComplete="off"
+          />
+        </div>
+        <hr />
       </div>
 
       <DataTable
@@ -115,6 +119,7 @@ const GetAgentes = ({ ...props }) => {
           <EmptyTable msg="No se encontro el Agente con los datos ingresados" />
         }
         {...props}
+        customStyles={customStyles}
       />
       <div>
         <BackButton />

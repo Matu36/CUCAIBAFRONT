@@ -9,7 +9,14 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { store } from "./Redux/Store/index";
 import router from "./utils/routes";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 10000,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 import "./index.css";
 
