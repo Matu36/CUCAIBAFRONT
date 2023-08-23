@@ -178,7 +178,7 @@ const postAgente = () => {
 
   return (
     <>
-      <div className="card">
+      <div>
         <form onSubmit={handleOnSubmit}>
           <div className="mb-3">
             <div className="d-flex gap-3 mb-2">
@@ -212,7 +212,7 @@ const postAgente = () => {
                     document.getElementById("dniErrorMessage");
                   const dniErrorEmpty =
                     document.getElementById("dniErrorEmpty");
-                  if (newValue.trim() === "") {
+                  if (newValue.trim() === "" || newValue.length > 7) {
                     dniErrorMessage.style.display = "none";
                     dniErrorEmpty.style.display = "none";
                   }

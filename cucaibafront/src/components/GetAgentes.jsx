@@ -11,6 +11,20 @@ import BackButton from "../components/UI/BackButton";
 
 //Componente que muestra los AGENTES
 
+const customStyles = {
+  cells: {
+    style: {
+      borderLeft: "1px solid var(--bs-gray-400)",
+      borderRight: "1px solid var(--bs-gray-400)",
+    },
+  },
+  headCells: {
+    style: {
+      border: "1px solid var(--bs-gray-400)",
+    },
+  },
+};
+
 const GetAgentes = ({ ...props }) => {
   const dispatch = useDispatch();
   const agentes = useSelector((state) => state.agentes);
@@ -86,21 +100,27 @@ const GetAgentes = ({ ...props }) => {
 
   return (
     <div className="card">
-      <h1>Agentes</h1>
-      <h5 className="subtitulo" style={{ color: "#5DADE2" }}>
-        Listado de todos los Agentes cargados
-      </h5>
-      <br />
+      <div>
+        <h1>Agentes</h1>
+        <h6 className="subtitulo" style={{ color: "#5DADE2" }}>
+          Listado de todos los Agentes cargados
+        </h6>
+        <br />
 
-      <div className="input-group mb-3 inputSearch" style={{ maxWidth: "40%" }}>
-        <input
-          type="text"
-          className="form-control"
-          placeholder="Buscar por APELLIDO o CUIL"
-          onChange={handleOnChange}
-          value={search}
-          autoComplete="off"
-        />
+        <div
+          className="input-group mb-3 inputSearch"
+          style={{ maxWidth: "40%" }}
+        >
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Buscar por APELLIDO o CUIL"
+            onChange={handleOnChange}
+            value={search}
+            autoComplete="off"
+          />
+        </div>
+        <hr />
       </div>
 
       <DataTable
@@ -113,6 +133,7 @@ const GetAgentes = ({ ...props }) => {
           <EmptyTable msg="No se encontro el Agente con los datos ingresados" />
         }
         {...props}
+        customStyles={customStyles}
       />
       <div>
         <BackButton />
