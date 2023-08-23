@@ -19,6 +19,20 @@ export const usePagination = (primerArreglo) => {
     setPerPage(perPage);
   };
 
+  const customStyles = {
+    cells: {
+      style: {
+        borderLeft: "1px solid var(--bs-gray-400)",
+        borderRight: "1px solid var(--bs-gray-400)",
+      },
+    },
+    headCells: {
+      style: {
+        border: "1px solid var(--bs-gray-400)",
+      },
+    },
+  };
+
   // Opciones de configuración de paginación
   const paginationOptions = {
     paginationServer: false,
@@ -33,5 +47,5 @@ export const usePagination = (primerArreglo) => {
     selectAllRowsItemText: "Todos",
   };
 
-  return { paginationOptions };
+  return { paginationOptions, customStyles };
 };

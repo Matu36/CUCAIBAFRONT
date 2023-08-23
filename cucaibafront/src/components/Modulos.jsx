@@ -226,10 +226,12 @@ const Modulos = ({ ...props }) => {
 
   return (
     <div className="card">
-      <h1>Módulos</h1>
-      <h5 className="subtitulo" style={{ color: "#5DADE2" }}>
+      <span className="Titulo">Módulos</span>
+      <div>
+      <span className="Subtitulo">
         Listado de todos los módulos
-      </h5>
+      </span>
+      </div>
       <br />
 
       <div

@@ -12,11 +12,7 @@ import CardDetalleAgente from "./UI/CardDetalleAgente";
 const DetalleAgente = () => {
   const { id } = useParams();
 
-  const {
-    data: agenteData,
-    isLoading,
-    isError,
-  } = useAgentes(0, id).agenteQuery;
+  const { data: agenteData, isLoading } = useAgentes(0, id).agenteQuery;
 
   if (isLoading) {
     return <Spinner />;
@@ -29,8 +25,8 @@ const DetalleAgente = () => {
   return (
     <div className="card p-0 mb-3">
       <div className="p-4">
-        <h1>Detalle del Agente</h1>
-        <h6 className="subtitulo" style={{ color: "#5DADE2" }}>
+        <h1 className="Titulo">Detalle del Agente</h1>
+        <h6 className="Subtitulo" style={{ color: "#5DADE2" }}>
           Aca podes ver los datos relevantes del agente y aquellos operativos en
           los que participo
         </h6>
