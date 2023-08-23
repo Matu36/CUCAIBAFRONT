@@ -86,10 +86,12 @@ const GetAgentes = ({ ...props }) => {
 
   return (
     <div className="card">
-      <h1>Agentes</h1>
-      <h5 className="subtitulo" style={{ color: "#5DADE2" }}>
+      <div>
+      <span className="Titulo"> Agentes </span>
+      </div>
+      <span className="Subtitulo">
         Listado de todos los Agentes cargados
-      </h5>
+      </span>
       <br />
 
       <div className="input-group mb-3 inputSearch" style={{ maxWidth: "40%" }}>

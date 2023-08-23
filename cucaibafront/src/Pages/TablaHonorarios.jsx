@@ -104,10 +104,12 @@ const TablaHonorarios = () => {
     <>
       <div className="card">
         <div className="mb-5">
-          <h1>Honorarios</h1>
-          <h5 className="subtitulo" style={{ color: "#5DADE2" }}>
+          <span className="Titulo">Honorarios</span>
+          <div>
+          <span className="Subtitulo">
             Carga de Honorarios Variables
-          </h5>
+          </span>
+          </div>
           <hr />
           <div
             className="input-group mb-3 inputSearch"

@@ -92,10 +92,12 @@ const GetOperativos = () => {
   return (
     <div className="card">
       <>
-        <h1>Operativos</h1>
-        <h5 className="subtitulo" style={{ color: "#5DADE2" }}>
+      <div>
+        <span className="Titulo"> Operativos </span>
+        </div>
+        <span className="Subtitulo">
           Listado de todos los Operativos
-        </h5>
+        </span>
         <br />
 
         <div

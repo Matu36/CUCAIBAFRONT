@@ -5,10 +5,12 @@ export const CrearOperativo = () => {
   return (
     <div className="container p-4">
       <div>
-        <h1> Crear Operativo</h1>
-        <h5 className="subtitulo" style={{ color: "#5DADE2" }}>
+        <span className="Titulo"> Crear Operativo</span>
+        <div>
+        <span className="Subtitulo">
           Completa todos los campos para crear el Operativo
-        </h5>
+        </span>
+        </div>
         <hr />
       </div>
 
