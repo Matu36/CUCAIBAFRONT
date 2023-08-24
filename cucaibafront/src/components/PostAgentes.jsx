@@ -164,6 +164,7 @@ const postAgente = () => {
       });
       setAgente(INITIALSTATE);
       setClicked(false);
+      setShowForm(false);
     } else if (!agente.nroDocumento) {
       Swal.fire({
         position: "center",
