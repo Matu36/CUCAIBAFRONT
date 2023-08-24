@@ -9,7 +9,7 @@ export const OrdenesDePagoAPI = axios.create({
     mode: "cors",
     headers: {
         'Access-Control-Allow-Origin': '*',
-        'allow_methods': ["GET"],
+        'allow_methods': ["GET", "DELETE"],
         "Access-Control-Allow-Credentials": true
     }
 })
