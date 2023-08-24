@@ -7,6 +7,8 @@ import BackButton from "../components/UI/BackButton";
 import Spinner from "../components/UI/Spinner";
 import { ArchivoAPI } from "../api/ArchivoAPI";
 import { validateFecha } from "../utils/Validaciones";
+import Modal from "../components/UI/Modal";
+import InputField from "../components/UI/InputField";
 
 const Archivos = () => {
   const { data, isFetched, isFetching } =
@@ -14,7 +16,7 @@ const Archivos = () => {
   const { paginationOptions } = usePagination(data);
 
   const [dateInput, setDateInput] = useState({ rowId: 0, dateValue: "" });
-  const [errorDate, setErrorDate] = useState(false);
+  const [errorDate, setErrorDate] = useState({ type: 0 });
 
   const columns = [
     {
@@ -29,42 +31,79 @@ const Archivos = () => {
       format: (row) => row.op_nro ?? <i>Sin Asignar</i>,
     },
     {
-      name: "Fecha de Acreditación",
+      name: "Acciones",
       cell: (row) => (
-        <div>
-          <div className="d-flex gap-2 align-items-center justify-content-center h-full">
-            <input
-              type="date"
-              className="input-group mb-3"
-              value={
-                row.liquidacion_id == dateInput.rowId && dateInput.dateValue
-              }
-              onFocus={() =>
-                setDateInput({ ...dateInput, rowId: row.liquidacion_id })
-              }
-              onChange={(e) => {
-                setDateInput({ ...dateInput, dateValue: e.target.value });
-                setErrorDate(validateFecha(e.target.value));
-              }}
-            />
-            <button
-              className="btn btn-sm btn-secondary m-2"
-              onClick={() => {
-                let fecha = dateInput.dateValue.split("-").reverse().join("/");
-                handleClick(row.liquidacion_id, fecha);
-                setDateInput({ dateValue: "", rowId: 0 });
-              }}
-              disabled={dateInput.rowId != row.liquidacion_id || errorDate}
-            >
-              Generar Archivo
-            </button>
-          </div>
-          {dateInput.rowId == row.liquidacion_id && errorDate && (
-            <span style={{ color: "red" }}>
-              La fecha no puede ser posterior al dia de hoy
-            </span>
-          )}
-        </div>
+        <>
+          <Modal
+            title="Generar Archivo de Transferencia"
+            referenceID="modalArchivo"
+            size="modal-md"
+            handleClose={() => {
+              setDateInput({ rowId: 0, dateValue: "" }),
+                setErrorDate({ type: 0 });
+            }}
+          >
+            <div>
+              <div className="d-flex gap-2 align-items-center justify-content-center h-full">
+                <InputField
+                  inputKey="Fecha de Emisión"
+                  label="Fecha de Emisión"
+                  inputType="date"
+                  min="2022-01-01"
+                  value={
+                    row.liquidacion_id == dateInput.rowId && dateInput.dateValue
+                  }
+                  onFocus={() =>
+                    setDateInput({ ...dateInput, rowId: row.liquidacion_id })
+                  }
+                  onChange={(e) => {
+                    setDateInput({ ...dateInput, dateValue: e.target.value });
+                    setErrorDate({
+                      type: validateFecha(e.target.value)
+                        ? 1
+                        : e.target.value < e.target.min
+                        ? 2
+                        : 0,
+                    });
+                  }}
+                />
+                <button
+                  className="btn btn-sm btn-secondary m-2"
+                  onClick={() => {
+                    let fecha = dateInput.dateValue
+                      .split("-")
+                      .reverse()
+                      .join("/");
+                    handleClick(row.liquidacion_id, fecha);
+                    setDateInput({ dateValue: "", rowId: 0 });
+                  }}
+                  disabled={
+                    dateInput.rowId != row.liquidacion_id || errorDate.type != 0
+                  }
+                >
+                  Generar Archivo
+                </button>
+              </div>
+              {dateInput.rowId == row.liquidacion_id && errorDate.type == 1 && (
+                <span style={{ color: "red" }}>
+                  La fecha no puede ser posterior al dia de hoy
+                </span>
+              )}
+              {dateInput.rowId == row.liquidacion_id && errorDate.type == 2 && (
+                <span style={{ color: "red" }}>
+                  La fecha no puede ser anterior al año 2022
+                </span>
+              )}
+            </div>
+          </Modal>
+          <button
+            className="btn btn-sm btn-secondary m-2"
+            data-bs-toggle="modal"
+            data-bs-target="#modalArchivo"
+          >
+            Generar Archivo
+          </button>
+        </>
       ),
     },
   ];
