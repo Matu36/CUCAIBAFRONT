@@ -2,10 +2,17 @@ import React from "react";
 
 //Modal que se utiliza en los componentes: Ver-Ordenes, RowExpandedComponent, Liquidaciones
 
-const Modal = ({ title, referenceID, children, customFooter }) => {
+const Modal = ({
+  title,
+  referenceID,
+  children,
+  customFooter,
+  size = "modal-lg",
+  handleClose,
+}) => {
   return (
     <div
-      className="modal fade modal-lg"
+      className={`modal fade ${size}`}
       id={`${referenceID}`}
       tabIndex="-1"
       aria-labelledby={`${referenceID}`}
@@ -14,7 +21,9 @@ const Modal = ({ title, referenceID, children, customFooter }) => {
       <div className="modal-dialog">
         <div className="modal-content">
           <div className="modal-header">
-            <h5 className="modal-title" style={{ color: "#5DADE2" }}>{title}</h5>
+            <h5 className="modal-title" style={{ color: "#5DADE2" }}>
+              {title}
+            </h5>
             <button
               type="button"
               className="btn-close"
@@ -29,6 +38,7 @@ const Modal = ({ title, referenceID, children, customFooter }) => {
                 type="button"
                 className="btn btn-secondary"
                 data-bs-dismiss="modal"
+                onClick={handleClose ?? null}
               >
                 Salir
               </button>

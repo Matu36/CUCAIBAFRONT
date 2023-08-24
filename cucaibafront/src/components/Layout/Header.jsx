@@ -86,14 +86,20 @@ function Header() {
                     }}
                   />
                   {honorariosPendientesCount > 0 ? (
-                    <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                    <span
+                      className="position-absolute start-100 translate-middle badge rounded-pill bg-danger"
+                      style={{ top: 5 }}
+                    >
                       {honorariosPendientesCount}
                       <span className="visually-hidden">
                         Ud. no tiene órdenes de pago pendientes
                       </span>
                     </span>
                   ) : (
-                    <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                    <span
+                      className="position-absolute start-100 translate-middle badge rounded-pill bg-danger"
+                      style={{ top: 5 }}
+                    >
                       0
                       <span className="visually-hidden">
                         Ud. no tiene ninguna órden de pago pendiente
