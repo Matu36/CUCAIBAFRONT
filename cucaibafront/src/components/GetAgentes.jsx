@@ -85,46 +85,47 @@ const GetAgentes = ({ ...props }) => {
   //---------------------------------FIN SPINNER ------------------------------------//
 
   return (
-    <div className="card">
+    <>
       <div>
+        <span className="Titulo"> Agentes </span>
+      </div>
+      <span className="Subtitulo">Listado de todos los Agentes cargados</span>
+
+      <div className="card">
         <div>
-          <span className="Titulo"> Agentes </span>
+          <div
+            className="input-group mb-3 inputSearch"
+            style={{ maxWidth: "40%" }}
+          >
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Buscar por APELLIDO o CUIL"
+              onChange={handleOnChange}
+              value={search}
+              autoComplete="off"
+            />
+          </div>
+          <hr />
         </div>
-        <span className="Subtitulo">Listado de todos los Agentes cargados</span>
-        <br />
 
-        <div
-          className="input-group mb-3 inputSearch"
-          style={{ maxWidth: "40%" }}
-        >
-          <input
-            type="text"
-            className="form-control"
-            placeholder="Buscar por APELLIDO o CUIL"
-            onChange={handleOnChange}
-            value={search}
-            autoComplete="off"
-          />
+        <DataTable
+          columns={columns}
+          data={agente}
+          pagination
+          striped
+          paginationComponentOptions={paginationOptions}
+          noDataComponent={
+            <EmptyTable msg="No se encontro el Agente con los datos ingresados" />
+          }
+          {...props}
+          customStyles={customStyles}
+        />
+        <div>
+          <BackButton />
         </div>
-        <hr />
       </div>
-
-      <DataTable
-        columns={columns}
-        data={agente}
-        pagination
-        striped
-        paginationComponentOptions={paginationOptions}
-        noDataComponent={
-          <EmptyTable msg="No se encontro el Agente con los datos ingresados" />
-        }
-        {...props}
-        customStyles={customStyles}
-      />
-      <div>
-        <BackButton />
-      </div>
-    </div>
+    </>
   );
 };
 
