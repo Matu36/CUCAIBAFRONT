@@ -88,9 +88,11 @@ const GetAgentes = ({ ...props }) => {
     <div className="card">
       <div>
         <div>
-          <span className="Titulo"> Agentes </span>
+          <h1 className="section-title"> Agentes </h1>
         </div>
-        <span className="Subtitulo">Listado de todos los Agentes cargados</span>
+        <h2 className="section-subtitle">
+          Listado de todos los Agentes cargados
+        </h2>
         <br />
 
         <div
