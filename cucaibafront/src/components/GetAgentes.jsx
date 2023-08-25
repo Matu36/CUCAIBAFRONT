@@ -85,14 +85,16 @@ const GetAgentes = ({ ...props }) => {
   //---------------------------------FIN SPINNER ------------------------------------//
 
   return (
-    <div className="card">
-      <div>
+    <>
+
+      <div className="card">
         <div>
           <h1 className="section-title"> Agentes </h1>
         </div>
         <h2 className="section-subtitle">
           Listado de todos los Agentes cargados
         </h2>
+        <hr />
         <br />
 
         <div
@@ -108,25 +110,25 @@ const GetAgentes = ({ ...props }) => {
             autoComplete="off"
           />
         </div>
-        <hr />
       </div>
 
-      <DataTable
-        columns={columns}
-        data={agente}
-        pagination
-        striped
-        paginationComponentOptions={paginationOptions}
-        noDataComponent={
-          <EmptyTable msg="No se encontro el Agente con los datos ingresados" />
-        }
-        {...props}
-        customStyles={customStyles}
-      />
-      <div>
-        <BackButton />
+        <DataTable
+          columns={columns}
+          data={agente}
+          pagination
+          striped
+          paginationComponentOptions={paginationOptions}
+          noDataComponent={
+            <EmptyTable msg="No se encontro el Agente con los datos ingresados" />
+          }
+          {...props}
+          customStyles={customStyles}
+        />
+        <div>
+          <BackButton />
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
