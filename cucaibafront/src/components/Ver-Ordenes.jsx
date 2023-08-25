@@ -37,8 +37,10 @@ const labels = [
     label: "Año Acto",
     disabled: false,
     inputKey: "anio_acto",
-    inputType: "number",
+    inputType: "numberAnio",
     show: true,
+    min: 2022,
+    max: new Date().getFullYear(),
   },
   {
     label: "Nro. Acto",
@@ -80,7 +82,7 @@ const labels = [
 
 const INITIAL_STATE = {};
 
-labels.map((l) => (INITIAL_STATE[l.inputKey] = l.value));
+labels.map((l) => (INITIAL_STATE[l.inputKey] = l.value ?? ""));
 INITIAL_STATE["liquidacion_id"] = 0;
 
 export const VerOrdenes = ({ ...props }) => {
@@ -103,10 +105,24 @@ export const VerOrdenes = ({ ...props }) => {
         break;
 
       case "number":
-        setError({
-          ...error,
-          [e.target.name]: !NUMBER_REGEX.test(e.target.value),
-        });
+        let mixedType = e.target.attributes["data-mixedtype"].nodeValue;
+        if (mixedType == "numberAnio") {
+          setError({
+            ...error,
+            [e.target.name]:
+              e.target.value < e.target.min
+                ? 1
+                : e.target.value > e.target.max
+                ? 2
+                : 0,
+          });
+        } else {
+          setError({
+            ...error,
+            [e.target.name]: !NUMBER_REGEX.test(e.target.value),
+          });
+        }
+
         break;
     }
     setOP({ ...OP, [e.target.name]: e.target.value });
@@ -270,25 +286,30 @@ export const VerOrdenes = ({ ...props }) => {
                 flexDirection: window.innerWidth < 1000 ? "column" : "row",
               }}
             >
-              {labels.slice(0, 6).map(
-                (l, i) =>
-                  l.show && (
+              {labels.slice(0, 6).map((l, i) => {
+                const { disabled, inputKey, inputType, label, show, min, max } =
+                  l;
+                return (
+                  show && (
                     <React.Fragment key={i}>
                       <InputField
-                        inputKey={l.inputKey}
-                        value={OP[l.inputKey]}
-                        key={l.inputKey}
-                        label={l.label}
-                        error={error[l.inputKey]}
-                        disabled={l.disabled}
-                        inputType={l.inputType}
+                        inputKey={inputKey}
+                        value={OP[inputKey]}
+                        key={inputKey}
+                        label={label}
+                        error={error[inputKey]}
+                        disabled={disabled}
+                        inputType={inputType}
                         handleChange={handleInputChange}
                         required={true}
+                        min={min ?? null}
+                        max={max ?? null}
                       />
                       {i != 5 && <span>-</span>}
                     </React.Fragment>
                   )
-              )}
+                );
+              })}
             </div>
             <InputField
               label="Nro. O.P"
