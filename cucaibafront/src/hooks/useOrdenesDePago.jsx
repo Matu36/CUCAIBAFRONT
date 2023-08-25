@@ -41,6 +41,10 @@ export const useVerOrdenDePago = (definitivo = false) => {
   };
 };
 
+//Funcion para borrar Orden de Pago
+
+
+
 // Función para asignar numeración definitiva a órdenes de pago
 const asignarDefinitivoOP = async (data) => {
   return await OrdenesDePagoAPI.post("/asignar-definitiva", data);
