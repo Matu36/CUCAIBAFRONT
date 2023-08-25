@@ -75,7 +75,7 @@ const PostOperativos = () => {
             required
             label="Proceso de donación"
             inputType="text"
-            inputKey="Referencia"
+            inputKey="referencia"
             value={operativo.referencia}
             onChange={(e) => {
               setOperativo({ ...operativo, referencia: e.target.value });
