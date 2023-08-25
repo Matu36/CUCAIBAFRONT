@@ -86,28 +86,31 @@ const GetAgentes = ({ ...props }) => {
 
   return (
     <>
-      <div>
-        <span className="Titulo"> Agentes </span>
-      </div>
-      <span className="Subtitulo">Listado de todos los Agentes cargados</span>
 
       <div className="card">
         <div>
-          <div
-            className="input-group mb-3 inputSearch"
-            style={{ maxWidth: "40%" }}
-          >
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Buscar por APELLIDO o CUIL"
-              onChange={handleOnChange}
-              value={search}
-              autoComplete="off"
-            />
-          </div>
-          <hr />
+          <h1 className="section-title"> Agentes </h1>
         </div>
+        <h2 className="section-subtitle">
+          Listado de todos los Agentes cargados
+        </h2>
+        <hr />
+        <br />
+
+        <div
+          className="input-group mb-3 inputSearch"
+          style={{ maxWidth: "40%" }}
+        >
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Buscar por APELLIDO o CUIL"
+            onChange={handleOnChange}
+            value={search}
+            autoComplete="off"
+          />
+        </div>
+      </div>
 
         <DataTable
           columns={columns}
