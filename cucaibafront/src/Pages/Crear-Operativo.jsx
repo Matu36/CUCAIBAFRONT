@@ -6,7 +6,7 @@ export const CrearOperativo = () => {
   return (
     <Layout
       Titulo="Crear Operativo"
-      Subtitulo="Completa todos los campos para crear el Operativo"
+      Subtitulo="Completa los campos obligatorios para crear el Operativo"
     >
       <PostOperativos />
       <br />
