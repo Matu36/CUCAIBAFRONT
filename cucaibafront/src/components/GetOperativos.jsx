@@ -90,42 +90,27 @@ const GetOperativos = () => {
   ];
 
   return (
-    <div className="card">
-      <>
-        <div>
-          <span className="Titulo"> Operativos </span>
-        </div>
-        <span className="Subtitulo">Listado de todos los Operativos</span>
-        <br />
-
-        <div
-          className="input-group mb-3 inputSearch"
-          style={{ maxWidth: "40%" }}
-        >
-          <input
-            type="text"
-            className="form-control"
-            placeholder="Buscar por PD o Descripción"
-            onChange={handleOnChange}
-            value={search}
-            autoComplete="off"
-          />
-        </div>
-
-        <DataTable
-          columns={columns}
-          data={operativo}
-          pagination
-          striped
-          paginationComponentOptions={paginationOptions}
-          noDataComponent={<EmptyTable msg="No se encontro el operativo" />}
-          customStyles={customStyles}
+    <div>
+      <div className="input-group mb-3 inputSearch" style={{ maxWidth: "40%" }}>
+        <input
+          type="text"
+          className="form-control"
+          placeholder="Buscar por PD o Descripción"
+          onChange={handleOnChange}
+          value={search}
+          autoComplete="off"
         />
-      </>
-
-      <div>
-        <BackButton />
       </div>
+
+      <DataTable
+        columns={columns}
+        data={operativo}
+        pagination
+        striped
+        paginationComponentOptions={paginationOptions}
+        noDataComponent={<EmptyTable msg="No se encontro el operativo" />}
+        customStyles={customStyles}
+      />
     </div>
   );
 };

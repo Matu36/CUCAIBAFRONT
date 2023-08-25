@@ -19,7 +19,7 @@ const Modal = ({
       aria-hidden="true"
     >
       <div className="modal-dialog">
-        <div className="modal-content">
+        <div className="modal-content bg-white">
           <div className="modal-header">
             <h5 className="modal-title" style={{ color: "#5DADE2" }}>
               {title}

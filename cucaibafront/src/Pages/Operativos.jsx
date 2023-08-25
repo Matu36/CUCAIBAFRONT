@@ -1,13 +1,14 @@
 import React from "react";
 import GetOperativos from "../components/GetOperativos";
+import Layout from "../components/Layout/LayoutContainer";
 
 export const Operativos = () => {
   return (
-    <div className="container p-4">
+    <Layout Subtitulo="Listado de todos los Operativo" Titulo="Operativos">
       <GetOperativos />
 
       <br />
-    </div>
+    </Layout>
   );
 };
 

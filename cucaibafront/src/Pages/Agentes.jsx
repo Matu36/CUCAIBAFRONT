@@ -1,14 +1,13 @@
 import React from "react";
 import GetAgentes from "../components/GetAgentes";
-
+import Layout from "../components/Layout/LayoutContainer";
 
 const Agentes = () => {
   return (
-    <div className="container p-4">
+    <Layout Titulo="Agentes" Subtitulo="Listado de todos los Agentes cargados">
       <GetAgentes />
       <br />
-     
-    </div>
+    </Layout>
   );
 };
 

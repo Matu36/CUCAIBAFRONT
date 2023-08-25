@@ -19,9 +19,8 @@ import { NumerosALetras } from "numero-a-letras";
 import NumberFormatter from "../utils/NumberFormatter";
 import BackButton from "../components/UI/BackButton";
 
-//Componente, que dentro de Ver órdenes de Pago, muestra los datos del agente dentro del Honorario creado, el operativo y las funciones que 
+//Componente, que dentro de Ver órdenes de Pago, muestra los datos del agente dentro del Honorario creado, el operativo y las funciones que
 //desempeñó, asi como el monto unitario y el monto total; Da la posibilidad de Descargar el PDF.
-
 
 //Estilos para el PDF
 
@@ -41,15 +40,13 @@ export const styles = StyleSheet.create({
   },
 
   cbu: {
-    
-      padding: 2,
-      flex: 1,
-      borderWidth: 0.5,
-      borderColor: "gray",
-      fontSize: "8px",
-      flexShrink: 1,
-      flexWrap: "wrap",
-
+    padding: 2,
+    flex: 1,
+    borderWidth: 0.5,
+    borderColor: "gray",
+    fontSize: "8px",
+    flexShrink: 1,
+    flexWrap: "wrap",
   },
 
   header: {
@@ -182,8 +179,6 @@ export const styles = StyleSheet.create({
     marginRight: 10,
     textAlign: "center",
   },
-  
-  
 });
 
 const numberInWords = (number) => NumerosALetras(number);
@@ -203,7 +198,6 @@ export const OrdenDetail = () => {
   const personasExceptLast = personasArray.slice(0, -1);
 
   const gastos = personasArray[personasArray.length - 1];
-
 
   //PDF
 
@@ -429,15 +423,10 @@ export const OrdenDetail = () => {
     </Document>
   );
 
-//Vista de la pagina en el navegador
+  //Vista de la pagina en el navegador
 
   return (
-    <div className="card">
-      <h1> Órden de Pago </h1>
-      <h5 className="subtitulo" style={{ color: "#5DADE2" }}>
-        Detalle de la órden de pago
-      </h5>
-      <br />
+    <div>
       {isFetched ? (
         <>
           <div className="table-container">
@@ -505,9 +494,6 @@ export const OrdenDetail = () => {
                   loading ? "Cargando documento..." : "Descargar"
                 }
               </PDFDownloadLink>
-            </div>
-            <div>
-              <BackButton />
             </div>
           </div>
         </>

@@ -9,6 +9,7 @@ import { ArchivoAPI } from "../api/ArchivoAPI";
 import { validateFecha } from "../utils/Validaciones";
 import Modal from "../components/UI/Modal";
 import InputField from "../components/UI/InputField";
+import Layout from "../components/Layout/LayoutContainer";
 
 const Archivos = () => {
   const { data, isFetched, isFetching } =
@@ -163,44 +164,36 @@ const Archivos = () => {
   };
 
   return (
-    <div className="container p-4">
-      <div className="card">
-        {isFetched && !isFetching ? (
-          <>
-            <h1>Archivos de Transferencia</h1>
-            <h5 className="subtitulo" style={{ color: "#5DADE2" }}>
-              Listado de todas las órdenes de pago con numeración definitiva
-            </h5>
-            <br />
-
-            <div className="input-group mb-3" style={{ maxWidth: "40%" }}>
-              <input
-                type="text"
-                className="form-control"
-                placeholder="Buscar por Número de OP Definitivo"
-                onChange={handleOnChange}
-                value={search}
-                autoComplete="off"
-              />
-            </div>
-
-            <DataTable
-              columns={columns}
-              data={Op}
-              pagination
-              striped
-              paginationComponentOptions={paginationOptions}
-              noDataComponent={<EmptyTable msg="No hay órdenes de pago" />}
+    <Layout
+      Titulo="Archivos de Transferencia"
+      Subtitulo="Listado de todas las órdenes de pago con numeración definitiva"
+    >
+      {isFetched && !isFetching ? (
+        <>
+          <div className="input-group mb-3" style={{ maxWidth: "40%" }}>
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Buscar por Número de OP Definitivo"
+              onChange={handleOnChange}
+              value={search}
+              autoComplete="off"
             />
-            <div>
-              <BackButton />
-            </div>
-          </>
-        ) : (
-          <Spinner />
-        )}
-      </div>
-    </div>
+          </div>
+
+          <DataTable
+            columns={columns}
+            data={Op}
+            pagination
+            striped
+            paginationComponentOptions={paginationOptions}
+            noDataComponent={<EmptyTable msg="No hay órdenes de pago" />}
+          />
+        </>
+      ) : (
+        <Spinner />
+      )}
+    </Layout>
   );
 };
 

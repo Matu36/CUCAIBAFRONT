@@ -1,11 +1,16 @@
 import React from "react";
 import { VerOrdenes } from "../components/Ver-Ordenes";
+import Layout from "../components/Layout/LayoutContainer";
 
 const VerOrden = () => {
   return (
-    <div className="container p-4">
+    <Layout
+      Titulo="Órdenes de Pago"
+      Subtitulo="Listado de todas las órdenes de pago"
+    >
       <VerOrdenes />
-    </div>
+      <br />
+    </Layout>
   );
 };
 

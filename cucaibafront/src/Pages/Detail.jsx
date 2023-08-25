@@ -1,12 +1,17 @@
 import React from "react";
 import DetalleAgente from "../components/DetalleAgente";
+import Layout from "../components/Layout/LayoutContainer";
 
 const Detail = () => {
   return (
-    <div className="container p-4">
+    <Layout
+      Subtitulo="Datos relevantes del agente y aquellos operativos en los que
+    participo"
+      Titulo="Detalle del Agente"
+    >
       <DetalleAgente />
       <br />
-    </div>
+    </Layout>
   );
 };
 

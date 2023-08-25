@@ -6,10 +6,7 @@ import { useNavigate } from "react-router-dom";
 const BackButton = () => {
   const navigate = useNavigate();
   return (
-    <button
-      onClick={() => navigate(-1)}
-      className="btn btn-outline-dark"
-    >
+    <button onClick={() => navigate(-1)} className="btn btn-back">
       Volver
     </button>
   );

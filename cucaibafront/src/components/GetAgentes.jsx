@@ -62,7 +62,7 @@ const GetAgentes = ({ ...props }) => {
       name: "Acciones",
       cell: (row) => (
         <Link to={`/agentes/agente/${row.id}`}>
-          <button className="btn btn-success btn-md btnSearch">
+          <button className="btn btn-guardar btn-md btnSearch">
             Ver detalle del Agente
           </button>
         </Link>
@@ -86,17 +86,7 @@ const GetAgentes = ({ ...props }) => {
 
   return (
     <>
-
-      <div className="card">
-        <div>
-          <h1 className="section-title"> Agentes </h1>
-        </div>
-        <h2 className="section-subtitle">
-          Listado de todos los Agentes cargados
-        </h2>
-        <hr />
-        <br />
-
+      <div>
         <div
           className="input-group mb-3 inputSearch"
           style={{ maxWidth: "40%" }}
@@ -110,7 +100,6 @@ const GetAgentes = ({ ...props }) => {
             autoComplete="off"
           />
         </div>
-      </div>
 
         <DataTable
           columns={columns}
@@ -124,9 +113,6 @@ const GetAgentes = ({ ...props }) => {
           {...props}
           customStyles={customStyles}
         />
-        <div>
-          <BackButton />
-        </div>
       </div>
     </>
   );

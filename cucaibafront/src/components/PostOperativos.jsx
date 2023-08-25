@@ -68,10 +68,8 @@ const PostOperativos = () => {
     }
   };
   return (
-    <div className="card">
+    <div>
       <form onSubmit={handleOnSubmit}>
-        <br />
-
         <div className="mb-3">
           <label htmlFor="inputReferncia" className="form-label">
             Proceso de Donación <span style={{ color: "red" }}>*</span>
@@ -149,7 +147,7 @@ const PostOperativos = () => {
           <div>
             <button
               type="submit"
-              className="btn btn-success btn-md"
+              className="btn btn-guardar btn-md"
               disabled={showError.referencia}
             >
               Agregar Operativo
@@ -157,9 +155,6 @@ const PostOperativos = () => {
           </div>
         </div>
       </form>
-      <div>
-        <BackButton />
-      </div>
     </div>
   );
 };

@@ -202,7 +202,7 @@ const Modulos = ({ ...props }) => {
             }`}
           >
             <button
-              className={`btn btn-success btn-sm ${
+              className={`btn btn-guardar btn-sm ${
                 row.fechaHasta ? "d-none" : "d-block"
               }`}
               onClick={() => handleEdit(row.id, row.valor)}
@@ -225,15 +225,7 @@ const Modulos = ({ ...props }) => {
   ];
 
   return (
-    <div className="card">
-      <span className="Titulo">Módulos</span>
-      <div>
-      <span className="Subtitulo">
-        Listado de todos los módulos
-      </span>
-      </div>
-      <br />
-
+    <div>
       <div
         className="d-flex gap-2 w-100 justify-content-between align-items-center"
         style={{ flexDirection: window.innerWidth < 1000 ? "column" : "row" }}
@@ -298,10 +290,6 @@ const Modulos = ({ ...props }) => {
           {...props}
         />
       )}
-
-      <div>
-        <BackButton />
-      </div>
     </div>
   );
 };

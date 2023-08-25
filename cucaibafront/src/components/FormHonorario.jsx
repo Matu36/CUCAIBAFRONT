@@ -243,7 +243,7 @@ export const FormHonorario = () => {
           >
             Cancelar
           </button>
-          <button type="submit" className="btn btn-success pt-2">
+          <button type="submit" className="btn btn-guardar pt-2">
             Crear Honorario
           </button>
         </div>

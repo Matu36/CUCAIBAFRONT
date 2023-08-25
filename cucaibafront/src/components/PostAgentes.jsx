@@ -7,6 +7,9 @@ import BackButton from "../components/UI/BackButton";
 import { validateDNI } from "../utils/Validaciones";
 import { usePersona } from "../hooks/usePersona";
 import { FaSearch } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+import { useQueryClient } from "@tanstack/react-query";
+import InputField from "../components/UI/InputField";
 
 //Componente que busca la persona en el SQLServer y autocompleta los campos del formulario para la creación del agente
 
@@ -22,6 +25,9 @@ const INITIALSTATE = {
 };
 
 const postAgente = () => {
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+
   let dispatch = useDispatch();
   const [agente, setAgente] = useState(INITIALSTATE);
   const [showForm, setShowForm] = useState(false);
@@ -161,10 +167,13 @@ const postAgente = () => {
         confirmButtonText: "Cerrar",
         confirmButtonColor: "#4CAF50",
         timer: 2000,
+      }).then(() => {
+        queryClient.removeQueries(["persona", agente.nroDocumento]);
+        setAgente(INITIALSTATE);
+        setClicked(false);
+        setShowForm(false);
+        navigate("../ver-agentes");
       });
-      setAgente(INITIALSTATE);
-      setClicked(false);
-      setShowForm(false);
     } else if (!agente.nroDocumento) {
       Swal.fire({
         position: "center",
@@ -184,7 +193,7 @@ const postAgente = () => {
           <div className="mb-3">
             <div className="d-flex gap-3 mb-2">
               <label htmlFor="inputFechadePago" className="form-label">
-                DNI
+                DNI:
               </label>
               {isFetching && (
                 <div
@@ -196,7 +205,7 @@ const postAgente = () => {
 
             <div className="mb-3 d-flex flex-md-row formAgente gap-2 align-items-center">
               <input
-                maxlength="9"
+                maxLength="9"
                 min="0"
                 type="number"
                 className="form-control"
@@ -204,6 +213,7 @@ const postAgente = () => {
                 aria-describedby="DNIHelp"
                 name="DNI"
                 value={agente.nroDocumento}
+                disabled={isFetching}
                 autoComplete="off"
                 placeholder="DNI"
                 onInput={(e) => {
@@ -229,7 +239,7 @@ const postAgente = () => {
                 }}
               />
               <button
-                className="btn btn-dark btn btn-md"
+                className="btn btn-buscar btn btn-md"
                 type="button"
                 onClick={handleFindPersona}
                 style={{ display: "inline-flex", alignItems: "center" }}
@@ -247,123 +257,85 @@ const postAgente = () => {
             </div>
           </div>
           {showForm && (
-            <>
-              <div className="mb-3">
-                <label htmlFor="inputApellido" className="form-label">
-                  Apellido
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="inputApellido"
-                  aria-describedby="ApellidoHelp"
-                  name="apellido"
+            <div className="row">
+              <div className="col-md-6">
+                {" "}
+                <InputField
+                  inputKey="Apellido"
+                  inputType="text"
                   value={agente.apellido}
-                  autoComplete="off"
-                  placeholder="Apellido"
+                  label="Apellido"
                   disabled
                   onChange={(e) =>
                     setAgente({ ...agente, apellido: e.target.value })
                   }
                 />
-              </div>
-              <div className="mb-3">
-                <label htmlFor="inputNombre" className="form-label">
-                  Nombre
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="inputNombre"
-                  aria-describedby="NombreHelp"
-                  name="Nombre"
+                <InputField
+                  inputKey="Nombre"
+                  inputType="text"
                   value={agente.nombre}
-                  autoComplete="off"
-                  placeholder="Nombre"
+                  label="Nombre"
                   disabled
                   onChange={(e) =>
                     setAgente({ ...agente, nombre: e.target.value })
                   }
                 />
-              </div>
-              <div className="mb-3">
-                <label htmlFor="inputLegajo" className="form-label">
-                  Legajo
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="inputLegajo"
-                  aria-describedby="LegajoHelp"
-                  name="legajo"
+                <InputField
+                  inputKey="Legajo"
+                  inputType="text"
                   value={agente.legajo}
-                  autoComplete="off"
-                  placeholder="Legajo"
+                  label="Legajo"
                   disabled
                   onChange={(e) =>
                     setAgente({ ...agente, legajo: e.target.value })
                   }
                 />
               </div>
-              <div className="mb-3">
-                <label htmlFor="inputDescripción" className="form-label">
-                  CUIL
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="inputCUIL"
-                  aria-describedby="CUILHelp"
-                  name="CUIL"
+              <div className="col-md-6">
+                {" "}
+                <InputField
+                  inputKey="CUIL"
+                  inputType="text"
                   value={agente.cuil}
-                  autoComplete="off"
-                  placeholder="CUIL"
+                  label="CUIL"
                   disabled
                   onChange={(e) =>
                     setAgente({ ...agente, cuil: e.target.value })
                   }
                 />
-              </div>
-              <div className="mb-3">
-                <label htmlFor="inputDescripción" className="form-label">
-                  CBU
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="inputCBU"
-                  aria-describedby="CBUHelp"
-                  name="CBU"
+                <InputField
+                  inputKey="CBU"
+                  inputType="text"
                   value={agente.cbu}
-                  autoComplete="off"
-                  placeholder="CBU"
+                  label="CBU"
                   disabled
                   onChange={(e) =>
                     setAgente({ ...agente, cbu: e.target.value })
                   }
                 />
+                <div className="mb-3">
+                  <label htmlFor="inputTipoPago" className="form-label">
+                    Tipo de Pago:
+                  </label>
+                  <select
+                    id="inputTipoPago"
+                    aria-describedby="TipoPagoHelp"
+                    name="TipoPago"
+                    value={agente.tipoPago}
+                    placeholder="tipoPago"
+                    disabled
+                    onChange={(e) =>
+                      setAgente({ ...agente, tipoPago: e.target.value })
+                    }
+                    className="form-select form-select-md mb-3 form-control"
+                  >
+                    <option defaultValue="">Selecciona una opción</option>
+                    <option value="ch">Cheque</option>
+                    <option value="cb">Cuenta Bancaria</option>
+                  </select>
+                </div>
               </div>
-              <div className="mb-3">
-                <label htmlFor="inputTipoPago" className="form-label">
-                  Tipo de Pago
-                </label>
-                <select
-                  id="inputTipoPago"
-                  aria-describedby="TipoPagoHelp"
-                  name="TipoPago"
-                  value={agente.tipoPago}
-                  placeholder="tipoPago"
-                  disabled
-                  onChange={(e) =>
-                    setAgente({ ...agente, tipoPago: e.target.value })
-                  }
-                  className="form-select form-select-md mb-3 form-control"
-                >
-                  <option defaultValue="">Selecciona una opción</option>
-                  <option value="ch">Cheque</option>
-                  <option value="cb">Cuenta Bancaria</option>
-                </select>
-              </div>
+
               <div className="mb-3">
                 <input
                   type="hidden"
@@ -386,14 +358,14 @@ const postAgente = () => {
                   {statusForm == "create" && (
                     <button
                       type="submit"
-                      className="btn btn-success btn btn-md"
+                      className="btn btn-guardar btn btn-md"
                     >
                       Cargar Agente
                     </button>
                   )}
                 </div>
               </div>
-            </>
+            </div>
           )}
         </form>
         <br />

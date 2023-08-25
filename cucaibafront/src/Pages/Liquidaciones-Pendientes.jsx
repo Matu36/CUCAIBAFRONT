@@ -1,12 +1,16 @@
 import React from "react";
 import Liquidaciones from "../components/Liquidaciones";
+import Layout from "../components/Layout/LayoutContainer";
 
 const LiquidacionesPendientes = () => {
   return (
-    <div className="container p-4">
+    <Layout
+      Titulo="Órdenes de Pago"
+      Subtitulo="Listado de agentes Pendientes de Orden de Pago"
+    >
       <Liquidaciones />
       <br />
-    </div>
+    </Layout>
   );
 };
 

@@ -13,7 +13,6 @@ import { useAgentes } from "../../../hooks/useAgentes";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 
-
 // Se usa en el componente TablaHonorarios al hacer click en los operativos.
 
 const RowExpandedComponent = ({ data: operativo }) => {
@@ -200,9 +199,6 @@ const RowExpandedComponent = ({ data: operativo }) => {
       >
         <div>
           <div>
-           
-           
-         
             {typeof agentesDisponibles == "object" ? (
               <DataTable
                 columns={columns}
@@ -220,7 +216,7 @@ const RowExpandedComponent = ({ data: operativo }) => {
                 <h5>No hay ningun agente disponible</h5>
                 <button
                   type="button"
-                  className="btn btn-success"
+                  className="btn btn-guardar"
                   onClick={handleNavigate}
                 >
                   Crear Agente
@@ -247,7 +243,7 @@ const RowExpandedComponent = ({ data: operativo }) => {
                 <div></div>
                 <button
                   type="btn"
-                  className="btn btn-outline-success"
+                  className="btn btn-outline-guardar"
                   data-bs-toggle="modal"
                   data-bs-target="#agregarAgenteModal"
                 >

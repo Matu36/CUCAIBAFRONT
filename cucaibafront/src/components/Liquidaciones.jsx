@@ -213,7 +213,7 @@ const Liquidaciones = ({ ...props }) => {
               <div className="modal-footer">
                 <button
                   type="button"
-                  className="btn btn-success"
+                  className="btn btn-guardar"
                   onClick={handleClick}
                   disabled={
                     inputValue.nroFolio.length == 0 ||
@@ -225,13 +225,7 @@ const Liquidaciones = ({ ...props }) => {
               </div>
             </div>
           </Modal>
-          <div className="card">
-            <h1>Órdenes de Pago</h1>
-            <h5 className="subtitulo" style={{ color: "#5DADE2" }}>
-              Listado de agentes Pendientes de Orden de Pago
-            </h5>
-            <br />
-
+          <div>
             <div
               className="input-group mb-3"
               style={{ width: window.innerWidth < 1000 ? "100%" : "45%" }}
@@ -268,9 +262,6 @@ const Liquidaciones = ({ ...props }) => {
             </div>
             <div className="d-flex justify-content-between">
               <div>
-                <BackButton />
-              </div>
-              <div>
                 <div>
                   <h5>
                     Total: $<span>{NumberFormatter(total)}</span>
@@ -283,7 +274,7 @@ const Liquidaciones = ({ ...props }) => {
                 </div>
                 <button
                   type="submit"
-                  className="btn btn-success"
+                  className="btn btn-guardar"
                   disabled={selectedRows.length == 0 || total > LIMITE}
                   data-bs-toggle="modal"
                   data-bs-target="#opModal"

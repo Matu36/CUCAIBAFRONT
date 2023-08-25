@@ -14,7 +14,6 @@ import Modal from "./UI/Modal";
 import InputField from "./UI/InputField";
 import PrintOrdenPago from "./PrintOrdenPago";
 
-
 const NUMBER_REGEX = /^[0-9]+$/;
 const STRING_REGEX = /^[a-zA-Z]+$/;
 
@@ -150,7 +149,7 @@ export const VerOrdenes = ({ ...props }) => {
       cell: (row) => (
         <div className="dropdown dropend">
           <button
-            className="btn btn-secondary dropdown-toggle"
+            className="btn btn-secondary dropdown-toggle dropdown-button"
             type="button"
             id="dropdownMenuButton1"
             data-bs-toggle="dropdown"
@@ -310,7 +309,7 @@ export const VerOrdenes = ({ ...props }) => {
               Salir
             </button>
             <button
-              className="btn btn-success btn-md"
+              className="btn btn-guardar btn-md"
               onClick={handleSubmit}
               type="submit"
             >
@@ -319,38 +318,27 @@ export const VerOrdenes = ({ ...props }) => {
           </div>
         </div>
       </Modal>
-      <div className="card">
+      <div>
+        <div className="input-group mb-3" style={{ maxWidth: "40%" }}>
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Buscar por Número de OP"
+            disabled={!isFetched}
+            onChange={handleOnChange}
+            value={search}
+            autoComplete="off"
+          />
+        </div>
         {isFetched ? (
-          <>
-            <h1>Órdenes de Pago</h1>
-            <h5 className="subtitulo" style={{ color: "#5DADE2" }}>
-              Listado de todas las órdenes de pago
-            </h5>
-            <br />
-
-            <div className="input-group mb-3" style={{ maxWidth: "40%" }}>
-              <input
-                type="text"
-                className="form-control"
-                placeholder="Buscar por Número de OP"
-                onChange={handleOnChange}
-                value={search}
-                autoComplete="off"
-              />
-            </div>
-
-            <DataTable
-              columns={columns}
-              data={Op}
-              pagination
-              striped
-              paginationComponentOptions={paginationOptions}
-              noDataComponent={<EmptyTable msg="No hay órdenes de pago" />}
-            />
-            <div>
-              <BackButton />
-            </div>
-          </>
+          <DataTable
+            columns={columns}
+            data={Op}
+            pagination
+            striped
+            paginationComponentOptions={paginationOptions}
+            noDataComponent={<EmptyTable msg="No hay órdenes de pago" />}
+          />
         ) : (
           <Spinner />
         )}

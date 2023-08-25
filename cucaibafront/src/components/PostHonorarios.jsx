@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useModulos } from "../hooks/useModulos";
 import { AiOutlinePlus } from "react-icons/ai";
 
-
 //Componente para agregar Función al agente
 
 const PostHonorarios = ({
@@ -92,7 +91,7 @@ const PostHonorarios = ({
           <button
             id="buttonAddModulo"
             type="button"
-            className="btn btn-success"
+            className="btn btn-guardar"
             disabled={value == 0}
             onClick={() => {
               handleCreateClick();
