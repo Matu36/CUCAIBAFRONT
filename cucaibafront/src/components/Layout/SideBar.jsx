@@ -139,14 +139,7 @@ function SideBar({ isOpen, setIsOpen }) {
                 Ver Órdenes de Pago
               </Link>
             </li>
-            <li>
-              <Link
-                to="/ordenes/eliminar-ordenes"
-                onClick={() => setIsOpen(false)}
-              >
-                Eliminar Órdenes de Pago
-              </Link>
-            </li>
+           
           </ul>
         </li>
         <li>
