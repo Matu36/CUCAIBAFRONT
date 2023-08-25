@@ -1,22 +1,17 @@
 import React from "react";
 import PostAgentes from "../components/PostAgentes";
+import Layout from "../components/Layout/LayoutContainer";
 
 const CrearAgente = () => {
   return (
-    <div className="container p-4 card mt-5">
-      <div>
-        <span className="Titulo">Creación de Agente </span>
-        <div>
-          <span className="Subtitulo">
-            Ingresa el DNI de la persona y se completarán automáticamente los
-            campos para crear el agente
-          </span>
-        </div>
-        <hr />
-      </div>
+    <Layout
+      Subtitulo="Ingresa el DNI de la persona y se completarán automáticamente los
+    campos para crear el agente"
+      Titulo="Creación de Agente"
+    >
       <PostAgentes />
       <br />
-    </div>
+    </Layout>
   );
 };
 

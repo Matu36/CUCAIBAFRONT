@@ -368,12 +368,6 @@ const postAgente = () => {
             </div>
           )}
         </form>
-        <br />
-        <br />
-
-        <div>
-          <BackButton />
-        </div>
       </div>
     </>
   );
