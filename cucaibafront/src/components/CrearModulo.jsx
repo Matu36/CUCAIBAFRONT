@@ -58,7 +58,7 @@ const CrearModulo = ({ handleCerrarFormulario }) => {
         showConfirmButton: false,
         timer: 3000,
       });
-      
+
       setModulo({
         valor: "",
         descripcion: "",
@@ -111,7 +111,7 @@ const CrearModulo = ({ handleCerrarFormulario }) => {
         <div className="col-md-6">
           <h5> Tipo: Variable</h5>
         </div>
-       
+
         <div className="row">
           <div className="col-md-6">
             <label htmlFor="descripcion">
@@ -205,7 +205,7 @@ const CrearModulo = ({ handleCerrarFormulario }) => {
           >
             Cancelar
           </button>
-          <button type="submit" className="btn btn-success pt-2">
+          <button type="submit" className="btn btn-guardar pt-2">
             Crear Modulo
           </button>
         </div>
