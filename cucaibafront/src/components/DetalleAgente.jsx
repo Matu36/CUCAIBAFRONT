@@ -23,15 +23,7 @@ const DetalleAgente = () => {
   }
 
   return (
-    <div className="card p-0 mb-3">
-      <div className="p-4">
-        <h1 className="Titulo">Detalle del Agente</h1>
-        <h6 className="Subtitulo" style={{ color: "#5DADE2" }}>
-          Aca podes ver los datos relevantes del agente y aquellos operativos en
-          los que participo
-        </h6>
-        <hr />
-      </div>
+    <div className="p-0 mb-3">
       <div className="card-body justify-content-evenly d-flex gap-2 flex-wrap detalleAgente">
         <div className="data-row">
           <div className="value">{agenteData[0].apellido}</div>
@@ -96,11 +88,6 @@ const DetalleAgente = () => {
             )}
           </div>
         </div>
-      </div>
-
-      <br />
-      <div style={{ marginLeft: "1rem", marginBottom: "1rem" }}>
-        <BackButton />
       </div>
     </div>
   );

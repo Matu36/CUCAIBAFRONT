@@ -11,6 +11,7 @@ import RowExpandedComponent from "../components/UI/Table/RowExpandedComponent";
 import { getHonorario, getOperativos } from "../Redux/Actions";
 import Spinner from "../components/UI/Spinner";
 import BackButton from "../components/UI/BackButton";
+import Layout from "../components/Layout/LayoutContainer";
 
 const TablaHonorarios = () => {
   const dispatch = useDispatch();
@@ -101,47 +102,32 @@ const TablaHonorarios = () => {
   ];
 
   return (
-    <>
-      <div className="card">
-        <div className="mb-5">
-          <span className="Titulo">Honorarios</span>
-          <div>
-          <span className="Subtitulo">
-            Carga de Honorarios Variables
-          </span>
-          </div>
-          <hr />
-          <div
-            className="input-group mb-3 inputSearch"
-            style={{ maxWidth: "40%" }}
-          >
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Buscar por Proceso de Donación"
-              onChange={handleOnChange}
-              value={search}
-              autoComplete="off"
-            />
-          </div>
-        </div>
-        <DataTable
-          columns={columns}
-          data={honorario}
-          pagination
-          striped
-          paginationComponentOptions={paginationOptions}
-          noDataComponent={
-            <EmptyTable msg="No se encontró el PD con ese número de Referencia" />
-          }
-          expandableRows
-          expandableRowsComponent={RowExpandedComponent}
-        />
-        <div>
-          <BackButton />
+    <Layout Titulo="Honorarios" Subtitulo="Carga de Honorarios Variables">
+      <div className="mb-5">
+        <div className="input-group inputSearch" style={{ maxWidth: "40%" }}>
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Buscar por Proceso de Donación"
+            onChange={handleOnChange}
+            value={search}
+            autoComplete="off"
+          />
         </div>
       </div>
-    </>
+      <DataTable
+        columns={columns}
+        data={honorario}
+        pagination
+        striped
+        paginationComponentOptions={paginationOptions}
+        noDataComponent={
+          <EmptyTable msg="No se encontró el PD con ese número de Referencia" />
+        }
+        expandableRows
+        expandableRowsComponent={RowExpandedComponent}
+      />
+    </Layout>
   );
 };
 
