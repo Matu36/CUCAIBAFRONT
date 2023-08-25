@@ -53,7 +53,7 @@ export const useOperativo = (operativoId = 0) => {
             text: "Ya existe un operativo con ese Proceso de Donación",
             title: "Hubo un error",
             showConfirmButton: false,
-            timer: 2000,
+            timer: 5000,
           });
           break;
 
