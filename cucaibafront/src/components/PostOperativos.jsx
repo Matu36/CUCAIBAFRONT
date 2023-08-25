@@ -1,9 +1,9 @@
 import { useState } from "react";
 import Swal from "sweetalert2";
 import "../assets/styles/detalle.css";
-import BackButton from "../components/UI/BackButton";
 import { useOperativo } from "../hooks/useOperativo";
 import { validateFecha } from "../utils/Validaciones";
+import InputField from "./UI/InputField";
 
 //Componente para crear el OPERATIVO
 
@@ -12,7 +12,7 @@ const PostOperativos = () => {
 
   const [showError, setShowError] = useState({
     referencia: false,
-    fecha: false,
+    fecha: 0,
   });
 
   const validateString = (inputName, value) => {
@@ -70,19 +70,13 @@ const PostOperativos = () => {
   return (
     <div>
       <form onSubmit={handleOnSubmit}>
-        <div className="mb-3">
-          <label htmlFor="inputReferncia" className="form-label">
-            Proceso de Donación <span style={{ color: "red" }}>*</span>
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            id="inputReferencia"
-            aria-describedby="ReferenciaHelp"
-            name="referencia"
+        <div>
+          <InputField
+            required
+            label="Proceso de donación"
+            inputType="text"
+            inputKey="Referencia"
             value={operativo.referencia}
-            autoComplete="off"
-            placeholder="N° de Proceso de Donación"
             onChange={(e) => {
               setOperativo({ ...operativo, referencia: e.target.value });
               validateString(e.target.name, e.target.value);
@@ -95,60 +89,58 @@ const PostOperativos = () => {
           )}
         </div>
         <div className="mb-3">
-          <label htmlFor="inputFecha" className="form-label">
-            Fecha <span style={{ color: "red" }}>*</span>
-          </label>
-          <input
-            type="date"
-            className="form-control"
-            id="inputFecha"
-            aria-describedby="FechaHelp"
-            name="Fecha"
+          <InputField
+            required
+            min="2022-01-01"
+            label="Fecha"
+            inputType="date"
+            inputKey="Fecha"
             value={operativo.fecha}
-            autoComplete="off"
-            placeholder="Fecha del operativo"
             onChange={(e) => {
               setOperativo({ ...operativo, fecha: e.target.value });
               setShowError({
                 ...showError,
-                fecha: validateFecha(e.target.value),
+                fecha: validateFecha(e.target.value)
+                  ? 1
+                  : e.target.value < e.target.min
+                  ? 2
+                  : 0,
               });
             }}
           />
-          {showError.fecha && (
+          {showError.fecha == 1 && (
             <div style={{ color: "red" }}>
-              No se puede elegir una fecha posterior a la de hoy
+              La fecha no puede ser posterior al dia de hoy
+            </div>
+          )}
+          {showError.fecha == 2 && (
+            <div style={{ color: "red" }}>
+              La fecha no puede ser anterior al año 2022
             </div>
           )}
         </div>
-        <div className="mb-3">
-          <label htmlFor="inputDescripción" className="form-label">
-            Descripción
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            id="inputDescripción"
-            aria-describedby="DescripciónHelp"
-            name="descripción"
-            value={operativo.descripcion}
-            autoComplete="off"
-            placeholder="Descripción"
-            onChange={(e) => {
-              setOperativo({ ...operativo, descripcion: e.target.value });
-              validateString(e.target.name, e.target.value);
-            }}
-          />
-        </div>
-        <br />
-        <br />
+        <InputField
+          label="Descripción"
+          inputType="text"
+          inputKey="Descripcion"
+          value={operativo.descripcion}
+          onChange={(e) => {
+            setOperativo({ ...operativo, descripcion: e.target.value });
+            validateString(e.target.name, e.target.value);
+          }}
+        />
 
         <div className="d-flex justify-content-end">
           <div>
             <button
               type="submit"
               className="btn btn-guardar btn-md"
-              disabled={showError.referencia}
+              disabled={
+                showError.referencia ||
+                showError.fecha !== 0 ||
+                !operativo.fecha ||
+                !operativo.referencia
+              }
             >
               Agregar Operativo
             </button>
