@@ -3,19 +3,23 @@ import {
   useOrdenesMutation,
   useVerOrdenDePago,
 } from "../hooks/useOrdenesDePago";
+import { OrdenesDePagoAPI } from "../api/OrdenesDePagoApi";
 import DataTable from "react-data-table-component";
 import EmptyTable from "./UI/EmptyTable";
 import { usePagination } from "../hooks/usePagination";
 import { Link } from "react-router-dom";
 import "../assets/styles/detalle.css";
 import Spinner from "./UI/Spinner";
-import BackButton from "./UI/BackButton";
 import Modal from "./UI/Modal";
 import InputField from "./UI/InputField";
 import PrintOrdenPago from "./PrintOrdenPago";
+import { useMutation } from "@tanstack/react-query";
+import Swal from "sweetalert2";
+
 
 const NUMBER_REGEX = /^[0-9]+$/;
 const STRING_REGEX = /^[a-zA-Z]+$/;
+
 
 const labels = [
   {
@@ -94,6 +98,46 @@ export const VerOrdenes = ({ ...props }) => {
   const [error, setError] = useState(INITIAL_STATE);
 
   const { paginationOptions } = usePagination(data);
+
+  //ELIMINAR ORDEN DE PAGO// 
+  
+  const deleteH = useMutation(
+    async ({ pOPProvisorio_Nro }) => {
+      return await OrdenesDePagoAPI.delete(`/delete/`, { data: { pOPProvisorio_Nro } });
+    },
+    {
+      onSuccess: () => {
+        refetch();
+        return Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "Se eliminó la orden de pago correctamente",
+          showConfirmButton: false,
+          timer: 3000,
+        });
+      },
+    }
+  );
+  
+  const handleDelete = (pOPProvisorio_Nro) => {
+    Swal.fire({
+      title: "Eliminar orden de pago",
+      text: "¿Estás seguro de que deseas eliminar esta orden de pago?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Eliminar",
+      cancelButtonText: "Cancelar",
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deleteH.mutate({ pOPProvisorio_Nro });
+      }
+    });
+  };
+
+  //FINALIZA LA ELIMINACION DE LA ORDEN DE PAGO
+  
 
   const handleInputChange = (e) => {
     switch (e.target.type) {
@@ -233,9 +277,26 @@ export const VerOrdenes = ({ ...props }) => {
               )}
             </li>
           </ul>
+          
         </div>
       ),
+      
     },
+    {
+      cell: (row) =>
+        !row.op_nro && row.opprovisorio_nro && (
+          <button
+            className="btn btn-danger"
+            onClick={() => handleDelete(row.opprovisorio_nro)}
+          >
+            Eliminar
+          </button>
+        )
+    }
+    
+    
+    
+    
   ];
 
   const [Op, setOp] = useState(data);
