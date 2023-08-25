@@ -70,7 +70,7 @@ const PostOperativos = () => {
   return (
     <div>
       <form onSubmit={handleOnSubmit}>
-        <div>
+        <div className="mb-2">
           <InputField
             required
             label="Proceso de donación"
