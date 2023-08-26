@@ -122,7 +122,7 @@ export const VerOrdenes = ({ ...props }) => {
   const handleDelete = (pOPProvisorio_Nro) => {
     Swal.fire({
       title: "Eliminar orden de pago",
-      text: "¿Estás seguro de que deseas eliminar esta orden de pago?",
+      text: `¿Estás seguro de que deseas eliminar la orden de pago Nro ${pOPProvisorio_Nro}?`,
       icon: "warning",
       showCancelButton: true,
       confirmButtonText: "Eliminar",
