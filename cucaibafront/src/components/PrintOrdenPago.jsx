@@ -78,7 +78,7 @@ export const PrintOrdenPago = ({ liquidacionId, opProvisoria }) => {
           </Page>
         </Document>
       }
-      fileName="detalle_orden_pago.pdf"
+      fileName="detalle_agentes.pdf"
     >
       {({ loading }) =>
         loading ? "Cargando documento..." : " Imprimir Listado de Agentes "
