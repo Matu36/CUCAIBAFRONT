@@ -39,7 +39,7 @@ const labels = [
     label: "Año Acto",
     disabled: false,
     inputKey: "anio_acto",
-    inputType: "numberAnio",
+    inputType: "number",
     show: true,
     min: 2022,
     max: new Date().getFullYear(),
@@ -148,23 +148,10 @@ export const VerOrdenes = ({ ...props }) => {
         break;
 
       case "number":
-        let mixedType = e.target.attributes["data-mixedtype"].nodeValue;
-        if (mixedType == "numberAnio") {
-          setError({
-            ...error,
-            [e.target.name]:
-              e.target.value < e.target.min
-                ? 1
-                : e.target.value > e.target.max
-                ? 2
-                : 0,
-          });
-        } else {
-          setError({
-            ...error,
-            [e.target.name]: !NUMBER_REGEX.test(e.target.value),
-          });
-        }
+        setError({
+          ...error,
+          [e.target.name]: !NUMBER_REGEX.test(e.target.value),
+        });
 
         break;
     }
@@ -180,7 +167,11 @@ export const VerOrdenes = ({ ...props }) => {
     }
 
     if (count > 0) {
-      return;
+      Swal.fire({
+        title: "Los campos no pueden estar vacíos",
+        icon: "warning",
+        timer: 3000,
+      });
     } else {
       mutate(OP);
       setOP(INITIAL_STATE);
@@ -372,7 +363,8 @@ export const VerOrdenes = ({ ...props }) => {
             <InputField
               label="Nro. O.P"
               key="nro_op"
-              inputType="text"
+              error={error["nro_op"]}
+              inputType="number"
               inputKey="nro_op"
               value={OP["nro_op"]}
               handleChange={handleInputChange}
