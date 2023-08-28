@@ -32,9 +32,9 @@ export const useModulos = (operativoId = 0) => {
   // Mutación para dar de baja un módulo
   const modulosMutation = useMutation({
     mutationKey: ["baja-modulo"],
-    mutationFn: async (id) => await HonorariosAPI.put(`/baja/${id}`),
+    mutationFn: async (id) => await ModulosAPI.put(`/baja/${id}`),
     onSuccess: () => {
-      refetch();
+      modulosQuery.refetch();
       Swal.fire({
         position: "center",
         icon: "info",

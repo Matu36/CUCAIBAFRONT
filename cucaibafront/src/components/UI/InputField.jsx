@@ -35,6 +35,11 @@ const InputField = ({
           {inputType == "text" ? "texto" : "numerico"}
         </p>
       )}
+      {inputKey == "anio_acto" && (value < props.min || value > props.max) && (
+        <p style={{ color: "red" }}>
+          El año no puede ser anterior al 2022 y posterior al año actual{" "}
+        </p>
+      )}
     </div>
   );
 };
