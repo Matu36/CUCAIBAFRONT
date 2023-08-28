@@ -763,3 +763,10 @@ h1 small, h2 small, h3 small, h4 small, h5 small, h6 small {
 /*    color: white;*/
 /*    padding: .5rem 1rem;*/
 /*}*/
+
+.custom-button {
+  white-space: nowrap;
+  padding: 0.25rem 1.5rem; 
+  font-size: 0.90rem;
+  margin-left: 10px;
+}

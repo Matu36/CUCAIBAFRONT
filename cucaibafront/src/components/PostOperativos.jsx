@@ -74,13 +74,16 @@ const PostOperativos = () => {
           <InputField
             required
             label="Proceso de donación"
-            inputType="text"
+            inputType="number"
             inputKey="referencia"
             value={operativo.referencia}
             onChange={(e) => {
+              const newValue = e.target.value;
+                  if (newValue >= 0) {
               setOperativo({ ...operativo, referencia: e.target.value });
               validateString(e.target.name, e.target.value);
             }}
+          }
           />
           {showError.referencia && (
             <div style={{ color: "red" }}>

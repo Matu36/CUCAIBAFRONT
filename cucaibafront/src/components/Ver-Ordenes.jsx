@@ -16,10 +16,8 @@ import PrintOrdenPago from "./PrintOrdenPago";
 import { useMutation } from "@tanstack/react-query";
 import Swal from "sweetalert2";
 
-
 const NUMBER_REGEX = /^[0-9]+$/;
 const STRING_REGEX = /^[a-zA-Z]+$/;
-
 
 const labels = [
   {
@@ -99,11 +97,13 @@ export const VerOrdenes = ({ ...props }) => {
 
   const { paginationOptions } = usePagination(data);
 
-  //ELIMINAR ORDEN DE PAGO// 
-  
+  //ELIMINAR ORDEN DE PAGO//
+
   const deleteH = useMutation(
     async ({ pOPProvisorio_Nro }) => {
-      return await OrdenesDePagoAPI.delete(`/delete/`, { data: { pOPProvisorio_Nro } });
+      return await OrdenesDePagoAPI.delete(`/delete/`, {
+        data: { pOPProvisorio_Nro },
+      });
     },
     {
       onSuccess: () => {
@@ -118,7 +118,7 @@ export const VerOrdenes = ({ ...props }) => {
       },
     }
   );
-  
+
   const handleDelete = (pOPProvisorio_Nro) => {
     Swal.fire({
       title: "Eliminar orden de pago",
@@ -137,7 +137,6 @@ export const VerOrdenes = ({ ...props }) => {
   };
 
   //FINALIZA LA ELIMINACION DE LA ORDEN DE PAGO
-  
 
   const handleInputChange = (e) => {
     switch (e.target.type) {
@@ -205,98 +204,96 @@ export const VerOrdenes = ({ ...props }) => {
       sortable: true,
       format: (row) => row.op_nro ?? <i>Sin Asignar</i>,
     },
+
     {
       cell: (row) => (
-        <div className="dropdown dropend">
-          <button
-            className="btn btn-secondary dropdown-toggle dropdown-button"
-            type="button"
-            id="dropdownMenuButton1"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-          >
-            Ver Acciones
-          </button>
-          <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-            <li key="detalle-link">
-              <Link
-                className="dropdown-item"
-                onMouseOver={(e) =>
-                  (e.currentTarget.style.backgroundColor = "#d3d3d3")
-                }
-                onMouseOut={(e) =>
-                  (e.currentTarget.style.backgroundColor = "#fff")
-                }
-                to={`/ordenes/ver-ordenes/${row.liquidacion_id}`}
-              >
-                Ver detalle de la Orden de pago
-              </Link>
-            </li>
-            {!row.op_nro && (
-              <li key="definitiva-link">
-                <button
+        <div className="d-flex justify-content-between align-items-center">
+          <div className="dropdown dropend">
+            <button
+              className="btn btn-secondary dropdown-toggle dropdown-button"
+              type="button"
+              id="dropdownMenuButton1"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              Ver Acciones
+            </button>
+            <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+              <li key="detalle-link">
+                <Link
                   className="dropdown-item"
-                  type="button"
-                  data-bs-toggle="modal"
-                  data-bs-target="#opDefinitiva"
-                  onClick={() =>
-                    setOP({
-                      ...OP,
-                      op_provisorio: row.opprovisorio_nro,
-                      liquidacion_id: row.liquidacion_id,
-                    })
-                  }
                   onMouseOver={(e) =>
                     (e.currentTarget.style.backgroundColor = "#d3d3d3")
                   }
                   onMouseOut={(e) =>
                     (e.currentTarget.style.backgroundColor = "#fff")
                   }
+                  to={`/ordenes/ver-ordenes/${row.liquidacion_id}`}
                 >
-                  Asignar Numeración Definitiva
-                </button>
+                  Ver detalle de la Orden de pago
+                </Link>
               </li>
-            )}
-            <li>
-              {row.op_nro === null && (
-                <button
-                  className="dropdown-item w-100 d-flex justify-content-end align-items-center"
-                  onMouseOver={(e) =>
-                    (e.currentTarget.style.backgroundColor = "#d3d3d3")
-                  }
-                  onMouseOut={(e) =>
-                    (e.currentTarget.style.backgroundColor = "#fff")
-                  }
-                >
-                  <PrintOrdenPago
-                    personasExceptLast={row.personasExceptLast}
-                    liquidacionId={row.liquidacion_id}
-                    opProvisoria={row.opprovisorio_nro}
-                  />
-                </button>
+              {!row.op_nro && (
+                <li key="definitiva-link">
+                  <button
+                    className="dropdown-item"
+                    type="button"
+                    data-bs-toggle="modal"
+                    data-bs-target="#opDefinitiva"
+                    onClick={() =>
+                      setOP({
+                        ...OP,
+                        op_provisorio: row.opprovisorio_nro,
+                        liquidacion_id: row.liquidacion_id,
+                      })
+                    }
+                    onMouseOver={(e) =>
+                      (e.currentTarget.style.backgroundColor = "#d3d3d3")
+                    }
+                    onMouseOut={(e) =>
+                      (e.currentTarget.style.backgroundColor = "#fff")
+                    }
+                  >
+                    Asignar Numeración Definitiva
+                  </button>
+                </li>
               )}
-            </li>
-          </ul>
-          
+              <li>
+                {row.op_nro === null && (
+                  <button
+                    className="dropdown-item w-100 d-flex justify-content-end align-items-center"
+                    onMouseOver={(e) =>
+                      (e.currentTarget.style.backgroundColor = "#d3d3d3")
+                    }
+                    onMouseOut={(e) =>
+                      (e.currentTarget.style.backgroundColor = "#fff")
+                    }
+                  >
+                    <PrintOrdenPago
+                      personasExceptLast={row.personasExceptLast}
+                      liquidacionId={row.liquidacion_id}
+                      opProvisoria={row.opprovisorio_nro}
+                    />
+                  </button>
+                )}
+              </li>
+            </ul>
+          </div>
+          <div>
+            {!row.op_nro && row.opprovisorio_nro && (
+              <div>
+                <button
+                  className="btn btn-danger custom-button"
+                  onClick={() => handleDelete(row.opprovisorio_nro)}
+                >
+                  Eliminar
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       ),
-      
     },
-    {
-      cell: (row) =>
-        !row.op_nro && row.opprovisorio_nro && (
-          <button
-            className="btn btn-danger"
-            onClick={() => handleDelete(row.opprovisorio_nro)}
-          >
-            Eliminar
-          </button>
-        )
-    }
-    
-    
-    
-    
   ];
 
   const [Op, setOp] = useState(data);
