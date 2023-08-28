@@ -14,7 +14,6 @@ const CrearModulo = ({ handleCerrarFormulario }) => {
 
   const [showError, setShowError] = useState({ fecha: false });
 
- 
   //CREACION DE MODULO //
   const [modulo, setModulo] = useState({
     valor: "",
@@ -43,8 +42,8 @@ const CrearModulo = ({ handleCerrarFormulario }) => {
       });
 
       window.close();
-  
-  window.location.reload();
+
+      window.location.reload();
 
       setModulo({
         valor: "",
@@ -72,12 +71,15 @@ const CrearModulo = ({ handleCerrarFormulario }) => {
         borderRadius: "15px",
       }}
     >
-      <form onSubmit={handleOnSubmit} className="row g-3 pt-4" onKeyDown={(e) => {
-          
+      <form
+        onSubmit={handleOnSubmit}
+        className="row g-3 pt-4"
+        onKeyDown={(e) => {
           if (e.key === "Enter" && e.target !== crearModuloButtonRef.current) {
             e.preventDefault();
           }
-        }}>
+        }}
+      >
         <div
           className="modulo"
           style={{
@@ -96,9 +98,7 @@ const CrearModulo = ({ handleCerrarFormulario }) => {
             borderBottom: "5px solid #5DADE2",
           }}
         />
-        <div className="col-md-6">
-         
-        </div>
+        <div className="col-md-6"></div>
 
         <div className="row">
           <div className="col-md-6">
@@ -111,13 +111,12 @@ const CrearModulo = ({ handleCerrarFormulario }) => {
               </span>
             </label>
             <input
-                onKeyDown={(e) => {
-                 
-                  if (e.key === "Enter") {
-                    e.preventDefault();
-                    crearModuloButtonRef.current.click();
-                  }
-                }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  crearModuloButtonRef.current.click();
+                }
+              }}
               type="text"
               className="form-control"
               name="descripcion"
@@ -139,13 +138,12 @@ const CrearModulo = ({ handleCerrarFormulario }) => {
               </span>
             </label>
             <input
-                onKeyDown={(e) => {
-                 
-                  if (e.key === "Enter") {
-                    e.preventDefault();
-                    crearModuloButtonRef.current.click();
-                  }
-                }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  crearModuloButtonRef.current.click();
+                }
+              }}
               type="number"
               className="form-control"
               name="valor"
@@ -154,10 +152,7 @@ const CrearModulo = ({ handleCerrarFormulario }) => {
               placeholder="Valor"
               onChange={(e) => {
                 const newValue = e.target.value;
-                if (
-                  newValue === "" ||
-                  (newValue >= 0)
-                ) {
+                if (newValue === "" || newValue >= 0) {
                   setModulo({
                     ...modulo,
                     valor: newValue === "" ? "" : Number(newValue),
@@ -176,16 +171,16 @@ const CrearModulo = ({ handleCerrarFormulario }) => {
               </span>
             </label>
             <input
-                onKeyDown={(e) => {
-                 
-                  if (e.key === "Enter") {
-                    e.preventDefault();
-                    crearModuloButtonRef.current.click();
-                  }
-                }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  crearModuloButtonRef.current.click();
+                }
+              }}
               type="date"
               className="form-control"
               name="fechaDesde"
+              min="2022-01-01"
               value={modulo.fechaDesde}
               autoComplete="off"
               placeholder="Fecha Desde"
@@ -196,14 +191,24 @@ const CrearModulo = ({ handleCerrarFormulario }) => {
                 });
                 setShowError({
                   ...showError,
-                  fecha: validateFecha(e.target.value),
+                  fecha: validateFecha(e.target.value)
+                    ? 1
+                    : e.target.value < e.target.min
+                    ? 2
+                    : 0,
                 });
               }}
             />
-            {showError.fecha && (
+            {showError.fecha == 1 ? (
               <div style={{ color: "red" }}>
                 La fecha no puede ser posterior al día de hoy
               </div>
+            ) : (
+              showError.fecha == 2 && (
+                <div style={{ color: "red" }}>
+                  La fecha no puede ser anterior al año 2022
+                </div>
+              )
             )}
           </div>
         </div>
