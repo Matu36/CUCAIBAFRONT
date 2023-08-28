@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import Swal from "sweetalert2";
-import { getCategorias, getTipoModulo, postModulo } from "../Redux/Actions";
-import { useDispatch, useSelector } from "react-redux";
+import { postModulo } from "../Redux/Actions";
+import { useDispatch } from "react-redux";
 import "../assets/styles/style.css";
 import { validateFecha } from "../utils/Validaciones";
 
@@ -10,28 +10,11 @@ import { validateFecha } from "../utils/Validaciones";
 const CrearModulo = ({ handleCerrarFormulario }) => {
   const dispatch = useDispatch();
 
-  const categorias = useSelector((state) => state.categorias);
-  const tipoModulo = useSelector((state) => state.TipoModulo);
-  let primerArreglo = [];
-  if (categorias.length > 1) {
-    primerArreglo = categorias[1][0];
-  }
+  const crearModuloButtonRef = useRef(null);
 
   const [showError, setShowError] = useState({ fecha: false });
 
-  let destructuring = [];
-  if (tipoModulo.length > 1) {
-    destructuring = tipoModulo[1][0];
-  }
-
-  useEffect(() => {
-    dispatch(getCategorias());
-  }, []);
-
-  useEffect(() => {
-    dispatch(getTipoModulo());
-  }, []);
-
+ 
   //CREACION DE MODULO //
   const [modulo, setModulo] = useState({
     valor: "",
@@ -59,6 +42,10 @@ const CrearModulo = ({ handleCerrarFormulario }) => {
         timer: 3000,
       });
 
+      window.close();
+  
+  window.location.reload();
+
       setModulo({
         valor: "",
         descripcion: "",
@@ -74,10 +61,6 @@ const CrearModulo = ({ handleCerrarFormulario }) => {
     }
   };
 
-  function padZero(number) {
-    return number.toString().padStart(2, "0");
-  }
-
   return (
     <div
       className="form-container pt-2"
@@ -89,7 +72,12 @@ const CrearModulo = ({ handleCerrarFormulario }) => {
         borderRadius: "15px",
       }}
     >
-      <form onSubmit={handleOnSubmit} className="row g-3 pt-4">
+      <form onSubmit={handleOnSubmit} className="row g-3 pt-4" onKeyDown={(e) => {
+          
+          if (e.key === "Enter" && e.target !== crearModuloButtonRef.current) {
+            e.preventDefault();
+          }
+        }}>
         <div
           className="modulo"
           style={{
@@ -99,7 +87,7 @@ const CrearModulo = ({ handleCerrarFormulario }) => {
             color: "#5DADE2",
           }}
         >
-          <h6>CREAR MODULO</h6>
+          <h6>CREAR MÓDULO</h6>
         </div>
         <hr
           style={{
@@ -109,7 +97,7 @@ const CrearModulo = ({ handleCerrarFormulario }) => {
           }}
         />
         <div className="col-md-6">
-          <h5> Tipo: Variable</h5>
+         
         </div>
 
         <div className="row">
@@ -123,15 +111,22 @@ const CrearModulo = ({ handleCerrarFormulario }) => {
               </span>
             </label>
             <input
+                onKeyDown={(e) => {
+                 
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                    crearModuloButtonRef.current.click();
+                  }
+                }}
               type="text"
               className="form-control"
               name="descripcion"
               value={modulo.descripcion}
               autoComplete="off"
               placeholder="Descripción"
-              onChange={(e) =>
-                setModulo({ ...modulo, descripcion: e.target.value })
-              }
+              onChange={(e) => {
+                setModulo({ ...modulo, descripcion: e.target.value });
+              }}
             />
           </div>
           <div className="col-md-3">
@@ -144,15 +139,31 @@ const CrearModulo = ({ handleCerrarFormulario }) => {
               </span>
             </label>
             <input
+                onKeyDown={(e) => {
+                 
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                    crearModuloButtonRef.current.click();
+                  }
+                }}
               type="number"
               className="form-control"
               name="valor"
               value={modulo.valor}
               autoComplete="off"
               placeholder="Valor"
-              onChange={(e) =>
-                setModulo({ ...modulo, valor: Number(e.target.value) })
-              }
+              onChange={(e) => {
+                const newValue = e.target.value;
+                if (
+                  newValue === "" ||
+                  (newValue >= 0)
+                ) {
+                  setModulo({
+                    ...modulo,
+                    valor: newValue === "" ? "" : Number(newValue),
+                  });
+                }
+              }}
             />
           </div>
           <div className="col-md-3">
@@ -165,6 +176,13 @@ const CrearModulo = ({ handleCerrarFormulario }) => {
               </span>
             </label>
             <input
+                onKeyDown={(e) => {
+                 
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                    crearModuloButtonRef.current.click();
+                  }
+                }}
               type="date"
               className="form-control"
               name="fechaDesde"
@@ -205,7 +223,17 @@ const CrearModulo = ({ handleCerrarFormulario }) => {
           >
             Cancelar
           </button>
-          <button type="submit" className="btn btn-guardar pt-2">
+          <button
+            type="submit"
+            ref={crearModuloButtonRef}
+            className="btn btn-guardar pt-2"
+            disabled={
+              !modulo.descripcion ||
+              !modulo.valor ||
+              !modulo.fechaDesde ||
+              showError.fecha
+            }
+          >
             Crear Modulo
           </button>
         </div>
