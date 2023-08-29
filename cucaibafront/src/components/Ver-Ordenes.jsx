@@ -97,6 +97,28 @@ export const VerOrdenes = ({ ...props }) => {
 
   const { paginationOptions } = usePagination(data);
 
+ 
+
+  const checkAllFieldsComplete = () => {
+    const incompleteFields = labels.filter((l) => {
+      if (l.show && !OP[l.inputKey]) {
+        return true;
+      }
+      return false;
+    });
+  
+    const nroOpComplete = !!OP["nro_op"].trim() || incompleteFields.some(field => field.inputKey === 'nro_op');
+  
+    return incompleteFields.length === 0 && nroOpComplete;
+  };
+  
+  
+  const [allFieldsComplete, setAllFieldsComplete] = useState(checkAllFieldsComplete());
+
+  useEffect(() => {
+    setAllFieldsComplete(checkAllFieldsComplete());
+  }, [OP]);
+
   //ELIMINAR ORDEN DE PAGO//
 
   const deleteH = useMutation(
@@ -146,17 +168,20 @@ export const VerOrdenes = ({ ...props }) => {
           [e.target.name]: !STRING_REGEX.test(e.target.value),
         });
         break;
-
+  
       case "number":
         setError({
           ...error,
           [e.target.name]: !NUMBER_REGEX.test(e.target.value),
         });
 
+  
         break;
     }
     setOP({ ...OP, [e.target.name]: e.target.value });
+    setAllFieldsComplete(checkAllFieldsComplete());
   };
+  
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -342,6 +367,7 @@ export const VerOrdenes = ({ ...props }) => {
                   show && (
                     <React.Fragment key={i}>
                       <InputField
+
                         inputKey={inputKey}
                         value={OP[inputKey]}
                         key={inputKey}
@@ -383,6 +409,7 @@ export const VerOrdenes = ({ ...props }) => {
               className="btn btn-guardar btn-md"
               onClick={handleSubmit}
               type="submit"
+              disabled={!allFieldsComplete}
             >
               Asignar
             </button>
