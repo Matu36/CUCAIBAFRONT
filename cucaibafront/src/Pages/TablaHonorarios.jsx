@@ -21,6 +21,8 @@ const TablaHonorarios = () => {
   const [honorario, setHonorario] = useState(primerArregloOper);
   const { paginationOptions } = usePagination(primerArregloOper);
 
+  const [currentRow, setCurrentRow] = useState(null);
+
   //Renderizado de los operativos //
 
   useEffect(() => {
@@ -126,6 +128,10 @@ const TablaHonorarios = () => {
         }
         expandableRows
         expandableRowsComponent={RowExpandedComponent}
+        expandableRowExpanded={(row) => row === currentRow}
+        expandOnRowClicked
+        onRowExpandToggled={(bool, row) => setCurrentRow(row)}
+        onRowClicked={(row) => setCurrentRow(row)}
       />
     </Layout>
   );
