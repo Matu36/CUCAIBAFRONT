@@ -21,9 +21,9 @@ const Modal = ({
       <div className="modal-dialog">
         <div className="modal-content bg-white">
           <div className="modal-header">
-            <h5 className="modal-title" style={{ color: "#5DADE2" }}>
+            <h4 className="modal-title" style={{ color: "#5DADE2" }}>
               {title}
-            </h5>
+            </h4>
             <button
               type="button"
               className="btn-close"
