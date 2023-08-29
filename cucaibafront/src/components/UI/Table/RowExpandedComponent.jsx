@@ -19,10 +19,14 @@ const RowExpandedComponent = ({ data: operativo }) => {
   const { paginationOptions } = usePagination();
 
   const columns = [
+    { name: "DNI", selector: (row) => row.dni, sortable: true },
     { name: "Apellido", selector: (row) => row.apellido, sortable: true },
     { name: "Nombre", selector: (row) => row.nombre, sortable: true },
-    { name: "CBU", selector: (row) => row.cbu, sortable: true },
-    { name: "CUIL", selector: (row) => row.cuil, sortable: true },
+    {
+      name: "Tipo de Pago",
+      selector: (row) => (row.tipo_pago == "ch" ? "Cheque" : "Transferencia"),
+      sortable: true,
+    },
   ];
 
   const { data: agentesDisponibles, refetch: refetchAgentesDisponibles } =
@@ -67,11 +71,12 @@ const RowExpandedComponent = ({ data: operativo }) => {
           timer: 3000,
         });
       },
-      onError: () => {
+      onError: (err) => {
         return Swal.fire({
           position: "center",
           icon: "error",
-          title: "Hubo un error al momento de crear el honorario",
+          title: "Hubo un error",
+          text: err.response.data,
           showConfirmButton: true,
           timer: 3000,
         });
@@ -155,9 +160,9 @@ const RowExpandedComponent = ({ data: operativo }) => {
     <>
       <Modal title="Agregar función al Agente" referenceID="formModal">
         <div className="p-3">
-          <h4 className="subtitulo" style={{ color: "#5DADE2" }}>
-            Modulos Pendientes del Agente
-          </h4>
+          <h5 className="subtitulo" style={{ color: "#5DADE2" }}>
+            Modulos Activos del Agente
+          </h5>
           <hr />
           <table className="table table-responsive">
             <thead>
@@ -194,7 +199,7 @@ const RowExpandedComponent = ({ data: operativo }) => {
         />
       </Modal>
       <Modal
-        title="Agregar Agente al Operativo"
+        title={`Agregar Agente al Operativo: ${operativo.referencia}`}
         referenceID="agregarAgenteModal"
       >
         <div>
