@@ -3,6 +3,10 @@
   font-size: 0.8rem;
 }
 
+.rdt_TableRow:hover {
+  background-color: #e3e3e3;
+}
+
 .showToast {
   opacity: 1;
   transform: translateX(-50px);
@@ -356,6 +360,11 @@ body {
 /**
 * Formularios
 */
+
+.custom-select {
+  background-color: red;
+}
+
 .form-control {
   border-radius: 0;
   box-shadow: none;
