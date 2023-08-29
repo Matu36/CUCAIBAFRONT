@@ -12,6 +12,8 @@ import DataTable from "react-data-table-component";
 import { useAgentes } from "../../../hooks/useAgentes";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
+import { useModulos } from "../../../hooks/useModulos";
+
 
 // Se usa en el componente TablaHonorarios al hacer click en los operativos.
 
@@ -27,6 +29,8 @@ const RowExpandedComponent = ({ data: operativo }) => {
 
   const { data: agentesDisponibles, refetch: refetchAgentesDisponibles } =
     useAgentes(operativo.id || 0).agentesDisponiblesQuery;
+
+  const {refetch: refetchModulosActivos} = useModulos(operativo.id).modulosActivosQuery;
 
   const {
     data: agentes,
@@ -59,6 +63,7 @@ const RowExpandedComponent = ({ data: operativo }) => {
         refetch();
         refetchAgentes();
         refetchAgentesDisponibles();
+        refetchModulosActivos();
         return Swal.fire({
           position: "center",
           icon: "success",
@@ -78,6 +83,9 @@ const RowExpandedComponent = ({ data: operativo }) => {
       },
     }
   );
+
+
+              //DESVINCULAR AGENTE DEL OPERATIVO //
 
   const deleteH = useMutation(
     async (data) => {
@@ -100,8 +108,25 @@ const RowExpandedComponent = ({ data: operativo }) => {
   );
 
   const handleDelete = (agente_id, operativo_id) => {
-    deleteH.mutate({ agenteID: agente_id, operativoID: operativo_id });
+    
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: 'Esta acción desvinculará al agente del operativo.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí, desvincular',
+      cancelButtonText: 'Cancelar',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        
+        deleteH.mutate({ agenteID: agente_id, operativoID: operativo_id });
+      }
+    });
   };
+
+                       //DESVINCULAR AGENTE DEL OPERATIVO //
 
   const handleClick = (id) => {
     setHonorarioData({ ...honorarioData, agente_id: id });
