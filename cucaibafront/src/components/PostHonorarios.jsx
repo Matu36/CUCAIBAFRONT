@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useModulos } from "../hooks/useModulos";
 import { AiOutlinePlus } from "react-icons/ai";
+import Select from "react-select";
+// import "../assets/styles/select2.css";
 
 //Componente para agregar Función al agente
 
@@ -10,15 +12,27 @@ const PostHonorarios = ({
   handleClick,
   operativoId,
 }) => {
-  const { data, isLoading, refetch } =
+  const { data, isLoading, isFetched, refetch } =
     useModulos(operativoId).modulosActivosQuery;
+  const [options, setOptions] = useState([]);
+  useEffect(() => {
+    if (!isLoading) {
+      setOptions([
+        { value: "0|0", label: "Elegí una opción" },
+        ...data.map((m) => ({
+          value: `${m.id}|${m.valor}`,
+          label: m.descripcion,
+        })),
+      ]);
+    }
+  }, [isFetched, isLoading]);
 
   const [value, setValue] = useState(0);
   const [selectValue, setSelectValue] = useState("0|0");
   const handleChange = (e) => {
-    let arrayValue = e.target.value.split("|");
+    let arrayValue = e.value.split("|");
 
-    setSelectValue(e.target.value);
+    setSelectValue(e.value);
     setValue(arrayValue[1]);
     handleModuloId(Number(arrayValue[0]));
   };
@@ -44,32 +58,27 @@ const PostHonorarios = ({
           flexDirection: window.innerWidth < 1000 ? "column" : "row",
         }}
       >
-        <div className="mb-3 w-60 ">
+        <div className="mb-3" style={{ width: "60%" }}>
           <label htmlFor="funcionSelect" className="form-label fw-bold">
             Seleccionar Función
           </label>
-          <select
+          <Select
+            options={options}
+            placeholder="Seleccioné una opción"
             onChange={handleChange}
-            id="funcionSelect"
-            className="form-select"
+            noOptionsMessage={() => "No hay ningún modulo disponible"}
             aria-label="Default select example"
-            disabled={disabled}
-            value={selectValue}
-          >
-            <option defaultChecked value={`${0}|${0}`}>
-              Elegí una opción
-            </option>
-            {isLoading ? (
-              <option defaultChecked>Cargando...</option>
-            ) : (
-              typeof data == "object" &&
-              data.map((m) => (
-                <option value={`${m.id}|${m.valor}`} key={m.id}>
-                  {m.descripcion}
-                </option>
-              ))
-            )}
-          </select>
+            isDisabled={disabled}
+            defaultValue="313|31052"
+            styles={{
+              control: (baseStyles, state) => ({
+                ...baseStyles,
+                width: "100%",
+              }),
+            }}
+            className="select2-container"
+            classNamePrefix="select2"
+          />
         </div>
         <div className="mb-3 w-20">
           <label htmlFor="valorModuloDisabled" className="form-label fw-bold">
