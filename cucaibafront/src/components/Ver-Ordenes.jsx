@@ -16,8 +16,8 @@ import PrintOrdenPago from "./PrintOrdenPago";
 import { useMutation } from "@tanstack/react-query";
 import Swal from "sweetalert2";
 
-const NUMBER_REGEX = /^[0-9]+$/;
-const STRING_REGEX = /^[a-zA-Z]+$/;
+export const NUMBER_REGEX = /^[0-9]+$/;
+export const STRING_REGEX = /^[a-zA-Z]+$/;
 
 const labels = [
   {
@@ -97,8 +97,6 @@ export const VerOrdenes = ({ ...props }) => {
 
   const { paginationOptions } = usePagination(data);
 
- 
-
   const checkAllFieldsComplete = () => {
     const incompleteFields = labels.filter((l) => {
       if (l.show && !OP[l.inputKey]) {
@@ -106,14 +104,17 @@ export const VerOrdenes = ({ ...props }) => {
       }
       return false;
     });
-  
-    const nroOpComplete = !!OP["nro_op"].trim() || incompleteFields.some(field => field.inputKey === 'nro_op');
-  
+
+    const nroOpComplete =
+      !!OP["nro_op"].trim() ||
+      incompleteFields.some((field) => field.inputKey === "nro_op");
+
     return incompleteFields.length === 0 && nroOpComplete;
   };
-  
-  
-  const [allFieldsComplete, setAllFieldsComplete] = useState(checkAllFieldsComplete());
+
+  const [allFieldsComplete, setAllFieldsComplete] = useState(
+    checkAllFieldsComplete()
+  );
 
   useEffect(() => {
     setAllFieldsComplete(checkAllFieldsComplete());
@@ -168,20 +169,18 @@ export const VerOrdenes = ({ ...props }) => {
           [e.target.name]: !STRING_REGEX.test(e.target.value),
         });
         break;
-  
+
       case "number":
         setError({
           ...error,
           [e.target.name]: !NUMBER_REGEX.test(e.target.value),
         });
 
-  
         break;
     }
     setOP({ ...OP, [e.target.name]: e.target.value });
     setAllFieldsComplete(checkAllFieldsComplete());
   };
-  
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -367,7 +366,6 @@ export const VerOrdenes = ({ ...props }) => {
                   show && (
                     <React.Fragment key={i}>
                       <InputField
-
                         inputKey={inputKey}
                         value={OP[inputKey]}
                         key={inputKey}
