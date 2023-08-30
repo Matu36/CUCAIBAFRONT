@@ -4,15 +4,24 @@ import { postModulo } from "../Redux/Actions";
 import { useDispatch } from "react-redux";
 import "../assets/styles/style.css";
 import { validateFecha } from "../utils/Validaciones";
+import { useModulos } from "../hooks/useModulos";
 
+const NUMBER_REGEX = /^[0-9]+$/;
+const STRING_REGEX = /^[a-zA-Z].*(?:\d| )*$/;
 //Componente para crear el módulo
 
 const CrearModulo = ({ handleCerrarFormulario }) => {
   const dispatch = useDispatch();
 
+  const { mutate } = useModulos().crearModulo;
+
   const crearModuloButtonRef = useRef(null);
 
-  const [showError, setShowError] = useState({ fecha: false });
+  const [showError, setShowError] = useState({
+    fecha: false,
+    descripcion: false,
+    valor: false,
+  });
 
   //CREACION DE MODULO //
   const [modulo, setModulo] = useState({
@@ -20,6 +29,13 @@ const CrearModulo = ({ handleCerrarFormulario }) => {
     descripcion: "",
     fechaDesde: "",
   });
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      crearModuloButtonRef.current.click();
+    }
+  };
 
   const handleOnSubmit = async (e) => {
     e.preventDefault();
@@ -29,21 +45,10 @@ const CrearModulo = ({ handleCerrarFormulario }) => {
 
       const newModulo = {
         ...modulo,
+        descripcion: modulo.descripcion.toUpperCase(),
       };
 
-      dispatch(postModulo(newModulo));
-
-      await Swal.fire({
-        position: "center",
-        icon: "success",
-        title: "El modulo ha sido creado",
-        showConfirmButton: false,
-        timer: 3000,
-      });
-
-      window.close();
-
-      window.location.reload();
+      mutate(newModulo);
 
       setModulo({
         valor: "",
@@ -111,12 +116,7 @@ const CrearModulo = ({ handleCerrarFormulario }) => {
               </span>
             </label>
             <input
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  e.preventDefault();
-                  crearModuloButtonRef.current.click();
-                }
-              }}
+              onKeyDown={handleKeyDown}
               type="text"
               className="form-control"
               name="descripcion"
@@ -125,8 +125,19 @@ const CrearModulo = ({ handleCerrarFormulario }) => {
               placeholder="Descripción"
               onChange={(e) => {
                 setModulo({ ...modulo, descripcion: e.target.value });
+                setShowError({
+                  ...showError,
+                  descripcion:
+                    e.target.value.startsWith(" ") ||
+                    !STRING_REGEX.test(e.target.value),
+                });
               }}
             />
+            {showError.descripcion && (
+              <div style={{ color: "red" }}>
+                La descripción no puede estar vacia
+              </div>
+            )}
           </div>
           <div className="col-md-3">
             <label htmlFor="valor">
@@ -138,12 +149,7 @@ const CrearModulo = ({ handleCerrarFormulario }) => {
               </span>
             </label>
             <input
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  e.preventDefault();
-                  crearModuloButtonRef.current.click();
-                }
-              }}
+              onKeyDown={handleKeyDown}
               type="number"
               className="form-control"
               name="valor"
@@ -152,6 +158,10 @@ const CrearModulo = ({ handleCerrarFormulario }) => {
               placeholder="Valor"
               onChange={(e) => {
                 const newValue = e.target.value;
+                setShowError({
+                  ...showError,
+                  valor: !NUMBER_REGEX.test(newValue),
+                });
                 if (newValue === "" || newValue >= 0) {
                   setModulo({
                     ...modulo,
@@ -160,6 +170,11 @@ const CrearModulo = ({ handleCerrarFormulario }) => {
                 }
               }}
             />
+            {showError.valor && (
+              <div style={{ color: "red" }}>
+                El valor solo puede ser númerico y no estar vacio
+              </div>
+            )}
           </div>
           <div className="col-md-3">
             <label htmlFor="fechaDesde">
@@ -171,12 +186,7 @@ const CrearModulo = ({ handleCerrarFormulario }) => {
               </span>
             </label>
             <input
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  e.preventDefault();
-                  crearModuloButtonRef.current.click();
-                }
-              }}
+              onKeyDown={handleKeyDown}
               type="date"
               className="form-control"
               name="fechaDesde"
