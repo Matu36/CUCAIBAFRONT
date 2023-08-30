@@ -124,8 +124,21 @@ const Modulos = ({ ...props }) => {
     setEditPrice(null);
   };
 
-  const handleBaja = (id) => {
-    mutate(id);
+  const handleBaja = (id, descripcion) => {
+    Swal.fire({
+      title: "Dar de baja al módulo",
+      text: `¿Usted esta seguro de que desea eliminar el módulo: ${descripcion}?`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Eliminar",
+      cancelButtonText: "Cancelar",
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        mutate(id);
+      }
+    });
   };
 
   //FIN EDITAR PRECIO
@@ -144,14 +157,14 @@ const Modulos = ({ ...props }) => {
       name: "Fecha Desde",
       selector: (row) => row.fechaDesde,
       sortable: true,
-      format: (row) => Moment(row.fechaDesde).add(1, "days").format("L"),
+      format: (row) => Moment(row.fechaDesde).format("L"),
     },
     {
       name: "Fecha hasta",
       selector: (row) => row.fechaHasta,
       format: (row) =>
         row.fechaHasta ? (
-          Moment(row.fechaHasta).add(1, "days").format("L")
+          Moment(row.fechaHasta).format("L")
         ) : (
           <i>En Vigencia</i>
         ),
@@ -214,7 +227,7 @@ const Modulos = ({ ...props }) => {
               className={`btn btn-danger btn-sm ${
                 row.fechaHasta ? "d-none" : "d-block"
               }`}
-              onClick={() => handleBaja(row.id)}
+              onClick={() => handleBaja(row.id, row.descripcion)}
             >
               {" "}
               Dar de Baja
