@@ -17,7 +17,7 @@ import { useMutation } from "@tanstack/react-query";
 import Swal from "sweetalert2";
 
 const NUMBER_REGEX = /^[0-9]+$/;
-const STRING_REGEX = /^[a-zA-Z]+$/;
+const NO_NUMBER_STRING_REGEX = /^[^0-9]+$/;
 
 const labels = [
   {
@@ -107,10 +107,25 @@ export const VerOrdenes = ({ ...props }) => {
       return false;
     });
   
-    const nroOpComplete = !!OP["nro_op"].trim() || incompleteFields.some(field => field.inputKey === 'nro_op');
+    const nroOpComplete =
+      !!OP["nro_op"].trim() ||
+      incompleteFields.some((field) => field.inputKey === "nro_op");
   
-    return incompleteFields.length === 0 && nroOpComplete;
+    const tipoActoIsNumber = !isNaN(OP["tipo_acto"]);
+    const reparticionActoIsNumber = !isNaN(OP["reparticion_acto"]);
+  
+    const anioActoIsValid = OP["anio_acto"] >= 2022 && OP["anio_acto"] <= new Date().getFullYear();
+  
+    return (
+      incompleteFields.length === 0 &&
+      nroOpComplete &&
+      !tipoActoIsNumber &&
+      !reparticionActoIsNumber &&
+      anioActoIsValid
+    );
   };
+  
+  
   
   
   const [allFieldsComplete, setAllFieldsComplete] = useState(checkAllFieldsComplete());
@@ -165,7 +180,7 @@ export const VerOrdenes = ({ ...props }) => {
       case "text":
         setError({
           ...error,
-          [e.target.name]: !STRING_REGEX.test(e.target.value),
+          [e.target.name]: e.target.value.trim() === "" || !NO_NUMBER_STRING_REGEX.test(e.target.value),
         });
         break;
   
@@ -174,13 +189,39 @@ export const VerOrdenes = ({ ...props }) => {
           ...error,
           [e.target.name]: !NUMBER_REGEX.test(e.target.value),
         });
-
-  
         break;
     }
+    
+    if (e.target.name === "tipo_acto") {
+      setError({
+        ...error,
+        [e.target.name]: !NO_NUMBER_STRING_REGEX.test(e.target.value),
+      });
+    }
+    
+    if (e.target.name === "reparticion_acto") {
+      setError({
+        ...error,
+        [e.target.name]: !NO_NUMBER_STRING_REGEX.test(e.target.value),
+      });
+    }
+    
+    if (e.target.name === "anio_acto") {
+      setError({
+        ...error,
+        [e.target.name]: e.target.value < 2022 || e.target.value > new Date().getFullYear(),
+      });
+    }
+    
     setOP({ ...OP, [e.target.name]: e.target.value });
     setAllFieldsComplete(checkAllFieldsComplete());
   };
+  
+  
+  
+  
+
+  
   
 
   const handleSubmit = (e) => {
@@ -367,7 +408,7 @@ export const VerOrdenes = ({ ...props }) => {
                   show && (
                     <React.Fragment key={i}>
                       <InputField
-
+                      
                         inputKey={inputKey}
                         value={OP[inputKey]}
                         key={inputKey}
@@ -421,7 +462,7 @@ export const VerOrdenes = ({ ...props }) => {
           <input
             type="text"
             className="form-control"
-            placeholder="Buscar por Número de OP"
+            placeholder="Buscar por Número de OP Provisorio"
             disabled={!isFetched}
             onChange={handleOnChange}
             value={search}
