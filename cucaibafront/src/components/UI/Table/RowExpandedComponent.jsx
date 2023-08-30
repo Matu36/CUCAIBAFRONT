@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useHonorarios } from "../../../hooks/useHonorarios";
 import { usePagination } from "../../../hooks/usePagination";
 import Modal from "../Modal";
@@ -13,7 +13,7 @@ import { useAgentes } from "../../../hooks/useAgentes";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import { useModulos } from "../../../hooks/useModulos";
-
+import EmptyTable from "../../UI/EmptyTable";
 
 // Se usa en el componente TablaHonorarios al hacer click en los operativos.
 
@@ -31,10 +31,16 @@ const RowExpandedComponent = ({ data: operativo }) => {
     },
   ];
 
+  //TRAE DATA DE AGENTES DISPONIBLES POR OPERATIVO Y EL REFETCH PARA CUANDO SE CREA EL HONORARIO //
+
   const { data: agentesDisponibles, refetch: refetchAgentesDisponibles } =
     useAgentes(operativo.id || 0).agentesDisponiblesQuery;
 
-  const {refetch: refetchModulosActivos} = useModulos(operativo.id).modulosActivosQuery;
+  // REFETCH DE MODULOS ACTIVOS CUANDO SE CREA EL HONORARIO
+
+  const { refetch: refetchModulosActivos } = useModulos(
+    operativo.id
+  ).modulosActivosQuery;
 
   const {
     data: agentes,
@@ -57,6 +63,8 @@ const RowExpandedComponent = ({ data: operativo }) => {
     operativo.id,
     honorarioData.agente_id
   ).honorariosAgenteQuery;
+
+  // FUNCION PARA CREAR EL HONORARIO POR OPERATIVO, SE ELIGE AGENTE Y MODULO //
 
   const mutation = useMutation(
     async (newHonorario) => {
@@ -89,8 +97,7 @@ const RowExpandedComponent = ({ data: operativo }) => {
     }
   );
 
-
-              //DESVINCULAR AGENTE DEL OPERATIVO //
+  //DESVINCULAR AGENTE DEL OPERATIVO //
 
   const deleteH = useMutation(
     async (data) => {
@@ -113,25 +120,23 @@ const RowExpandedComponent = ({ data: operativo }) => {
   );
 
   const handleDelete = (agente_id, operativo_id) => {
-    
     Swal.fire({
-      title: '¿Estás seguro?',
-      text: 'Esta acción desvinculará al agente del operativo.',
-      icon: 'warning',
+      title: "¿Estás seguro?",
+      text: "Esta acción desvinculará al agente del operativo.",
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Sí, desvincular',
-      cancelButtonText: 'Cancelar',
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Sí, desvincular",
+      cancelButtonText: "Cancelar",
     }).then((result) => {
       if (result.isConfirmed) {
-        
         deleteH.mutate({ agenteID: agente_id, operativoID: operativo_id });
       }
     });
   };
 
-                       //DESVINCULAR AGENTE DEL OPERATIVO //
+  // FINALIZACION DESVINCULAR AGENTE DEL OPERATIVO //
 
   const handleClick = (id) => {
     setHonorarioData({ ...honorarioData, agente_id: id });
@@ -181,6 +186,39 @@ const RowExpandedComponent = ({ data: operativo }) => {
     modalInstance.hide();
   };
 
+  //-------------------------------- SEARCHBAR --------------------------- //
+
+  const [search, setSearch] = useState("");
+  const [filteredAgentes, setFilteredAgentes] = useState(agentesDisponibles);
+  const [isFetched, setIsFetched] = useState(false);
+
+  useEffect(() => {
+    setFilteredAgentes(agentesDisponibles);
+    setIsFetched(true);
+  }, [agentesDisponibles]);
+
+  useEffect(() => {
+    filterByDni(search);
+  }, [search]);
+
+  const handleOnChange = (e) => {
+    setSearch(e.target.value);
+  };
+
+  const filterByDni = (value) => {
+    if (!value) {
+      setFilteredAgentes(agentesDisponibles);
+    } else {
+      const filteredAgents = agentesDisponibles.filter(
+        (agent) =>
+          agent.dni && agent.dni.toString().includes(value.toLowerCase())
+      );
+      setFilteredAgentes(filteredAgents);
+    }
+  };
+
+  //-------------------------------- FIN SEARCHBAR --------------------------- //
+
   return (
     <>
       <Modal title="Agregar función al Agente" referenceID="formModal">
@@ -228,11 +266,19 @@ const RowExpandedComponent = ({ data: operativo }) => {
         referenceID="agregarAgenteModal"
       >
         <div>
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Buscar por DNI"
+            onChange={handleOnChange}
+            value={search}
+            autoComplete="off"
+          />
           <div>
-            {typeof agentesDisponibles == "object" ? (
+            {typeof filteredAgentes === "object" ? (
               <DataTable
                 columns={columns}
-                data={agentesDisponibles}
+                data={filteredAgentes}
                 pagination
                 selectableRows
                 selectableRowsSingle
@@ -240,6 +286,9 @@ const RowExpandedComponent = ({ data: operativo }) => {
                 onSelectedRowsChange={handleSelectChange}
                 striped
                 paginationComponentOptions={paginationOptions}
+                noDataComponent={
+                  <EmptyTable msg="No se encontro el Agente con los datos ingresados" />
+                }
               />
             ) : (
               <div className="d-flex p-2 align-items-center justify-content-center gap-2">
