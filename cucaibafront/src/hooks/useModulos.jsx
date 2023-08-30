@@ -29,6 +29,49 @@ export const useModulos = (operativoId = 0) => {
     queryFn: () => getModulos(operativoId),
   });
 
+  const crearModulo = useMutation({
+    mutationKey: ["crear-modulo"],
+    mutationFn: async (data) => await ModulosAPI.post("", data),
+    onSuccess: () => {
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        title: "El modulo ha sido creado",
+        showConfirmButton: false,
+        timer: 3000,
+      });
+
+      window.close();
+
+      window.location.reload();
+    },
+    onError: (err) => {
+      switch (err.response.status) {
+        case 409:
+          Swal.fire({
+            position: "center",
+            icon: "error",
+            title: "Ya existe un módulo con esa descripción",
+            showConfirmButton: true,
+            confirmButtonText: "Cerrar",
+            confirmButtonColor: "#4CAF50",
+          });
+          break;
+
+        default:
+          Swal.fire({
+            position: "center",
+            icon: "error",
+            title: "Hubo un error",
+            showConfirmButton: true,
+            confirmButtonText: "Cerrar",
+            confirmButtonColor: "#4CAF50",
+          });
+          break;
+      }
+    },
+  });
+
   // Mutación para dar de baja un módulo
   const modulosMutation = useMutation({
     mutationKey: ["baja-modulo"],
@@ -74,5 +117,6 @@ export const useModulos = (operativoId = 0) => {
     modulosQuery,
     modulosActivosQuery,
     modulosMutation,
+    crearModulo,
   };
 };
