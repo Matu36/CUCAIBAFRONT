@@ -97,6 +97,9 @@ export const VerOrdenes = ({ ...props }) => {
 
   const { paginationOptions } = usePagination(data);
 
+
+  // ESTO HABILITA O DESHABILITA EL BOTON DE ASIGNAR OP DEFINITIVA SI HAY ERRORES O SI LOS CAMPOS ESTAN VACIOS
+
   const checkAllFieldsComplete = () => {
     const incompleteFields = labels.filter((l) => {
       if (l.show && !OP[l.inputKey]) {
@@ -131,6 +134,9 @@ export const VerOrdenes = ({ ...props }) => {
   useEffect(() => {
     setAllFieldsComplete(checkAllFieldsComplete());
   }, [OP]);
+
+  // TERMINA ACÁ
+
 
   //ELIMINAR ORDEN DE PAGO//
 
@@ -173,6 +179,8 @@ export const VerOrdenes = ({ ...props }) => {
 
   //FINALIZA LA ELIMINACION DE LA ORDEN DE PAGO
 
+
+   //VALIDACIONES DE CUANDO SE VA ESCRIBIENDO EN LOS INPUT DE GENERAR OP DEFINITIVA
   const handleInputChange = (e) => {
     switch (e.target.type) {
       case "text":
@@ -217,6 +225,10 @@ export const VerOrdenes = ({ ...props }) => {
     setOP({ ...OP, [e.target.name]: e.target.value });
     setAllFieldsComplete(checkAllFieldsComplete());
   };
+
+
+  //ACA TERMINA
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -281,7 +293,7 @@ export const VerOrdenes = ({ ...props }) => {
                   }
                   to={`/ordenes/ver-ordenes/${row.liquidacion_id}`}
                 >
-                  Ver detalle de la Orden de pago
+                  Ver orden de pago
                 </Link>
               </li>
               {!row.op_nro && (
@@ -305,7 +317,7 @@ export const VerOrdenes = ({ ...props }) => {
                       (e.currentTarget.style.backgroundColor = "#fff")
                     }
                   >
-                    Asignar Numeración Definitiva
+                    Asignar número definitivo
                   </button>
                 </li>
               )}

@@ -12,22 +12,21 @@ import NumberFormatter from "../utils/NumberFormatter";
 
 //Componente que muestra PDF de los agentes sumariados cuando el Honorario no tiene la OP definitiva.
 
-
 export const PrintOrdenPago = ({ liquidacionId, opProvisoria }) => {
-  const { data, isFetched, isLoading  } =
+  const { data, isFetched, isLoading } =
     useOrdenPorLiquidacionId(liquidacionId).ordenesPorIdQuery;
 
   const personasArray = Array.isArray(data) ? data[0] : [];
 
   if (isLoading) {
-    return "Cargando Detalles del Agente ..."; 
+    return "Cargando Detalles del Agente ...";
   }
 
   const personasExceptLast = personasArray.slice(0, -1);
 
   return (
     <PDFDownloadLink
-      style={{ textDecoration: "none", color: "black", marginRight:"25px"}}
+      style={{ textDecoration: "none", color: "black", marginRight: "25px" }}
       document={
         <Document>
           <Page size="A4" style={styles.page}>
@@ -44,19 +43,31 @@ export const PrintOrdenPago = ({ liquidacionId, opProvisoria }) => {
                 <Text style={[styles.cell, styles.header]}>CUIL</Text>
                 <Text style={[styles.cell, styles.header]}>CBU</Text>
                 <Text style={[styles.cell, styles.header]}>Monto Total</Text>
+                <Text style={[styles.cell, styles.header]}>Tipo de Pago</Text>
               </View>
               {personasExceptLast.map((personasData, index) => {
-                const { nombre, cuil, valor_total, legajo, cbu } = personasData;
+                const { nombre, cuil, valor_total, legajo, cbu, tipo_pago } =
+                  personasData;
+
+                const middleIndex = Math.floor(cbu.length / 2);
+                const cbuPart1 = cbu.substring(0, middleIndex);
+                const cbuPart2 = cbu.substring(middleIndex);
 
                 return (
                   <View style={styles.row} key={index}>
                     <Text style={styles.cell}>{nombre}</Text>
                     <Text style={styles.cell}>{legajo}</Text>
                     <Text style={styles.cell}>{cuil}</Text>
-                    <Text style={styles.cbu}>{cbu} </Text>
+                    <View style={styles.cbuContainer}>
+                      <Text>{cbuPart1}</Text>
+                      <Text>{cbuPart2}</Text>
+                    </View>
 
                     <Text style={styles.cell}>
                       $ {NumberFormatter(valor_total)}
+                    </Text>
+                    <Text style={styles.cell}>
+                      {tipo_pago === "ch" ? "Cheque" : "Cuenta Bancaria"}{" "}
                     </Text>
                   </View>
                 );
