@@ -32,8 +32,13 @@ const PostHonorarios = ({
 
   const [value, setValue] = useState(0);
   const [selectValue, setSelectValue] = useState("0|0");
+  const [auxValue, setAuxValue] = useState({
+    value: "0|0",
+    label: "Elegí una opción",
+  });
   const handleChange = (e) => {
     let arrayValue = e.value.split("|");
+    setAuxValue(e);
 
     setSelectValue(e.value);
     setValue(arrayValue[1]);
@@ -46,6 +51,10 @@ const PostHonorarios = ({
       return;
     }
     setSelectValue("0|0");
+    setAuxValue({
+      value: "0|0",
+      label: "Elegí una opción",
+    });
     setValue(0);
     handleModuloId(Number(0));
     handleClick();
@@ -72,7 +81,7 @@ const PostHonorarios = ({
             noOptionsMessage={() => "No hay ningún modulo disponible"}
             aria-label="Default select example"
             isDisabled={disabled}
-            defaultValue="313|31052"
+            value={auxValue}
             styles={{
               control: (baseStyles, state) => ({
                 ...baseStyles,
