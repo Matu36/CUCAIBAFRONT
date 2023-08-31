@@ -97,8 +97,7 @@ export const VerOrdenes = ({ ...props }) => {
 
   const { paginationOptions } = usePagination(data);
 
- 
-
+  // ESTO HABILITA O DESHABILITA EL BOTON DE ASIGNAR OP DEFINITIVA SI HAY ERRORES O SI LOS CAMPOS ESTAN VACIOS
   const checkAllFieldsComplete = () => {
     const incompleteFields = labels.filter((l) => {
       if (l.show && !OP[l.inputKey]) {
@@ -106,16 +105,17 @@ export const VerOrdenes = ({ ...props }) => {
       }
       return false;
     });
-  
+
     const nroOpComplete =
       !!OP["nro_op"].trim() ||
       incompleteFields.some((field) => field.inputKey === "nro_op");
-  
+
     const tipoActoIsNumber = !isNaN(OP["tipo_acto"]);
     const reparticionActoIsNumber = !isNaN(OP["reparticion_acto"]);
-  
-    const anioActoIsValid = OP["anio_acto"] >= 2022 && OP["anio_acto"] <= new Date().getFullYear();
-  
+
+    const anioActoIsValid =
+      OP["anio_acto"] >= 2022 && OP["anio_acto"] <= new Date().getFullYear();
+
     return (
       incompleteFields.length === 0 &&
       nroOpComplete &&
@@ -124,15 +124,17 @@ export const VerOrdenes = ({ ...props }) => {
       anioActoIsValid
     );
   };
-  
-  
-  
-  
-  const [allFieldsComplete, setAllFieldsComplete] = useState(checkAllFieldsComplete());
+
+  const [allFieldsComplete, setAllFieldsComplete] = useState(
+    checkAllFieldsComplete()
+  );
 
   useEffect(() => {
     setAllFieldsComplete(checkAllFieldsComplete());
   }, [OP]);
+
+  // TERMINA ACÁ
+
 
   //ELIMINAR ORDEN DE PAGO//
 
@@ -175,15 +177,19 @@ export const VerOrdenes = ({ ...props }) => {
 
   //FINALIZA LA ELIMINACION DE LA ORDEN DE PAGO
 
+
+   //VALIDACIONES DE CUANDO SE VA ESCRIBIENDO EN LOS INPUT DE GENERAR OP DEFINITIVA
   const handleInputChange = (e) => {
     switch (e.target.type) {
       case "text":
         setError({
           ...error,
-          [e.target.name]: e.target.value.trim() === "" || !NO_NUMBER_STRING_REGEX.test(e.target.value),
+          [e.target.name]:
+            e.target.value.trim() === "" ||
+            !NO_NUMBER_STRING_REGEX.test(e.target.value),
         });
         break;
-  
+
       case "number":
         setError({
           ...error,
@@ -191,38 +197,34 @@ export const VerOrdenes = ({ ...props }) => {
         });
         break;
     }
-    
+
     if (e.target.name === "tipo_acto") {
       setError({
         ...error,
         [e.target.name]: !NO_NUMBER_STRING_REGEX.test(e.target.value),
       });
     }
-    
+
     if (e.target.name === "reparticion_acto") {
       setError({
         ...error,
         [e.target.name]: !NO_NUMBER_STRING_REGEX.test(e.target.value),
       });
     }
-    
+
     if (e.target.name === "anio_acto") {
       setError({
         ...error,
-        [e.target.name]: e.target.value < 2022 || e.target.value > new Date().getFullYear(),
+        [e.target.name]:
+          e.target.value < 2022 || e.target.value > new Date().getFullYear(),
       });
     }
-    
+
     setOP({ ...OP, [e.target.name]: e.target.value });
     setAllFieldsComplete(checkAllFieldsComplete());
   };
-  
-  
-  
-  
 
-  
-  
+  //ACA TERMINA
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -408,7 +410,6 @@ export const VerOrdenes = ({ ...props }) => {
                   show && (
                     <React.Fragment key={i}>
                       <InputField
-                      
                         inputKey={inputKey}
                         value={OP[inputKey]}
                         key={inputKey}
