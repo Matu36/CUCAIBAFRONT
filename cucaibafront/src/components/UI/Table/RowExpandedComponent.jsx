@@ -168,11 +168,11 @@ const RowExpandedComponent = ({ data: operativo }) => {
       return;
     }
     mutation.mutate({ ...honorarioData, fechaModif: new Date() });
-    setHonorarioData({ ...honorarioData, agente_id: 0, modulo_id: 0 });
   };
 
   const agregarAgente = () => {
     crearHonorario();
+    setHonorarioData({ ...honorarioData, agente_id: 0, modulo_id: 0 });
   };
 
   const handleSelectChange = (e) => {
