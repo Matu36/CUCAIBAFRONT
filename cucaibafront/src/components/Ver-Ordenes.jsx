@@ -293,7 +293,7 @@ export const VerOrdenes = ({ ...props }) => {
                   }
                   to={`/ordenes/ver-ordenes/${row.liquidacion_id}`}
                 >
-                  Ver detalle de la Orden de pago
+                  Ver orden de pago
                 </Link>
               </li>
               {!row.op_nro && (
@@ -317,7 +317,7 @@ export const VerOrdenes = ({ ...props }) => {
                       (e.currentTarget.style.backgroundColor = "#fff")
                     }
                   >
-                    Asignar Numeración Definitiva
+                    Asignar número definitivo
                   </button>
                 </li>
               )}

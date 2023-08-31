@@ -44,9 +44,21 @@ export const styles = StyleSheet.create({
     flex: 1,
     borderWidth: 0.5,
     borderColor: "gray",
-    fontSize: "8px",
+    fontSize: "10px",
     flexShrink: 1,
     flexWrap: "wrap",
+    
+  },
+
+  cbuContainer: {
+    padding: 4,
+    flex: 1,
+    margin:"auto",
+    fontSize: 10,
+    flexShrink: 1,
+    flexWrap: 'wrap',
+    alignItems: 'center', 
+    justifyContent: 'center', 
   },
 
   header: {
