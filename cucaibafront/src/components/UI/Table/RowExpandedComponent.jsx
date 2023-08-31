@@ -168,6 +168,7 @@ const RowExpandedComponent = ({ data: operativo }) => {
       return;
     }
     mutation.mutate({ ...honorarioData, fechaModif: new Date() });
+    setHonorarioData({ ...honorarioData, agente_id: 0, modulo_id: 0 });
   };
 
   const agregarAgente = () => {
@@ -288,9 +289,6 @@ const RowExpandedComponent = ({ data: operativo }) => {
             onKeyDown={(e) => {
               setHonorarioData({ ...honorarioData, agente_id: 0 });
               setToggledClearRows(true);
-              if (e.target.value == "") {
-                setToggledClearRows(false);
-              }
             }}
             value={search}
             autoComplete="off"
@@ -302,7 +300,7 @@ const RowExpandedComponent = ({ data: operativo }) => {
                 columns={columns}
                 data={filteredAgentes}
                 pagination
-                clearSelectedRows={honorarioData.agente_id == 0}
+                clearSelectedRows={toggledClearRows}
                 selectableRows
                 selectableRowsSingle
                 selectableRowsHighlight

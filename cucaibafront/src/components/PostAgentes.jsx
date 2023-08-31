@@ -70,7 +70,7 @@ const postAgente = () => {
           nombre: personaData.nombre,
           cuil: personaData.cuil,
           cbu: personaData.cbuBloque1 + personaData.cbuBloque2,
-          tipoPago: personaData.tipoPago == 7 ? "cb" : "ch",
+          tipoPago: personaData.tipoPago == 5 ? "cb" : "ch",
           personaid: personaData.id,
           legajo: personaData.legajo,
         });
@@ -85,7 +85,7 @@ const postAgente = () => {
                 nombre: personaData[1].nombre,
                 cuil: personaData[1].cuil,
                 cbu: personaData[1].cbuBloque1 + personaData[1].cbuBloque2,
-                tipoPago: personaData[1].tipoPago == 7 ? "cb" : "ch",
+                tipoPago: personaData[1].tipoPago == 5 ? "cb" : "ch",
                 personaid: personaData[1].id,
                 legajo: personaData[1].legajo,
               });
@@ -107,7 +107,7 @@ const postAgente = () => {
                 nombre: personaData[1].nombre,
                 cuil: personaData[1].cuil,
                 cbu: personaData[1].cbuBloque1 + personaData[1].cbuBloque2,
-                tipoPago: personaData[1].tipoPago == 7 ? "cb" : "ch",
+                tipoPago: personaData[1].tipoPago == 5 ? "cb" : "ch",
                 personaid: personaData[1].id,
                 legajo: personaData[1].legajo,
               });
