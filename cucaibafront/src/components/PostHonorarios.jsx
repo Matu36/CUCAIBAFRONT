@@ -14,16 +14,19 @@ const PostHonorarios = ({
 }) => {
   const { data, isLoading, isFetched, refetch } =
     useModulos(operativoId).modulosActivosQuery;
-  const [options, setOptions] = useState([]);
+  const [options, setOptions] = useState([
+    { value: "0|0", label: "Elegí una opción" },
+  ]);
   useEffect(() => {
     if (!isLoading) {
-      setOptions([
-        { value: "0|0", label: "Elegí una opción" },
-        ...data.map((m) => ({
-          value: `${m.id}|${m.valor}`,
-          label: m.descripcion,
-        })),
-      ]);
+      typeof data == "object" &&
+        setOptions([
+          ...options,
+          ...data.map((m) => ({
+            value: `${m.id}|${m.valor}`,
+            label: m.descripcion,
+          })),
+        ]);
     }
   }, [isFetched, isLoading]);
 

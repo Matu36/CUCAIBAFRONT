@@ -84,7 +84,7 @@ const postAgente = () => {
                 apellido: personaData[1].apellido,
                 nombre: personaData[1].nombre,
                 cuil: personaData[1].cuil,
-                cbu: personaData[1].cbu,
+                cbu: personaData[1].cbuBloque1 + personaData[1].cbuBloque2,
                 tipoPago: personaData[1].tipoPago == 7 ? "cb" : "ch",
                 personaid: personaData[1].id,
                 legajo: personaData[1].legajo,
@@ -100,12 +100,13 @@ const postAgente = () => {
 
             case "found":
               setStatusForm("found");
+              console.log(personaData[1]);
               setAgente({
                 ...agente,
                 apellido: personaData[1].apellido,
                 nombre: personaData[1].nombre,
                 cuil: personaData[1].cuil,
-                cbu: personaData[1].cbu,
+                cbu: personaData[1].cbuBloque1 + personaData[1].cbuBloque2,
                 tipoPago: personaData[1].tipoPago == 7 ? "cb" : "ch",
                 personaid: personaData[1].id,
                 legajo: personaData[1].legajo,

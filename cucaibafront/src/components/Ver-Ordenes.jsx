@@ -97,7 +97,9 @@ export const VerOrdenes = ({ ...props }) => {
 
   const { paginationOptions } = usePagination(data);
 
+
   // ESTO HABILITA O DESHABILITA EL BOTON DE ASIGNAR OP DEFINITIVA SI HAY ERRORES O SI LOS CAMPOS ESTAN VACIOS
+
   const checkAllFieldsComplete = () => {
     const incompleteFields = labels.filter((l) => {
       if (l.show && !OP[l.inputKey]) {
@@ -224,7 +226,9 @@ export const VerOrdenes = ({ ...props }) => {
     setAllFieldsComplete(checkAllFieldsComplete());
   };
 
+
   //ACA TERMINA
+
 
   const handleSubmit = (e) => {
     e.preventDefault();

@@ -14,11 +14,14 @@ import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import { useModulos } from "../../../hooks/useModulos";
 import EmptyTable from "../../UI/EmptyTable";
+import Spinner from "../Spinner";
 
 // Se usa en el componente TablaHonorarios al hacer click en los operativos.
 
 const RowExpandedComponent = ({ data: operativo }) => {
   const { paginationOptions } = usePagination();
+
+  const [toggledClearRows, setToggledClearRows] = useState(false);
 
   const columns = [
     { name: "DNI", selector: (row) => row.dni, sortable: true },
@@ -33,8 +36,11 @@ const RowExpandedComponent = ({ data: operativo }) => {
 
   //TRAE DATA DE AGENTES DISPONIBLES POR OPERATIVO Y EL REFETCH PARA CUANDO SE CREA EL HONORARIO //
 
-  const { data: agentesDisponibles, refetch: refetchAgentesDisponibles } =
-    useAgentes(operativo.id || 0).agentesDisponiblesQuery;
+  const {
+    data: agentesDisponibles,
+    refetch: refetchAgentesDisponibles,
+    isLoading: agentesDispniblesLoading,
+  } = useAgentes(operativo.id || 0).agentesDisponiblesQuery;
 
   // REFETCH DE MODULOS ACTIVOS CUANDO SE CREA EL HONORARIO
 
@@ -169,6 +175,7 @@ const RowExpandedComponent = ({ data: operativo }) => {
   };
 
   const handleSelectChange = (e) => {
+    setToggledClearRows(false);
     if (e.selectedCount > 0) {
       setHonorarioData({ ...honorarioData, agente_id: e.selectedRows[0].id });
     } else {
@@ -232,6 +239,7 @@ const RowExpandedComponent = ({ data: operativo }) => {
               <tr>
                 <th scope="col">Descripción</th>
                 <th scope="col">Valor</th>
+                <th scope="col">Acción</th>
               </tr>
             </thead>
             <tbody>
@@ -245,6 +253,11 @@ const RowExpandedComponent = ({ data: operativo }) => {
                   <tr key={h.id}>
                     <td>{h.modulo.descripcion}</td>
                     <td>$ {h.valor}</td>
+                    <td>
+                      <button onClick={() => console.log("Eliminar")}>
+                        Eliminar
+                      </button>
+                    </td>
                   </tr>
                 ))}
               {!honorariosLoading && honorariosAgente == 400 && (
@@ -270,16 +283,26 @@ const RowExpandedComponent = ({ data: operativo }) => {
             type="text"
             className="form-control"
             placeholder="Buscar por DNI"
+            onMouseLeave={() => setToggledClearRows(false)}
             onChange={handleOnChange}
+            onKeyDown={(e) => {
+              setHonorarioData({ ...honorarioData, agente_id: 0 });
+              setToggledClearRows(true);
+              if (e.target.value == "") {
+                setToggledClearRows(false);
+              }
+            }}
             value={search}
             autoComplete="off"
           />
           <div>
-            {typeof filteredAgentes === "object" ? (
+            {typeof filteredAgentes === "object" &&
+            !agentesDispniblesLoading ? (
               <DataTable
                 columns={columns}
                 data={filteredAgentes}
                 pagination
+                clearSelectedRows={honorarioData.agente_id == 0}
                 selectableRows
                 selectableRowsSingle
                 selectableRowsHighlight
@@ -287,20 +310,19 @@ const RowExpandedComponent = ({ data: operativo }) => {
                 striped
                 paginationComponentOptions={paginationOptions}
                 noDataComponent={
-                  <EmptyTable msg="No se encontro el Agente con los datos ingresados" />
+                  <EmptyTable msg="No se encontro el Agente con los datos ingresados">
+                    <button
+                      type="button"
+                      className="btn btn-guardar"
+                      onClick={handleNavigate}
+                    >
+                      Crear Agente
+                    </button>
+                  </EmptyTable>
                 }
               />
             ) : (
-              <div className="d-flex p-2 align-items-center justify-content-center gap-2">
-                <h5>No hay ningun agente disponible</h5>
-                <button
-                  type="button"
-                  className="btn btn-guardar"
-                  onClick={handleNavigate}
-                >
-                  Crear Agente
-                </button>
-              </div>
+              <Spinner />
             )}
           </div>
         </div>
