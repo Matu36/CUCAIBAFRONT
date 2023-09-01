@@ -6,7 +6,12 @@ function Layout() {
   return (
     <>
       <Header />
-      <main style={{ background: "#f7f7f7", padding: "80px 10px" }}>
+      <main
+        style={{
+          background: "#f7f7f7",
+          padding: "80px 10px",
+        }}
+      >
         <Outlet />
       </main>
       <Footer />

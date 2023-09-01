@@ -1,10 +1,13 @@
 import "../../assets/styles/style.css";
 import { Link } from "react-router-dom";
-import { AiFillHome } from "react-icons/ai";
-import { FaAmbulance } from "react-icons/fa";
+import {
+  FaAmbulance,
+  FaHospitalSymbol,
+  FaUsers,
+  FaBraille,
+} from "react-icons/fa";
 import { BsFillPersonFill } from "react-icons/bs";
 import { SiWebmoney } from "react-icons/si";
-import { TbNurse } from "react-icons/tb";
 import { BiMoneyWithdraw } from "react-icons/bi";
 import { HiOutlineDocumentText } from "react-icons/hi";
 
@@ -32,7 +35,11 @@ function SideBar({ isOpen, setIsOpen }) {
       <ul className="metismenu side-menu" id="side-menu">
         <li>
           <Link to="/" onClick={() => setIsOpen(false)}>
-            <AiFillHome className="sidebarIcons" /> Inicio
+            <FaHospitalSymbol
+              className="sidebarIcons text-muted"
+              size="1.25rem"
+            />{" "}
+            Inicio
           </Link>
         </li>
         <li>
@@ -44,7 +51,8 @@ function SideBar({ isOpen, setIsOpen }) {
             href="#collapseAgentes"
             role="button"
           >
-            <BsFillPersonFill className="sidebarIcons" /> Agentes
+            <FaUsers className="sidebarIcons text-muted" size="1.50rem" />{" "}
+            Agentes
           </a>
           <ul className="collapse sub-menu" id="collapseAgentes">
             <li>
@@ -68,7 +76,8 @@ function SideBar({ isOpen, setIsOpen }) {
             href="#collapseOperativos"
             role="button"
           >
-            <FaAmbulance className="sidebarIcons" /> Operativos
+            <FaAmbulance className="sidebarIcons text-muted" size="1.50rem" />{" "}
+            Operativos
           </a>
           <ul className="collapse sub-menu" id="collapseOperativos">
             <li>
@@ -98,7 +107,8 @@ function SideBar({ isOpen, setIsOpen }) {
             href="#collapseHonorarios"
             role="button"
           >
-            <SiWebmoney className="sidebarIcons" /> Honorarios
+            <SiWebmoney className="sidebarIcons text-muted" size="1.50rem" />{" "}
+            Honorarios
           </a>
 
           <ul className="collapse sub-menu" id="collapseHonorarios">
@@ -112,7 +122,8 @@ function SideBar({ isOpen, setIsOpen }) {
         <ul className="metismenu side-menu" id="side-menu">
           <li>
             <Link to="/modulos" onClick={() => setIsOpen(false)}>
-              <TbNurse className="sidebarIcons" /> Módulos
+              <FaBraille className="sidebarIcons text-muted" size="1.50rem" />{" "}
+              Módulos
             </Link>
           </li>
         </ul>
@@ -125,7 +136,11 @@ function SideBar({ isOpen, setIsOpen }) {
             href="#collapseOrdenes"
             role="button"
           >
-            <BiMoneyWithdraw className="sidebarIcons" /> Órdenes de Pago
+            <BiMoneyWithdraw
+              className="sidebarIcons text-muted"
+              size="1.50rem"
+            />{" "}
+            Órdenes de Pago
           </a>
 
           <ul className="collapse sub-menu" id="collapseOrdenes">
@@ -139,13 +154,15 @@ function SideBar({ isOpen, setIsOpen }) {
                 Ver Órdenes de Pago
               </Link>
             </li>
-           
           </ul>
         </li>
         <li>
           <Link to="/archivos" onClick={() => setIsOpen(false)}>
-            <HiOutlineDocumentText className="sidebarIcons" /> Archivos de
-            Transferencia
+            <HiOutlineDocumentText
+              className="sidebarIcons text-muted"
+              size="1.50rem"
+            />{" "}
+            Archivos de Transferencia
           </Link>
         </li>
       </ul>

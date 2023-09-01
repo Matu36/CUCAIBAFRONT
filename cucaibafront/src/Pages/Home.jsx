@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "../assets/styles/style.css";
 import Notificacion from "../components/UI/LandingNotificacion.jsx";
+import { FaCloudDownloadAlt } from "react-icons/fa";
 
 export const Home = () => {
   const [fechaActual, setFechaActual] = useState("");
@@ -17,7 +18,7 @@ export const Home = () => {
   }, []);
 
   return (
-    <div className="container-fluid container-lg pt-3 pb-5">
+    <div className="container-fluid container-lg my-lg-5 my-3 pb-5">
       <div className="titulo-principal d-flex align-items-center mb-3">
         <div>
           <span className="fa-stack fa-2x">
@@ -26,10 +27,10 @@ export const Home = () => {
           </span>
         </div>
         <div>
-          <h4 className="font-weight-bold text-muted text-uppercase mb-0">
-            Variables de Procuración
+          <h4 className="font-weight-bold text-muted mb-0">
+            VARIABLES DE PROCURACIÓN
           </h4>
-          <h6 className="text-info mb-0"> CUCAIBA</h6>
+          <h6 className="text-info text-muted mb-0"> CUCAIBA</h6>
         </div>
       </div>
 
@@ -38,7 +39,7 @@ export const Home = () => {
           <div className="card-text">
             <p>Bienvenida/o, Usuario del Cucaiba </p>
             <p>
-              Tu usuario está asociado al <strong> Cucaiba </strong>
+              Tu usuario está asociado al <strong> C.U.C.A.I.B.A </strong>
               con el <strong>Perfil Administrador </strong>, si esta información
               no es correcta por favor comunicate a la brevedad con el
               <a href="mailto:usuarios@ms.gba.gov.ar">
@@ -48,12 +49,10 @@ export const Home = () => {
               para solicitar la corrección.
             </p>
             <p></p>
-            <p>Con este perfil el sistema habilita, entre otras opciones...</p>
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut
-              dicta dolorum hic maxime porro quibusdam tenetur. Beatae commodi
-              consectetur distinctio, dolor, eaque exercitationem ipsum labore
-              nihil nostrum odio similique voluptate?
+              Con este perfil el sistema habilita, entre otras opciones,
+              registrar operativos y generar las liquidaciones a los agentes
+              participantes de dichos operativos.
             </p>
             <p>
               Para m&aacute;s detalles sobre las opciones y uso del sistema
@@ -62,7 +61,10 @@ export const Home = () => {
             <br />
             <p className="text-center">
               <a className="btn btn-default link-manual" href="#" download>
-                <i className="fas fa-cloud-download-alt fa-fw fa-lg"></i>
+                <FaCloudDownloadAlt
+                  size="1.25rem"
+                  style={{ marginRight: "5px" }}
+                />
                 Manual del Usuario
               </a>
             </p>

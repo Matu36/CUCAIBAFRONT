@@ -16,6 +16,8 @@ import PrintOrdenPago from "./PrintOrdenPago";
 import { useMutation } from "@tanstack/react-query";
 import Swal from "sweetalert2";
 
+import { BsThreeDotsVertical } from "react-icons/bs";
+
 const NUMBER_REGEX = /^[0-9]+$/;
 const NO_NUMBER_STRING_REGEX = /^[^0-9]+$/;
 
@@ -97,7 +99,6 @@ export const VerOrdenes = ({ ...props }) => {
 
   const { paginationOptions } = usePagination(data);
 
-
   // ESTO HABILITA O DESHABILITA EL BOTON DE ASIGNAR OP DEFINITIVA SI HAY ERRORES O SI LOS CAMPOS ESTAN VACIOS
 
   const checkAllFieldsComplete = () => {
@@ -136,7 +137,6 @@ export const VerOrdenes = ({ ...props }) => {
   }, [OP]);
 
   // TERMINA ACÁ
-
 
   //ELIMINAR ORDEN DE PAGO//
 
@@ -179,8 +179,7 @@ export const VerOrdenes = ({ ...props }) => {
 
   //FINALIZA LA ELIMINACION DE LA ORDEN DE PAGO
 
-
-   //VALIDACIONES DE CUANDO SE VA ESCRIBIENDO EN LOS INPUT DE GENERAR OP DEFINITIVA
+  //VALIDACIONES DE CUANDO SE VA ESCRIBIENDO EN LOS INPUT DE GENERAR OP DEFINITIVA
   const handleInputChange = (e) => {
     switch (e.target.type) {
       case "text":
@@ -226,9 +225,7 @@ export const VerOrdenes = ({ ...props }) => {
     setAllFieldsComplete(checkAllFieldsComplete());
   };
 
-
   //ACA TERMINA
-
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -269,18 +266,18 @@ export const VerOrdenes = ({ ...props }) => {
     },
 
     {
+      name: "Acciones",
       cell: (row) => (
-        <div className="d-flex justify-content-between align-items-center">
-          <div className="dropdown dropend">
-            <button
-              className="btn btn-secondary dropdown-toggle dropdown-button"
+        <div>
+          <div className="dropdown-center d-flex">
+            <a
               type="button"
               id="dropdownMenuButton1"
               data-bs-toggle="dropdown"
               aria-expanded="false"
             >
-              Ver Acciones
-            </button>
+              <BsThreeDotsVertical size="1.25rem" />
+            </a>
             <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
               <li key="detalle-link">
                 <Link
@@ -340,19 +337,17 @@ export const VerOrdenes = ({ ...props }) => {
                   </button>
                 )}
               </li>
+              {!row.op_nro && row.opprovisorio_nro && (
+                <li>
+                  <button
+                    className="btn btn-danger custom-button"
+                    onClick={() => handleDelete(row.opprovisorio_nro)}
+                  >
+                    Eliminar
+                  </button>
+                </li>
+              )}
             </ul>
-          </div>
-          <div>
-            {!row.op_nro && row.opprovisorio_nro && (
-              <div>
-                <button
-                  className="btn btn-danger custom-button"
-                  onClick={() => handleDelete(row.opprovisorio_nro)}
-                >
-                  Eliminar
-                </button>
-              </div>
-            )}
           </div>
         </div>
       ),
