@@ -1,5 +1,5 @@
 import React from "react";
-import { useOrdenPorLiquidacionId } from "../hooks/useOrdenesDePago";
+import { useOrdenPorLiquidacionId } from "../../hooks/useOrdenesDePago";
 import {
   PDFDownloadLink,
   Document,
@@ -7,19 +7,22 @@ import {
   View,
   Text,
 } from "@react-pdf/renderer";
-import { styles } from "./OrdenDetail";
-import NumberFormatter from "../utils/NumberFormatter";
+import { styles } from "../OrdenDetail";
+import NumberFormatter from "../../utils/NumberFormatter";
 
-//Componente que muestra PDF de los agentes sumariados que cobran por cheque cuando el Honorario no tiene la OP definitiva.
+//Componente que muestra PDF de los agentes sumariados que cobran por transferencia cuando el Honorario no tiene la OP definitiva.
 
-export const PrintOrdenPago = ({ liquidacionId, opProvisoria }) => {
+export const PrintOrdenPagoPDFTransferencia = ({
+  liquidacionId,
+  opProvisoria,
+}) => {
   const { data, isFetched, isLoading } =
     useOrdenPorLiquidacionId(liquidacionId).ordenesPorIdQuery;
 
   const personasArray = Array.isArray(data) ? data[0] : [];
 
   if (isLoading) {
-    return "Cargando detalles por cheque ...";
+    return "Cargando detalles por transferencia ...";
   }
 
   const personasExceptLast = personasArray.slice(0, -1);
@@ -46,7 +49,7 @@ export const PrintOrdenPago = ({ liquidacionId, opProvisoria }) => {
                 <Text style={[styles.cell, styles.header]}>Tipo de Pago</Text>
               </View>
               {personasExceptLast
-                .filter((personasData) => personasData.tipo_pago === "ch")
+                .filter((personasData) => personasData.tipo_pago === "cb")
                 .map((personasData, index) => {
                   const { nombre, cuil, valor_total, legajo, cbu, tipo_pago } =
                     personasData;
@@ -69,7 +72,7 @@ export const PrintOrdenPago = ({ liquidacionId, opProvisoria }) => {
                         $ {NumberFormatter(valor_total)}
                       </Text>
                       <Text style={styles.cell}>
-                        {tipo_pago ? "Cheque" : "Cheque"}{" "}
+                        {tipo_pago ? "Transferencia" : "Transferencia"}{" "}
                       </Text>
                     </View>
                   );
@@ -79,7 +82,7 @@ export const PrintOrdenPago = ({ liquidacionId, opProvisoria }) => {
                 <Text style={styles.totalText}>
                   Total: ${" "}
                   {personasExceptLast
-                    .filter((personasData) => personasData.tipo_pago === "ch")
+                    .filter((personasData) => personasData.tipo_pago === "cb")
                     .reduce(
                       (total, personaData) => total + personaData.valor_total,
                       0
@@ -92,15 +95,15 @@ export const PrintOrdenPago = ({ liquidacionId, opProvisoria }) => {
           </Page>
         </Document>
       }
-      fileName={`detalle_agentesporcheque.pdf`}
+      fileName={`detalle_agentesportransferencia.pdf`}
     >
       {({ loading }) =>
         loading
           ? "Cargando documento..."
-          : " Imprimir listado de agentes por cheque "
+          : " Imprimir listado de agentes por transferencia "
       }
     </PDFDownloadLink>
   );
 };
 
-export default PrintOrdenPago;
+export default PrintOrdenPagoPDFTransferencia;

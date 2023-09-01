@@ -5,7 +5,10 @@ import { useHonorarios } from "../../hooks/useHonorarios";
 // Componente que muestra las notificaciones de las liquidaciones pendientes de los agentes
 
 const LandingNotificacion = () => {
-  const { data, isFetched } = useHonorarios().honorariosPendientesQuery;
+  const { data, isFetched } = useHonorarios().honorariosPendientesQueryHome;
+
+  console.log(data)
+
 
   return (
     <>
@@ -30,7 +33,7 @@ const LandingNotificacion = () => {
             }}
           >
             <span style={{ fontWeight: "bold" }}>
-              Ud. tiene {data.length ?? 0} Órdenes de pago Pendientes
+              Ud. tiene {data} Órdenes de pago Pendientes
             </span>
           </div>
         </div>

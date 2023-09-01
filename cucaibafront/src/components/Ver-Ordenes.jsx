@@ -15,6 +15,7 @@ import InputField from "./UI/InputField";
 import PrintOrdenPago from "./PrintOrdenPago";
 import { useMutation } from "@tanstack/react-query";
 import Swal from "sweetalert2";
+import PrintOrdenPagoPDFTransferencia from "./UI/PrintPDFTransferencia";
 
 const NUMBER_REGEX = /^[0-9]+$/;
 const NO_NUMBER_STRING_REGEX = /^[^0-9]+$/;
@@ -97,7 +98,6 @@ export const VerOrdenes = ({ ...props }) => {
 
   const { paginationOptions } = usePagination(data);
 
-
   // ESTO HABILITA O DESHABILITA EL BOTON DE ASIGNAR OP DEFINITIVA SI HAY ERRORES O SI LOS CAMPOS ESTAN VACIOS
 
   const checkAllFieldsComplete = () => {
@@ -136,7 +136,6 @@ export const VerOrdenes = ({ ...props }) => {
   }, [OP]);
 
   // TERMINA ACÁ
-
 
   //ELIMINAR ORDEN DE PAGO//
 
@@ -179,8 +178,7 @@ export const VerOrdenes = ({ ...props }) => {
 
   //FINALIZA LA ELIMINACION DE LA ORDEN DE PAGO
 
-
-   //VALIDACIONES DE CUANDO SE VA ESCRIBIENDO EN LOS INPUT DE GENERAR OP DEFINITIVA
+  //VALIDACIONES DE CUANDO SE VA ESCRIBIENDO EN LOS INPUT DE GENERAR OP DEFINITIVA
   const handleInputChange = (e) => {
     switch (e.target.type) {
       case "text":
@@ -226,9 +224,7 @@ export const VerOrdenes = ({ ...props }) => {
     setAllFieldsComplete(checkAllFieldsComplete());
   };
 
-
   //ACA TERMINA
-
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -324,7 +320,7 @@ export const VerOrdenes = ({ ...props }) => {
               <li>
                 {row.op_nro === null && (
                   <button
-                    className="dropdown-item w-100 d-flex justify-content-end align-items-center"
+                    className="dropdown-item w-100 d-flex align-items-center"
                     onMouseOver={(e) =>
                       (e.currentTarget.style.backgroundColor = "#d3d3d3")
                     }
@@ -333,6 +329,23 @@ export const VerOrdenes = ({ ...props }) => {
                     }
                   >
                     <PrintOrdenPago
+                      personasExceptLast={row.personasExceptLast}
+                      liquidacionId={row.liquidacion_id}
+                      opProvisoria={row.opprovisorio_nro}
+                    />
+                  </button>
+                )}
+                     {row.op_nro === null && (
+                  <button
+                    className="dropdown-item w-100 d-flex justify-content-end align-items-center"
+                    onMouseOver={(e) =>
+                      (e.currentTarget.style.backgroundColor = "#d3d3d3")
+                    }
+                    onMouseOut={(e) =>
+                      (e.currentTarget.style.backgroundColor = "#fff")
+                    }
+                  >
+                    <PrintOrdenPagoPDFTransferencia
                       personasExceptLast={row.personasExceptLast}
                       liquidacionId={row.liquidacion_id}
                       opProvisoria={row.opprovisorio_nro}
