@@ -1,15 +1,15 @@
 import React from "react";
 import "../../assets/styles/style.css";
-import { useHonorarios } from "../../hooks/useHonorarios";
+import { useOutletContext } from "react-router-dom";
 
 // Componente que muestra las notificaciones de las liquidaciones pendientes de los agentes
 
 const LandingNotificacion = () => {
-  const { data, isFetched } = useHonorarios().honorariosPendientesQueryHome;
+  const c = useOutletContext();
 
   return (
     <>
-      {isFetched && (
+      {c.isFetched && (
         <div
           style={{
             border: "1px solid rgba(2, 2, 2, 0.2)",
@@ -30,7 +30,7 @@ const LandingNotificacion = () => {
             }}
           >
             <span style={{ fontWeight: "bold" }}>
-              Ud. tiene {data} Órdenes de pago Pendientes
+              Ud. tiene {c.data} Órdenes de pago Pendientes
             </span>
           </div>
         </div>

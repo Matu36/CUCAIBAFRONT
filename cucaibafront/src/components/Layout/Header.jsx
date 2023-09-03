@@ -1,15 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { GiHamburgerMenu } from "react-icons/gi";
 import { FaBars } from "react-icons/fa";
 import { BiUserCircle } from "react-icons/bi";
 import "./styles/header.css";
 import SideBar from "./Sidebar";
-import { useHonorarios } from "../../hooks/useHonorarios";
 
-function Header() {
+function Header({ data, isFetched }) {
   const [isOpen, setIsOpen] = useState(false);
-
-  const { data, isFetched } = useHonorarios().honorariosPendientesQueryHome;
 
   const honorariosPendientesCount = isFetched ? data : 0;
 
