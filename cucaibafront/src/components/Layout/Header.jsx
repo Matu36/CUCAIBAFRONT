@@ -1,14 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { GiHamburgerMenu } from "react-icons/gi";
+import { FaBars } from "react-icons/fa";
 import { BiUserCircle } from "react-icons/bi";
 import "./styles/header.css";
 import SideBar from "./Sidebar";
-import { useHonorarios } from "../../hooks/useHonorarios";
 
-function Header() {
+function Header({ data, isFetched }) {
   const [isOpen, setIsOpen] = useState(false);
-
-  const { data, isFetched } = useHonorarios().honorariosPendientesQueryHome;
 
   const honorariosPendientesCount = isFetched ? data : 0;
 
@@ -45,17 +42,17 @@ function Header() {
 
   return (
     <header className="position-fixed vw-100" style={{ zIndex: 100 }}>
-      <nav className="navbar top-0 navbar-offcanvas navbar-ms px-3">
-        <div className="row w-100 mx-auto flex-nowrap align-items-center justify-content-between">
+      <nav className="navbar top-0 navbar-offcanvas navbar-ms">
+        <div className="row w-100 flex-nowrap">
+          {" "}
           <button
             className="navbar-toggler border-0"
-            type="button"
             id="navToggle"
             onClick={() => setIsOpen(!isOpen)}
           >
-            <GiHamburgerMenu size="2rem" />
+            <FaBars size="1.25rem" />
           </button>
-          <div className="col-8 intranet-logo">
+          <div className="col-9 pl-0 pl-md-2 intranet-logo">
             <span className="fst-line">INTRANET</span>
             <span className="snd-line">MINISTERIO DE SALUD</span>
           </div>

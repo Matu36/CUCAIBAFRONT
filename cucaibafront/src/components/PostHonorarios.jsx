@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useModulos } from "../hooks/useModulos";
 import { AiOutlinePlus } from "react-icons/ai";
 import Select from "react-select";
-// import "../assets/styles/select2.css";
+import "../assets/styles/select2.css";
 
 //Componente para agregar Función al agente
 
@@ -76,19 +76,13 @@ const PostHonorarios = ({
           </label>
           <Select
             options={options}
+            classNames={{ container: () => "select2-container" }}
             placeholder="Seleccioné una opción"
             onChange={handleChange}
             noOptionsMessage={() => "No hay ningún modulo disponible"}
             aria-label="Default select example"
             isDisabled={disabled}
             value={auxValue}
-            styles={{
-              control: (baseStyles, state) => ({
-                ...baseStyles,
-                width: "100%",
-              }),
-            }}
-            className="select2-container"
             classNamePrefix="select2"
           />
         </div>

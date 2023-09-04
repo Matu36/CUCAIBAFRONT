@@ -27,6 +27,7 @@ export const useModulos = (operativoId = 0) => {
   const modulosActivosQuery = useQuery({
     queryKey: ["modulos-activos", { operativoId }],
     queryFn: () => getModulos(operativoId),
+    enabled: operativoId != 0,
   });
 
   const crearModulo = useMutation({
