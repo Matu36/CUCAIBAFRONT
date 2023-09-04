@@ -3,6 +3,7 @@ import { useModulos } from "../hooks/useModulos";
 import { AiOutlinePlus } from "react-icons/ai";
 import Select from "react-select";
 import "../assets/styles/select2.css";
+import NumberFormatter from "../utils/NumberFormatter";
 
 //Componente para agregar Función al agente
 

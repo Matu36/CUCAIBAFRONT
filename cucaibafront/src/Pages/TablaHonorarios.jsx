@@ -83,7 +83,7 @@ const TablaHonorarios = () => {
     return <Spinner />;
   }
   //SPINNER//
-
+  moment.locale("es-mx");
   const columns = [
     {
       name: "Proceso de Donación",

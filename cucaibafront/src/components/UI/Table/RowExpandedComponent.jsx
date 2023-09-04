@@ -15,6 +15,8 @@ import { useNavigate } from "react-router-dom";
 import { useModulos } from "../../../hooks/useModulos";
 import EmptyTable from "../../UI/EmptyTable";
 import Spinner from "../Spinner";
+import { FaTimes } from "react-icons/fa";
+import NumberFormatter from "../../../utils/NumberFormatter";
 
 // Se usa en el componente TablaHonorarios al hacer click en los operativos.
 
@@ -97,6 +99,8 @@ const RowExpandedComponent = ({ data: operativo }) => {
           title: "Hubo un error",
           text: err.response.data,
           showConfirmButton: true,
+          confirmButtonText: "Cerrar",
+          confirmButtonColor: "#4CAF50",
           timer: 3000,
         });
       },
@@ -117,7 +121,38 @@ const RowExpandedComponent = ({ data: operativo }) => {
         return Swal.fire({
           position: "center",
           icon: "success",
-          title: "Se desvinculo el agente del operativo de manera correcta",
+          title: "Se desvinculó el agente del operativo de manera correcta",
+          showConfirmButton: false,
+          timer: 3000,
+        });
+      },
+    }
+  );
+
+  const deleteModuloAgente = useMutation(
+    async (data) => {
+      return await HonorariosAPI.delete("", { data });
+    },
+    {
+      onSuccess: () => {
+        refetch();
+        refetchAgentes();
+        refetchAgentesDisponibles();
+        refetchModulosActivos();
+        return Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "Se eliminó el módulo seleccionado del Agente",
+          showConfirmButton: false,
+          timer: 3000,
+        });
+      },
+      onError: () => {
+        return Swal.fire({
+          position: "center",
+          icon: "warning",
+          title: "Hubó un error",
+          text: "No se pudo eliminar el módulo del agente",
           showConfirmButton: false,
           timer: 3000,
         });
@@ -139,6 +174,14 @@ const RowExpandedComponent = ({ data: operativo }) => {
       if (result.isConfirmed) {
         deleteH.mutate({ agenteID: agente_id, operativoID: operativo_id });
       }
+    });
+  };
+
+  const handleDeleteModulo = (modulo_id, agente_id, operativo_id) => {
+    deleteModuloAgente.mutate({
+      agenteID: agente_id,
+      operativoID: operativo_id,
+      moduloID: modulo_id,
     });
   };
 
@@ -246,16 +289,27 @@ const RowExpandedComponent = ({ data: operativo }) => {
             <tbody>
               {honorariosLoading && isFetching && (
                 <tr>
-                  <td colSpan={2}>Cargando...</td>
+                  <td colSpan={3}>Cargando...</td>
                 </tr>
               )}
               {typeof honorariosAgente == "object" &&
                 honorariosAgente.map((h) => (
                   <tr key={h.id}>
-                    <td>{h.modulo.descripcion}</td>
-                    <td>$ {h.valor}</td>
+                    <td className="w-50">{h.modulo.descripcion}</td>
+                    <td>$ {NumberFormatter(h.valor)}</td>
                     <td>
-                      <button onClick={() => console.log("Eliminar")}>
+                      <button
+                        className="btn btn-sm btn-limpiar d-flex align-items-center justify-content-center gap-2"
+                        disabled={deleteModuloAgente.isLoading}
+                        onClick={() =>
+                          handleDeleteModulo(
+                            h.modulo.id,
+                            honorarioData.agente_id,
+                            honorarioData.operativo_id
+                          )
+                        }
+                      >
+                        <FaTimes size="0.90rem" />
                         Eliminar
                       </button>
                     </td>

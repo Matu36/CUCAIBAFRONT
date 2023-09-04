@@ -88,10 +88,12 @@ const Modulos = ({ ...props }) => {
 
   const [editIndex, setEditIndex] = useState(null);
   const [editPrice, setEditPrice] = useState(null);
+  const [prevValor, setPrevValor] = useState(0);
 
   const handleEdit = (id, valor) => {
     setEditIndex(id);
     setEditPrice(valor);
+    setPrevValor(valor);
   };
 
   const handlePriceChange = (valor) => {
@@ -147,7 +149,13 @@ const Modulos = ({ ...props }) => {
 
   Moment.locale("es-mx");
   const columns = [
-    { name: "Descripción", selector: (row) => row.descripcion, sortable: true },
+    {
+      name: "Descripción",
+      selector: (row) => row.descripcion,
+      sortable: true,
+      grow: 2,
+      wrap: true,
+    },
     {
       name: "Valor",
       selector: (row) => `$ ${NumberFormatter(row.valor)}`,
@@ -193,13 +201,14 @@ const Modulos = ({ ...props }) => {
               }}
             >
               <button
-                className="btn btn-outline-secondary btn-sm mt-1"
+                className="btn btn-guardar btn-sm mt-1"
                 onClick={() => handleSave(row.id)}
+                disabled={editPrice <= 0 || prevValor == editPrice}
               >
                 Guardar
               </button>
               <button
-                className="btn btn-secondary btn-sm mb-1"
+                className="btn btn-limpiar btn-sm mb-1"
                 onClick={handleCancel}
               >
                 Cancelar
@@ -208,10 +217,10 @@ const Modulos = ({ ...props }) => {
           </>
         ) : (
           <div
-            className={`d-flex gap-3 ${
+            className={`d-flex gap-2 ${
               window.innerWidth < 1000
                 ? " p-2 flex-column justify-content-around"
-                : "flex-row"
+                : "flex-column p-2"
             }`}
           >
             <button
