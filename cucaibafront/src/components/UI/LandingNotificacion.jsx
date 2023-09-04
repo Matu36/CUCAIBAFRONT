@@ -7,7 +7,7 @@ import { useHonorarios } from "../../hooks/useHonorarios";
 const LandingNotificacion = () => {
   const { data, isFetched } = useHonorarios().honorariosPendientesQueryHome;
 
-  console.log(data)
+ 
 
 
   return (
