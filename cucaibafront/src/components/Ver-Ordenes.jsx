@@ -9,6 +9,7 @@ import EmptyTable from "./UI/EmptyTable";
 import { usePagination } from "../hooks/usePagination";
 import { Link } from "react-router-dom";
 import "../assets/styles/detalle.css";
+import "./styles/ordenes.css";
 import Spinner from "./UI/Spinner";
 import Modal from "./UI/Modal";
 import InputField from "./UI/InputField";
@@ -17,8 +18,8 @@ import { useMutation } from "@tanstack/react-query";
 import Swal from "sweetalert2";
 import PrintOrdenPagoPDFTransferencia from "./UI/PrintPDFTransferencia";
 
-import { BsThreeDotsVertical } from "react-icons/bs";
 import Dropdown from "./UI/Dropdown";
+import { FaPlus, FaPrint, FaSearch, FaTimes } from "react-icons/fa";
 
 const NUMBER_REGEX = /^[0-9]+$/;
 const NO_NUMBER_STRING_REGEX = /^[^0-9]+$/;
@@ -270,7 +271,70 @@ export const VerOrdenes = ({ ...props }) => {
     {
       name: "Acciones",
       cell: (row) => (
-        <Dropdown />
+        <Dropdown>
+          <Link
+            className="dropdown-item dropdown-item-custom"
+            // onMouseOver={(e) =>
+            //   (e.currentTarget.style.backgroundColor = "#d3d3d3")
+            // }
+            // onMouseOut={(e) => (e.currentTarget.style.backgroundColor = "#fff")}
+            to={`/ordenes/ver-ordenes/${row.liquidacion_id}`}
+          >
+            <FaSearch size="0.85rem" />
+            <span>Ver orden de pago</span>
+          </Link>
+
+          {!row.op_nro && (
+            <button
+              className="dropdown-item dropdown-item-custom"
+              type="button"
+              data-bs-toggle="modal"
+              data-bs-target="#opDefinitiva"
+              onClick={() =>
+                setOP({
+                  ...OP,
+                  op_provisorio: row.opprovisorio_nro,
+                  liquidacion_id: row.liquidacion_id,
+                })
+              }
+            >
+              <FaPlus size="0.85rem" />
+              <span>Asignar número definitivo</span>
+            </button>
+          )}
+
+          {row.op_nro === null && (
+            <button className="dropdown-item w-100 dropdown-item-custom pdf-download-link">
+              <FaPrint size="0.85rem" />
+              <PrintOrdenPago
+                personasExceptLast={row.personasExceptLast}
+                liquidacionId={row.liquidacion_id}
+                opProvisoria={row.opprovisorio_nro}
+              />
+            </button>
+          )}
+          {row.op_nro === null && (
+            <button className="dropdown-item w-100 dropdown-item-custom pdf-download-link">
+              <FaPrint size="0.85rem" />
+              <PrintOrdenPagoPDFTransferencia
+                personasExceptLast={row.personasExceptLast}
+                liquidacionId={row.liquidacion_id}
+                opProvisoria={row.opprovisorio_nro}
+              />
+            </button>
+          )}
+
+          {!row.op_nro && row.opprovisorio_nro && (
+            <button
+              className="dropdown-item dropdown-item-custom"
+              onClick={() => handleDelete(row.opprovisorio_nro)}
+              type="button"
+            >
+              <FaTimes size="0.85rem" />
+              <span>Eliminar</span>
+            </button>
+          )}
+        </Dropdown>
         // <div>
 
         //   <div className="dropdown-center d-flex">
@@ -283,91 +347,7 @@ export const VerOrdenes = ({ ...props }) => {
         //       <BsThreeDotsVertical size="1.25rem" />
         //     </a>
         //     <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-        //       <li key="detalle-link">
-        //         <Link
-        //           className="dropdown-item"
-        //           onMouseOver={(e) =>
-        //             (e.currentTarget.style.backgroundColor = "#d3d3d3")
-        //           }
-        //           onMouseOut={(e) =>
-        //             (e.currentTarget.style.backgroundColor = "#fff")
-        //           }
-        //           to={`/ordenes/ver-ordenes/${row.liquidacion_id}`}
-        //         >
-        //           Ver orden de pago
-        //         </Link>
-        //       </li>
-        //       {!row.op_nro && (
-        //         <li key="definitiva-link">
-        //           <button
-        //             className="dropdown-item"
-        //             type="button"
-        //             data-bs-toggle="modal"
-        //             data-bs-target="#opDefinitiva"
-        //             onClick={() =>
-        //               setOP({
-        //                 ...OP,
-        //                 op_provisorio: row.opprovisorio_nro,
-        //                 liquidacion_id: row.liquidacion_id,
-        //               })
-        //             }
-        //             onMouseOver={(e) =>
-        //               (e.currentTarget.style.backgroundColor = "#d3d3d3")
-        //             }
-        //             onMouseOut={(e) =>
-        //               (e.currentTarget.style.backgroundColor = "#fff")
-        //             }
-        //           >
-        //             Asignar número definitivo
-        //           </button>
-        //         </li>
-        //       )}
-        //       <li>
-        //         {row.op_nro === null && (
-        //           <button
-        //             className="dropdown-item w-100 d-flex align-items-center"
-        //             onMouseOver={(e) =>
-        //               (e.currentTarget.style.backgroundColor = "#d3d3d3")
-        //             }
-        //             onMouseOut={(e) =>
-        //               (e.currentTarget.style.backgroundColor = "#fff")
-        //             }
-        //           >
-        //             <PrintOrdenPago
-        //               personasExceptLast={row.personasExceptLast}
-        //               liquidacionId={row.liquidacion_id}
-        //               opProvisoria={row.opprovisorio_nro}
-        //             />
-        //           </button>
-        //         )}
-        //         {row.op_nro === null && (
-        //           <button
-        //             className="dropdown-item w-100 d-flex justify-content-end align-items-center"
-        //             onMouseOver={(e) =>
-        //               (e.currentTarget.style.backgroundColor = "#d3d3d3")
-        //             }
-        //             onMouseOut={(e) =>
-        //               (e.currentTarget.style.backgroundColor = "#fff")
-        //             }
-        //           >
-        //             <PrintOrdenPagoPDFTransferencia
-        //               personasExceptLast={row.personasExceptLast}
-        //               liquidacionId={row.liquidacion_id}
-        //               opProvisoria={row.opprovisorio_nro}
-        //             />
-        //           </button>
-        //         )}
-        //       </li>
-        //       {!row.op_nro && row.opprovisorio_nro && (
-        //         <li>
-        //           <button
-        //             className="btn btn-danger custom-button"
-        //             onClick={() => handleDelete(row.opprovisorio_nro)}
-        //           >
-        //             Eliminar
-        //           </button>
-        //         </li>
-        //       )}
+
         //     </ul>
         //   </div>
         // </div>

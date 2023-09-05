@@ -3,6 +3,8 @@ import Header from "./Header";
 import Footer from "./Footer";
 import { useQuery } from "@tanstack/react-query";
 import { getHonorariosPendienteshome } from "../../hooks/useHonorarios";
+import "../styles/layout.css";
+import "../styles/data-table.css";
 
 function Layout() {
   const { data, isFetched } = useQuery({
@@ -11,17 +13,13 @@ function Layout() {
   });
 
   return (
-    <>
+    <div className="layout-container">
       <Header data={data} isFetched={isFetched} />
-      <main
-        style={{
-          background: "#f7f7f7",
-        }}
-      >
+      <div className="children-container">
         <Outlet context={{ data, isFetched }} />
-      </main>
+      </div>
       <Footer />
-    </>
+    </div>
   );
 }
 

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { FaBars } from "react-icons/fa";
 import { BiUserCircle } from "react-icons/bi";
-import "./styles/header.css";
-import SideBar from "./Sidebar";
+import "../styles/header.css";
+import SideBar from "./SideBar";
 
 function Header({ data, isFetched }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -41,8 +41,8 @@ function Header({ data, isFetched }) {
   }, [isOpen]);
 
   return (
-    <header className="position-fixed vw-100" style={{ zIndex: 100 }}>
-      <nav className="navbar top-0 navbar-offcanvas navbar-ms">
+    <header className="container">
+      <nav className="navbar fixed-top navbar-offcanvas navbar-ms">
         <div className="row w-100 flex-nowrap">
           {" "}
           <button

@@ -148,8 +148,9 @@ const CrearModulo = ({ handleCerrarFormulario, data }) => {
             <CreatableSelect
               options={options}
               value={selectValue}
+              placeholder="Descripción"
+              components={{ DropdownIndicator: null }}
               classNamePrefix="select2"
-              menuIsOpen
               classNames={{ container: () => "select2-container" }}
               onInputChange={(e) => {
                 if (e.length > 0) {
@@ -181,7 +182,7 @@ const CrearModulo = ({ handleCerrarFormulario, data }) => {
                     <span className="text-decoration-underline">
                       Agregar nueva
                     </span>
-                    <FaPlus className="ms-2" size="0.75rem" />
+                    <FaPlus className="ms-2" size="0.75em" />
                   </div>
                 </div>
               )}
