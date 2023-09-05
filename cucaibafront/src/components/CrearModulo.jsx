@@ -128,14 +128,15 @@ const CrearModulo = ({ handleCerrarFormulario }) => {
                 setShowError({
                   ...showError,
                   descripcion:
-                    e.target.value.startsWith(" ") ||
+                    e.target.value.endsWith(" ") ||
                     !STRING_REGEX.test(e.target.value),
                 });
               }}
             />
             {showError.descripcion && (
               <div style={{ color: "red" }}>
-                La descripción no puede estar vacia
+                <p>* La descripción no puede estar vacia</p>
+                <p>* La descripcion no puede contener espacios sueltos</p>
               </div>
             )}
           </div>
@@ -243,10 +244,7 @@ const CrearModulo = ({ handleCerrarFormulario }) => {
             ref={crearModuloButtonRef}
             className="btn btn-guardar pt-2"
             disabled={
-              !modulo.descripcion ||
-              !modulo.valor ||
-              !modulo.fechaDesde ||
-              showError.fecha
+              showError.fecha || showError.descripcion || showError.valor
             }
           >
             Crear Modulo
