@@ -26,7 +26,6 @@ export const PrintOrdenPago = ({ liquidacionId, opProvisoria }) => {
 
   return (
     <PDFDownloadLink
-      style={{ textDecoration: "none", color: "black", marginRight: "25px" }}
       document={
         <Document>
           <Page size="A4" style={styles.page}>

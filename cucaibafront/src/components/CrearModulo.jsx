@@ -148,8 +148,9 @@ const CrearModulo = ({ handleCerrarFormulario, data }) => {
             <CreatableSelect
               options={options}
               value={selectValue}
+              placeholder="Descripción"
+              components={{ DropdownIndicator: null }}
               classNamePrefix="select2"
-              menuIsOpen
               classNames={{ container: () => "select2-container" }}
               onInputChange={(e) => {
                 if (e.length > 0) {

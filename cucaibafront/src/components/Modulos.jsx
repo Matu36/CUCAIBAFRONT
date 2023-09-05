@@ -190,6 +190,7 @@ const Modulos = ({ ...props }) => {
               type="number"
               value={editPrice}
               onChange={(e) => handlePriceChange(+e.target.value)}
+              min={0}
             />
             <div
               style={{

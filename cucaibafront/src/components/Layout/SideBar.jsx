@@ -6,10 +6,11 @@ import {
   FaUsers,
   FaBraille,
 } from "react-icons/fa";
-import { BsFillPersonFill } from "react-icons/bs";
 import { SiWebmoney } from "react-icons/si";
 import { BiMoneyWithdraw } from "react-icons/bi";
 import { HiOutlineDocumentText } from "react-icons/hi";
+
+import "../styles/sidebar.css";
 
 function SideBar({ isOpen, setIsOpen }) {
   return (

@@ -1,6 +1,6 @@
 import React from "react";
 
-const Dropdown = () => {
+const Dropdown = ({ children }) => {
   return (
     <div className="dropdown">
       <button
@@ -16,29 +16,7 @@ const Dropdown = () => {
         className="dropdown-menu dropdown-w"
         aria-labelledby="dropdownMenuButton"
       >
-        <a
-          class="dropdown-item preload"
-          aria-labelledby="dropdownMenuButton"
-          href="#"
-        >
-          <i class="fas fa-edit fa-fw"></i> Modificar
-        </a>
-
-        <a
-          class="dropdown-item preload"
-          aria-labelledby="dropdownMenuButton"
-          href="#"
-        >
-          <i class="fa fa-search fa-fw"></i> Ver
-        </a>
-
-        <a
-          class="dropdown-item js-modal-baja"
-          aria-labelledby="dropdownMenuButton"
-          href="#"
-        >
-          <i class="fa fa-recycle fa-fw"></i> Baja
-        </a>
+        {children}
       </div>
     </div>
   );
