@@ -54,6 +54,10 @@ const PostHonorarios = ({
     }
   }, [isFetched, isLoading, funcionesAsignadas, data]);
 
+  useEffect(() => {
+    refetchModulosActivos();
+  }, [options]);
+
   const [value, setValue] = useState(0);
   const [selectValue, setSelectValue] = useState("0|0");
   const [auxValue, setAuxValue] = useState({
@@ -85,9 +89,7 @@ const PostHonorarios = ({
     setValue(0);
     handleModuloId(Number(0));
     handleClick();
-    useEffect(() => {
-      refetchModulosActivos();
-    }, [options]);
+    
   };
 
   return (
