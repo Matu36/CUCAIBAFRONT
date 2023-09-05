@@ -16,7 +16,6 @@ function Layout() {
       <main
         style={{
           background: "#f7f7f7",
-          padding: "80px 10px",
         }}
       >
         <Outlet context={{ data, isFetched }} />
