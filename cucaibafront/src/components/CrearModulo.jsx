@@ -182,7 +182,7 @@ const CrearModulo = ({ handleCerrarFormulario, data }) => {
                     <span className="text-decoration-underline">
                       Agregar nueva
                     </span>
-                    <FaPlus className="ms-2" size="0.75rem" />
+                    <FaPlus className="ms-2" size="0.75em" />
                   </div>
                 </div>
               )}
