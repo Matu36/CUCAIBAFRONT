@@ -294,7 +294,10 @@ const Modulos = ({ ...props }) => {
               borderRadius: "15px",
             }}
           >
-            <CrearModulo handleCerrarFormulario={handleCerrarFormulario} />
+            <CrearModulo
+              handleCerrarFormulario={handleCerrarFormulario}
+              data={data}
+            />
           </div>
         )}
       </div>

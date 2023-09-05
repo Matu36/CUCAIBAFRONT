@@ -1,25 +1,31 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Swal from "sweetalert2";
-import { postModulo } from "../Redux/Actions";
-import { useDispatch } from "react-redux";
+import CreatableSelect from "react-select/creatable";
 import "../assets/styles/style.css";
 import { validateFecha } from "../utils/Validaciones";
 import { useModulos } from "../hooks/useModulos";
+import { FaPlus } from "react-icons/fa";
 
 const NUMBER_REGEX = /^[0-9]+$/;
 const STRING_REGEX = /^[a-zA-Z].*(?:\d| )*$/;
 //Componente para crear el módulo
 
-const CrearModulo = ({ handleCerrarFormulario }) => {
-  const dispatch = useDispatch();
-
+const CrearModulo = ({ handleCerrarFormulario, data }) => {
   const { mutate } = useModulos().crearModulo;
+  const [create, setCreate] = useState(false);
+  const [options, setOptions] = useState(
+    data.map((m) => ({
+      value: m.id,
+      label: m.descripcion,
+    }))
+  );
+  const [selectValue, setSelectValue] = useState(null);
 
   const crearModuloButtonRef = useRef(null);
 
   const [showError, setShowError] = useState({
     fecha: false,
-    descripcion: false,
+    descripcion: 0,
     valor: false,
   });
 
@@ -28,6 +34,7 @@ const CrearModulo = ({ handleCerrarFormulario }) => {
     valor: "",
     descripcion: "",
     fechaDesde: "",
+    id: 0,
   });
 
   const handleKeyDown = (e) => {
@@ -35,6 +42,20 @@ const CrearModulo = ({ handleCerrarFormulario }) => {
       e.preventDefault();
       crearModuloButtonRef.current.click();
     }
+  };
+
+  const handleCreate = (label) => {
+    const newOption = {
+      label,
+      value: `${new Date().getTime()}-create`,
+    };
+
+    setSelectValue(newOption);
+
+    setShowError({ ...showError, descripcion: 0 });
+    setModulo({ ...modulo, id: newOption.value, descripcion: label });
+    setOptions([...options, newOption]);
+    setCreate(true);
   };
 
   const handleOnSubmit = async (e) => {
@@ -64,6 +85,15 @@ const CrearModulo = ({ handleCerrarFormulario }) => {
       });
     }
   };
+
+  useEffect(() => {
+    if (selectValue) {
+      setShowError({
+        ...showError,
+        descripcion: selectValue.value.toString().includes("create") ? 0 : 1,
+      });
+    }
+  }, [selectValue]);
 
   return (
     <div
@@ -115,7 +145,48 @@ const CrearModulo = ({ handleCerrarFormulario }) => {
                 *
               </span>
             </label>
-            <input
+            <CreatableSelect
+              options={options}
+              value={selectValue}
+              classNamePrefix="select2"
+              menuIsOpen
+              classNames={{ container: () => "select2-container" }}
+              onInputChange={(e) => {
+                if (e.length > 0) {
+                  let result = 0;
+
+                  if (e.endsWith(" ") || !STRING_REGEX.test(e)) {
+                    result = 2;
+                  }
+
+                  setShowError({
+                    ...showError,
+                    descripcion: result,
+                  });
+                }
+              }}
+              onChange={(e) => {
+                setSelectValue(e);
+                setModulo({
+                  ...modulo,
+                  descripcion: e.label,
+                  id: e ?? 0,
+                });
+              }}
+              onCreateOption={handleCreate}
+              formatCreateLabel={(input) => (
+                <div className="d-flex align-items-center gap-2 justify-content-between">
+                  <span>"{input}"</span>{" "}
+                  <div>
+                    <span className="text-decoration-underline">
+                      Agregar nueva
+                    </span>
+                    <FaPlus className="ms-2" size="0.75rem" />
+                  </div>
+                </div>
+              )}
+            />
+            {/* <input
               onKeyDown={handleKeyDown}
               type="text"
               className="form-control"
@@ -132,11 +203,16 @@ const CrearModulo = ({ handleCerrarFormulario }) => {
                     !STRING_REGEX.test(e.target.value),
                 });
               }}
-            />
-            {showError.descripcion && (
+            /> */}
+            {showError.descripcion == 2 && (
               <div style={{ color: "red" }}>
                 <p>* La descripción no puede estar vacia</p>
-                <p>* La descripcion no puede contener espacios sueltos</p>
+                <p>* La descripción no puede contener espacios sueltos</p>
+              </div>
+            )}
+            {showError.descripcion == 1 && (
+              <div style={{ color: "red" }}>
+                <p>* El módulo ya existe</p>
               </div>
             )}
           </div>
@@ -244,7 +320,12 @@ const CrearModulo = ({ handleCerrarFormulario }) => {
             ref={crearModuloButtonRef}
             className="btn btn-guardar pt-2"
             disabled={
-              showError.fecha || showError.descripcion || showError.valor
+              showError.fecha ||
+              showError.descripcion != 0 ||
+              showError.valor ||
+              !modulo.valor ||
+              !modulo.fechaDesde ||
+              !create
             }
           >
             Crear Modulo

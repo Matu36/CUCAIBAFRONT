@@ -211,6 +211,13 @@ body {
 /*    box-shadow: none;*/
 /*}*/
 
+.dropdown-user .dropdown-item:focus,
+.dropdown-user .dropdown-item:hover,
+.dropdown-user .dropdown-item:hover i {
+  background-color: #fff;
+  cursor: default;
+}
+
 .dropdown-center a {
   text-decoration: none;
   color: #595959;
