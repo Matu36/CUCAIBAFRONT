@@ -3,7 +3,6 @@ import { useModulos } from "../hooks/useModulos";
 import { AiOutlinePlus } from "react-icons/ai";
 import Select from "react-select";
 import "../assets/styles/select2.css";
-import NumberFormatter from "../utils/NumberFormatter";
 
 //Componente para agregar Función al agente
 
@@ -31,6 +30,30 @@ const PostHonorarios = ({
     }
   }, [isFetched, isLoading]);
 
+  const { refetch: refetchModulosActivos } =
+    useModulos(operativoId).modulosActivosQuery;
+
+  const [funcionesAsignadas, setFuncionesAsignadas] = useState({});
+
+  useEffect(() => {
+    if (!isLoading) {
+      const nuevasOpciones = [
+        { value: "0|0", label: "Elegí una opción" },
+        ...data.map((m) => ({
+          value: `${m.id}|${m.valor}`,
+          label: m.descripcion,
+        })),
+      ];
+
+      // Filtra las funciones ya asignadas para evitar duplicados
+      const funcionesFiltradas = nuevasOpciones.filter(
+        (opcion) => !funcionesAsignadas[opcion.value]
+      );
+
+      setOptions(funcionesFiltradas);
+    }
+  }, [isFetched, isLoading, funcionesAsignadas, data]);
+
   const [value, setValue] = useState(0);
   const [selectValue, setSelectValue] = useState("0|0");
   const [auxValue, setAuxValue] = useState({
@@ -40,10 +63,13 @@ const PostHonorarios = ({
   const handleChange = (e) => {
     let arrayValue = e.value.split("|");
     setAuxValue(e);
-
     setSelectValue(e.value);
     setValue(arrayValue[1]);
     handleModuloId(Number(arrayValue[0]));
+
+    setOptions((prevOptions) =>
+      prevOptions.filter((option) => option.value !== e.value)
+    );
   };
 
   const handleCreateClick = () => {
@@ -59,6 +85,9 @@ const PostHonorarios = ({
     setValue(0);
     handleModuloId(Number(0));
     handleClick();
+    useEffect(() => {
+      refetchModulosActivos();
+    }, [options]);
   };
 
   return (
