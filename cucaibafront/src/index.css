@@ -623,6 +623,17 @@ h6 small {
   border-color: #4675a6;
   color: #fff;
 }
+.btn-volver-super {
+  color: #0078b3;
+  font-size: 1.185rem;
+  font-weight: 500;
+}
+.btn-volver-super:hover,
+.btn-volver-super:active,
+.btn-volver-super:focus {
+  color: #0078b3;
+  text-shadow: 2px 2px 3px #bbd4e9;
+}
 .btn-next:hover,
 .btn-next:active,
 .btn-next:focus {
