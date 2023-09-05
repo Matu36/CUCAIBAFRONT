@@ -2,10 +2,14 @@ import React from "react";
 import "../../assets/styles/style.css";
 import { useOutletContext } from "react-router-dom";
 
+
 // Componente que muestra las notificaciones de las liquidaciones pendientes de los agentes
 
 const LandingNotificacion = () => {
+
+
   const c = useOutletContext();
+
 
   return (
     <>

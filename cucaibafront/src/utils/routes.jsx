@@ -137,6 +137,14 @@ const router = createBrowserRouter([
       },
     ],
   },
-]);
+],
+
+// {
+//     basename: `/${
+//        process.env["APP_ENV"] == "dev" ? "cucaibabonif" : "cucaibabonif"
+//      }/public/index.php`,
+//    }
+
+);
 
 export default router;

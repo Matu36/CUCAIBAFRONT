@@ -74,6 +74,21 @@ const RowExpandedComponent = ({ data: operativo }) => {
 
   // FUNCION PARA CREAR EL HONORARIO POR OPERATIVO, SE ELIGE AGENTE Y MODULO //
 
+  const [funcionesAsignadas, setFuncionesAsignadas] = useState({});
+  useEffect(() => {
+    if (!loadingAgentes && Array.isArray(agentes)) {
+      const nuevasFuncionesAsignadas = {};
+      agentes.forEach((agente) => {
+        nuevasFuncionesAsignadas[`${agente.modulo_id}|${agente.id}`] = true;
+      });
+      setFuncionesAsignadas(nuevasFuncionesAsignadas);
+    }
+  }, [loadingAgentes, agentes]);
+
+  useEffect(() => {
+    refetchModulosActivos();
+  }, [funcionesAsignadas]);
+
   const mutation = useMutation(
     async (newHonorario) => {
       return await HonorariosAPI.post("", newHonorario);
@@ -106,6 +121,12 @@ const RowExpandedComponent = ({ data: operativo }) => {
       },
     }
   );
+
+  useEffect(() => {
+    if (mutation.isSuccess) {
+      refetchModulosActivos();
+    }
+  }, []);
 
   //DESVINCULAR AGENTE DEL OPERATIVO //
 
@@ -173,6 +194,18 @@ const RowExpandedComponent = ({ data: operativo }) => {
     }).then((result) => {
       if (result.isConfirmed) {
         deleteH.mutate({ agenteID: agente_id, operativoID: operativo_id });
+
+        // Actualiza el estado de funcionesAsignadas al eliminar el agente
+        setFuncionesAsignadas((prevFunciones) => {
+          const nuevasFunciones = { ...prevFunciones };
+          // Elimina todas las funciones asignadas al agente
+          Object.keys(nuevasFunciones).forEach((funcionAsignada) => {
+            if (funcionAsignada.endsWith(`|${agente_id}`)) {
+              delete nuevasFunciones[funcionAsignada];
+            }
+          });
+          return nuevasFunciones;
+        });
       }
     });
   };
