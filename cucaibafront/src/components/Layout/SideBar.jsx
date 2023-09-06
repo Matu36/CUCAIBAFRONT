@@ -38,7 +38,7 @@ function SideBar({ isOpen, setIsOpen }) {
           <Link to="/" onClick={() => setIsOpen(false)}>
             <FaHospitalSymbol
               className="sidebarIcons text-muted"
-              size="1.25rem"
+              size="1.25em"
             />{" "}
             Inicio
           </Link>
@@ -52,7 +52,7 @@ function SideBar({ isOpen, setIsOpen }) {
             href="#collapseAgentes"
             role="button"
           >
-            <FaUsers className="sidebarIcons text-muted" size="1.50rem" />{" "}
+            <FaUsers className="sidebarIcons text-muted" size="1.50em" />{" "}
             Agentes
           </a>
           <ul className="collapse sub-menu" id="collapseAgentes">
@@ -77,7 +77,7 @@ function SideBar({ isOpen, setIsOpen }) {
             href="#collapseOperativos"
             role="button"
           >
-            <FaAmbulance className="sidebarIcons text-muted" size="1.50rem" />{" "}
+            <FaAmbulance className="sidebarIcons text-muted" size="1.50em" />{" "}
             Operativos
           </a>
           <ul className="collapse sub-menu" id="collapseOperativos">
@@ -108,7 +108,7 @@ function SideBar({ isOpen, setIsOpen }) {
             href="#collapseHonorarios"
             role="button"
           >
-            <SiWebmoney className="sidebarIcons text-muted" size="1.50rem" />{" "}
+            <SiWebmoney className="sidebarIcons text-muted" size="1.50em" />{" "}
             Honorarios
           </a>
 
@@ -123,7 +123,7 @@ function SideBar({ isOpen, setIsOpen }) {
         <ul className="metismenu side-menu" id="side-menu">
           <li>
             <Link to="/modulos" onClick={() => setIsOpen(false)}>
-              <FaBraille className="sidebarIcons text-muted" size="1.50rem" />{" "}
+              <FaBraille className="sidebarIcons text-muted" size="1.50em" />{" "}
               Módulos
             </Link>
           </li>
@@ -139,7 +139,7 @@ function SideBar({ isOpen, setIsOpen }) {
           >
             <BiMoneyWithdraw
               className="sidebarIcons text-muted"
-              size="1.50rem"
+              size="1.50em"
             />{" "}
             Órdenes de Pago
           </a>
@@ -161,7 +161,7 @@ function SideBar({ isOpen, setIsOpen }) {
           <Link to="/archivos" onClick={() => setIsOpen(false)}>
             <HiOutlineDocumentText
               className="sidebarIcons text-muted"
-              size="1.50rem"
+              size="1.50em"
             />{" "}
             Archivos de Transferencia
           </Link>

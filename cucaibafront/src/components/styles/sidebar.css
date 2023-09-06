@@ -72,7 +72,7 @@
 
 /** Submenu **/
 .side-menu .sub-menu {
-  margin-left: 1.25rem;
+  margin-left: 1.25em;
   border-left: 0.25rem solid #00b1c7;
 }
 .side-menu .sub-menu li:first-child {

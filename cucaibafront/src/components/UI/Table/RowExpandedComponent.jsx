@@ -42,6 +42,7 @@ const RowExpandedComponent = ({ data: operativo }) => {
     data: agentesDisponibles,
     refetch: refetchAgentesDisponibles,
     isLoading: agentesDispniblesLoading,
+    isError: errorAgentesDisponibles,
   } = useAgentes(operativo.id || 0).agentesDisponiblesQuery;
 
   // REFETCH DE MODULOS ACTIVOS CUANDO SE CREA EL HONORARIO
@@ -407,8 +408,10 @@ const RowExpandedComponent = ({ data: operativo }) => {
                   </EmptyTable>
                 }
               />
-            ) : (
+            ) : !agentesDispniblesLoading && !errorAgentesDisponibles ? (
               <Spinner />
+            ) : (
+              <EmptyTable msg="No hay ningún agente disponible para este operativo" />
             )}
           </div>
         </div>

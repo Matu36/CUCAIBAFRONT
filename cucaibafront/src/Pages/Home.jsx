@@ -62,7 +62,7 @@ export const Home = () => {
             <p className="text-center">
               <a className="btn btn-default link-manual" href="#" download>
                 <FaCloudDownloadAlt
-                  size="1.25rem"
+                  size="1.25em"
                   style={{ marginRight: "5px" }}
                 />
                 Manual del Usuario
