@@ -280,7 +280,7 @@ export const VerOrdenes = ({ ...props }) => {
             // onMouseOut={(e) => (e.currentTarget.style.backgroundColor = "#fff")}
             to={`/ordenes/ver-ordenes/${row.liquidacion_id}`}
           >
-            <FaSearch size="0.85rem" />
+            <FaSearch size="0.85em" />
             <span>Ver orden de pago</span>
           </Link>
 
@@ -298,14 +298,14 @@ export const VerOrdenes = ({ ...props }) => {
                 })
               }
             >
-              <FaPlus size="0.85rem" />
+              <FaPlus size="0.85em" />
               <span>Asignar número definitivo</span>
             </button>
           )}
 
           {row.op_nro === null && (
             <button className="dropdown-item w-100 dropdown-item-custom pdf-download-link">
-              <FaPrint size="0.85rem" />
+              <FaPrint size="0.85em" />
               <PrintOrdenPago
                 personasExceptLast={row.personasExceptLast}
                 liquidacionId={row.liquidacion_id}
@@ -315,7 +315,7 @@ export const VerOrdenes = ({ ...props }) => {
           )}
           {row.op_nro === null && (
             <button className="dropdown-item w-100 dropdown-item-custom pdf-download-link">
-              <FaPrint size="0.85rem" />
+              <FaPrint size="0.85em" />
               <PrintOrdenPagoPDFTransferencia
                 personasExceptLast={row.personasExceptLast}
                 liquidacionId={row.liquidacion_id}
@@ -330,7 +330,7 @@ export const VerOrdenes = ({ ...props }) => {
               onClick={() => handleDelete(row.opprovisorio_nro)}
               type="button"
             >
-              <FaTimes size="0.85rem" />
+              <FaTimes size="0.85em" />
               <span>Eliminar</span>
             </button>
           )}
