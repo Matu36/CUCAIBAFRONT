@@ -307,10 +307,6 @@ const RowExpandedComponent = ({ data: operativo }) => {
     <>
       <Modal title="Agregar función al Agente" referenceID="formModal">
         <div className="p-3">
-          <h5 className="subtitulo" style={{ color: "#5DADE2" }}>
-            Modulos Activos del Agente
-          </h5>
-          <hr />
           <table className="table table-responsive">
             <thead>
               <tr>

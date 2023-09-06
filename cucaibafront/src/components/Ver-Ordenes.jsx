@@ -335,22 +335,6 @@ export const VerOrdenes = ({ ...props }) => {
             </button>
           )}
         </Dropdown>
-        // <div>
-
-        //   <div className="dropdown-center d-flex">
-        //     <a
-        //       type="button"
-        //       id="dropdownMenuButton1"
-        //       data-bs-toggle="dropdown"
-        //       aria-expanded="false"
-        //     >
-        //       <BsThreeDotsVertical size="1.25rem" />
-        //     </a>
-        //     <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-
-        //     </ul>
-        //   </div>
-        // </div>
       ),
     },
   ];

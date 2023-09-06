@@ -7,7 +7,7 @@ import {
   View,
   Text,
 } from "@react-pdf/renderer";
-import { styles } from "./OrdenDetail";
+import { styles } from "../components/styles/StylesPdf";
 import NumberFormatter from "../utils/NumberFormatter";
 
 //Componente que muestra PDF de los agentes sumariados que cobran por cheque cuando el Honorario no tiene la OP definitiva.
@@ -43,6 +43,7 @@ export const PrintOrdenPago = ({ liquidacionId, opProvisoria }) => {
                 <Text style={[styles.cell, styles.header]}>CBU</Text>
                 <Text style={[styles.cell, styles.header]}>Monto Total</Text>
                 <Text style={[styles.cell, styles.header]}>Tipo de Pago</Text>
+                <Text style={[styles.cell, styles.header]}>Firma</Text>
               </View>
               {personasExceptLast
                 .filter((personasData) => personasData.tipo_pago === "ch")
@@ -70,6 +71,7 @@ export const PrintOrdenPago = ({ liquidacionId, opProvisoria }) => {
                       <Text style={styles.cell}>
                         {tipo_pago ? "Cheque" : "Cheque"}{" "}
                       </Text>
+                      <Text style={styles.cell}> </Text>
                     </View>
                   );
                 })}

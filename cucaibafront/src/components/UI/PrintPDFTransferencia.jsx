@@ -7,7 +7,7 @@ import {
   View,
   Text,
 } from "@react-pdf/renderer";
-import { styles } from "../OrdenDetail";
+import { styles } from "../styles/StylesPdf";
 import NumberFormatter from "../../utils/NumberFormatter";
 
 //Componente que muestra PDF de los agentes sumariados que cobran por transferencia cuando el Honorario no tiene la OP definitiva.

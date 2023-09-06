@@ -8,10 +8,10 @@ import Moment from "moment";
 import CrearModulo from "./CrearModulo";
 import Spinner from "./UI/Spinner";
 import "../assets/styles/detalle.css";
-import BackButton from "../components/UI/BackButton";
 import Swal from "sweetalert2";
 import { useModulos } from "../hooks/useModulos";
 import NumberFormatter from "../utils/NumberFormatter";
+import "../components/styles/Modulos.css";
 
 //Componente que muestra los MODULOS y que permite la edición de los mismos.
 
@@ -192,15 +192,7 @@ const Modulos = ({ ...props }) => {
               onChange={(e) => handlePriceChange(+e.target.value)}
               min={0}
             />
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                gap: "10px",
-                maxWidth: "50%",
-                marginLeft: "1rem",
-              }}
-            >
+            <div className="acciones">
               <button
                 className="btn btn-guardar btn-sm mt-1"
                 onClick={() => handleSave(row.id)}
@@ -283,18 +275,7 @@ const Modulos = ({ ...props }) => {
         </button>
 
         {mostrarFormulario && (
-          <div
-            style={{
-              position: "fixed",
-              top: "45%",
-              left: "50%",
-              transform: "translate(-50%, -50%)",
-              backgroundColor: "white",
-              zIndex: "999",
-              boxShadow: "0px 0px 48px 100vw rgba(0,0,0,0.29)",
-              borderRadius: "15px",
-            }}
-          >
+          <div className="form-modulo">
             <CrearModulo
               handleCerrarFormulario={handleCerrarFormulario}
               data={data}

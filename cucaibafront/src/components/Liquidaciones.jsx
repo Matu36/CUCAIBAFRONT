@@ -4,10 +4,10 @@ import DataTable from "react-data-table-component";
 import EmptyTable from "./UI/EmptyTable";
 import { usePagination } from "../hooks/usePagination";
 import Spinner from "../components/UI/Spinner";
-import BackButton from "../components/UI/BackButton";
 import Modal from "./UI/Modal";
 import { useHonorarios } from "../hooks/useHonorarios";
 import NumberFormatter from "../utils/NumberFormatter";
+import "../components/styles/Liquidaciones.css";
 
 // Componente que se encarga de mostrar y de Generar las Ordenes de Pago
 
@@ -83,10 +83,7 @@ const Liquidaciones = ({ ...props }) => {
       cell: (row) => (
         <input
           type="checkbox"
-          style={{
-            width: "20px",
-            height: "20px",
-          }}
+          className="checkbox"
           onMouseOver={(e) => (e.target.style.cursor = "pointer")}
           checked={selectedRows.some((r) => r.id === row.id)}
           onChange={() => {
@@ -178,9 +175,9 @@ const Liquidaciones = ({ ...props }) => {
                     onChange={handleChange}
                   />
                   {error.nroFolio && (
-                    <div style={{ color: "red" }}>
+                    <span className="spanObligatorio">
                       El nro de Folio es obligatorio
-                    </div>
+                    </span>
                   )}
                 </div>
                 <div className="mb-3">
@@ -189,7 +186,7 @@ const Liquidaciones = ({ ...props }) => {
                     className="form-label"
                   >
                     Nro de Cheque/Transferencia:{" "}
-                    <span style={{ color: "red" }}>*</span>
+                    <span className="spanObligatorio">*</span>
                   </label>
                   <input
                     type="text"
@@ -203,9 +200,9 @@ const Liquidaciones = ({ ...props }) => {
                     onChange={handleChange}
                   />
                   {error.nroChequeTransferencia && (
-                    <div style={{ color: "red" }}>
+                    <span className="spanObligatorio">
                       El Nro de Cheque/Transferencia es obligatorio
-                    </div>
+                    </span>
                   )}
                 </div>
               </div>
@@ -267,7 +264,7 @@ const Liquidaciones = ({ ...props }) => {
                     Total: $<span>{NumberFormatter(total)}</span>
                   </h5>
                   {total > LIMITE && (
-                    <span style={{ color: "red" }}>
+                    <span className="spanObligatorio">
                       <p>Te estas excediendo del limite de $3,500,000.00</p>
                     </span>
                   )}
