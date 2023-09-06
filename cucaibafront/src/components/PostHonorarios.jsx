@@ -30,33 +30,28 @@ const PostHonorarios = ({
     }
   }, [isFetched, isLoading]);
 
-  const { refetch: refetchModulosActivos } =
-    useModulos(operativoId).modulosActivosQuery;
-
   const [funcionesAsignadas, setFuncionesAsignadas] = useState({});
 
   useEffect(() => {
-    if (!isLoading) {
-      const nuevasOpciones = [
-        { value: "0|0", label: "Elegí una opción" },
-        ...data.map((m) => ({
-          value: `${m.id}|${m.valor}`,
-          label: m.descripcion,
-        })),
-      ];
+    if (!isLoading && isFetched) {
+      if (data && data.length > 0) {
+        const nuevasOpciones = [
+          { value: "0|0", label: "Elegí una opción" },
+          ...data.map((m) => ({
+            value: `${m.id}|${m.valor}`,
+            label: m.descripcion,
+          })),
+        ];
 
-      // Filtra las funciones ya asignadas para evitar duplicados
-      const funcionesFiltradas = nuevasOpciones.filter(
-        (opcion) => !funcionesAsignadas[opcion.value]
-      );
+        // Filtra las funciones ya asignadas para evitar duplicados
+        const funcionesFiltradas = nuevasOpciones.filter(
+          (opcion) => !funcionesAsignadas[opcion.value]
+        );
 
-      setOptions(funcionesFiltradas);
+        setOptions(funcionesFiltradas);
+      }
     }
   }, [isFetched, isLoading, funcionesAsignadas, data]);
-
-  useEffect(() => {
-    refetchModulosActivos();
-  }, [options]);
 
   const [value, setValue] = useState(0);
   const [selectValue, setSelectValue] = useState("0|0");
@@ -89,7 +84,6 @@ const PostHonorarios = ({
     setValue(0);
     handleModuloId(Number(0));
     handleClick();
-    
   };
 
   return (
