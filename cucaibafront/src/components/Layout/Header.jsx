@@ -50,7 +50,7 @@ function Header({ data, isFetched }) {
             id="navToggle"
             onClick={() => setIsOpen(!isOpen)}
           >
-            <FaBars size="1.25rem" />
+            <FaBars size="1.25em" />
           </button>
           <div className="col-9 pl-0 pl-md-2 intranet-logo">
             <span className="fst-line">INTRANET</span>
@@ -115,8 +115,8 @@ function Header({ data, isFetched }) {
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    width="10vh"
-                    height="10vh"
+                    width="100px"
+                    height="100px"
                     fill="currentColor"
                     className="bi bi-person-circle"
                     viewBox="0 0 16 16"
