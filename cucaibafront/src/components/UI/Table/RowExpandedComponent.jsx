@@ -6,7 +6,7 @@ import { AiOutlinePlus } from "react-icons/ai";
 import { FiTrash } from "react-icons/fi";
 import { useOperativo } from "../../../hooks/useOperativo";
 import PostHonorarios from "../../PostHonorarios";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { HonorariosAPI } from "../../../api/HonorariosAPI";
 import DataTable from "react-data-table-component";
 import { useAgentes } from "../../../hooks/useAgentes";
@@ -89,12 +89,15 @@ const RowExpandedComponent = ({ data: operativo }) => {
     refetchModulosActivos();
   }, [funcionesAsignadas]);
 
+  const queryClient = useQueryClient();
+
   const mutation = useMutation(
     async (newHonorario) => {
       return await HonorariosAPI.post("", newHonorario);
     },
     {
       onSuccess: () => {
+        queryClient.refetchQueries(["honorariosPendientesHome"]);
         refetch();
         refetchAgentes();
         refetchAgentesDisponibles();
@@ -136,6 +139,7 @@ const RowExpandedComponent = ({ data: operativo }) => {
     },
     {
       onSuccess: () => {
+        queryClient.refetchQueries(["honorariosPendientesHome"]);
         refetch();
         refetchAgentes();
         refetchAgentesDisponibles();
@@ -156,6 +160,7 @@ const RowExpandedComponent = ({ data: operativo }) => {
     },
     {
       onSuccess: () => {
+        queryClient.refetchQueries(["honorariosPendientesHome"]);
         refetch();
         refetchAgentes();
         refetchAgentesDisponibles();

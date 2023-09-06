@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { HonorariosAPI } from "../api/HonorariosAPI";
 import Swal from "sweetalert2";
 
@@ -35,6 +35,7 @@ export const getHonorariosPendienteshome = async () => {
 };
 
 export const useHonorarios = (operativoId = 0, agenteId = 0) => {
+  const queryClient = useQueryClient();
   const honorariosQuery = useQuery({
     queryKey: ["honorarios", { operativoId }],
     queryFn: () => getHonorarios(operativoId),
@@ -57,6 +58,7 @@ export const useHonorarios = (operativoId = 0, agenteId = 0) => {
     mutationFn: async (data) => await HonorariosAPI.put("/liquidar", data),
     onSuccess: (data) => {
       // Refrescar la consulta de honorarios pendientes
+      queryClient.refetchQueries(["honorariosPendientesHome"]);
       honorariosPendientesQuery.refetch();
       // Mostrar SweetAlert si hubo éxito
       Swal.fire({
