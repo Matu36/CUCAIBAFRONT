@@ -5,7 +5,6 @@ import DataTable from "react-data-table-component";
 import EmptyTable from "./UI/EmptyTable";
 import { usePagination } from "../hooks/usePagination";
 import Spinner from "./UI/Spinner";
-import BackButton from "../components/UI/BackButton";
 import { obtenerMesYAño } from "../utils/MesAño";
 import "../assets/styles/detalle.css";
 

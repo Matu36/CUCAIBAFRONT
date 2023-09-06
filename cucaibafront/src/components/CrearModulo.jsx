@@ -5,6 +5,7 @@ import "../assets/styles/style.css";
 import { validateFecha } from "../utils/Validaciones";
 import { useModulos } from "../hooks/useModulos";
 import { FaPlus } from "react-icons/fa";
+import "../components/styles/CrearModulo.css";
 
 const NUMBER_REGEX = /^[0-9]+$/;
 const STRING_REGEX = /^[a-zA-Z].*(?:\d| )*$/;
@@ -96,16 +97,7 @@ const CrearModulo = ({ handleCerrarFormulario, data }) => {
   }, [selectValue]);
 
   return (
-    <div
-      className="form-container pt-2"
-      style={{
-        padding: "20px",
-        boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
-        border: "1px solid gray",
-        minWidth: window.innerWidth < 1000 && "90vw",
-        borderRadius: "15px",
-      }}
-    >
+    <div className="form-container pt-2 container">
       <form
         onSubmit={handleOnSubmit}
         className="row g-3 pt-4"
@@ -115,35 +107,16 @@ const CrearModulo = ({ handleCerrarFormulario, data }) => {
           }
         }}
       >
-        <div
-          className="modulo"
-          style={{
-            display: "flex",
-            justifyContent: "flex-start",
-            marginLeft: 0,
-            color: "#5DADE2",
-          }}
-        >
+        <div className="modulo">
           <h6>CREAR MÓDULO</h6>
         </div>
-        <hr
-          style={{
-            margin: "10px 0",
-            border: "none",
-            borderBottom: "5px solid #5DADE2",
-          }}
-        />
+        <hr className="hrstyle" />
         <div className="col-md-6"></div>
 
         <div className="row">
           <div className="col-md-6">
             <label htmlFor="descripcion">
-              Descripción{" "}
-              <span
-                style={{ color: "red", marginLeft: "5px", fontSize: "20px" }}
-              >
-                *
-              </span>
+              Descripción <span className="spanObligatorio">*</span>
             </label>
             <CreatableSelect
               options={options}
@@ -187,24 +160,7 @@ const CrearModulo = ({ handleCerrarFormulario, data }) => {
                 </div>
               )}
             />
-            {/* <input
-              onKeyDown={handleKeyDown}
-              type="text"
-              className="form-control"
-              name="descripcion"
-              value={modulo.descripcion}
-              autoComplete="off"
-              placeholder="Descripción"
-              onChange={(e) => {
-                setModulo({ ...modulo, descripcion: e.target.value });
-                setShowError({
-                  ...showError,
-                  descripcion:
-                    e.target.value.endsWith(" ") ||
-                    !STRING_REGEX.test(e.target.value),
-                });
-              }}
-            /> */}
+
             {showError.descripcion == 2 && (
               <div style={{ color: "red" }}>
                 <p>* La descripción no puede estar vacia</p>
@@ -219,12 +175,7 @@ const CrearModulo = ({ handleCerrarFormulario, data }) => {
           </div>
           <div className="col-md-3">
             <label htmlFor="valor">
-              Valor{" "}
-              <span
-                style={{ color: "red", marginLeft: "5px", fontSize: "20px" }}
-              >
-                *
-              </span>
+              Valor <span className="spanObligatorio">*</span>
             </label>
             <input
               onKeyDown={handleKeyDown}
@@ -256,12 +207,7 @@ const CrearModulo = ({ handleCerrarFormulario, data }) => {
           </div>
           <div className="col-md-3">
             <label htmlFor="fechaDesde">
-              Fecha Desde{" "}
-              <span
-                style={{ color: "red", marginLeft: "5px", fontSize: "20px" }}
-              >
-                *
-              </span>
+              Fecha Desde <span className="spanObligatorio">*</span>
             </label>
             <input
               onKeyDown={handleKeyDown}
@@ -300,13 +246,7 @@ const CrearModulo = ({ handleCerrarFormulario, data }) => {
             )}
           </div>
         </div>
-        <hr
-          style={{
-            marginTop: "4rem",
-            border: "none",
-            borderBottom: "5px solid #5DADE2",
-          }}
-        />
+        <hr className="hrstyle2" />
         <div className="d-flex justify-content-end">
           <button
             onClick={handleCerrarFormulario}

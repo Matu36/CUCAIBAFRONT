@@ -7,7 +7,6 @@ import { usePagination } from "../hooks/usePagination";
 import { Link } from "react-router-dom";
 import "../assets/styles/detalle.css";
 import Spinner from "./UI/Spinner";
-import BackButton from "../components/UI/BackButton";
 
 //Componente que muestra los AGENTES
 

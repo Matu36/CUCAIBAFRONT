@@ -3,7 +3,6 @@ import { useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import "../assets/styles/detalle.css";
-import BackButton from "../components/UI/BackButton";
 import { validateDNI } from "../utils/Validaciones";
 import { usePersona } from "../hooks/usePersona";
 import { FaSearch } from "react-icons/fa";
@@ -250,10 +249,10 @@ const postAgente = () => {
               </button>
             </div>
 
-            <div id="dniErrorMessage" style={{ color: "red", display: "none" }}>
+            <div id="dniErrorMessage" className="spanObligatorio">
               El DNI debe tener más de 7 caracteres
             </div>
-            <div id="dniErrorEmpty" style={{ color: "red", display: "none" }}>
+            <div id="dniErrorEmpty" className="spanObligatorio">
               El campo DNI no puede estar vacío
             </div>
           </div>
