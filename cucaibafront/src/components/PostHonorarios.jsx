@@ -30,14 +30,10 @@ const PostHonorarios = ({
     }
   }, [isFetched, isLoading]);
 
-  const { refetch: refetchModulosActivos } =
-    useModulos(operativoId).modulosActivosQuery;
-
   const [funcionesAsignadas, setFuncionesAsignadas] = useState({});
 
   useEffect(() => {
     if (!isLoading && isFetched) {
-      // Verifica si 'data' tiene datos válidos antes de usarlo
       if (data && data.length > 0) {
         const nuevasOpciones = [
           { value: "0|0", label: "Elegí una opción" },
@@ -56,21 +52,6 @@ const PostHonorarios = ({
       }
     }
   }, [isFetched, isLoading, funcionesAsignadas, data]);
-
-  useEffect(() => {
-    // Asegúrate de que 'refetchModulosActivos' esté manejando errores correctamente
-    const fetchData = async () => {
-      try {
-        await refetchModulosActivos();
-      } catch (error) {
-        // Manejar errores aquí, por ejemplo, mostrar un mensaje de error
-        console.error("Error al refetchear módulos activos:", error);
-      }
-    };
-
-    // Llama a la función fetchData cuando 'options' cambie
-    fetchData();
-  }, [options]);
 
   const [value, setValue] = useState(0);
   const [selectValue, setSelectValue] = useState("0|0");
