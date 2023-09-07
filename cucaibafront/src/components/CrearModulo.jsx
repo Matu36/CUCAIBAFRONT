@@ -9,6 +9,7 @@ import "../components/styles/CrearModulo.css";
 
 const NUMBER_REGEX = /^[0-9]+$/;
 const STRING_REGEX = /^[a-zA-Z].*(?:\d| )*$/;
+
 //Componente para crear el módulo
 
 const CrearModulo = ({ handleCerrarFormulario, data }) => {
@@ -30,7 +31,7 @@ const CrearModulo = ({ handleCerrarFormulario, data }) => {
     valor: false,
   });
 
-  //CREACION DE MODULO //
+  /// CREACION DE MODULO ///
   const [modulo, setModulo] = useState({
     valor: "",
     descripcion: "",
