@@ -9,11 +9,11 @@ const getOrdenByLiquidacionId = async (liquidacion_id) => {
 };
 
 // Función para manejar consulta de orden por ID de liquidación
-export const useOrdenPorLiquidacionId = (liquidacion_id) => {
+export const useOrdenPorLiquidacionId = (liquidacion_id, clicked = false) => {
   const ordenesPorIdQuery = useQuery({
     queryKey: ["ordenes-por-id", { liquidacion_id }],
     queryFn: () => getOrdenByLiquidacionId(liquidacion_id),
-    enabled: !!liquidacion_id,
+    enabled: !!liquidacion_id && clicked.isClicked && clicked.liq_id == liquidacion_id,
   });
 
   return {

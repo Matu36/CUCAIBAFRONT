@@ -12,9 +12,9 @@ import NumberFormatter from "../utils/NumberFormatter";
 
 //Componente que muestra PDF de los agentes sumariados que cobran por cheque cuando el Honorario no tiene la OP definitiva.
 
-export const PrintOrdenPago = ({ liquidacionId, opProvisoria }) => {
+export const PrintOrdenPago = ({ liquidacionId, opProvisoria, clicked }) => {
   const { data, isFetched, isLoading } =
-    useOrdenPorLiquidacionId(liquidacionId).ordenesPorIdQuery;
+    useOrdenPorLiquidacionId(liquidacionId, clicked).ordenesPorIdQuery;
 
   const personasArray = Array.isArray(data) ? data[0] : [];
 
