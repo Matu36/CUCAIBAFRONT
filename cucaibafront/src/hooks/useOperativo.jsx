@@ -1,6 +1,7 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { OperativosAPI } from "../api/OperativosAPI";
 import Swal from "sweetalert2";
+import { useLocation } from "react-router-dom";
 
 // Función para obtener operativos
 const getOperativos = async () => {
@@ -20,9 +21,11 @@ const postOperativo = async (data) => {
 };
 
 export const useOperativo = (operativoId = 0) => {
+  const location = useLocation();
   const operativosQuery = useQuery({
     queryKey: ["operativos"],
     queryFn: () => getOperativos(),
+    enabled: location.pathname.includes("operativos"),
   });
 
   const agentesOperativoQuery = useQuery({

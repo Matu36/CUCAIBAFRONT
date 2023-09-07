@@ -30,7 +30,7 @@ export const Home = () => {
           <h4 className="font-weight-bold text-muted mb-0">
             VARIABLES DE PROCURACIÓN
           </h4>
-          <h6 className="text-info text-muted mb-0"> CUCAIBA</h6>
+          <h6 className="text-info mb-0"> CUCAIBA</h6>
         </div>
       </div>
 
@@ -59,7 +59,7 @@ export const Home = () => {
               descargue el Manual del Usuario.
             </p>
             <br />
-            <p className="text-center">
+            <div className="d-flex align-items-center justify-content-center">
               <a className="btn btn-default link-manual" href="#" download>
                 <FaCloudDownloadAlt
                   size="1.25em"
@@ -67,7 +67,7 @@ export const Home = () => {
                 />
                 Manual del Usuario
               </a>
-            </p>
+            </div>
           </div>
         </div>
       </div>

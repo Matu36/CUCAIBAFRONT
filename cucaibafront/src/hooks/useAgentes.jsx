@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { AgentesAPI } from "../api/AgentesAPI";
+import { useLocation } from "react-router-dom";
 
 // Función para obtener agentes según el operativo
 const getAgentes = async (operativoId) => {
@@ -25,9 +26,11 @@ const getAgenteById = async (id) => {
 
 // Consulta para obtener todos los agentes
 export const useAgentes = (operativoId = 0, agenteId = 0) => {
+  const location = useLocation();
   const agentesQuery = useQuery({
     queryKey: ["agentes"],
     queryFn: () => getAgentes(),
+    enabled: location.pathname.includes("agentes"),
   });
 
   // Consulta para obtener agentes disponibles según el operativo

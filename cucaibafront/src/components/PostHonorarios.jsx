@@ -3,6 +3,7 @@ import { useModulos } from "../hooks/useModulos";
 import { AiOutlinePlus } from "react-icons/ai";
 import Select from "react-select";
 import "../assets/styles/select2.css";
+import NumberFormatter from "../utils/NumberFormatter";
 
 //Componente para agregar Función al agente
 
@@ -10,10 +11,16 @@ const PostHonorarios = ({
   disabled,
   handleModuloId,
   handleClick,
-  operativoId,
+  ...props
 }) => {
-  const { data, isLoading, isFetched, refetch } =
-    useModulos(operativoId).modulosActivosQuery;
+  const {
+    refetchModulosActivos: refetch,
+    dataModulosActivos: data,
+    loadingModulosActivos: isLoading,
+    fetchedModulosActivos: isFetched,
+  } = props;
+  // const { data, isLoading, isFetched, refetch } =
+  //   useModulos(operativoId).modulosActivosQuery;
   const [options, setOptions] = useState([
     { value: "0|0", label: "Elegí una opción" },
   ]);
@@ -120,7 +127,7 @@ const PostHonorarios = ({
             className="form-control"
             type="text"
             id="valorModuloDisabled"
-            value={value}
+            value={`$ ${NumberFormatter(Number(value))}`}
             aria-label="Disabled Valor modulo"
             disabled
           />
