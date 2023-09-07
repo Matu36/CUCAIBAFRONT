@@ -95,6 +95,8 @@ INITIAL_STATE["liquidacion_id"] = 0;
 export const VerOrdenes = ({ ...props }) => {
   const { data, isFetched, refetch } = useVerOrdenDePago().verOrdenesQuery;
 
+  const [clicked, setClicked] = useState({isClicked: false, liq_id: 0})
+
   const { mutate } = useOrdenesMutation().asignarDefinitivo;
 
   const [OP, setOP] = useState(INITIAL_STATE);
@@ -249,6 +251,9 @@ export const VerOrdenes = ({ ...props }) => {
       setOP(INITIAL_STATE);
     }
   };
+  
+
+
 
   const columns = [
     {
@@ -271,13 +276,9 @@ export const VerOrdenes = ({ ...props }) => {
     {
       name: "Acciones",
       cell: (row) => (
-        <Dropdown>
+        <Dropdown handleClick={() => setClicked({isClicked: true, liq_id: row.liquidacion_id})}>
           <Link
             className="dropdown-item dropdown-item-custom"
-            // onMouseOver={(e) =>
-            //   (e.currentTarget.style.backgroundColor = "#d3d3d3")
-            // }
-            // onMouseOut={(e) => (e.currentTarget.style.backgroundColor = "#fff")}
             to={`/ordenes/ver-ordenes/${row.liquidacion_id}`}
           >
             <FaSearch size="0.85em" />
@@ -290,7 +291,7 @@ export const VerOrdenes = ({ ...props }) => {
               type="button"
               data-bs-toggle="modal"
               data-bs-target="#opDefinitiva"
-              onClick={() =>
+              onClick={() => 
                 setOP({
                   ...OP,
                   op_provisorio: row.opprovisorio_nro,
@@ -304,22 +305,22 @@ export const VerOrdenes = ({ ...props }) => {
           )}
 
           {row.op_nro === null && (
-            <button className="dropdown-item w-100 dropdown-item-custom pdf-download-link">
+            <button className="dropdown-item w-100 dropdown-item-custom pdf-download-link" >
               <FaPrint size="0.85em" />
               <PrintOrdenPago
-                personasExceptLast={row.personasExceptLast}
                 liquidacionId={row.liquidacion_id}
                 opProvisoria={row.opprovisorio_nro}
+                clicked={clicked}
               />
             </button>
           )}
           {row.op_nro === null && (
-            <button className="dropdown-item w-100 dropdown-item-custom pdf-download-link">
+            <button className="dropdown-item w-100 dropdown-item-custom pdf-download-link" >
               <FaPrint size="0.85em" />
               <PrintOrdenPagoPDFTransferencia
-                personasExceptLast={row.personasExceptLast}
                 liquidacionId={row.liquidacion_id}
                 opProvisoria={row.opprovisorio_nro}
+                clicked={clicked}
               />
             </button>
           )}
@@ -371,6 +372,8 @@ export const VerOrdenes = ({ ...props }) => {
       setOp(arrayCache);
     }
   };
+
+  
 
   return (
     <>

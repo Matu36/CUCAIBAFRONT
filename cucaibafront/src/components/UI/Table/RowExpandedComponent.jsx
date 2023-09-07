@@ -102,7 +102,6 @@ const RowExpandedComponent = ({ data: operativo }) => {
         refetch();
         refetchAgentes();
         refetchAgentesDisponibles();
-        refetchModulosActivos();
         return Swal.fire({
           position: "center",
           icon: "success",
@@ -125,12 +124,6 @@ const RowExpandedComponent = ({ data: operativo }) => {
       },
     }
   );
-
-  useEffect(() => {
-    if (mutation.isSuccess) {
-      refetchModulosActivos();
-    }
-  }, []);
 
   //DESVINCULAR AGENTE DEL OPERATIVO //
 
@@ -165,7 +158,6 @@ const RowExpandedComponent = ({ data: operativo }) => {
         refetch();
         refetchAgentes();
         refetchAgentesDisponibles();
-        refetchModulosActivos();
         return Swal.fire({
           position: "center",
           icon: "success",

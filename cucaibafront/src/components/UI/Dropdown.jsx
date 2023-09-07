@@ -1,6 +1,6 @@
 import React from "react";
 
-const Dropdown = ({ children }) => {
+const Dropdown = ({ children, handleClick }) => {
   return (
     <div className="dropdown">
       <button
@@ -9,6 +9,7 @@ const Dropdown = ({ children }) => {
         id="dropdownMenuButton"
         data-bs-toggle="dropdown"
         aria-expanded="false"
+        onClick={handleClick}
       >
         Seleccionar
       </button>
