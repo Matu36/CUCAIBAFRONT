@@ -73,7 +73,7 @@ const DetalleAgente = () => {
           className="collapse"
           aria-labelledby="headingOne"
           data-parent="#accordion"
-          style={{ overflowY: "auto", overflowX: "clip" }}
+          style={{ overflowY: "auto", overflowX: "hidden" }}
         >
           <div className="row row-cols-1 row-cols-md-5 g-4 p-md-3  p-1">
             {agenteData[0].operativo_id ? (
