@@ -9,6 +9,7 @@ import { FaSearch } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 import InputField from "../components/UI/InputField";
+import { MaskCuil } from "../utils/Mask";
 
 //Componente que busca la persona en el SQLServer y autocompleta los campos del formulario para la creación del agente
 
@@ -296,7 +297,7 @@ const postAgente = () => {
                 <InputField
                   inputKey="CUIL"
                   inputType="text"
-                  value={agente.cuil}
+                  value={MaskCuil(agente.cuil)}
                   label="CUIL"
                   disabled
                   onChange={(e) =>

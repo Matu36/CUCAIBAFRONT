@@ -5,6 +5,7 @@ import { useAgentes } from "../hooks/useAgentes";
 import Spinner from "./UI/Spinner";
 import { GoTriangleDown } from "react-icons/go";
 import CardDetalleAgente from "./UI/CardDetalleAgente";
+import { MaskCuil } from "../utils/Mask";
 
 //Detalle del agente que a su vez usa el componente CardDetalle
 
@@ -37,7 +38,7 @@ const DetalleAgente = () => {
           <div className="label">CBU</div>
         </div>
         <div className="data-row">
-          <div className="value">{agenteData[0].cuil}</div>
+          <div className="value">{MaskCuil(agenteData[0].cuil)}</div>
           <div className="label">CUIL</div>
         </div>
         <div className="data-row">

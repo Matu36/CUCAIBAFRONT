@@ -7,6 +7,7 @@ import { usePagination } from "../hooks/usePagination";
 import { Link } from "react-router-dom";
 import "../assets/styles/detalle.css";
 import Spinner from "./UI/Spinner";
+import { MaskCuil } from "../utils/Mask";
 
 //Componente que muestra los AGENTES
 
@@ -56,7 +57,12 @@ const GetAgentes = ({ ...props }) => {
     { name: "Apellido", selector: (row) => row.apellido, sortable: true },
     { name: "Nombre", selector: (row) => row.nombre, sortable: true },
     { name: "CBU", selector: (row) => row.cbu, sortable: true },
-    { name: "CUIL", selector: (row) => row.cuil, sortable: true },
+    {
+      name: "CUIL",
+      selector: (row) => row.cuil,
+      sortable: true,
+      format: (row) => MaskCuil(row.cuil),
+    },
     {
       name: "Acciones",
       cell: (row) => (

@@ -17,6 +17,7 @@ import EmptyTable from "../../UI/EmptyTable";
 import Spinner from "../Spinner";
 import { FaTimes } from "react-icons/fa";
 import NumberFormatter from "../../../utils/NumberFormatter";
+import { MaskCuil } from "../../../utils/Mask";
 
 // Se usa en el componente TablaHonorarios al hacer click en los operativos.
 
@@ -478,7 +479,7 @@ const RowExpandedComponent = ({ data: operativo }) => {
                       <tr key={agente.persona_id}>
                         <td>{agente.apellido}</td>
                         <td>{agente.nombre}</td>
-                        <td>{agente.cuil}</td>
+                        <td>{MaskCuil(agente.cuil)}</td>
                         <td className="d-flex gap-3">
                           <button
                             type="button"
