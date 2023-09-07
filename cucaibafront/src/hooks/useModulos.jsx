@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { ModulosAPI } from "../api/ModulosAPI";
-import { HonorariosAPI } from "../api/HonorariosAPI";
 import Swal from "sweetalert2";
+import { useLocation } from "react-router-dom";
 
 // Función para obtener módulos según el operativo
 const getModulos = async (operativoId) => {
@@ -19,9 +19,12 @@ const getModulos = async (operativoId) => {
 };
 
 export const useModulos = (operativoId = 0) => {
+  const location = useLocation();
+
   const modulosQuery = useQuery({
     queryKey: ["modulos"],
     queryFn: () => getModulos(),
+    enabled: location.pathname.includes("modulos"),
   });
 
   const modulosActivosQuery = useQuery({
