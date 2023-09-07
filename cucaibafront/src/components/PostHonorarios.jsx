@@ -10,10 +10,16 @@ const PostHonorarios = ({
   disabled,
   handleModuloId,
   handleClick,
-  operativoId,
+  ...props
 }) => {
-  const { data, isLoading, isFetched, refetch } =
-    useModulos(operativoId).modulosActivosQuery;
+  const {
+    refetchModulosActivos: refetch,
+    dataModulosActivos: data,
+    loadingModulosActivos: isLoading,
+    fetchedModulosActivos: isFetched,
+  } = props;
+  // const { data, isLoading, isFetched, refetch } =
+  //   useModulos(operativoId).modulosActivosQuery;
   const [options, setOptions] = useState([
     { value: "0|0", label: "Elegí una opción" },
   ]);

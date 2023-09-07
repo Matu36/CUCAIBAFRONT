@@ -47,9 +47,12 @@ const RowExpandedComponent = ({ data: operativo }) => {
 
   // REFETCH DE MODULOS ACTIVOS CUANDO SE CREA EL HONORARIO
 
-  const { refetch: refetchModulosActivos } = useModulos(
-    operativo.id
-  ).modulosActivosQuery;
+  const {
+    refetch: refetchModulosActivos,
+    data: dataModulosActivos,
+    isLoading: loadingModulosActivos,
+    isFetched: fetchedModulosActivos,
+  } = useModulos(operativo.id).modulosActivosQuery;
 
   const {
     data: agentes,
@@ -66,7 +69,8 @@ const RowExpandedComponent = ({ data: operativo }) => {
   const {
     data: honorariosAgente,
     isLoading: honorariosLoading,
-    isFetching,
+    isFetching: honorariosFetching,
+    isFetched: honorariosFetched,
     refetch,
   } = useHonorarios(
     operativo.id,
@@ -322,7 +326,7 @@ const RowExpandedComponent = ({ data: operativo }) => {
               </tr>
             </thead>
             <tbody>
-              {honorariosLoading && isFetching && (
+              {(honorariosLoading || honorariosFetching) && (
                 <tr>
                   <td colSpan={3}>Cargando...</td>
                 </tr>
@@ -335,7 +339,9 @@ const RowExpandedComponent = ({ data: operativo }) => {
                     <td>
                       <button
                         className="btn btn-sm btn-limpiar d-flex align-items-center justify-content-center gap-2"
-                        disabled={deleteModuloAgente.isLoading}
+                        disabled={
+                          deleteModuloAgente.isLoading || honorariosFetching
+                        }
                         onClick={() =>
                           handleDeleteModulo(
                             h.modulo.id,
@@ -352,7 +358,7 @@ const RowExpandedComponent = ({ data: operativo }) => {
                 ))}
               {!honorariosLoading && honorariosAgente == 400 && (
                 <tr>
-                  <td colSpan={2}>No hay ningún modulo pendiente</td>
+                  <td colSpan={3}>No hay ningún modulo pendiente</td>
                 </tr>
               )}
             </tbody>
@@ -361,7 +367,11 @@ const RowExpandedComponent = ({ data: operativo }) => {
         <PostHonorarios
           handleModuloId={handleChangeModuloId}
           handleClick={crearHonorario}
-          operativoId={operativo.id}
+          disabled={honorariosFetching}
+          dataModulosActivos={dataModulosActivos}
+          fetchedModulosActivos={fetchedModulosActivos}
+          refetchModulosActivos={refetchModulosActivos}
+          loadingModulosActivos={loadingModulosActivos}
         />
       </Modal>
       <Modal
@@ -419,7 +429,10 @@ const RowExpandedComponent = ({ data: operativo }) => {
           handleModuloId={handleChangeModuloId}
           handleClick={agregarAgente}
           disabled={!honorarioData.agente_id}
-          operativoId={operativo.id}
+          dataModulosActivos={dataModulosActivos}
+          fetchedModulosActivos={fetchedModulosActivos}
+          refetchModulosActivos={refetchModulosActivos}
+          loadingModulosActivos={loadingModulosActivos}
         />
       </Modal>
       <div>
