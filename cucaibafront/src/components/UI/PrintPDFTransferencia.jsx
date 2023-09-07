@@ -15,9 +15,11 @@ import NumberFormatter from "../../utils/NumberFormatter";
 export const PrintOrdenPagoPDFTransferencia = ({
   liquidacionId,
   opProvisoria,
+  clicked
 }) => {
   const { data, isFetched, isLoading } =
-    useOrdenPorLiquidacionId(liquidacionId).ordenesPorIdQuery;
+    useOrdenPorLiquidacionId(liquidacionId, clicked).ordenesPorIdQuery;
+    
 
   const personasArray = Array.isArray(data) ? data[0] : [];
 
