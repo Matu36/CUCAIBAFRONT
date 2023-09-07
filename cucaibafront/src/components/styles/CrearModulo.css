@@ -1,3 +1,11 @@
+.form-container.container {
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: 1px solid gray;
+  min-width: calc(20vw - 20px);
+  border-radius: 15px;
+}
+
 .modulo {
   display: flex;
   justify-content: flex-start;
