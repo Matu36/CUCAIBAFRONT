@@ -142,6 +142,7 @@ const RowExpandedComponent = ({ data: operativo }) => {
         refetch();
         refetchAgentes();
         refetchAgentesDisponibles();
+        refetchModulosActivos();
         return Swal.fire({
           position: "center",
           icon: "success",
@@ -163,6 +164,7 @@ const RowExpandedComponent = ({ data: operativo }) => {
         refetch();
         refetchAgentes();
         refetchAgentesDisponibles();
+        refetchModulosActivos();
         return Swal.fire({
           position: "center",
           icon: "success",

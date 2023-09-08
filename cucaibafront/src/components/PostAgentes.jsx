@@ -3,7 +3,6 @@ import { useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import "../assets/styles/detalle.css";
-import { validateDNI } from "../utils/Validaciones";
 import { usePersona } from "../hooks/usePersona";
 import { FaSearch } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
@@ -36,6 +35,8 @@ const postAgente = () => {
 
   const [clicked, setClicked] = useState(false);
 
+  const [showError, setShowError] = useState({ empty: false, length: false });
+
   const {
     data: personaData,
     refetch,
@@ -44,17 +45,7 @@ const postAgente = () => {
   } = usePersona(agente.nroDocumento, clicked).personaQuery;
 
   const handleFindPersona = () => {
-    if (agente.nroDocumento.trim() === "") {
-      const dniErrorEmpty = document.getElementById("dniErrorEmpty");
-      dniErrorEmpty.style.display = "block";
-      return;
-    }
-
-    if (agente.nroDocumento.length < 7) {
-      const dniErrorMessage = document.getElementById("dniErrorMessage");
-      dniErrorMessage.style.display = "block";
-      return;
-    }
+    if (showError.empty || showError.length || !agente.nroDocumento) return;
 
     setClicked(true);
     refetch();
@@ -221,17 +212,14 @@ const postAgente = () => {
                   const newValue = e.target.value;
                   if (newValue >= 0 && newValue.length <= 9) {
                     setAgente({ ...agente, nroDocumento: newValue });
-                    validateDNI(newValue);
+                    setShowError({ empty: false, length: false });
                   }
 
-                  const dniErrorMessage =
-                    document.getElementById("dniErrorMessage");
-                  const dniErrorEmpty =
-                    document.getElementById("dniErrorEmpty");
-                  if (newValue.trim() === "" || newValue.length > 7) {
-                    dniErrorMessage.style.display = "none";
-                    dniErrorEmpty.style.display = "none";
+                  if (!newValue) {
+                    setShowError({ ...showError, empty: true });
                   }
+                  if (newValue.length <= 7)
+                    setShowError({ ...showError, length: true });
                 }}
                 onKeyDown={(e) => {
                   if (e.key === "Enter") {
@@ -244,18 +232,28 @@ const postAgente = () => {
                 type="button"
                 onClick={handleFindPersona}
                 style={{ display: "inline-flex", alignItems: "center" }}
-                disabled={isFetching}
+                disabled={
+                  isFetching ||
+                  showError.empty ||
+                  showError.length ||
+                  !agente.nroDocumento
+                }
               >
                 <FaSearch style={{ marginRight: "5px" }} /> Buscar
               </button>
             </div>
 
-            <div id="dniErrorMessage" className="spanObligatorio">
-              El DNI debe tener más de 7 caracteres
-            </div>
-            <div id="dniErrorEmpty" className="spanObligatorio">
-              El campo DNI no puede estar vacío
-            </div>
+            {showError.length && (
+              <div id="dniErrorMessage" className="spanObligatorio">
+                * El DNI debe tener más de 7 caracteres
+              </div>
+            )}
+
+            {showError.empty && (
+              <div className="spanObligatorio">
+                * El campo DNI no puede estar vacío
+              </div>
+            )}
           </div>
           {showForm && (
             <div className="row">

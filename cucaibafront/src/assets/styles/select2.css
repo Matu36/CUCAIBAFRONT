@@ -5,6 +5,10 @@
   margin: 1000px;
 }
 
+.select2__control {
+  border-radius: 0px !important;
+}
+
 .select2__control:hover {
   cursor: pointer !important;
 }
@@ -13,6 +17,7 @@
 .select2__control--is-focused:hover {
   border-color: var(--ms-border-form) !important;
   box-shadow: none !important;
+  border-radius: none;
 }
 
 .select2__control--menu-is-open,
@@ -29,6 +34,12 @@
 .select2__option--is-selected {
   background-color: #ddd !important;
   color: #000 !important;
+}
+
+.select2__menu {
+  border-radius: 0px !important;
+  margin-top: 0px !important;
+  border: 0.5px solid var(--ms-border-form) !important;
 }
 
 .select2-container .select2-selection--single {
