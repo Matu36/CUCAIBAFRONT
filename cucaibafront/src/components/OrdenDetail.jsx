@@ -72,15 +72,15 @@ export const OrdenDetail = () => {
             </View>
 
             <View style={{ marginTop: 40, maxWidth: "90%" }}>
-              <View style={[styles.hr, { marginBottom: 10 }]}></View>
-              <Text style={[styles.text, { marginBottom: 10 }]}>
+              <View style={styles.hr}></View>
+              <Text style={{ ...styles.text, marginBottom: 10 }}>
                 ESTABLECIMIENTO: HOSPITAL ZONAL GENERAL AGUDOS DR. ISIDORO
                 IRIARTE
               </Text>
-              <Text style={[styles.text, { marginBottom: 10 }]}>
+              <Text style={{ ...styles.text, marginBottom: 10 }}>
                 POR TESORERIA PAGUESE: VARIABLES OPERATIVOS{" "}
               </Text>{" "}
-              <Text style={[styles.text, { marginBottom: 10 }]}>
+              <Text style={{ ...styles.text, marginBottom: 10 }}>
                 CANTIDAD DE PESOS: ${" "}
                 {gastos.gastos.op_monto
                   ? NumberFormatter(gastos.gastos.op_monto)
@@ -152,7 +152,7 @@ export const OrdenDetail = () => {
             <View style={styles.tableRow}>
               <View style={styles.tableCell}>
                 <Text style={styles.cellText}>
-                  1 Fecha Liquidación del gasto{" "}
+                  1 Fecha Liquidación del gasto:
                   {gastos.gastos.op_fecha_emision
                     ? formatDate(gastos.gastos.op_fecha_emision)
                     : "------"}
@@ -162,7 +162,7 @@ export const OrdenDetail = () => {
             <View style={styles.tableRow}>
               <View style={styles.tableCell}>
                 <Text style={styles.cellText}>
-                  2 Fecha Imputación{" "}
+                  2 Fecha Imputación:
                   {gastos.gastos.op_fecha_emision
                     ? formatDate(gastos.gastos.da_fecha_dispo)
                     : "------"}
@@ -199,6 +199,11 @@ export const OrdenDetail = () => {
             </View>
           </View>
         </View>
+        {!gastos.gastos.op_fecha_emision && (
+          <View style={styles.marcaAgua}>
+            <Text>No válido</Text>
+          </View>
+        )}
       </Page>
       <Page size="A4" style={styles.page}>
         <View style={styles.section}>
@@ -257,6 +262,16 @@ export const OrdenDetail = () => {
             );
           })}
         </View>
+        {!gastos.gastos.op_fecha_emision && (
+          <View
+            style={{
+              ...styles.marcaAgua,
+              width: "500px",
+            }}
+          >
+            <Text>No válido</Text>
+          </View>
+        )}
       </Page>
     </Document>
   );

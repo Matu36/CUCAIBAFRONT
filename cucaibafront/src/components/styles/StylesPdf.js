@@ -1,11 +1,12 @@
 import {
+  Font,
 StyleSheet
 } from "@react-pdf/renderer";
 
 export const styles = StyleSheet.create({
     page: {
       flexDirection: "row",
-  
+      fontFamily: Font.register("Encode Sans"), 
       padding: 10,
     },
     section: {
@@ -100,6 +101,7 @@ export const styles = StyleSheet.create({
   
     text: {
       fontSize: "10px",
+      fontWeight: "extrabold",
     },
   
     detalletitle: {
@@ -111,7 +113,7 @@ export const styles = StyleSheet.create({
     container: {
       border: 2,
       borderColor: "#000",
-      padding: 10,
+      // padding: 10,
       flexDirection: "row",
       justifyContent: "center",
       maxWidth: "80%",
@@ -120,11 +122,13 @@ export const styles = StyleSheet.create({
     table: {
       flexDirection: "column",
       flex: 1,
+      margin: 0
     },
     tableRow: {
       flexDirection: "row",
       borderBottomWidth: 1,
       borderColor: "#000",
+      border: "1px solid black",
       padding: 5,
     },
     tableCell: {
@@ -169,4 +173,16 @@ export const styles = StyleSheet.create({
       marginRight: 10,
       textAlign: "center",
     },
+
+    marcaAgua: {
+      textTransform: "uppercase",
+      position: "absolute",
+      top: 350,
+      fontSize: 90,
+      color: "#0078b3",
+      transform: "rotate(45deg)",
+      left: 50,
+      fontWeight: 100,
+      opacity: 0.3,
+    }
   });
