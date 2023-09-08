@@ -75,6 +75,7 @@ const PostHonorarios = ({
           <Select
             options={options}
             classNames={{ container: () => "select2-container" }}
+            classNamePrefix="select2"
             placeholder="Seleccioné una opción"
             onChange={handleChange}
             noOptionsMessage={() => "No hay ningún modulo disponible"}
