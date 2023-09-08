@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import "../assets/styles/detalle.css";
 import Spinner from "./UI/Spinner";
 import { MaskCuil } from "../utils/Mask";
+import "../components/styles/GetAgente.css";
 
 //Componente que muestra los AGENTES
 
@@ -64,12 +65,10 @@ const GetAgentes = ({ ...props }) => {
       format: (row) => MaskCuil(row.cuil),
     },
     {
-      name: "Acciones",
+      name: "Ver",
       cell: (row) => (
-        <Link to={`/agentes/agente/${row.id}`}>
-          <button className="btn btn-guardar btn-md btnSearch">
-            Ver detalle del Agente
-          </button>
+        <Link to={`/agentes/agente/${row.id}`} className="custom-link">
+          <button className="detalle"> + Información</button>
         </Link>
       ),
     },
