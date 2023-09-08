@@ -35,7 +35,7 @@ const PostHonorarios = ({
           })),
         ]);
     }
-  }, [isFetched, isLoading]);
+  }, [isFetched, isLoading, data]);
 
   const [funcionesAsignadas, setFuncionesAsignadas] = useState({});
 
