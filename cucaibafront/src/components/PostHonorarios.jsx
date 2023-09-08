@@ -3,7 +3,6 @@ import { useModulos } from "../hooks/useModulos";
 import { AiOutlinePlus } from "react-icons/ai";
 import Select from "react-select";
 import "../assets/styles/select2.css";
-import NumberFormatter from "../utils/NumberFormatter";
 
 //Componente para agregar Función al agente
 
@@ -35,7 +34,30 @@ const PostHonorarios = ({
           })),
         ]);
     }
-  }, [isFetched, isLoading, data]);
+  }, [isFetched, isLoading]);
+
+  const [funcionesAsignadas, setFuncionesAsignadas] = useState({});
+
+  useEffect(() => {
+    if (!isLoading && isFetched) {
+      if (data && data.length > 0) {
+        const nuevasOpciones = [
+          { value: "0|0", label: "Elegí una opción" },
+          ...data.map((m) => ({
+            value: `${m.id}|${m.valor}`,
+            label: m.descripcion,
+          })),
+        ];
+
+        // Filtra las funciones ya asignadas para evitar duplicados
+        const funcionesFiltradas = nuevasOpciones.filter(
+          (opcion) => !funcionesAsignadas[opcion.value]
+        );
+
+        setOptions(funcionesFiltradas);
+      }
+    }
+  }, [isFetched, isLoading, funcionesAsignadas, data]);
 
   const [value, setValue] = useState(0);
   const [selectValue, setSelectValue] = useState("0|0");
@@ -56,10 +78,9 @@ const PostHonorarios = ({
       alert("Se tiene que elegir un modulo");
       return;
     }
-
-    // setOptions((prevOptions) =>
-    //   prevOptions.filter((option) => option.value !== auxValue.value)
-    // );
+    setOptions((prevOptions) =>
+      prevOptions.filter((option) => option.value !== auxValue.value)
+    );
     setSelectValue("0|0");
     setAuxValue({
       value: "0|0",
@@ -104,7 +125,7 @@ const PostHonorarios = ({
             className="form-control"
             type="text"
             id="valorModuloDisabled"
-            value={`$ ${NumberFormatter(Number(value))}`}
+            value={value}
             aria-label="Disabled Valor modulo"
             disabled
           />
