@@ -1,11 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { useModulos } from "../hooks/useModulos";
 import { AiOutlinePlus } from "react-icons/ai";
 import Select from "react-select";
 import "../assets/styles/select2.css";
 import NumberFormatter from "../utils/NumberFormatter";
-
-//Componente para agregar Función al agente
 
 const PostHonorarios = ({
   disabled,
@@ -19,25 +16,10 @@ const PostHonorarios = ({
     loadingModulosActivos: isLoading,
     fetchedModulosActivos: isFetched,
   } = props;
-  // const { data, isLoading, isFetched, refetch } =
-  //   useModulos(operativoId).modulosActivosQuery;
+
   const [options, setOptions] = useState([
     { value: "0|0", label: "Elegí una opción" },
   ]);
-  useEffect(() => {
-    if (!isLoading) {
-      typeof data == "object" &&
-        setOptions([
-          ...options,
-          ...data.map((m) => ({
-            value: `${m.id}|${m.valor}`,
-            label: m.descripcion,
-          })),
-        ]);
-    }
-  }, [isFetched, isLoading, data]);
-
-  const [funcionesAsignadas, setFuncionesAsignadas] = useState({});
 
   useEffect(() => {
     if (!isLoading && isFetched) {
@@ -50,46 +32,29 @@ const PostHonorarios = ({
           })),
         ];
 
-        // Filtra las funciones ya asignadas para evitar duplicados
-        const funcionesFiltradas = nuevasOpciones.filter(
-          (opcion) => !funcionesAsignadas[opcion.value]
-        );
-
-        setOptions(funcionesFiltradas);
+        setOptions(nuevasOpciones);
       }
     }
-  }, [isFetched, isLoading, funcionesAsignadas, data]);
+  }, [isFetched, isLoading, data]);
 
   const [value, setValue] = useState(0);
-  const [selectValue, setSelectValue] = useState("0|0");
-  const [auxValue, setAuxValue] = useState({
-    value: "0|0",
-    label: "Elegí una opción",
-  });
-  const handleChange = (e) => {
-    let arrayValue = e.value.split("|");
-    setAuxValue(e);
-    setSelectValue(e.value);
+
+  const handleChange = (selected) => {
+    const arrayValue = selected.value.split("|");
     setValue(arrayValue[1]);
     handleModuloId(Number(arrayValue[0]));
-
-    setOptions((prevOptions) =>
-      prevOptions.filter((option) => option.value !== e.value)
-    );
   };
 
   const handleCreateClick = () => {
-    if (value == 0) {
+    if (value === 0) {
       alert("Se tiene que elegir un modulo");
       return;
     }
-    setSelectValue("0|0");
-    setAuxValue({
-      value: "0|0",
-      label: "Elegí una opción",
-    });
+    setOptions((prevOptions) =>
+      prevOptions.filter((option) => option.value === "0|0")
+    );
     setValue(0);
-    handleModuloId(Number(0));
+    handleModuloId(0);
     handleClick();
   };
 
@@ -115,8 +80,6 @@ const PostHonorarios = ({
             noOptionsMessage={() => "No hay ningún modulo disponible"}
             aria-label="Default select example"
             isDisabled={disabled}
-            value={auxValue}
-            classNamePrefix="select2"
           />
         </div>
         <div className="mb-3 w-20">
@@ -140,7 +103,7 @@ const PostHonorarios = ({
             id="buttonAddModulo"
             type="button"
             className="btn btn-guardar"
-            disabled={value == 0}
+            disabled={value === 0}
             onClick={() => {
               handleCreateClick();
               refetch();
