@@ -60,8 +60,10 @@ export const OrdenDetail = () => {
                   {gastos.gastos.da_op_anio}{" "}
                 </Text>
                 <Text style={[styles.text, { fontWeight: "bold" }]}>
-                  Fecha de Emisión :{" "}
-                  {formatDate(gastos.gastos.op_fecha_emision)}
+                  Fecha de Emisión :
+                  {gastos.gastos.op_fecha_emision
+                    ? formatDate(gastos.gastos.op_fecha_emision)
+                    : "------"}
                 </Text>
               </View>
             </View>
@@ -151,11 +153,9 @@ export const OrdenDetail = () => {
               <View style={styles.tableCell}>
                 <Text style={styles.cellText}>
                   1 Fecha Liquidación del gasto{" "}
-                  {formatDate(
-                    gastos.gastos.op_fecha_emision
-                      ? gastos.gastos.op_fecha_emision
-                      : null
-                  )}
+                  {gastos.gastos.op_fecha_emision
+                    ? formatDate(gastos.gastos.op_fecha_emision)
+                    : "------"}
                 </Text>
               </View>
             </View>
@@ -163,11 +163,9 @@ export const OrdenDetail = () => {
               <View style={styles.tableCell}>
                 <Text style={styles.cellText}>
                   2 Fecha Imputación{" "}
-                  {formatDate(
-                    gastos.gastos.da_fecha_dispo
-                      ? gastos.gastos.da_fecha_dispo
-                      : null
-                  )}
+                  {gastos.gastos.op_fecha_emision
+                    ? formatDate(gastos.gastos.da_fecha_dispo)
+                    : "------"}
                 </Text>
               </View>
               <View style={styles.tableCell}>{/* Celda vacía */}</View>
