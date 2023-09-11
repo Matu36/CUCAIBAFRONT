@@ -61,9 +61,6 @@ const RowExpandedComponent = ({ data: operativo }) => {
     refetch: refetchAgentes,
   } = useOperativo(operativo.id).agentesOperativoQuery;
 
-
-
-
   const [honorarioData, setHonorarioData] = useState({
     operativo_id: operativo.id,
     agente_id: 0,
@@ -75,7 +72,7 @@ const RowExpandedComponent = ({ data: operativo }) => {
     isLoading: honorariosLoading,
     isFetching: honorariosFetching,
     isFetched: honorariosFetched,
-    
+
     refetch,
   } = useHonorarios(
     operativo.id,
@@ -310,7 +307,6 @@ const RowExpandedComponent = ({ data: operativo }) => {
     }
   };
 
-
   //-------------------------------- FIN SEARCHBAR --------------------------- //
 
   return (
@@ -333,18 +329,18 @@ const RowExpandedComponent = ({ data: operativo }) => {
               )}
               {typeof honorariosAgente == "object" &&
                 honorariosAgente.map((h) => (
-                  <tr key={h.id}>
-                    <td className="w-50">{h.modulo.descripcion}</td>
-                    <td>$ {NumberFormatter(h.valor)}</td>
+                  <tr key={h[0].id}>
+                    <td className="w-50">{h[0].modulo.descripcion}</td>
+                    <td>$ {NumberFormatter(h[0].valor)}</td>
                     <td>
-                      <button
+                      {!h.opprovisorio_nro && <button
                         className="btn btn-sm btn-limpiar d-flex align-items-center justify-content-center gap-2"
                         disabled={
                           deleteModuloAgente.isLoading || honorariosFetching
                         }
                         onClick={() =>
                           handleDeleteModulo(
-                            h.modulo.id,
+                            h[0].modulo.id,
                             honorarioData.agente_id,
                             honorarioData.operativo_id
                           )
@@ -352,7 +348,8 @@ const RowExpandedComponent = ({ data: operativo }) => {
                       >
                         <FaTimes size="0.90rem" />
                         Eliminar
-                      </button>
+                      </button>}
+                      
                     </td>
                   </tr>
                 ))}
@@ -492,19 +489,16 @@ const RowExpandedComponent = ({ data: operativo }) => {
                             <AiOutlinePlus /> Agregar Función
                           </button>
                           {agente.opprovisorio_nro == null ? (
-            <button
-              type="button"
-              className="btn btn-secondary"
-              onClick={() =>
-                handleDelete(agente.id, operativo.id)
-              }
-            >
-              <FiTrash /> Eliminar Agente
-            </button>
-          ) : (
-            
-            null
-          )}
+                            <button
+                              type="button"
+                              className="btn btn-secondary"
+                              onClick={() =>
+                                handleDelete(agente.id, operativo.id)
+                              }
+                            >
+                              <FiTrash /> Eliminar Agente
+                            </button>
+                          ) : null}
                         </td>
                       </tr>
                     ))}
