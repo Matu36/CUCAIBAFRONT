@@ -184,5 +184,83 @@ export const styles = StyleSheet.create({
       left: 50,
       fontWeight: 100,
       opacity: 0.3,
+    },
+    content: {
+      display: "flex",
+      flexDirection: "row",
+      border: "1px solid black",
+      justifyContent: "space-between",
+      fontSize: 10,
+      maxWidth: "80%",
+      margin: "5px auto"
+    },
+    tableContent:{
+      display: "flex",
+      flexDirection: "column",
+      height: "100px",
+      borderRight: "1px solid black",
+      borderBottom: "1px solid black",
+      marginRight: "10px",
+      marginBottom: "20px",
+      maxWidth: "80%"
+    },
+    tableHeader: {
+      maxWidth: "100%",
+      maxHeight: "30px",
+      display: "flex",
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between",
+      borderBottom: "1px solid black"
+    },
+    tableColumnContent: {
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      paddingBottom: "5px",
+      paddingTop: "4px",
+      minWidth: "20%"
+    },
+    tableFirstColumn:{
+      minWidth: "80%",
+      borderRight: "1px solid black",
+    },
+    tableBodyWrapper: {
+      display: "flex",
+      flexDirection: "column",
+    },
+    tableBodyRow: {
+      display: "flex",
+      flexDirection: "row",
+      width: "100%",
+      borderBottom: "1px solid black",
+    },
+    tableRowContent: {
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      padding: "5px",
+      textAlign: "left",
+      minWidth: "20%"
+    },
+    tableFirstRow: {
+      minWidth: "80%",
+      borderRight: "1px solid black",
+      flexDirection: "row",
+      justifyContent: "space-between"
+    },
+    tableLastChild: {
+      borderBottom: "none"
+    },
+    firmaContent: {
+      width: "50%",
+      fontSize: 10,
+      display: "flex",
+      padding: "5px"
+    },
+    firmaBody: {
+      height: "100px",
+      borderBottom: "1px solid black",
+      marginBottom: "5px"
     }
   });

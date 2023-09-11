@@ -21,6 +21,27 @@ import { styles } from "./styles/StylesPdf";
 //Componente, que dentro de Ver órdenes de Pago, muestra los datos del agente dentro del Honorario creado, el operativo y las funciones que
 //desempeñó, asi como el monto unitario y el monto total; Da la posibilidad de Descargar el PDF.
 
+const TableBodyRow = ({ index, titulo, dato }) => {
+  return (
+    <View style={styles.tableBodyRow}>
+      <View style={{ ...styles.tableRowContent, ...styles.tableFirstRow }}>
+        <View>
+          <Text>{index}</Text>
+        </View>
+        <View>
+          <Text>{titulo}: </Text>
+        </View>
+        <View>
+          <Text>{dato}</Text>
+        </View>
+      </View>
+      <View style={styles.tableRowContent}>
+        <Text></Text>
+      </View>
+    </View>
+  );
+};
+
 const numberInWords = (number) => NumerosALetras(number);
 
 const formatDate = (dateString) => {
@@ -139,64 +160,59 @@ export const OrdenDetail = () => {
           </View>
         </View>
 
-        <View style={styles.container}>
-          <View style={styles.table}>
-            <View style={styles.tableRow}>
-              <View style={styles.tableCell}>
-                <Text style={styles.cellText}>INTERVENCION</Text>
+        <View style={styles.content}>
+          <View style={styles.tableContent}>
+            <View style={styles.tableHeader}>
+              <View style={styles.tableColumn}>
+                <View
+                  style={{
+                    ...styles.tableColumnContent,
+                    ...styles.tableFirstColumn,
+                  }}
+                >
+                  <Text>INTERVENCION</Text>
+                </View>
               </View>
-              <View style={styles.tableCell}>
-                <Text style={styles.cell1}>Vº Bº</Text>
+              <View style={styles.tableColumn}>
+                <View style={styles.tableColumnContent}>
+                  <Text>V° B°</Text>
+                </View>
               </View>
             </View>
-            <View style={styles.tableRow}>
-              <View style={styles.tableCell}>
-                <Text style={styles.cellText}>
-                  1 Fecha Liquidación del gasto:
-                  {gastos.gastos.op_fecha_emision
+            <View style={styles.tableBodyWrapper}>
+              <TableBodyRow
+                index={1}
+                dato={
+                  gastos.gastos.op_fecha_emision
                     ? formatDate(gastos.gastos.op_fecha_emision)
-                    : "------"}
-                </Text>
-              </View>
-            </View>
-            <View style={styles.tableRow}>
-              <View style={styles.tableCell}>
-                <Text style={styles.cellText}>
-                  2 Fecha Imputación:
-                  {gastos.gastos.op_fecha_emision
+                    : "------"
+                }
+                titulo="Fecha de Liquidación del gasto"
+              />
+              <TableBodyRow
+                index={2}
+                dato={
+                  gastos.gastos.op_fecha_emision
                     ? formatDate(gastos.gastos.da_fecha_dispo)
-                    : "------"}
-                </Text>
-              </View>
-              <View style={styles.tableCell}>{/* Celda vacía */}</View>
-            </View>
-            <View style={styles.tableRow}>
-              <View style={styles.tableCell}>
-                <Text style={styles.cellText}>3 Folio Libro de Banco 5</Text>
-              </View>
-              <View style={styles.tableCell}>{/* Celda vacía */}</View>
-            </View>
-            <View style={styles.tableRow}>
-              <View style={styles.tableCell}>
-                <Text style={styles.cellText}>4 Nro.Cheque/Transferencia</Text>
-              </View>
-
-              <View style={styles.tableCell}></View>
+                    : "------"
+                }
+                titulo="Fecha Imputación"
+              />
+              <TableBodyRow
+                index={3}
+                dato={gastos.gastos.op_foliolibrobanco}
+                titulo="Folio Libro Banco"
+              />
+              <TableBodyRow
+                index={4}
+                dato="-"
+                titulo="Nro. Cheque/Transferencia"
+              />
             </View>
           </View>
-          <View>
-            <View style={styles.tableCell}></View>
-            <View
-              style={[
-                styles.tableCell,
-                { alignItems: "flex-end", marginTop: 100 },
-              ]}
-            >
-              <View style={[styles.hr1, { marginBottom: 10 }]}></View>
-              <Text style={styles.cellText}>
-                Firma y Sello del Administrador
-              </Text>
-            </View>
+          <View style={styles.firmaContent}>
+            <View style={styles.firmaBody}></View>
+            <Text>Firma y sello del Administrador</Text>
           </View>
         </View>
         {!gastos.gastos.op_fecha_emision && (
