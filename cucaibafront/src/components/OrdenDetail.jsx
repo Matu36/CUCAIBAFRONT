@@ -212,7 +212,9 @@ export const OrdenDetail = () => {
           </View>
           <View style={styles.firmaContent}>
             <View style={styles.firmaBody}></View>
-            <Text>Firma y sello del Administrador</Text>
+            <Text style={styles.firmaText}>
+              Firma y sello del Administrador
+            </Text>
           </View>
         </View>
         {!gastos.gastos.op_fecha_emision && (

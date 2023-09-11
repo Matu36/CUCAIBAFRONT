@@ -256,11 +256,18 @@ export const styles = StyleSheet.create({
       width: "50%",
       fontSize: 10,
       display: "flex",
-      padding: "5px"
+      padding: "5px",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center"
     },
     firmaBody: {
-      height: "100px",
+      minHeight: "100px",
       borderBottom: "1px solid black",
       marginBottom: "5px"
+    },
+    firmaText: {
+      paddingTop: "5px",
+      borderTop: "1px solid black"
     }
   });
