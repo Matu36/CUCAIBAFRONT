@@ -61,6 +61,9 @@ const RowExpandedComponent = ({ data: operativo }) => {
     refetch: refetchAgentes,
   } = useOperativo(operativo.id).agentesOperativoQuery;
 
+
+
+
   const [honorarioData, setHonorarioData] = useState({
     operativo_id: operativo.id,
     agente_id: 0,
@@ -72,6 +75,7 @@ const RowExpandedComponent = ({ data: operativo }) => {
     isLoading: honorariosLoading,
     isFetching: honorariosFetching,
     isFetched: honorariosFetched,
+    
     refetch,
   } = useHonorarios(
     operativo.id,
@@ -306,6 +310,7 @@ const RowExpandedComponent = ({ data: operativo }) => {
     }
   };
 
+
   //-------------------------------- FIN SEARCHBAR --------------------------- //
 
   return (
@@ -486,15 +491,20 @@ const RowExpandedComponent = ({ data: operativo }) => {
                           >
                             <AiOutlinePlus /> Agregar Función
                           </button>
-                          <button
-                            type="button"
-                            className="btn btn-secondary"
-                            onClick={() =>
-                              handleDelete(agente.id, operativo.id)
-                            }
-                          >
-                            <FiTrash /> Eliminar Agente
-                          </button>
+                          {agente.opprovisorio_nro == null ? (
+            <button
+              type="button"
+              className="btn btn-secondary"
+              onClick={() =>
+                handleDelete(agente.id, operativo.id)
+              }
+            >
+              <FiTrash /> Eliminar Agente
+            </button>
+          ) : (
+            
+            null
+          )}
                         </td>
                       </tr>
                     ))}
