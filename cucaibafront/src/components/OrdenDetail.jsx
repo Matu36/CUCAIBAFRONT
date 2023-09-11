@@ -63,36 +63,58 @@ export const OrdenDetail = () => {
   //PDF
 
   const generatePDFContent = (personasExceptLast) => (
-    <Document>
+    <Document style={{ fontFamily: "Open Sans" }}>
       <Page size="A4">
         <View>
-          <View style={{ marginTop: 40, marginLeft: 60 }}>
+          <View
+            style={{
+              marginTop: 40,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
             <View
-              style={{ flexDirection: "row", justifyContent: "space-between" }}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                flexDirection: "row",
+              }}
             >
               <View style={{ marginRight: 20 }}>
                 <Image src={Logo} style={styles.logo} />
+                <Text style={styles.text}>FORMULARIO 20 EOC</Text>
               </View>
-              <View>
-                <Image src={LOGOPCIA} style={styles.logopcia} />
-                <Text style={[styles.text, { fontWeight: "bold" }]}>
-                  ORDEN DE PAGO SAMO N°{" "}
-                  {gastos.gastos.da_op_nro ? gastos.gastos.da_op_nro : null}/
-                  {gastos.gastos.da_op_anio}{" "}
-                </Text>
-                <Text style={[styles.text, { fontWeight: "bold" }]}>
-                  Fecha de Emisión :
-                  {gastos.gastos.op_fecha_emision
-                    ? formatDate(gastos.gastos.op_fecha_emision)
-                    : "------"}
-                </Text>
-              </View>
+              <Image src={LOGOPCIA} style={styles.logopcia} />
             </View>
-            <View style={{ marginLeft: 60 }}>
-              <Text style={styles.text}>FORMULARIO 20 EOC</Text>
+            <View
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Text style={[styles.text, { fontWeight: "bold" }]}>
+                ORDEN DE PAGO SAMO N° {gastos.gastos.da_op_nro ?? null}/
+                {gastos.gastos.da_op_anio}{" "}
+              </Text>
+              <Text style={[styles.text, { fontWeight: "bold" }]}>
+                Fecha de Emisión:
+                {` ${
+                  gastos.gastos.op_fecha_emision
+                    ? formatDate(gastos.gastos.op_fecha_emision)
+                    : "------"
+                }`}
+              </Text>
             </View>
 
-            <View style={{ marginTop: 40, maxWidth: "90%" }}>
+            <View
+              style={{
+                marginTop: 40,
+                borderTop: "1px solid #000",
+              }}
+            >
               <View style={styles.hr}></View>
               <Text style={{ ...styles.text, marginBottom: 10 }}>
                 ESTABLECIMIENTO: HOSPITAL ZONAL GENERAL AGUDOS DR. ISIDORO
@@ -102,7 +124,7 @@ export const OrdenDetail = () => {
                 POR TESORERIA PAGUESE: VARIABLES OPERATIVOS{" "}
               </Text>{" "}
               <Text style={{ ...styles.text, marginBottom: 10 }}>
-                CANTIDAD DE PESOS: ${" "}
+                CANTIDAD DE PESOS: $
                 {gastos.gastos.op_monto
                   ? NumberFormatter(gastos.gastos.op_monto)
                   : null}
@@ -115,47 +137,85 @@ export const OrdenDetail = () => {
                 )}
                 .-
               </Text>{" "}
-              <Text style={[styles.text, { marginBottom: 10 }]}>
+              <Text
+                style={{
+                  ...styles.text,
+                  marginBottom: 10,
+                  textDecoration: "underline",
+                }}
+              >
                 EN CONCEPTO DE PAGOS DE VARIABLES DE PROCURACION
               </Text>
-              <Text style={styles.text}>
-                CON CARGO A LA CUENTA ESPECIAL 52880/3 FONDO SOLIDARIO DE
-                TRANSPLANTE
-              </Text>
-              <Text style={styles.text}>SAMO DECRETO LEY 8801/77</Text>
-              <Text style={styles.text}>
-                EJERCICIO {gastos.gastos.da_op_anio}{" "}
-                {gastos.gastos.op_codinstitucional
-                  ? gastos.gastos.op_codinstitucional
-                  : null}{" "}
-                {gastos.gastos.op_jurisdiccion
-                  ? gastos.gastos.op_jurisdiccion
-                  : null}
-                {gastos.gastos.op_jurisauxiliar
-                  ? gastos.gastos.op_jurisauxiliar
-                  : null}{" "}
-                {gastos.gastos.op_entidad ? gastos.gastos.entidad : null}{" "}
-                CATEGORIA PROG:{" "}
-                <Text style={styles.text}>
-                  {gastos.gastos.op_programa ? gastos.gastos.op_programa : null}
+              <View>
+                <Text style={{ ...styles.text, fontWeight: "light" }}>
+                  CON CARGO A LA CUENTA ESPECIAL 52880/3 FONDO SOLIDARIO DE
+                  TRANSPLANTE
+                </Text>
+                <Text style={{ ...styles.text, fontWeight: "light" }}>
+                  SAMO DECRETO LEY 8801/77
+                </Text>
+                <Text style={{ ...styles.text, fontWeight: "light" }}>
+                  EJERCICIO {gastos.gastos.da_op_anio}{" "}
+                  {gastos.gastos.op_codinstitucional
+                    ? gastos.gastos.op_codinstitucional
+                    : null}{" "}
+                  {gastos.gastos.op_jurisdiccion
+                    ? gastos.gastos.op_jurisdiccion
+                    : null}
+                  {gastos.gastos.op_jurisauxiliar
+                    ? gastos.gastos.op_jurisauxiliar
+                    : null}{" "}
+                  {gastos.gastos.op_entidad ? gastos.gastos.entidad : null}{" "}
+                  CATEGORIA PROG:{" "}
+                  <Text style={{ ...styles.text, fontWeight: "light" }}>
+                    {gastos.gastos.op_programa
+                      ? gastos.gastos.op_programa
+                      : null}
+                  </Text>{" "}
                 </Text>{" "}
-              </Text>{" "}
-              <Text style={[styles.text, { marginBottom: 10 }]}>
-                FUENTE DE FINANCIAMIENTO: PROCEDENCIA{" "}
-                {gastos.gastos.op_procedencia} - FUENTE{" "}
-                {gastos.gastos.op_fuente}
-              </Text>{" "}
-              <Text style={styles.text}>Inciso 3</Text>
-              <Text style={[styles.text, { marginBottom: 10 }]}>
-                3.5.5 : ${" "}
-                {gastos.gastos.op_monto ? gastos.gastos.op_monto : null}
-              </Text>{" "}
-              <Text style={[styles.text, { marginLeft: 60, marginBottom: 10 }]}>
-                TOTAL IMPUTADO: ${" "}
-                {gastos.gastos.op_monto
-                  ? NumberFormatter(gastos.gastos.op_monto)
-                  : null}
-              </Text>{" "}
+                <Text style={{ ...styles.text, fontWeight: "light" }}>
+                  FUENTE DE FINANCIAMIENTO: PROCEDENCIA{" "}
+                  {gastos.gastos.op_procedencia} - FUENTE{" "}
+                  {gastos.gastos.op_fuente}
+                </Text>{" "}
+                <View
+                  style={{
+                    margin: "15px 20px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    flexDirection: "row",
+                    height: "100px",
+                  }}
+                >
+                  <Text style={styles.text}>Inciso 3</Text>
+                  <View
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                      flexDirection: "column",
+                    }}
+                  >
+                    <Text
+                      style={{
+                        ...styles.text,
+                        fontWeight: "light",
+                        marginBottom: "20px",
+                      }}
+                    >
+                      3.5.5 : ${" "}
+                      {gastos.gastos.op_monto ? gastos.gastos.op_monto : null}
+                    </Text>{" "}
+                    <Text style={styles.text}>
+                      TOTAL IMPUTADO: ${" "}
+                      {gastos.gastos.op_monto
+                        ? NumberFormatter(gastos.gastos.op_monto)
+                        : null}
+                    </Text>{" "}
+                  </View>
+                </View>
+              </View>
             </View>
           </View>
         </View>
@@ -231,14 +291,18 @@ export const OrdenDetail = () => {
               Detalle de la Orden de Pago{" "}
             </Text>
           </View>
-          <View style={styles.row}>
-            <Text style={[styles.cell, styles.header]}>Nombre</Text>
-            <Text style={[styles.cell, styles.header]}>Legajo</Text>
-            <Text style={[styles.cell, styles.header]}>CUIL</Text>
-            <Text style={[styles.cell, styles.header]}>PD Nro</Text>
-            <Text style={[styles.cell, styles.header]}>Descripción</Text>
-            <Text style={[styles.cell, styles.header]}>Monto</Text>
-            <Text style={[styles.cell, styles.header]}>Monto Total</Text>
+          <View style={{ ...styles.row, fontSize: 10 }}>
+            <Text style={{ ...styles.cell, ...styles.header }}>Nombre</Text>
+            <Text style={{ ...styles.cell, ...styles.header }}>Legajo</Text>
+            <Text style={{ ...styles.cell, ...styles.header }}>CUIL</Text>
+            <Text style={{ ...styles.cell, ...styles.header }}>PD Nro</Text>
+            <Text style={{ ...styles.cell, ...styles.header }}>
+              Descripción
+            </Text>
+            <Text style={{ ...styles.cell, ...styles.header }}>Monto</Text>
+            <Text style={{ ...styles.cell, ...styles.header }}>
+              Monto Total
+            </Text>
           </View>
           {personasExceptLast.map((personasData, index) => {
             const { nombre, cuil, items, valor_total, legajo } = personasData;

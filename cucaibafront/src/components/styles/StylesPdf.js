@@ -3,10 +3,16 @@ import {
 StyleSheet
 } from "@react-pdf/renderer";
 
+Font.register({
+  family: 'Open Sans',
+  fonts: [
+  { src: 'https://cdn.jsdelivr.net/npm/open-sans-all@0.1.3/fonts/open-sans-regular.ttf' },
+  { src: 'https://cdn.jsdelivr.net/npm/open-sans-all@0.1.3/fonts/open-sans-600.ttf', fontWeight: 600 }
+  ]
+  });
+
 export const styles = StyleSheet.create({
     page: {
-      flexDirection: "row",
-      fontFamily: Font.register("Encode Sans"), 
       padding: 10,
     },
     section: {
@@ -42,7 +48,7 @@ export const styles = StyleSheet.create({
   
     header: {
       fontWeight: "bold",
-      fontSize: "12px",
+      fontSize: 10,
       borderBottomWidth: 1,
       borderBottomColor: "#000",
       backgroundColor: "#e0e0e0",
@@ -144,7 +150,7 @@ export const styles = StyleSheet.create({
       borderColor: "#000",
     },
     logopcia: {
-      maxWidth: "70%",
+      maxWidth: "50%",
       marginLeft: 60,
     },
     cell1: {
@@ -211,7 +217,8 @@ export const styles = StyleSheet.create({
       flexDirection: "row",
       alignItems: "center",
       justifyContent: "space-between",
-      borderBottom: "1px solid black"
+      borderBottom: "1px solid black",
+      
     },
     tableColumnContent: {
       display: "flex",
@@ -219,7 +226,8 @@ export const styles = StyleSheet.create({
       justifyContent: "center",
       paddingBottom: "5px",
       paddingTop: "4px",
-      minWidth: "20%"
+      minWidth: "20%",
+      fontWeight: "bold"
     },
     tableFirstColumn:{
       minWidth: "80%",
@@ -263,7 +271,6 @@ export const styles = StyleSheet.create({
     },
     firmaBody: {
       minHeight: "100px",
-      borderBottom: "1px solid black",
       marginBottom: "5px"
     },
     firmaText: {
