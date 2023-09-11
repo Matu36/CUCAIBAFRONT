@@ -108,112 +108,114 @@ export const OrdenDetail = () => {
                 }`}
               </Text>
             </View>
-
             <View
               style={{
-                marginTop: 40,
-                borderTop: "1px solid #000",
+                width: "80%",
+                paddingBottom: "15px",
+                paddingTop: "10px",
+                borderBottom: "1px solid #000",
               }}
             >
-              <View style={styles.hr}></View>
-              <Text style={{ ...styles.text, marginBottom: 10 }}>
-                ESTABLECIMIENTO: HOSPITAL ZONAL GENERAL AGUDOS DR. ISIDORO
-                IRIARTE
+              <Text style={{ ...styles.text, textAlign: "right" }}>
+                {gastos.gastos.op_expediente ?? null}
               </Text>
-              <Text style={{ ...styles.text, marginBottom: 10 }}>
-                POR TESORERIA PAGUESE: VARIABLES OPERATIVOS{" "}
-              </Text>{" "}
-              <Text style={{ ...styles.text, marginBottom: 10 }}>
-                CANTIDAD DE PESOS: $
-                {gastos.gastos.op_monto
-                  ? NumberFormatter(gastos.gastos.op_monto)
+            </View>
+          </View>
+          <View style={{ marginLeft: 60 }}>
+            <Text style={{ ...styles.text, marginBottom: 10 }}>
+              ESTABLECIMIENTO: C.U.C.A.I.B.A
+            </Text>
+            <Text style={{ ...styles.text, marginBottom: 10 }}>
+              POR TESORERIA PAGUESE: VARIABLES OPERATIVOS{" "}
+            </Text>{" "}
+            <Text style={{ ...styles.text, marginBottom: 10 }}>
+              CANTIDAD DE PESOS: $
+              {gastos.gastos.op_monto
+                ? NumberFormatter(gastos.gastos.op_monto)
+                : null}
+            </Text>{" "}
+            <Text style={[styles.text, { marginBottom: 10 }]}>
+              POR LA SUMA DE PESOS:{" "}
+              {numberInWords(gastos.gastos.op_monto).replace(
+                / 00\/100 M\.N\.$/,
+                ""
+              )}
+              .-
+            </Text>{" "}
+            <Text
+              style={{
+                ...styles.text,
+                marginBottom: 10,
+                textDecoration: "underline",
+              }}
+            >
+              EN CONCEPTO DE PAGOS DE VARIABLES DE PROCURACION
+            </Text>
+            <View>
+              <Text style={{ ...styles.text, fontWeight: "light" }}>
+                CON CARGO A LA CUENTA ESPECIAL 52880/3 FONDO SOLIDARIO DE
+                TRANSPLANTE
+              </Text>
+              <Text style={{ ...styles.text, fontWeight: "light" }}>
+                SAMO DECRETO LEY 8801/77
+              </Text>
+              <Text style={{ ...styles.text, fontWeight: "light" }}>
+                EJERCICIO {gastos.gastos.da_op_anio}{" "}
+                {gastos.gastos.op_codinstitucional
+                  ? gastos.gastos.op_codinstitucional
+                  : null}{" "}
+                {gastos.gastos.op_jurisdiccion
+                  ? gastos.gastos.op_jurisdiccion
                   : null}
+                {gastos.gastos.op_jurisauxiliar
+                  ? gastos.gastos.op_jurisauxiliar
+                  : null}{" "}
+                {gastos.gastos.op_entidad ? gastos.gastos.entidad : null}{" "}
+                CATEGORIA PROG:{" "}
+                <Text style={{ ...styles.text, fontWeight: "light" }}>
+                  {gastos.gastos.op_programa ? gastos.gastos.op_programa : null}
+                </Text>{" "}
               </Text>{" "}
-              <Text style={[styles.text, { marginBottom: 10 }]}>
-                POR LA SUMA DE PESOS:{" "}
-                {numberInWords(gastos.gastos.op_monto).replace(
-                  / 00\/100 M\.N\.$/,
-                  ""
-                )}
-                .-
+              <Text style={{ ...styles.text, fontWeight: "light" }}>
+                FUENTE DE FINANCIAMIENTO: PROCEDENCIA{" "}
+                {gastos.gastos.op_procedencia} - FUENTE{" "}
+                {gastos.gastos.op_fuente}
               </Text>{" "}
-              <Text
+              <View
                 style={{
-                  ...styles.text,
-                  marginBottom: 10,
-                  textDecoration: "underline",
+                  margin: "15px 20px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  flexDirection: "row",
+                  height: "100px",
                 }}
               >
-                EN CONCEPTO DE PAGOS DE VARIABLES DE PROCURACION
-              </Text>
-              <View>
-                <Text style={{ ...styles.text, fontWeight: "light" }}>
-                  CON CARGO A LA CUENTA ESPECIAL 52880/3 FONDO SOLIDARIO DE
-                  TRANSPLANTE
-                </Text>
-                <Text style={{ ...styles.text, fontWeight: "light" }}>
-                  SAMO DECRETO LEY 8801/77
-                </Text>
-                <Text style={{ ...styles.text, fontWeight: "light" }}>
-                  EJERCICIO {gastos.gastos.da_op_anio}{" "}
-                  {gastos.gastos.op_codinstitucional
-                    ? gastos.gastos.op_codinstitucional
-                    : null}{" "}
-                  {gastos.gastos.op_jurisdiccion
-                    ? gastos.gastos.op_jurisdiccion
-                    : null}
-                  {gastos.gastos.op_jurisauxiliar
-                    ? gastos.gastos.op_jurisauxiliar
-                    : null}{" "}
-                  {gastos.gastos.op_entidad ? gastos.gastos.entidad : null}{" "}
-                  CATEGORIA PROG:{" "}
-                  <Text style={{ ...styles.text, fontWeight: "light" }}>
-                    {gastos.gastos.op_programa
-                      ? gastos.gastos.op_programa
-                      : null}
-                  </Text>{" "}
-                </Text>{" "}
-                <Text style={{ ...styles.text, fontWeight: "light" }}>
-                  FUENTE DE FINANCIAMIENTO: PROCEDENCIA{" "}
-                  {gastos.gastos.op_procedencia} - FUENTE{" "}
-                  {gastos.gastos.op_fuente}
-                </Text>{" "}
+                <Text style={styles.text}>Inciso 3</Text>
                 <View
                   style={{
-                    margin: "15px 20px",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "space-between",
-                    flexDirection: "row",
-                    height: "100px",
+                    flexDirection: "column",
                   }}
                 >
-                  <Text style={styles.text}>Inciso 3</Text>
-                  <View
+                  <Text
                     style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "space-between",
-                      flexDirection: "column",
+                      ...styles.text,
+                      fontWeight: "light",
+                      marginBottom: "20px",
                     }}
                   >
-                    <Text
-                      style={{
-                        ...styles.text,
-                        fontWeight: "light",
-                        marginBottom: "20px",
-                      }}
-                    >
-                      3.5.5 : ${" "}
-                      {gastos.gastos.op_monto ? gastos.gastos.op_monto : null}
-                    </Text>{" "}
-                    <Text style={styles.text}>
-                      TOTAL IMPUTADO: ${" "}
-                      {gastos.gastos.op_monto
-                        ? NumberFormatter(gastos.gastos.op_monto)
-                        : null}
-                    </Text>{" "}
-                  </View>
+                    3.5.5 : ${" "}
+                    {gastos.gastos.op_monto ? gastos.gastos.op_monto : null}
+                  </Text>{" "}
+                  <Text style={styles.text}>
+                    TOTAL IMPUTADO: ${" "}
+                    {gastos.gastos.op_monto
+                      ? NumberFormatter(gastos.gastos.op_monto)
+                      : null}
+                  </Text>{" "}
                 </View>
               </View>
             </View>
@@ -265,7 +267,7 @@ export const OrdenDetail = () => {
               />
               <TableBodyRow
                 index={4}
-                dato="-"
+                dato={gastos.gastos.op_nrochequetransferencia}
                 titulo="Nro. Cheque/Transferencia"
               />
             </View>
