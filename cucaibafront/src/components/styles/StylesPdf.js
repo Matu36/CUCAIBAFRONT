@@ -3,10 +3,16 @@ import {
 StyleSheet
 } from "@react-pdf/renderer";
 
+Font.register({
+  family: 'Open Sans',
+  fonts: [
+  { src: 'https://cdn.jsdelivr.net/npm/open-sans-all@0.1.3/fonts/open-sans-regular.ttf' },
+  { src: 'https://cdn.jsdelivr.net/npm/open-sans-all@0.1.3/fonts/open-sans-600.ttf', fontWeight: 600 }
+  ]
+  });
+
 export const styles = StyleSheet.create({
     page: {
-      flexDirection: "row",
-      fontFamily: Font.register("Encode Sans"), 
       padding: 10,
     },
     section: {
@@ -42,7 +48,7 @@ export const styles = StyleSheet.create({
   
     header: {
       fontWeight: "bold",
-      fontSize: "12px",
+      fontSize: 10,
       borderBottomWidth: 1,
       borderBottomColor: "#000",
       backgroundColor: "#e0e0e0",
@@ -144,7 +150,7 @@ export const styles = StyleSheet.create({
       borderColor: "#000",
     },
     logopcia: {
-      maxWidth: "70%",
+      maxWidth: "50%",
       marginLeft: 60,
     },
     cell1: {
@@ -184,5 +190,91 @@ export const styles = StyleSheet.create({
       left: 50,
       fontWeight: 100,
       opacity: 0.3,
+    },
+    content: {
+      display: "flex",
+      flexDirection: "row",
+      border: "1px solid black",
+      justifyContent: "space-between",
+      fontSize: 10,
+      maxWidth: "80%",
+      margin: "5px auto"
+    },
+    tableContent:{
+      display: "flex",
+      flexDirection: "column",
+      height: "100px",
+      borderRight: "1px solid black",
+      borderBottom: "1px solid black",
+      marginRight: "10px",
+      marginBottom: "20px",
+      maxWidth: "80%"
+    },
+    tableHeader: {
+      maxWidth: "100%",
+      maxHeight: "30px",
+      display: "flex",
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between",
+      borderBottom: "1px solid black",
+      
+    },
+    tableColumnContent: {
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      paddingBottom: "5px",
+      paddingTop: "4px",
+      minWidth: "20%",
+      fontWeight: "bold"
+    },
+    tableFirstColumn:{
+      minWidth: "80%",
+      borderRight: "1px solid black",
+    },
+    tableBodyWrapper: {
+      display: "flex",
+      flexDirection: "column",
+    },
+    tableBodyRow: {
+      display: "flex",
+      flexDirection: "row",
+      width: "100%",
+      borderBottom: "1px solid black",
+    },
+    tableRowContent: {
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      padding: "5px",
+      textAlign: "left",
+      minWidth: "20%"
+    },
+    tableFirstRow: {
+      minWidth: "80%",
+      borderRight: "1px solid black",
+      flexDirection: "row",
+      justifyContent: "space-between"
+    },
+    tableLastChild: {
+      borderBottom: "none"
+    },
+    firmaContent: {
+      width: "50%",
+      fontSize: 10,
+      display: "flex",
+      padding: "5px",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center"
+    },
+    firmaBody: {
+      minHeight: "100px",
+      marginBottom: "5px"
+    },
+    firmaText: {
+      paddingTop: "5px",
+      borderTop: "1px solid black"
     }
   });
