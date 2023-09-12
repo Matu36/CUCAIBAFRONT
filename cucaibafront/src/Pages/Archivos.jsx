@@ -3,20 +3,20 @@ import { usePagination } from "../hooks/usePagination";
 import { useVerOrdenDePago } from "../hooks/useOrdenesDePago";
 import DataTable from "react-data-table-component";
 import EmptyTable from "../components/UI/EmptyTable";
-import BackButton from "../components/UI/BackButton";
 import Spinner from "../components/UI/Spinner";
 import { ArchivoAPI } from "../api/ArchivoAPI";
 import { validateFecha } from "../utils/Validaciones";
 import Modal from "../components/UI/Modal";
 import InputField from "../components/UI/InputField";
 import Layout from "../components/Layout/LayoutContainer";
+import moment from "moment";
 
 const Archivos = () => {
   const { data, isFetched, isFetching } =
     useVerOrdenDePago(true).verOrdenesQuery;
   const { paginationOptions } = usePagination(data);
 
-  const [dateInput, setDateInput] = useState({ rowId: 0, dateValue: "" });
+  const [dateInput, setDateInput] = useState("");
   const [errorDate, setErrorDate] = useState({ type: 0 });
 
   const columns = [
@@ -40,8 +40,7 @@ const Archivos = () => {
             referenceID="modalArchivo"
             size="modal-md"
             handleClose={() => {
-              setDateInput({ rowId: 0, dateValue: "" }),
-                setErrorDate({ type: 0 });
+              setDateInput(""), setErrorDate({ type: 0 });
             }}
           >
             <div>
@@ -51,14 +50,12 @@ const Archivos = () => {
                   label="Fecha de Emisión"
                   inputType="date"
                   min="2022-01-01"
-                  value={
-                    row.liquidacion_id == dateInput.rowId && dateInput.dateValue
-                  }
-                  onFocus={() =>
-                    setDateInput({ ...dateInput, rowId: row.liquidacion_id })
-                  }
+                  value={dateInput}
                   onChange={(e) => {
-                    setDateInput({ ...dateInput, dateValue: e.target.value });
+                    const newDate = moment(new Date(e.target.value)).format(
+                      "YYYY-MM-DD"
+                    );
+                    setDateInput(newDate);
                     setErrorDate({
                       type: validateFecha(e.target.value)
                         ? 1
@@ -71,26 +68,21 @@ const Archivos = () => {
                 <button
                   className="btn btn-sm btn-secondary m-2"
                   onClick={() => {
-                    let fecha = dateInput.dateValue
-                      .split("-")
-                      .reverse()
-                      .join("/");
+                    let fecha = dateInput.split("-").reverse().join("/");
                     handleClick(row.liquidacion_id, fecha);
-                    setDateInput({ dateValue: "", rowId: 0 });
+                    setDateInput("");
                   }}
-                  disabled={
-                    dateInput.rowId != row.liquidacion_id || errorDate.type != 0
-                  }
+                  disabled={errorDate.type != 0 || dateInput == ""}
                 >
                   Generar Archivo
                 </button>
               </div>
-              {dateInput.rowId == row.liquidacion_id && errorDate.type == 1 && (
+              {errorDate.type == 1 && (
                 <span style={{ color: "red" }}>
                   La fecha no puede ser posterior al dia de hoy
                 </span>
               )}
-              {dateInput.rowId == row.liquidacion_id && errorDate.type == 2 && (
+              {errorDate.type == 2 && (
                 <span style={{ color: "red" }}>
                   La fecha no puede ser anterior al año 2022
                 </span>
@@ -124,6 +116,8 @@ const Archivos = () => {
         link.setAttribute("download", "TR10405A.txt"); //or any other extension
         document.body.appendChild(link);
         link.click();
+        setDateInput("");
+        setErrorDate({ type: 0 });
       });
     } catch (error) {
       console.log(error);
