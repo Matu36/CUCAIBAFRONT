@@ -91,7 +91,7 @@ export const styles = StyleSheet.create({
     },
     logo: {
       width: 150,
-      height: 40,
+      height: 60,
     },
   
     hr: {
