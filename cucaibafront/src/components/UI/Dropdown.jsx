@@ -2,7 +2,7 @@ import React from "react";
 
 const Dropdown = ({ children, handleClick }) => {
   return (
-    <div className="dropdown">
+    <div className="dropdown-center dropdown">
       <button
         className="btn dropdown-toggle dropdown-button"
         type="button"

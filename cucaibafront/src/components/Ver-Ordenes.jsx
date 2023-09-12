@@ -14,7 +14,7 @@ import Spinner from "./UI/Spinner";
 import Modal from "./UI/Modal";
 import InputField from "./UI/InputField";
 import PrintOrdenPago from "./PrintOrdenPago";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Swal from "sweetalert2";
 import PrintOrdenPagoPDFTransferencia from "./UI/PrintPDFTransferencia";
 
@@ -93,9 +93,11 @@ labels.map((l) => (INITIAL_STATE[l.inputKey] = l.value ?? ""));
 INITIAL_STATE["liquidacion_id"] = 0;
 
 export const VerOrdenes = ({ ...props }) => {
+  const queryClient = useQueryClient();
+
   const { data, isFetched, refetch } = useVerOrdenDePago().verOrdenesQuery;
 
-  const [clicked, setClicked] = useState({isClicked: false, liq_id: 0})
+  const [clicked, setClicked] = useState({ isClicked: false, liq_id: 0 });
 
   const { mutate } = useOrdenesMutation().asignarDefinitivo;
 
@@ -154,6 +156,7 @@ export const VerOrdenes = ({ ...props }) => {
     {
       onSuccess: () => {
         refetch();
+        queryClient.refetchQueries(["honorariosPendientesHome"]);
         return Swal.fire({
           position: "center",
           icon: "success",
@@ -251,9 +254,6 @@ export const VerOrdenes = ({ ...props }) => {
       setOP(INITIAL_STATE);
     }
   };
-  
-
-
 
   const columns = [
     {
@@ -276,7 +276,11 @@ export const VerOrdenes = ({ ...props }) => {
     {
       name: "Acciones",
       cell: (row) => (
-        <Dropdown handleClick={() => setClicked({isClicked: true, liq_id: row.liquidacion_id})}>
+        <Dropdown
+          handleClick={() =>
+            setClicked({ isClicked: true, liq_id: row.liquidacion_id })
+          }
+        >
           <Link
             className="dropdown-item dropdown-item-custom"
             to={`/ordenes/ver-ordenes/${row.liquidacion_id}`}
@@ -291,7 +295,7 @@ export const VerOrdenes = ({ ...props }) => {
               type="button"
               data-bs-toggle="modal"
               data-bs-target="#opDefinitiva"
-              onClick={() => 
+              onClick={() =>
                 setOP({
                   ...OP,
                   op_provisorio: row.opprovisorio_nro,
@@ -305,7 +309,7 @@ export const VerOrdenes = ({ ...props }) => {
           )}
 
           {row.op_nro === null && (
-            <button className="dropdown-item w-100 dropdown-item-custom pdf-download-link" >
+            <button className="dropdown-item w-100 dropdown-item-custom pdf-download-link">
               <FaPrint size="0.85em" />
               <PrintOrdenPago
                 liquidacionId={row.liquidacion_id}
@@ -315,7 +319,7 @@ export const VerOrdenes = ({ ...props }) => {
             </button>
           )}
           {row.op_nro === null && (
-            <button className="dropdown-item w-100 dropdown-item-custom pdf-download-link" >
+            <button className="dropdown-item w-100 dropdown-item-custom pdf-download-link">
               <FaPrint size="0.85em" />
               <PrintOrdenPagoPDFTransferencia
                 liquidacionId={row.liquidacion_id}
@@ -372,8 +376,6 @@ export const VerOrdenes = ({ ...props }) => {
       setOp(arrayCache);
     }
   };
-
-  
 
   return (
     <>
@@ -465,6 +467,7 @@ export const VerOrdenes = ({ ...props }) => {
             striped
             paginationComponentOptions={paginationOptions}
             noDataComponent={<EmptyTable msg="No hay órdenes de pago" />}
+            className="del-overflow"
           />
         ) : (
           <Spinner />
