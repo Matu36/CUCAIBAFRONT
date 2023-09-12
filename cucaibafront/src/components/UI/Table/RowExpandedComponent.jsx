@@ -333,23 +333,24 @@ const RowExpandedComponent = ({ data: operativo }) => {
                     <td className="w-50">{h[0].modulo.descripcion}</td>
                     <td>$ {NumberFormatter(h[0].valor)}</td>
                     <td>
-                      {!h.opprovisorio_nro && <button
-                        className="btn btn-sm btn-limpiar d-flex align-items-center justify-content-center gap-2"
-                        disabled={
-                          deleteModuloAgente.isLoading || honorariosFetching
-                        }
-                        onClick={() =>
-                          handleDeleteModulo(
-                            h[0].modulo.id,
-                            honorarioData.agente_id,
-                            honorarioData.operativo_id
-                          )
-                        }
-                      >
-                        <FaTimes size="0.90rem" />
-                        Eliminar
-                      </button>}
-                      
+                      {!h.opprovisorio_nro && (
+                        <button
+                          className="btn btn-sm btn-limpiar d-flex align-items-center justify-content-center gap-2"
+                          disabled={
+                            deleteModuloAgente.isLoading || honorariosFetching
+                          }
+                          onClick={() =>
+                            handleDeleteModulo(
+                              h[0].modulo.id,
+                              honorarioData.agente_id,
+                              honorarioData.operativo_id
+                            )
+                          }
+                        >
+                          <FaTimes size="0.90rem" />
+                          Eliminar
+                        </button>
+                      )}
                     </td>
                   </tr>
                 ))}
@@ -488,7 +489,7 @@ const RowExpandedComponent = ({ data: operativo }) => {
                           >
                             <AiOutlinePlus /> Agregar Función
                           </button>
-                          {agente.opprovisorio_nro == null ? (
+                          {agente.count_pendientes > 0 ? (
                             <button
                               type="button"
                               className="btn btn-secondary"
