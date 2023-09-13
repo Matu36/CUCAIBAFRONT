@@ -24,22 +24,23 @@ const Archivos = () => {
   const handleDateChange = (e) => {
     const selectedDate = e.target.value;
 
-    if (moment(selectedDate).isAfter(yesterday) && moment(selectedDate).isBefore(oneYearFromToday)) {
-      
+    if (
+      moment(selectedDate).isAfter(yesterday) &&
+      moment(selectedDate).isBefore(oneYearFromToday)
+    ) {
       setDateInput(selectedDate);
       setErrorDate({ type: 0 });
     } else if (moment(selectedDate).isBefore(today)) {
-     
       setDateInput("");
       setErrorDate({ type: 2 });
     } else {
-    
       setDateInput("");
       setErrorDate({ type: 1 });
     }
   };
 
   const [dateInput, setDateInput] = useState("");
+  const [rowId, setRowId] = useState(0);
   const [errorDate, setErrorDate] = useState({ type: 0 });
 
   const columns = [
@@ -75,13 +76,12 @@ const Archivos = () => {
                   min={today}
                   value={dateInput}
                   onChange={(e) => handleDateChange(e)}
-                  
                 />
                 <button
                   className="btn btn-sm btn-secondary m-2"
                   onClick={() => {
                     let fecha = dateInput.split("-").reverse().join("/");
-                    handleClick(row.liquidacion_id, fecha);
+                    handleClick(fecha);
                     setDateInput("");
                   }}
                   disabled={errorDate.type != 0 || dateInput == ""}
@@ -89,13 +89,13 @@ const Archivos = () => {
                   Generar Archivo
                 </button>
               </div>
-             
             </div>
           </Modal>
           <button
             className="btn btn-sm btn-secondary m-2"
             data-bs-toggle="modal"
             data-bs-target="#modalArchivo"
+            onClick={() => setRowId(row.liquidacion_id)}
           >
             Generar Archivo
           </button>
@@ -104,10 +104,10 @@ const Archivos = () => {
     },
   ];
 
-  const handleClick = async (id, fechaAcreditacion) => {
+  const handleClick = async (fechaAcreditacion) => {
     try {
       await ArchivoAPI.post(
-        `/generar/${id}`,
+        `/generar/${rowId}`,
         { fechaAcreditacion },
         {
           responseType: "arraybuffer",
