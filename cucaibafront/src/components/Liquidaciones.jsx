@@ -8,6 +8,8 @@ import Modal from "./UI/Modal";
 import { useHonorarios } from "../hooks/useHonorarios";
 import NumberFormatter from "../utils/NumberFormatter";
 import "../components/styles/Liquidaciones.css";
+import moment from "moment";
+import { FaFilter } from "react-icons/fa";
 
 // Componente que se encarga de mostrar y de Generar las Ordenes de Pago
 
@@ -29,6 +31,7 @@ const Liquidaciones = ({ ...props }) => {
   const { mutate } = useHonorarios().liquidacionesMutation;
 
   const [search, setSearch] = useState("");
+  const [mesSearch, setMesSearch] = useState(0);
 
   const [liquidaciones, setLiquidaciones] = useState(data);
 
@@ -52,25 +55,35 @@ const Liquidaciones = ({ ...props }) => {
   //-------------------------------- SEARCHBAR --------------------------- //
 
   useEffect(() => {
-    filterByApellido(search);
-  }, [search]);
+    filterData();
+  }, [search, mesSearch]);
+
+  // useEffect(() => {
+  //   filterData(search, mesSearch);
+  // }, [mesSearch]);
 
   const handleOnChange = (e) => {
     e.preventDefault();
     setSearch(e.target.value);
   };
 
-  const filterByApellido = (value) => {
-    if (!value) {
-      setLiquidaciones(data);
-    } else {
-      const arrayCache = data.filter(
-        (oper) =>
-          oper.apellido.toLowerCase().includes(value.toLowerCase()) ||
-          oper.cuil.toLowerCase().includes(value.toLowerCase())
-      );
-      setLiquidaciones(arrayCache);
-    }
+  const filterData = () => {
+    const filtered = data.filter((item) => {
+      if (
+        Number(mesSearch) !== 0 &&
+        new Date(item.fecha).getMonth() + 1 !== Number(mesSearch)
+      ) {
+        return false;
+      }
+      if (
+        search !== "" &&
+        !item.apellido.toLowerCase().includes(search.toLowerCase())
+      ) {
+        return false;
+      }
+      return true;
+    });
+    setLiquidaciones(filtered);
   };
 
   //-------------------------------- FIN SEARCHBAR --------------------------- //
@@ -106,6 +119,12 @@ const Liquidaciones = ({ ...props }) => {
           }}
         />
       ),
+    },
+    {
+      name: "Fecha Creación",
+      selector: (row) => row.fecha,
+      format: (row) => moment(row.fecha).format("L"),
+      sortable: true,
     },
     {
       name: "Honorario ID",
@@ -223,20 +242,61 @@ const Liquidaciones = ({ ...props }) => {
             </div>
           </Modal>
           <div>
-            <div
-              className="input-group mb-3"
-              style={{ width: window.innerWidth < 1000 ? "100%" : "45%" }}
-            >
-              <input
-                type="text"
-                className="form-control"
-                placeholder="Buscar por APELLIDO o CUIL"
-                onChange={handleOnChange}
-                value={search}
-                autoComplete="off"
-                disabled={liquidaciones == 400}
-              />
+            <div className="card mb-3">
+              <div className="text-muted d-flex align-items-center gap-2 justify-content-start my-2">
+                <FaFilter />
+                <h5 className="fw-light mb-0">Filtros</h5>
+              </div>
+              <div className="input-group mb-3 d-flex align-items-center w-100 gap-4">
+                <div
+                  className="d-flex flex-column gap-2"
+                  style={{ width: "60%" }}
+                >
+                  <label>Apellido:</label>
+                  <input
+                    type="text"
+                    className="form-control w-100"
+                    placeholder="Buscar por APELLIDO o CUIL"
+                    onChange={handleOnChange}
+                    value={search}
+                    autoComplete="off"
+                    disabled={liquidaciones == 400}
+                  />
+                </div>
+
+                <div
+                  className="d-flex flex-column gap-2"
+                  style={{ width: "30%" }}
+                >
+                  <label>Mes:</label>
+                  <select
+                    className="form-select form-control"
+                    placeholder="Elegí un mes"
+                    value={mesSearch}
+                    onChange={(e) => {
+                      setMesSearch(e.target.value);
+                    }}
+                  >
+                    <option defaultChecked value="0">
+                      Todos
+                    </option>
+                    <option value="1">Enero</option>
+                    <option value="2">Febrero</option>
+                    <option value="3">Marzo</option>
+                    <option value="4">Abril</option>
+                    <option value="5">Mayo</option>
+                    <option value="6">Junio</option>
+                    <option value="7">Julio</option>
+                    <option value="8">Agosto</option>
+                    <option value="9">Septiembre</option>
+                    <option value="10">Octubre</option>
+                    <option value="11">Noviembre</option>
+                    <option value="12">Diciembre</option>
+                  </select>
+                </div>
+              </div>
             </div>
+
             <div>
               {showSpinner ? (
                 <Spinner />
