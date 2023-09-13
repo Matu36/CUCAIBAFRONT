@@ -447,6 +447,10 @@ const RowExpandedComponent = ({ data: operativo }) => {
                   className="btn btn-outline-guardar"
                   data-bs-toggle="modal"
                   data-bs-target="#agregarAgenteModal"
+                  onClick={() => {
+                    setHonorarioData({ ...honorarioData, agente_id: 0 });
+                    setToggledClearRows(true);
+                  }}
                 >
                   <AiOutlinePlus /> Agregar Agente
                 </button>
