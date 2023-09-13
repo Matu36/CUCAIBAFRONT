@@ -5,7 +5,6 @@ import DataTable from "react-data-table-component";
 import EmptyTable from "../components/UI/EmptyTable";
 import Spinner from "../components/UI/Spinner";
 import { ArchivoAPI } from "../api/ArchivoAPI";
-import { validateFecha } from "../utils/Validaciones";
 import Modal from "../components/UI/Modal";
 import InputField from "../components/UI/InputField";
 import Layout from "../components/Layout/LayoutContainer";
@@ -15,6 +14,30 @@ const Archivos = () => {
   const { data, isFetched, isFetching } =
     useVerOrdenDePago(true).verOrdenesQuery;
   const { paginationOptions } = usePagination(data);
+
+  const today = moment().format("YYYY-MM-DD");
+
+  const oneYearFromToday = moment().add(1, "year").format("YYYY-MM-DD");
+
+  const yesterday = moment().subtract(1, "day").format("YYYY-MM-DD");
+
+  const handleDateChange = (e) => {
+    const selectedDate = e.target.value;
+
+    if (moment(selectedDate).isAfter(yesterday) && moment(selectedDate).isBefore(oneYearFromToday)) {
+      
+      setDateInput(selectedDate);
+      setErrorDate({ type: 0 });
+    } else if (moment(selectedDate).isBefore(today)) {
+     
+      setDateInput("");
+      setErrorDate({ type: 2 });
+    } else {
+    
+      setDateInput("");
+      setErrorDate({ type: 1 });
+    }
+  };
 
   const [dateInput, setDateInput] = useState("");
   const [errorDate, setErrorDate] = useState({ type: 0 });
@@ -49,21 +72,10 @@ const Archivos = () => {
                   inputKey="Fecha de Emisión"
                   label="Fecha de Emisión"
                   inputType="date"
-                  min="2022-01-01"
+                  min={today}
                   value={dateInput}
-                  onChange={(e) => {
-                    const newDate = moment(new Date(e.target.value)).format(
-                      "YYYY-MM-DD"
-                    );
-                    setDateInput(newDate);
-                    setErrorDate({
-                      type: validateFecha(e.target.value)
-                        ? 1
-                        : e.target.value < e.target.min
-                        ? 2
-                        : 0,
-                    });
-                  }}
+                  onChange={(e) => handleDateChange(e)}
+                  
                 />
                 <button
                   className="btn btn-sm btn-secondary m-2"
@@ -77,16 +89,7 @@ const Archivos = () => {
                   Generar Archivo
                 </button>
               </div>
-              {errorDate.type == 1 && (
-                <span style={{ color: "red" }}>
-                  La fecha no puede ser posterior al dia de hoy
-                </span>
-              )}
-              {errorDate.type == 2 && (
-                <span style={{ color: "red" }}>
-                  La fecha no puede ser anterior al año 2022
-                </span>
-              )}
+             
             </div>
           </Modal>
           <button

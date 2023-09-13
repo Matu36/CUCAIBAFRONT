@@ -97,7 +97,7 @@ export const OrdenDetail = () => {
             >
               <Text style={[styles.text, { fontWeight: "bold" }]}>
                 ORDEN DE PAGO SAMO N° {gastos.gastos.da_op_nro ?? null}/
-                {gastos.gastos.da_op_anio}{" "}
+                {gastos.gastos.da_op_anio}
               </Text>
               <Text style={[styles.text, { fontWeight: "bold" }]}>
                 Fecha de Emisión:
@@ -126,22 +126,22 @@ export const OrdenDetail = () => {
               ESTABLECIMIENTO: C.U.C.A.I.B.A
             </Text>
             <Text style={{ ...styles.text, marginBottom: 10 }}>
-              POR TESORERIA PAGUESE: VARIABLES OPERATIVOS{" "}
-            </Text>{" "}
+              POR TESORERIA PAGUESE: VARIABLES OPERATIVOS
+            </Text>
             <Text style={{ ...styles.text, marginBottom: 10 }}>
               CANTIDAD DE PESOS: $
               {gastos.gastos.op_monto
                 ? NumberFormatter(gastos.gastos.op_monto)
                 : null}
-            </Text>{" "}
+            </Text>
             <Text style={[styles.text, { marginBottom: 10 }]}>
-              POR LA SUMA DE PESOS:{" "}
+              POR LA SUMA DE PESOS:
               {numberInWords(gastos.gastos.op_monto).replace(
                 / 00\/100 M\.N\.$/,
                 ""
               )}
               .-
-            </Text>{" "}
+            </Text>
             <Text
               style={{
                 ...styles.text,
@@ -160,27 +160,27 @@ export const OrdenDetail = () => {
                 SAMO DECRETO LEY 8801/77
               </Text>
               <Text style={{ ...styles.text, fontWeight: "light" }}>
-                EJERCICIO {gastos.gastos.da_op_anio}{" "}
+                EJERCICIO {gastos.gastos.da_op_anio}
                 {gastos.gastos.op_codinstitucional
                   ? gastos.gastos.op_codinstitucional
-                  : null}{" "}
+                  : null}
                 {gastos.gastos.op_jurisdiccion
                   ? gastos.gastos.op_jurisdiccion
                   : null}
                 {gastos.gastos.op_jurisauxiliar
                   ? gastos.gastos.op_jurisauxiliar
-                  : null}{" "}
-                {gastos.gastos.op_entidad ? gastos.gastos.entidad : null}{" "}
-                CATEGORIA PROG:{" "}
+                  : null}
+                {gastos.gastos.op_entidad ? gastos.gastos.entidad : null}
+                CATEGORIA PROG:
                 <Text style={{ ...styles.text, fontWeight: "light" }}>
                   {gastos.gastos.op_programa ? gastos.gastos.op_programa : null}
-                </Text>{" "}
-              </Text>{" "}
+                </Text>
+              </Text>
               <Text style={{ ...styles.text, fontWeight: "light" }}>
-                FUENTE DE FINANCIAMIENTO: PROCEDENCIA{" "}
-                {gastos.gastos.op_procedencia} - FUENTE{" "}
+                FUENTE DE FINANCIAMIENTO: PROCEDENCIA
+                {gastos.gastos.op_procedencia} - FUENTE
                 {gastos.gastos.op_fuente}
-              </Text>{" "}
+              </Text>
               <View
                 style={{
                   margin: "15px 20px",
@@ -207,15 +207,15 @@ export const OrdenDetail = () => {
                       marginBottom: "20px",
                     }}
                   >
-                    3.5.5 : ${" "}
+                    3.5.5 : $
                     {gastos.gastos.op_monto ? gastos.gastos.op_monto : null}
-                  </Text>{" "}
+                  </Text>
                   <Text style={styles.text}>
-                    TOTAL IMPUTADO: ${" "}
+                    TOTAL IMPUTADO: $
                     {gastos.gastos.op_monto
                       ? NumberFormatter(gastos.gastos.op_monto)
                       : null}
-                  </Text>{" "}
+                  </Text>
                 </View>
               </View>
             </View>
@@ -289,8 +289,8 @@ export const OrdenDetail = () => {
         <View style={styles.section}>
           <View style={{ justifyContent: "center", alignItems: "center" }}>
             <Text style={[styles.detalletitle]}>
-              {" "}
-              Detalle de la Orden de Pago{" "}
+              
+              Detalle de la Orden de Pago {gastos.gastos.da_op_nro ?? null}
             </Text>
           </View>
           <View style={{ ...styles.row, fontSize: 10 }}>
@@ -399,7 +399,7 @@ export const OrdenDetail = () => {
                       <td>
                         {item.descripciones.map((descripcion, descIndex) => (
                           <div key={descIndex}>
-                            ${" "}
+                            $
                             {descripcion.valor_unitario
                               .toFixed(2)
                               .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
@@ -408,7 +408,7 @@ export const OrdenDetail = () => {
                       </td>
                       {itemIndex === 0 && (
                         <td rowSpan={rowSpan}>
-                          ${" "}
+                          $
                           {valor_total
                             .toFixed(2)
                             .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
