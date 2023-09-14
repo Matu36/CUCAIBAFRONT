@@ -37,15 +37,11 @@ const InputField = ({
           {inputType === "text" ? "texto" : "numérico"}
         </p>
       )}
-      {inputKey === "anio_acto" && (
+      {inputKey === "anio_acto" && error === "minmax" ?  (
         <p style={{ color: "red" }}>
-          {error === "minmax" ? (
             "El año no puede ser anterior al 2022 y posterior al año actual"
-          ) : (
-            null
-          )}
-        </p>
-      )}
+            </p>
+          ) : null}
     </div>
   );
 };
