@@ -9,6 +9,8 @@ const InputField = ({
   value,
   handleChange,
   error,
+  min,
+  max,
   required,
   ...props
 }) => {
@@ -31,13 +33,17 @@ const InputField = ({
       />
       {error && !props.disabled && (
         <p style={{ color: "red" }}>
-          El campo no puede estar vacio y debe ser de tipo{" "}
-          {inputType == "text" ? "texto" : "numerico"}
+          El campo no puede estar vacío y debe ser de tipo{" "}
+          {inputType === "text" ? "texto" : "numérico"}
         </p>
       )}
-      {inputKey == "anio_acto" && (value < props.min || value > props.max) && (
+      {inputKey === "anio_acto" && (
         <p style={{ color: "red" }}>
-          El año no puede ser anterior al 2022 y posterior al año actual{" "}
+          {error === "minmax" ? (
+            "El año no puede ser anterior al 2022 y posterior al año actual"
+          ) : (
+            null
+          )}
         </p>
       )}
     </div>

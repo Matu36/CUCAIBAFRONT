@@ -38,7 +38,7 @@ export const PrintOrdenPagoPDFTransferencia = ({
               <View style={{ justifyContent: "center", alignItems: "center" }}>
                 <Text style={[styles.detalletitle]}>
                   {" "}
-                  Detalle de la Orden de Pago N° {opProvisoria}
+                  Detalle de la Orden de Pago
                 </Text>
               </View>
               <View style={styles.row}>
