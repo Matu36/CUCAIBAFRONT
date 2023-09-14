@@ -52,6 +52,7 @@ const labels = [
     min: previousYear,
     max: currentYear,
   },
+  
   {
     label: "Nro. Acto",
     disabled: false,
@@ -397,7 +398,7 @@ export const VerOrdenes = ({ ...props }) => {
         <div>
           <form>
             <div
-              className="d-flex gap-2 align-items-center"
+              className="d-flex gap-1 align-items-center"
               style={{
                 flexDirection: window.innerWidth < 1000 ? "column" : "row",
               }}

@@ -70,7 +70,7 @@ export const useHonorarios = (operativoId = 0, agenteId = 0) => {
           `<span style={{ fontWeight: "bold" }}> ${data.data[1][2]}</span>` +
           "</h5>" +
           "<p>" +
-          "Monto de la Ordén de Pago: $" +
+          "Monto de la Orden de Pago: $" +
           `<span style={{ fontWeight: "bold" }}> ${data.data[1][1]}</span>` +
           "</p>" +
           "</div>",
