@@ -24,6 +24,9 @@ import { FaPlus, FaPrint, FaSearch, FaTimes } from "react-icons/fa";
 const NUMBER_REGEX = /^[0-9]+$/;
 const NO_NUMBER_STRING_REGEX = /^[^0-9]+$/;
 
+const currentYear = new Date().getFullYear();
+const previousYear = currentYear - 1;
+
 const labels = [
   {
     label: "Nro. O.P Provisorio",
@@ -46,8 +49,8 @@ const labels = [
     inputKey: "anio_acto",
     inputType: "number",
     show: true,
-    min: 2022,
-    max: new Date().getFullYear(),
+    min: previousYear,
+    max: currentYear,
   },
   {
     label: "Nro. Acto",
@@ -189,6 +192,10 @@ export const VerOrdenes = ({ ...props }) => {
 
   //VALIDACIONES DE CUANDO SE VA ESCRIBIENDO EN LOS INPUT DE GENERAR OP DEFINITIVA
   const handleInputChange = (e) => {
+    const labelForAnioActo = labels.find(
+      (label) => label.inputKey === "anio_acto"
+    );
+
     switch (e.target.type) {
       case "text":
         setError({
@@ -221,11 +228,14 @@ export const VerOrdenes = ({ ...props }) => {
       });
     }
 
-    if (e.target.name === "anio_acto") {
+    if (e.target.name === "anio_acto" && labelForAnioActo) {
       setError({
         ...error,
         [e.target.name]:
-          e.target.value < 2022 || e.target.value > new Date().getFullYear(),
+          e.target.value < labelForAnioActo.min ||
+          e.target.value > labelForAnioActo.max
+            ? "minmax"
+            : null,
       });
     }
 
