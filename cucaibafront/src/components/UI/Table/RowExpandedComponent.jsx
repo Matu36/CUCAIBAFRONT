@@ -2,8 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useHonorarios } from "../../../hooks/useHonorarios";
 import { usePagination } from "../../../hooks/usePagination";
 import Modal from "../Modal";
-import { AiOutlinePlus } from "react-icons/ai";
-import { FiTrash } from "react-icons/fi";
 import { useOperativo } from "../../../hooks/useOperativo";
 import PostHonorarios from "../../PostHonorarios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -15,9 +13,10 @@ import { useNavigate } from "react-router-dom";
 import { useModulos } from "../../../hooks/useModulos";
 import EmptyTable from "../../UI/EmptyTable";
 import Spinner from "../Spinner";
-import { FaTimes } from "react-icons/fa";
+import { FaPlus, FaTimes, FaTrash } from "react-icons/fa";
 import NumberFormatter from "../../../utils/NumberFormatter";
 import { MaskCuil } from "../../../utils/Mask";
+import Dropdown from "../Dropdown";
 
 // Se usa en el componente TablaHonorarios al hacer click en los operativos.
 
@@ -452,7 +451,7 @@ const RowExpandedComponent = ({ data: operativo }) => {
                     setToggledClearRows(true);
                   }}
                 >
-                  <AiOutlinePlus /> Agregar Agente
+                  <FaPlus /> Agregar Agente
                 </button>
               </div>
               <hr />
@@ -482,28 +481,30 @@ const RowExpandedComponent = ({ data: operativo }) => {
                         <td>{agente.nombre}</td>
                         <td>{MaskCuil(agente.cuil)}</td>
                         <td className="d-flex gap-3">
-                          <button
-                            type="button"
-                            className="btn btn-outline-secondary"
-                            data-bs-toggle="modal"
-                            data-bs-target="#formModal"
-                            onClick={() => {
-                              handleClick(agente.id);
-                            }}
-                          >
-                            <AiOutlinePlus /> Agregar Función
-                          </button>
-                          {agente.count_pendientes > 0 ? (
+                          <Dropdown>
                             <button
                               type="button"
-                              className="btn btn-secondary"
-                              onClick={() =>
-                                handleDelete(agente.id, operativo.id)
-                              }
+                              className="dropdown-item dropdown-item-custom"
+                              data-bs-toggle="modal"
+                              data-bs-target="#formModal"
+                              onClick={() => {
+                                handleClick(agente.id);
+                              }}
                             >
-                              <FiTrash /> Eliminar Agente
+                              <FaPlus /> Agregar Función
                             </button>
-                          ) : null}
+                            {agente.count_pendientes > 0 ? (
+                              <button
+                                type="button"
+                                className="dropdown-item dropdown-item-custom"
+                                onClick={() =>
+                                  handleDelete(agente.id, operativo.id)
+                                }
+                              >
+                                <FaTrash /> Eliminar Agente
+                              </button>
+                            ) : null}
+                          </Dropdown>
                         </td>
                       </tr>
                     ))}
