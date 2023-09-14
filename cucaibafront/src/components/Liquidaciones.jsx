@@ -68,22 +68,24 @@ const Liquidaciones = ({ ...props }) => {
   };
 
   const filterData = () => {
-    const filtered = data.filter((item) => {
-      if (
-        Number(mesSearch) !== 0 &&
-        new Date(item.fecha).getMonth() + 1 !== Number(mesSearch)
-      ) {
-        return false;
-      }
-      if (
-        search !== "" &&
-        !item.apellido.toLowerCase().includes(search.toLowerCase())
-      ) {
-        return false;
-      }
-      return true;
-    });
-    setLiquidaciones(filtered);
+    if (data) {
+      const filtered = data.filter((item) => {
+        if (
+          Number(mesSearch) !== 0 &&
+          new Date(item.fecha).getMonth() + 1 !== Number(mesSearch)
+        ) {
+          return false;
+        }
+        if (
+          search !== "" &&
+          !item.apellido.toLowerCase().includes(search.toLowerCase())
+        ) {
+          return false;
+        }
+        return true;
+      });
+      setLiquidaciones(filtered);
+    }
   };
 
   //-------------------------------- FIN SEARCHBAR --------------------------- //
