@@ -444,7 +444,7 @@ const RowExpandedComponent = ({ data: operativo }) => {
                 <div></div>
                 <button
                   type="btn"
-                  className="btn btn-outline-guardar"
+                  className="btn btn-success btn-round py-1"
                   data-bs-toggle="modal"
                   data-bs-target="#agregarAgenteModal"
                   onClick={() => {

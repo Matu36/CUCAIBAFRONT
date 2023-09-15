@@ -39,22 +39,21 @@ export const Home = () => {
           <div className="card-text">
             <p>Bienvenida/o, Usuario del Cucaiba </p>
             <p>
-              Tu usuario está asociado al <strong> C.U.C.A.I.B.A </strong>
-              con el <strong>Perfil Administrador </strong>, si esta información
-              no es correcta por favor comunicate a la brevedad con el
+              Tu usuario está asociado al <strong> C.U.C.A.I.B.A</strong>. Ante
+              cualquier problema, por favor comunicate a la brevedad con el
               <a href="mailto:usuarios@ms.gba.gov.ar">
                 {" "}
-                Departamento de Atención de Usuarios{" "}
-              </a>
+                Departamento de Atención de Usuarios
+              </a>{" "}
               para solicitar la corrección.
             </p>
             <p></p>
             <p>
-              Con este perfil el sistema habilita, entre otras opciones,
-              registrar operativos y generar las liquidaciones a los agentes
-              participantes de dichos operativos.
+              El sistema habilita, entre otras opciones, registrar operativos y
+              generar las liquidaciones a los agentes participantes de dichos
+              operativos.
             </p>
-            <p>
+            {/* <p>
               Para m&aacute;s detalles sobre las opciones y uso del sistema
               descargue el Manual del Usuario.
             </p>
@@ -67,14 +66,14 @@ export const Home = () => {
                 />
                 Manual del Usuario
               </a>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
       <div className="notificacion" style={{ marginBlockEnd: "0px" }}>
         <Notificacion />
       </div>
-      <div className="row mb-1">
+      {/* <div className="row mb-1">
         <div className="col">
           <h2 className="text-muted text-left mb-0">
             <i className="fas fa-rss fa-fw" style={{ color: "#fd4700" }}></i>
@@ -102,7 +101,7 @@ export const Home = () => {
           </p>
           <p>Atte.-</p>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };
