@@ -12,6 +12,8 @@ import Swal from "sweetalert2";
 import { useModulos } from "../hooks/useModulos";
 import NumberFormatter from "../utils/NumberFormatter";
 import "../components/styles/Modulos.css";
+import Dropdown from "./UI/Dropdown";
+import { FaEdit, FaTimes } from "react-icons/fa";
 
 //Componente que muestra los MODULOS y que permite la edición de los mismos.
 
@@ -209,32 +211,32 @@ const Modulos = ({ ...props }) => {
             </div>
           </>
         ) : (
-          <div
-            className={`d-flex gap-2 ${
-              window.innerWidth < 1000
-                ? " p-2 flex-column justify-content-around"
-                : "flex-column p-2"
-            }`}
-          >
+          <Dropdown>
             <button
-              className={`btn btn-guardar btn-sm ${
+              className={`dropdown-item dropdown-item-custom d-flex align-items-center gap-2 ${
                 row.fechaHasta ? "d-none" : "d-block"
               }`}
+              type="button"
+              // data-bs-toggle="modal"
+              // data-bs-target="#opDefinitiva"
               onClick={() => handleEdit(row.id, row.valor)}
             >
-              {" "}
+              <FaEdit />
               Editar Valor
             </button>
             <button
-              className={`btn btn-danger btn-sm ${
+              className={`dropdown-item dropdown-item-custom d-flex align-items-center gap-2 ${
                 row.fechaHasta ? "d-none" : "d-block"
               }`}
+              type="button"
+              // data-bs-toggle="modal"
+              // data-bs-target="#opDefinitiva"
               onClick={() => handleBaja(row.id, row.descripcion)}
             >
-              {" "}
+              <FaTimes />
               Dar de Baja
             </button>
-          </div>
+          </Dropdown>
         ),
     },
   ];
