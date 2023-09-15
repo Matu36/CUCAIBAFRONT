@@ -630,6 +630,10 @@ h6 small {
   border: solid 1px #aaa;
 }
 
+.dropdown-button:hover {
+  background: #cfcece;
+}
+
 /**
 + Botones
 */

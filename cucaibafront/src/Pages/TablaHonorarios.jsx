@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import "./styles/tablaHonorarios.css";
 import "../lib/tooltip";
 import { usePagination } from "../hooks/usePagination";
@@ -6,83 +6,45 @@ import EmptyTable from "../components/UI/EmptyTable";
 import DataTable from "react-data-table-component";
 import "../assets/styles/detalle.css";
 import moment from "moment";
-import { useSelector, useDispatch } from "react-redux";
 import RowExpandedComponent from "../components/UI/Table/RowExpandedComponent";
-import { getHonorario, getOperativos } from "../Redux/Actions";
 import Spinner from "../components/UI/Spinner";
-import BackButton from "../components/UI/BackButton";
 import Layout from "../components/Layout/LayoutContainer";
+import { FaSearch } from "react-icons/fa";
+import { useOperativo } from "../hooks/useOperativo";
+import SpinnerNuevo from "../components/UI/SpinnerNuevo";
+import LoadingContext from "../context/LoadingContext";
 
 const TablaHonorarios = () => {
-  const dispatch = useDispatch();
-  const operativos = useSelector((state) => state.operativos);
-  const primerArregloOper = operativos.slice(0, 1)[0];
+  const { toggleLoading } = useContext(LoadingContext);
   const [search, setSearch] = useState("");
-  const [honorario, setHonorario] = useState(primerArregloOper);
-  const { paginationOptions } = usePagination(primerArregloOper);
 
-  const [currentRow, setCurrentRow] = useState(null);
-
-  //Renderizado de los operativos //
-
-  useEffect(() => {
-    dispatch(getOperativos());
-  }, []);
-
-  useEffect(() => {
-    setHonorario(primerArregloOper);
-  }, [primerArregloOper]);
-
-  const [showSpinner, setShowSpinner] = useState(true);
-  useEffect(() => {
-    setTimeout(() => {
-      setShowSpinner(false);
-    });
-  }, []);
-
-  //Renderizando los honorarios //
-  const honorarios = useSelector((state) => state.honorario);
-  const primerArreglo = honorarios.slice(0, 1)[0];
-  const [honorar, setHonorar] = useState(primerArreglo);
-
-  useEffect(() => {
-    dispatch(getHonorario());
-  }, []);
-
-  useEffect(() => {
-    setHonorar(primerArreglo);
-  }, []);
+  const [clicked, setClicked] = useState(false);
+  const { data, refetch, isLoading, isFetching, isFetched } = useOperativo(
+    0,
+    search,
+    clicked
+  ).operativoQuery;
 
   //-------------------------------- SEARCHBAR --------------------------- //
 
-  useEffect(() => {
-    filterByReferencia(search);
-  }, [search]);
-
   const handleOnChange = (e) => {
-    e.preventDefault();
     setSearch(e.target.value);
   };
 
-  const filterByReferencia = (value) => {
-    if (!value) {
-      setHonorario(primerArregloOper);
-    } else {
-      const arrayCache = primerArregloOper.filter((oper) =>
-        oper.referencia.toLowerCase().includes(value.toLowerCase())
-      );
-      setHonorario(arrayCache);
-    }
+  const handleFindOperativo = () => {
+    setClicked(true);
+    refetch();
+    setClicked(false);
+    setSearch("");
   };
+
+  useEffect(() => {
+    toggleLoading(isFetching);
+    console.log(isFetching);
+  }, [isFetching]);
 
   //-------------------------------- FIN SEARCHBAR --------------------------- //
 
-  //SPINNER//
-
-  if (operativos.length === 0) {
-    return <Spinner />;
-  }
-  //SPINNER//
   moment.locale("es-mx");
   const columns = [
     {
@@ -106,7 +68,7 @@ const TablaHonorarios = () => {
   return (
     <Layout Titulo="Honorarios" Subtitulo="Carga de Honorarios Variables">
       <div className="mb-5">
-        <div className="input-group inputSearch" style={{ maxWidth: "40%" }}>
+        <div className="input-group inputSearch">
           <input
             type="text"
             className="form-control"
@@ -115,9 +77,17 @@ const TablaHonorarios = () => {
             value={search}
             autoComplete="off"
           />
+          <button
+            disabled={!search}
+            className="btn btn-buscar d-flex align-items-center justify-content-center gap-2"
+            onClick={handleFindOperativo}
+          >
+            <FaSearch />
+            <span>Buscar</span>
+          </button>
         </div>
       </div>
-      <DataTable
+      {/* <DataTable
         columns={columns}
         data={honorario}
         pagination
@@ -132,7 +102,11 @@ const TablaHonorarios = () => {
         expandOnRowClicked
         onRowExpandToggled={(bool, row) => setCurrentRow(row)}
         onRowClicked={(row) => setCurrentRow(row)}
-      />
+      /> */}
+
+      {data && !isLoading && !isFetching && (
+        <RowExpandedComponent data={data} />
+      )}
     </Layout>
   );
 };

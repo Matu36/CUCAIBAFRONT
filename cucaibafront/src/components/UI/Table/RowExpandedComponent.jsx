@@ -437,8 +437,9 @@ const RowExpandedComponent = ({ data: operativo }) => {
           <div className="agentes-container">
             <div>
               <div className="d-flex align-items-center justify-content-between">
-                <h5 style={{ color: "#5DADE2" }}>
-                  Agentes asociados al Operativo
+                <h5 style={{ color: "#414042" }}>
+                  Agentes asociados al Proceso de Donación: #{""}
+                  <span className="fw-bold">{operativo.referencia}</span>
                 </h5>
                 <div></div>
                 <button

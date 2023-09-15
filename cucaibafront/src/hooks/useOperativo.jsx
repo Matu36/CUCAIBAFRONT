@@ -20,12 +20,23 @@ const postOperativo = async (data) => {
   return await OperativosAPI.post("", data);
 };
 
-export const useOperativo = (operativoId = 0) => {
+const getOperativoByRef = async (ref) => {
+  const { data } = await OperativosAPI.get(`/${ref}`);
+  return data;
+};
+
+export const useOperativo = (operativoId = 0, ref = "", clicked = false) => {
   const location = useLocation();
   const operativosQuery = useQuery({
     queryKey: ["operativos"],
     queryFn: () => getOperativos(),
     enabled: location.pathname.includes("operativos"),
+  });
+
+  const operativoQuery = useQuery({
+    queryKey: ["operativos"],
+    queryFn: () => getOperativoByRef(ref),
+    enabled: !!ref && clicked,
   });
 
   const agentesOperativoQuery = useQuery({
@@ -77,5 +88,6 @@ export const useOperativo = (operativoId = 0) => {
     operativosQuery,
     agentesOperativoQuery,
     operativoMutation,
+    operativoQuery,
   };
 };

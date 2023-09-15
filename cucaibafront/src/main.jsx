@@ -19,14 +19,17 @@ const queryClient = new QueryClient({
 });
 
 import "./index.css";
+import { LoadingProvider } from "./context/LoadingContext";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <Provider store={store}>
-      <QueryClientProvider client={queryClient}>
-        <RouterProvider router={router} />
-        <ReactQueryDevtools initialIsOpen={false} />
-      </QueryClientProvider>
+      <LoadingProvider>
+        <QueryClientProvider client={queryClient}>
+          <RouterProvider router={router} />
+          <ReactQueryDevtools initialIsOpen={false} />
+        </QueryClientProvider>
+      </LoadingProvider>
     </Provider>
   </React.StrictMode>
 );
