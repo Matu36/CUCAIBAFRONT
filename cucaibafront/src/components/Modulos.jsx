@@ -211,32 +211,31 @@ const Modulos = ({ ...props }) => {
             </div>
           </>
         ) : (
-          <Dropdown>
-            <button
-              className={`dropdown-item dropdown-item-custom d-flex align-items-center gap-2 ${
-                row.fechaHasta ? "d-none" : "d-block"
+          row.fechaHasta && (
+            <Dropdown>
+              <button
+                className={`dropdown-item dropdown-item-custom d-flex align-items-center gap-2
               }`}
-              type="button"
-              // data-bs-toggle="modal"
-              // data-bs-target="#opDefinitiva"
-              onClick={() => handleEdit(row.id, row.valor)}
-            >
-              <FaEdit />
-              Editar Valor
-            </button>
-            <button
-              className={`dropdown-item dropdown-item-custom d-flex align-items-center gap-2 ${
-                row.fechaHasta ? "d-none" : "d-block"
-              }`}
-              type="button"
-              // data-bs-toggle="modal"
-              // data-bs-target="#opDefinitiva"
-              onClick={() => handleBaja(row.id, row.descripcion)}
-            >
-              <FaTimes />
-              Dar de Baja
-            </button>
-          </Dropdown>
+                type="button"
+                // data-bs-toggle="modal"
+                // data-bs-target="#opDefinitiva"
+                onClick={() => handleEdit(row.id, row.valor)}
+              >
+                <FaEdit />
+                Editar Valor
+              </button>
+              <button
+                className={`dropdown-item dropdown-item-custom d-flex align-items-center gap-2`}
+                type="button"
+                // data-bs-toggle="modal"
+                // data-bs-target="#opDefinitiva"
+                onClick={() => handleBaja(row.id, row.descripcion)}
+              >
+                <FaTimes />
+                Dar de Baja
+              </button>
+            </Dropdown>
+          )
         ),
     },
   ];
