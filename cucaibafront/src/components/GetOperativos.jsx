@@ -7,25 +7,19 @@ import { usePagination } from "../hooks/usePagination";
 import Spinner from "./UI/Spinner";
 import { obtenerMesYAño } from "../utils/MesAño";
 import "../assets/styles/detalle.css";
+import { useOperativo } from "../hooks/useOperativo";
 
 // Componente que muestra los OPERATIVOS
 
 const GetOperativos = () => {
-  const dispatch = useDispatch();
-
-  const operativos = useSelector((state) => state.operativos);
+  const { data, isLoading } = useOperativo().operativosQuery;
   const [search, setSearch] = useState("");
-  const primerArreglo = operativos.slice(0, 1)[0];
-  const [operativo, setOperativo] = useState(primerArreglo);
-  const { paginationOptions, customStyles } = usePagination(primerArreglo);
+  const [operativo, setOperativo] = useState([]);
+  const { paginationOptions, customStyles } = usePagination(data);
 
   useEffect(() => {
-    dispatch(getOperativos());
-  }, []);
-
-  useEffect(() => {
-    setOperativo(primerArreglo);
-  }, [primerArreglo]);
+    setOperativo(data);
+  }, [data]);
 
   //-------------------------------- SEARCHBAR --------------------------- //
 
@@ -40,9 +34,9 @@ const GetOperativos = () => {
 
   const filterByPD = (value) => {
     if (!value) {
-      setOperativo(primerArreglo);
+      setOperativo(data);
     } else {
-      const arrayCache = primerArreglo.filter(
+      const arrayCache = data.filter(
         (oper) =>
           oper.referencia.toLowerCase().includes(value.toLowerCase()) ||
           (oper.descripcion &&
@@ -57,14 +51,10 @@ const GetOperativos = () => {
   //---------------------------------SPINNER ------------------------------------//
 
   const [showSpinner, setShowSpinner] = useState(true);
+
   useEffect(() => {
-    setTimeout(() => {
-      setShowSpinner(false);
-    });
-  }, []);
-  if (operativos.length === 0) {
-    return <Spinner />;
-  }
+    setShowSpinner(isLoading);
+  }, [isLoading]);
 
   //---------------------------------FIN SPINNER ------------------------------------//
 
@@ -98,18 +88,23 @@ const GetOperativos = () => {
           onChange={handleOnChange}
           value={search}
           autoComplete="off"
+          disabled={!data}
         />
       </div>
 
-      <DataTable
-        columns={columns}
-        data={operativo}
-        pagination
-        striped
-        paginationComponentOptions={paginationOptions}
-        noDataComponent={<EmptyTable msg="No se encontro el operativo" />}
-        customStyles={customStyles}
-      />
+      {!showSpinner ? (
+        <DataTable
+          columns={columns}
+          data={operativo}
+          pagination
+          striped
+          paginationComponentOptions={paginationOptions}
+          noDataComponent={<EmptyTable msg="No se encontro el operativo" />}
+          customStyles={customStyles}
+        />
+      ) : (
+        <Spinner />
+      )}
     </div>
   );
 };

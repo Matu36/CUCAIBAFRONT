@@ -6,7 +6,7 @@ import { useLocation } from "react-router-dom";
 // Función para obtener operativos
 const getOperativos = async () => {
   const { data } = await OperativosAPI.get("/");
-  return data[0];
+  return data;
 };
 
 // Función para obtener agentes por operativo
@@ -25,7 +25,6 @@ export const useOperativo = (operativoId = 0) => {
   const operativosQuery = useQuery({
     queryKey: ["operativos"],
     queryFn: () => getOperativos(),
-    enabled: location.pathname.includes("operativos"),
   });
 
   const agentesOperativoQuery = useQuery({

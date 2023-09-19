@@ -3,7 +3,7 @@ import NumberFormatter from "../../utils/NumberFormatter";
 
 function formatText(value) {
   let lowercase = value.toLowerCase();
-  return lowercase[0].toUpperCase() + lowercase.slice(1, lowercase.length - 1);
+  return lowercase[0].toUpperCase() + lowercase.slice(1, lowercase.length);
 }
 
 const CardItem = ({ title, value }) => {
@@ -13,7 +13,7 @@ const CardItem = ({ title, value }) => {
         {typeof value != "object" ? (
           <>
             <h5 className="card-title">{formatText(value)}</h5>
-            <h6 className="card-subtitle text-muted">{title}:</h6>
+            <h6 className="card-subtitle text-muted">{title}</h6>
           </>
         ) : (
           <>
@@ -22,7 +22,7 @@ const CardItem = ({ title, value }) => {
                 <li key={i}>{formatText(v)}</li>
               ))}
             </ul>
-            <h6 className="card-subtitle mt-2 text-muted">{title}:</h6>
+            <h6 className="card-subtitle mt-2 text-muted">{title}</h6>
           </>
         )}
       </div>
