@@ -8,37 +8,32 @@ import "../assets/styles/detalle.css";
 import moment from "moment";
 import { useSelector, useDispatch } from "react-redux";
 import RowExpandedComponent from "../components/UI/Table/RowExpandedComponent";
-import { getHonorario, getOperativos } from "../Redux/Actions";
+import { getHonorario } from "../Redux/Actions";
 import Spinner from "../components/UI/Spinner";
-import BackButton from "../components/UI/BackButton";
 import Layout from "../components/Layout/LayoutContainer";
+import { useOperativo } from "../hooks/useOperativo";
 
 const TablaHonorarios = () => {
   const dispatch = useDispatch();
   const operativos = useSelector((state) => state.operativos);
-  const primerArregloOper = operativos.slice(0, 1)[0];
+  const { data, isLoading } = useOperativo().operativosQuery;
   const [search, setSearch] = useState("");
-  const [honorario, setHonorario] = useState(primerArregloOper);
-  const { paginationOptions } = usePagination(primerArregloOper);
+  const [honorario, setHonorario] = useState(data);
+  const { paginationOptions } = usePagination(data);
 
   const [currentRow, setCurrentRow] = useState(null);
 
   //Renderizado de los operativos //
 
   useEffect(() => {
-    dispatch(getOperativos());
-  }, []);
-
-  useEffect(() => {
-    setHonorario(primerArregloOper);
-  }, [primerArregloOper]);
+    setHonorario(data);
+  }, [data]);
 
   const [showSpinner, setShowSpinner] = useState(true);
+
   useEffect(() => {
-    setTimeout(() => {
-      setShowSpinner(false);
-    });
-  }, []);
+    setShowSpinner(isLoading);
+  }, [isLoading]);
 
   //Renderizando los honorarios //
   const honorarios = useSelector((state) => state.honorario);
@@ -66,9 +61,9 @@ const TablaHonorarios = () => {
 
   const filterByReferencia = (value) => {
     if (!value) {
-      setHonorario(primerArregloOper);
+      setHonorario(data);
     } else {
-      const arrayCache = primerArregloOper.filter((oper) =>
+      const arrayCache = data.filter((oper) =>
         oper.referencia.toLowerCase().includes(value.toLowerCase())
       );
       setHonorario(arrayCache);
@@ -76,13 +71,6 @@ const TablaHonorarios = () => {
   };
 
   //-------------------------------- FIN SEARCHBAR --------------------------- //
-
-  //SPINNER//
-
-  if (operativos.length === 0) {
-    return <Spinner />;
-  }
-  //SPINNER//
   moment.locale("es-mx");
   const columns = [
     {
@@ -114,25 +102,30 @@ const TablaHonorarios = () => {
             onChange={handleOnChange}
             value={search}
             autoComplete="off"
+            disabled={!data}
           />
         </div>
       </div>
-      <DataTable
-        columns={columns}
-        data={honorario}
-        pagination
-        striped
-        paginationComponentOptions={paginationOptions}
-        noDataComponent={
-          <EmptyTable msg="No se encontró el PD con ese número de Referencia" />
-        }
-        expandableRows
-        expandableRowsComponent={RowExpandedComponent}
-        expandableRowExpanded={(row) => row === currentRow}
-        expandOnRowClicked
-        onRowExpandToggled={(bool, row) => setCurrentRow(row)}
-        onRowClicked={(row) => setCurrentRow(row)}
-      />
+      {!showSpinner ? (
+        <DataTable
+          columns={columns}
+          data={honorario}
+          pagination
+          striped
+          paginationComponentOptions={paginationOptions}
+          noDataComponent={
+            <EmptyTable msg="No se encontró el PD con ese número de Referencia" />
+          }
+          expandableRows
+          expandableRowsComponent={RowExpandedComponent}
+          expandableRowExpanded={(row) => row === currentRow}
+          expandOnRowClicked
+          onRowExpandToggled={(bool, row) => setCurrentRow(row)}
+          onRowClicked={(row) => setCurrentRow(row)}
+        />
+      ) : (
+        <Spinner />
+      )}
     </Layout>
   );
 };

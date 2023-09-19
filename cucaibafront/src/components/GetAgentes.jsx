@@ -9,24 +9,20 @@ import "../assets/styles/detalle.css";
 import Spinner from "./UI/Spinner";
 import { MaskCuil } from "../utils/Mask";
 import "../components/styles/GetAgente.css";
+import { useAgentes } from "../hooks/useAgentes";
 
 //Componente que muestra los AGENTES
 
 const GetAgentes = ({ ...props }) => {
-  const dispatch = useDispatch();
-  const agentes = useSelector((state) => state.agentes);
+  const { data, isLoading } = useAgentes().agentesQuery;
   const [search, setSearch] = useState("");
-  const [agente, setAgente] = useState(agentes);
+  const [agente, setAgente] = useState([]);
 
-  const { paginationOptions, customStyles } = usePagination(agentes);
-
-  useEffect(() => {
-    dispatch(getAgentes());
-  }, []);
+  const { paginationOptions, customStyles } = usePagination(data);
 
   useEffect(() => {
-    setAgente(agentes);
-  }, [agentes]);
+    setAgente(data);
+  }, [data]);
 
   //-------------------------------- SEARCHBAR --------------------------- //
 
@@ -41,9 +37,9 @@ const GetAgentes = ({ ...props }) => {
 
   const filterByApellido = (value) => {
     if (!value) {
-      setAgente(agentes);
+      setAgente(data);
     } else {
-      const arrayCache = agentes.filter(
+      const arrayCache = data.filter(
         (oper) =>
           oper.apellido.toLowerCase().includes(value.toLowerCase()) ||
           oper.cuil.toLowerCase().includes(value.toLowerCase())
@@ -77,14 +73,10 @@ const GetAgentes = ({ ...props }) => {
   //---------------------------------SPINNER ------------------------------------//
 
   const [showSpinner, setShowSpinner] = useState(true);
+
   useEffect(() => {
-    setTimeout(() => {
-      setShowSpinner(false);
-    });
-  }, []);
-  if (agentes.length === 0) {
-    return <Spinner />;
-  }
+    setShowSpinner(isLoading);
+  }, [isLoading]);
 
   //---------------------------------FIN SPINNER ------------------------------------//
 
@@ -102,21 +94,25 @@ const GetAgentes = ({ ...props }) => {
             onChange={handleOnChange}
             value={search}
             autoComplete="off"
+            disabled={!data}
           />
         </div>
-
-        <DataTable
-          columns={columns}
-          data={agente}
-          pagination
-          striped
-          paginationComponentOptions={paginationOptions}
-          noDataComponent={
-            <EmptyTable msg="No se encontro el Agente con los datos ingresados" />
-          }
-          {...props}
-          customStyles={customStyles}
-        />
+        {!showSpinner ? (
+          <DataTable
+            columns={columns}
+            data={agente}
+            pagination
+            striped
+            paginationComponentOptions={paginationOptions}
+            noDataComponent={
+              <EmptyTable msg="No se encontro el Agente con los datos ingresados" />
+            }
+            {...props}
+            customStyles={customStyles}
+          />
+        ) : (
+          <Spinner />
+        )}
       </div>
     </>
   );

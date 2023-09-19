@@ -157,6 +157,12 @@ const Modulos = ({ ...props }) => {
       sortable: true,
       grow: 2,
       wrap: true,
+      sortFunction: (a, b) =>
+        a.descripcion.toUpperCase() > b.descripcion.toUpperCase()
+          ? 1
+          : a.descripcion.toUpperCase() < b.descripcion.toUpperCase()
+          ? -1
+          : 0,
     },
     {
       name: "Valor",
@@ -178,7 +184,7 @@ const Modulos = ({ ...props }) => {
         ) : (
           <i>En Vigencia</i>
         ),
-
+      sortFunction: (a, b) => (a.fechaHasta ? 1 : b.fechaHasta ? -1 : 0),
       sortable: true,
     },
     {
@@ -211,7 +217,7 @@ const Modulos = ({ ...props }) => {
             </div>
           </>
         ) : (
-          row.fechaHasta && (
+          !row.fechaHasta && (
             <Dropdown>
               <button
                 className={`dropdown-item dropdown-item-custom d-flex align-items-center gap-2
