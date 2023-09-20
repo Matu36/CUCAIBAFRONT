@@ -14,6 +14,7 @@ import NumberFormatter from "../utils/NumberFormatter";
 import "../components/styles/Modulos.css";
 import Dropdown from "./UI/Dropdown";
 import { FaEdit, FaTimes } from "react-icons/fa";
+import "./styles/ordenes.css";
 
 //Componente que muestra los MODULOS y que permite la edición de los mismos.
 
@@ -304,6 +305,7 @@ const Modulos = ({ ...props }) => {
           striped
           paginationComponentOptions={paginationOptions}
           noDataComponent={<EmptyTable msg="No se encontro ningún Módulo" />}
+          className="del-overflow"
           {...props}
         />
       )}
