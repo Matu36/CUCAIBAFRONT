@@ -14,7 +14,7 @@ const getAgentes = async (operativoId) => {
     // Obtener agentes disponibles para el operativo
     const { data } = await AgentesAPI.get(`/disponibles/${operativoId}`);
 
-    return data[0];
+    return data;
   }
 };
 

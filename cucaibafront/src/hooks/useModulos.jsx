@@ -16,8 +16,8 @@ const getModulos = async (operativoId, valor) => {
 
   if (operativoId) {
     // Obtener módulos activos para el operativo
-    const { data } = await ModulosAPI.get(`/activos/${operativoId}`);
-    return data[0];
+    const { data } = await ModulosValorAPI.get(`/activos/${operativoId}`);
+    return data;
   }
 };
 

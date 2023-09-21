@@ -91,7 +91,6 @@ const postAgente = () => {
 
             case "found":
               setStatusForm("found");
-              console.log(personaData[1]);
               setAgente({
                 ...agente,
                 apellido: personaData[1].apellido,

@@ -7,17 +7,17 @@ const ExpandableFilters = ({ children }) => {
     <div className="mb-3">
       {" "}
       <button
-        class="btn btn-outline-secondary btn-round mb-2 py-1 d-flex align-items-center gap-2"
+        className="btn btn-outline-secondary btn-round mb-2 py-1 d-flex align-items-center gap-2"
         type="button"
         data-bs-toggle="collapse"
-        data-bs-target="#collapseExample"
+        data-bs-target="#collapseFiltros"
         aria-expanded="false"
-        aria-controls="collapseExample"
+        aria-controls="collapseFiltros"
       >
         <FaFilter />
         Filtros
       </button>
-      <div class="collapse" id="collapseExample">
+      <div className="collapse" id="collapseFiltros">
         {children}
       </div>
     </div>

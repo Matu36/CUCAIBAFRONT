@@ -38,34 +38,43 @@ const RowExpandedComponent = ({ data: operativo }) => {
 
   //TRAE DATA DE AGENTES DISPONIBLES POR OPERATIVO Y EL REFETCH PARA CUANDO SE CREA EL HONORARIO //
 
+  // REFETCH DE MODULOS ACTIVOS CUANDO SE CREA EL HONORARIO
+
+  const [honorarioData, setHonorarioData] = useState({
+    operativo_id: operativo.id,
+    agente_id: 0,
+    modulo_valor_id: 0,
+  });
+
+  const { agentesDisponiblesQuery } = useAgentes(operativo.id || 0);
   const {
     data: agentesDisponibles,
     refetch: refetchAgentesDisponibles,
     isLoading: agentesDispniblesLoading,
     isError: errorAgentesDisponibles,
-  } = useAgentes(operativo.id || 0).agentesDisponiblesQuery;
+  } = agentesDisponiblesQuery;
 
-  // REFETCH DE MODULOS ACTIVOS CUANDO SE CREA EL HONORARIO
-
+  const { modulosActivosQuery } = useModulos(operativo.id);
   const {
     refetch: refetchModulosActivos,
     data: dataModulosActivos,
     isLoading: loadingModulosActivos,
     isFetched: fetchedModulosActivos,
-  } = useModulos(operativo.id).modulosActivosQuery;
+  } = modulosActivosQuery;
 
+  const { agentesOperativoQuery } = useOperativo(operativo.id);
   const {
     data: agentes,
     isLoading: loadingAgentes,
     refetch: refetchAgentes,
-  } = useOperativo(operativo.id).agentesOperativoQuery;
+  } = agentesOperativoQuery;
 
-  const [honorarioData, setHonorarioData] = useState({
-    operativo_id: operativo.id,
-    agente_id: 0,
-    modulo_id: 0,
-  });
+  // Funcionalidades relacionadas a honorarios
 
+  const { honorariosAgenteQuery } = useHonorarios(
+    operativo.id,
+    honorarioData.agente_id
+  );
   const {
     data: honorariosAgente,
     isLoading: honorariosLoading,
@@ -73,10 +82,7 @@ const RowExpandedComponent = ({ data: operativo }) => {
     isFetched: honorariosFetched,
 
     refetch,
-  } = useHonorarios(
-    operativo.id,
-    honorarioData.agente_id
-  ).honorariosAgenteQuery;
+  } = honorariosAgenteQuery;
 
   // FUNCION PARA CREAR EL HONORARIO POR OPERATIVO, SE ELIGE AGENTE Y MODULO //
 
@@ -231,13 +237,13 @@ const RowExpandedComponent = ({ data: operativo }) => {
   };
 
   const handleChangeModuloId = (id) => {
-    setHonorarioData({ ...honorarioData, modulo_id: id });
+    setHonorarioData({ ...honorarioData, modulo_valor_id: id });
   };
 
   const crearHonorario = () => {
     if (
       honorarioData.agente_id == 0 ||
-      honorarioData.modulo_id == 0 ||
+      honorarioData.modulo_valor_id == 0 ||
       honorarioData.operativo_id == 0
     ) {
       Swal.fire({
@@ -253,7 +259,7 @@ const RowExpandedComponent = ({ data: operativo }) => {
 
   const agregarAgente = () => {
     crearHonorario();
-    setHonorarioData({ ...honorarioData, agente_id: 0, modulo_id: 0 });
+    setHonorarioData({ ...honorarioData, agente_id: 0, modulo_valor_id: 0 });
   };
 
   const handleSelectChange = (e) => {
@@ -388,10 +394,10 @@ const RowExpandedComponent = ({ data: operativo }) => {
             }}
             value={search}
             autoComplete="off"
+            disabled={!agentesDisponibles}
           />
           <div>
-            {typeof filteredAgentes === "object" &&
-            !agentesDispniblesLoading ? (
+            {!agentesDispniblesLoading ? (
               <DataTable
                 columns={columns}
                 data={filteredAgentes}
