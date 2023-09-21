@@ -14,13 +14,19 @@ import NumberFormatter from "../utils/NumberFormatter";
 import "../components/styles/Modulos.css";
 import Dropdown from "./UI/Dropdown";
 import { FaEdit, FaTimes } from "react-icons/fa";
+import "./styles/ordenes.css";
 
 //Componente que muestra los MODULOS y que permite la edición de los mismos.
 
 const Modulos = ({ ...props }) => {
   let dispatch = useDispatch();
-  const { data, isFetched, refetch } = useModulos().modulosQuery;
-  const { mutate } = useModulos().modulosMutation;
+  const { modulosQuery, modulosValorQuery, modulosMutation } = useModulos(
+    0,
+    true
+  );
+  const { data, isFetched, refetch } = modulosValorQuery;
+  const { data: modulos } = modulosQuery;
+  const { mutate } = modulosMutation;
 
   const orderData = (data) => {
     if (data && data.length > 0) {
@@ -267,7 +273,7 @@ const Modulos = ({ ...props }) => {
             placeholder="Buscar por Descripción"
             onChange={handleOnChange}
             value={search}
-            disabled={showSpinner}
+            disabled={showSpinner || !data}
             autoComplete="off"
           />
         </div>
@@ -278,14 +284,14 @@ const Modulos = ({ ...props }) => {
           onClick={handleMostrarFormulario}
           disabled={showSpinner}
         >
-          + Crear Módulo
+          + Asignar Valor
         </button>
 
         {mostrarFormulario && (
           <div className="form-modulo">
             <CrearModulo
               handleCerrarFormulario={handleCerrarFormulario}
-              data={data}
+              data={modulos}
             />
           </div>
         )}
@@ -298,9 +304,8 @@ const Modulos = ({ ...props }) => {
           pagination
           striped
           paginationComponentOptions={paginationOptions}
-          noDataComponent={
-            <EmptyTable msg="No se encontro el tipo de Módulo" />
-          }
+          noDataComponent={<EmptyTable msg="No se encontro ningún Módulo" />}
+          className="del-overflow"
           {...props}
         />
       )}

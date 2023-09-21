@@ -30,6 +30,7 @@ export const useOperativo = (operativoId = 0) => {
   const agentesOperativoQuery = useQuery({
     queryKey: ["agentes", { operativoId }],
     queryFn: () => getAgentesByOperativo(operativoId),
+    enabled: operativoId != 0,
   });
 
   // Mutación para crear un nuevo operativo

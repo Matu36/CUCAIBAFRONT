@@ -12,6 +12,7 @@ import { getHonorario } from "../Redux/Actions";
 import Spinner from "../components/UI/Spinner";
 import Layout from "../components/Layout/LayoutContainer";
 import { useOperativo } from "../hooks/useOperativo";
+import "../components/styles/ordenes.css";
 
 const TablaHonorarios = () => {
   const dispatch = useDispatch();
@@ -122,6 +123,7 @@ const TablaHonorarios = () => {
           expandOnRowClicked
           onRowExpandToggled={(bool, row) => setCurrentRow(row)}
           onRowClicked={(row) => setCurrentRow(row)}
+          className="del-overflow"
         />
       ) : (
         <Spinner />

@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import Swal from "sweetalert2";
-import CreatableSelect from "react-select/creatable";
+import Select from "react-select";
 import "../assets/styles/style.css";
 import { validateFecha } from "../utils/Validaciones";
 import { useModulos } from "../hooks/useModulos";
@@ -13,7 +13,8 @@ const STRING_REGEX = /^[a-zA-Z].*(?:\d| )*$/;
 //Componente para crear el módulo
 
 const CrearModulo = ({ handleCerrarFormulario, data }) => {
-  const { mutate } = useModulos().crearModulo;
+  const { crearModuloValor } = useModulos();
+  const { mutate } = crearModuloValor;
   const [create, setCreate] = useState(false);
   const [options, setOptions] = useState(
     data.map((m) => ({
@@ -46,20 +47,6 @@ const CrearModulo = ({ handleCerrarFormulario, data }) => {
     }
   };
 
-  const handleCreate = (label) => {
-    const newOption = {
-      label,
-      value: `${new Date().getTime()}-create`,
-    };
-
-    setSelectValue(newOption);
-
-    setShowError({ ...showError, descripcion: 0 });
-    setModulo({ ...modulo, id: newOption.value, descripcion: label });
-    setOptions([...options, newOption]);
-    setCreate(true);
-  };
-
   const handleOnSubmit = async (e) => {
     e.preventDefault();
 
@@ -68,16 +55,16 @@ const CrearModulo = ({ handleCerrarFormulario, data }) => {
 
       const newModulo = {
         ...modulo,
-        descripcion: modulo.descripcion.toUpperCase(),
       };
 
       mutate(newModulo);
 
       setModulo({
         valor: "",
-        descripcion: "",
         fechaDesde: "",
+        id: 0,
       });
+      setSelectValue(null);
     } else {
       Swal.fire({
         position: "center",
@@ -88,14 +75,14 @@ const CrearModulo = ({ handleCerrarFormulario, data }) => {
     }
   };
 
-  useEffect(() => {
-    if (selectValue) {
-      setShowError({
-        ...showError,
-        descripcion: selectValue.value.toString().includes("create") ? 0 : 1,
-      });
-    }
-  }, [selectValue]);
+  // useEffect(() => {
+  //   if (selectValue) {
+  //     setShowError({
+  //       ...showError,
+  //       descripcion: selectValue.value.toString().includes("create") ? 0 : 1,
+  //     });
+  //   }
+  // }, [selectValue]);
 
   return (
     <div className="form-container pt-2 container">
@@ -109,7 +96,7 @@ const CrearModulo = ({ handleCerrarFormulario, data }) => {
         }}
       >
         <div className="modulo">
-          <h6>CREAR MÓDULO</h6>
+          <h6>ASIGNAR VALOR</h6>
         </div>
         <hr className="hrstyle" />
         <div className="col-md-6"></div>
@@ -119,11 +106,11 @@ const CrearModulo = ({ handleCerrarFormulario, data }) => {
             <label htmlFor="descripcion">
               Descripción <span className="spanObligatorio">*</span>
             </label>
-            <CreatableSelect
+            <Select
               options={options}
               value={selectValue}
               placeholder="Descripción"
-              components={{ DropdownIndicator: null }}
+              noOptionsMessage={"No existe el módulo"}
               classNamePrefix="select2"
               classNames={{ container: () => "select2-container" }}
               onInputChange={(e) => {
@@ -145,21 +132,9 @@ const CrearModulo = ({ handleCerrarFormulario, data }) => {
                 setModulo({
                   ...modulo,
                   descripcion: e.label,
-                  id: e ?? 0,
+                  id: e && e.value,
                 });
               }}
-              onCreateOption={handleCreate}
-              formatCreateLabel={(input) => (
-                <div className="d-flex align-items-center gap-2 justify-content-between">
-                  <span>"{input}"</span>{" "}
-                  <div>
-                    <span className="text-decoration-underline">
-                      Agregar nueva
-                    </span>
-                    <FaPlus className="ms-2" size="0.75em" />
-                  </div>
-                </div>
-              )}
             />
 
             {showError.descripcion == 2 && (
@@ -267,7 +242,7 @@ const CrearModulo = ({ handleCerrarFormulario, data }) => {
               showError.valor ||
               !modulo.valor ||
               !modulo.fechaDesde ||
-              !create
+              !selectValue
             }
           >
             Crear Modulo
