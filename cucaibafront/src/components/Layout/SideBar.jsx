@@ -122,10 +122,29 @@ function SideBar({ isOpen, setIsOpen }) {
         </li>
         <ul className="metismenu side-menu" id="side-menu">
           <li>
-            <Link to="/modulos" onClick={() => setIsOpen(false)}>
+            <a
+              aria-controls="collapseModulos"
+              aria-expanded="false"
+              className="nav-link dropdown-toggle"
+              data-bs-toggle="collapse"
+              href="#collapseModulos"
+              role="button"
+            >
               <FaBraille className="sidebarIcons text-muted" size="1.50em" />{" "}
               Módulos
-            </Link>
+            </a>
+            <ul className="collapse sub-menu" id="collapseModulos">
+              <li>
+                <Link to="/modulos" onClick={() => setIsOpen(false)}>
+                  Administrar Módulos
+                </Link>
+              </li>
+              <li>
+                <Link to="/modulos/valores" onClick={() => setIsOpen(false)}>
+                  Administrar Valores
+                </Link>
+              </li>
+            </ul>
           </li>
         </ul>
         <li>

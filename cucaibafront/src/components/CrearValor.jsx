@@ -12,9 +12,16 @@ const STRING_REGEX = /^[a-zA-Z].*(?:\d| )*$/;
 
 //Componente para crear el módulo
 
-const CrearModulo = ({ handleCerrarFormulario, data }) => {
-  const { crearModulo } = useModulos();
-  const { mutate } = crearModulo;
+const CrearValor = ({ handleCerrarFormulario, data }) => {
+  const { crearModuloValor } = useModulos();
+  const { mutate } = crearModuloValor;
+  const [create, setCreate] = useState(false);
+  const [options, setOptions] = useState(
+    data.map((m) => ({
+      value: m.id,
+      label: m.descripcion,
+    }))
+  );
   const [selectValue, setSelectValue] = useState(null);
 
   const crearModuloButtonRef = useRef(null);
@@ -43,8 +50,14 @@ const CrearModulo = ({ handleCerrarFormulario, data }) => {
   const handleOnSubmit = async (e) => {
     e.preventDefault();
 
-    if (modulo.descripcion && !modulo.fechaDesde && !modulo.valor) {
-      mutate(modulo);
+    if (modulo.valor && modulo.descripcion && modulo.fechaDesde) {
+      if (showError.fecha) return;
+
+      const newModulo = {
+        ...modulo,
+      };
+
+      mutate(newModulo);
 
       setModulo({
         valor: "",
@@ -55,21 +68,21 @@ const CrearModulo = ({ handleCerrarFormulario, data }) => {
     } else {
       Swal.fire({
         position: "center",
-        icon: "warning",
-        title: "Asignar valor",
-        text: "¿Estás seguro que queres asignarle un valor automaticamente?",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Si, asignar",
-        cancelButtonText: "No",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          mutate(modulo);
-        }
+        icon: "error",
+        title: "Por favor, completa todos los campos",
+        showConfirmButton: true,
       });
     }
   };
+
+  // useEffect(() => {
+  //   if (selectValue) {
+  //     setShowError({
+  //       ...showError,
+  //       descripcion: selectValue.value.toString().includes("create") ? 0 : 1,
+  //     });
+  //   }
+  // }, [selectValue]);
 
   return (
     <div className="form-container pt-2 container">
@@ -83,7 +96,7 @@ const CrearModulo = ({ handleCerrarFormulario, data }) => {
         }}
       >
         <div className="modulo">
-          <h6>CREAR M&Oacute;DULO</h6>
+          <h6>ASIGNAR VALOR</h6>
         </div>
         <hr className="hrstyle" />
         <div className="col-md-6"></div>
@@ -93,16 +106,18 @@ const CrearModulo = ({ handleCerrarFormulario, data }) => {
             <label htmlFor="descripcion">
               Descripción <span className="spanObligatorio">*</span>
             </label>
-            <input
-              type="text"
-              className="form-control"
-              value={modulo.descripcion}
-              onChange={(e) => {
-                let { value } = e.target;
-                if (value.length > 0) {
+            <Select
+              options={options}
+              value={selectValue}
+              placeholder="Descripción"
+              noOptionsMessage={() => "No existe el módulo"}
+              classNamePrefix="select2"
+              classNames={{ container: () => "select2-container" }}
+              onInputChange={(e) => {
+                if (e.length > 0) {
                   let result = 0;
 
-                  if (value.endsWith(" ") || !STRING_REGEX.test(value)) {
+                  if (e.endsWith(" ") || !STRING_REGEX.test(e)) {
                     result = 2;
                   }
 
@@ -111,12 +126,13 @@ const CrearModulo = ({ handleCerrarFormulario, data }) => {
                     descripcion: result,
                   });
                 }
+              }}
+              onChange={(e) => {
+                setSelectValue(e);
                 setModulo({
                   ...modulo,
-                  descripcion: value
-                    .normalize("NFD")
-                    .replace(/[\u0300-\u036f]/g, "")
-                    .toUpperCase(),
+                  descripcion: e.label,
+                  id: e && e.value,
                 });
               }}
             />
@@ -127,9 +143,16 @@ const CrearModulo = ({ handleCerrarFormulario, data }) => {
                 <p>* La descripción no puede contener espacios sueltos</p>
               </div>
             )}
+            {showError.descripcion == 1 && (
+              <div style={{ color: "red" }}>
+                <p>* El módulo ya existe</p>
+              </div>
+            )}
           </div>
           <div className="col-md-3">
-            <label htmlFor="valor">Valor</label>
+            <label htmlFor="valor">
+              Valor <span className="spanObligatorio">*</span>
+            </label>
             <input
               onKeyDown={handleKeyDown}
               type="number"
@@ -159,7 +182,9 @@ const CrearModulo = ({ handleCerrarFormulario, data }) => {
             )}
           </div>
           <div className="col-md-3">
-            <label htmlFor="fechaDesde">Fecha Desde</label>
+            <label htmlFor="fechaDesde">
+              Fecha Desde <span className="spanObligatorio">*</span>
+            </label>
             <input
               onKeyDown={handleKeyDown}
               type="date"
@@ -198,39 +223,34 @@ const CrearModulo = ({ handleCerrarFormulario, data }) => {
           </div>
         </div>
         <hr className="hrstyle2" />
-
-        <div className="d-flex justify-content-between align-items-center">
-          <p className="text-muted">
-            (En caso de ingresar Valor y Fecha Desde, se le va a estar asociando
-            un valor al módulo creado)
-          </p>
-          <div>
-            <button
-              onClick={handleCerrarFormulario}
-              type="submit"
-              className="btn btn-outline-secondary pb-2"
-              style={{ marginRight: "10px" }}
-            >
-              Cancelar
-            </button>
-            <button
-              type="submit"
-              ref={crearModuloButtonRef}
-              className="btn btn-guardar pt-2"
-              disabled={
-                showError.fecha ||
-                showError.descripcion != 0 ||
-                showError.valor ||
-                !modulo.descripcion
-              }
-            >
-              Crear M&oacute;dulo
-            </button>
-          </div>
+        <div className="d-flex justify-content-end">
+          <button
+            onClick={handleCerrarFormulario}
+            type="submit"
+            className="btn btn-outline-secondary pb-2"
+            style={{ marginRight: "10px" }}
+          >
+            Cancelar
+          </button>
+          <button
+            type="submit"
+            ref={crearModuloButtonRef}
+            className="btn btn-guardar pt-2"
+            disabled={
+              showError.fecha ||
+              showError.descripcion != 0 ||
+              showError.valor ||
+              !modulo.valor ||
+              !modulo.fechaDesde ||
+              !selectValue
+            }
+          >
+            Crear Modulo
+          </button>
         </div>
       </form>
     </div>
   );
 };
 
-export default CrearModulo;
+export default CrearValor;

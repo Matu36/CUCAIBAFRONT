@@ -1,12 +1,14 @@
 import React from "react";
-import Modulos from "../components/Modulos";
 import Layout from "../components/Layout/LayoutContainer";
+import ListaModulos from "../components/ListaModulos";
 
 const ModulosVista = () => {
   return (
-    <Layout Titulo="Módulos" Subtitulo="Listado de todos los módulos">
-      <Modulos />
-      <br />
+    <Layout
+      Titulo="M&oacute;dulos"
+      Subtitulo="Listado de todos los m&oacute;dulos disponibles del sistema"
+    >
+      <ListaModulos />
     </Layout>
   );
 };

@@ -58,9 +58,9 @@ export const useModulos = (operativoId = 0, valor = false) => {
         timer: 3000,
       });
 
-      window.close();
+      // window.close();
 
-      window.location.reload();
+      // window.location.reload();
     },
     onError: (err) => {
       switch (err.response.status) {

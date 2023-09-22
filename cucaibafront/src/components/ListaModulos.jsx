@@ -5,28 +5,44 @@ import DataTable from "react-data-table-component";
 import EmptyTable from "./UI/EmptyTable";
 import { usePagination } from "../hooks/usePagination";
 import Moment from "moment";
-import CrearValor from "./CrearValor";
+import CrearModulo from "./CrearModulo";
 import Spinner from "./UI/Spinner";
 import "../assets/styles/detalle.css";
 import Swal from "sweetalert2";
 import { useModulos } from "../hooks/useModulos";
-import NumberFormatter from "../utils/NumberFormatter";
 import "../components/styles/Modulos.css";
-import Dropdown from "./UI/Dropdown";
-import { FaEdit, FaTimes } from "react-icons/fa";
 import "./styles/ordenes.css";
+
+const Badge = ({ estado }) => {
+  switch (estado) {
+    case 1:
+      return (
+        <span
+          className="badge rounded-pill px-3 py-1 text-bg-success"
+          style={{ fontSize: "11px" }}
+        >
+          Disponible
+        </span>
+      );
+
+    case 2:
+      return (
+        <span
+          className="badge rounded-pill px-3 py-1 text-bg-danger"
+          style={{ fontSize: "11px" }}
+        >
+          No Disponible
+        </span>
+      );
+  }
+};
 
 //Componente que muestra los MODULOS y que permite la edición de los mismos.
 
-const Modulos = ({ ...props }) => {
+const ListaModulos = ({ ...props }) => {
   let dispatch = useDispatch();
-  const { modulosQuery, modulosValorQuery, modulosMutation } = useModulos(
-    0,
-    true
-  );
-  const { data, isFetched, refetch } = modulosValorQuery;
-  const { data: modulos, isFetched: fetchedModulos } = modulosQuery;
-  const { mutate } = modulosMutation;
+  const { modulosQuery } = useModulos(0, false);
+  const { data, isFetched } = modulosQuery;
 
   const orderData = (data) => {
     if (data && data.length > 0) {
@@ -158,6 +174,11 @@ const Modulos = ({ ...props }) => {
   Moment.locale("es-mx");
   const columns = [
     {
+      name: "#",
+      selector: (row, index) => index,
+      cell: (row, index) => index + 1,
+    },
+    {
       name: "Descripción",
       selector: (row) => row.descripcion,
       sortable: true,
@@ -171,85 +192,68 @@ const Modulos = ({ ...props }) => {
           : 0,
     },
     {
-      name: "Valor",
-      selector: (row) => `$ ${NumberFormatter(row.valor)}`,
+      name: "Estado",
+      selector: (row) => row.estado,
       sortable: true,
+      cell: (row) => <Badge estado={row.estado} />,
     },
-    {
-      name: "Fecha Desde",
-      selector: (row) => row.fecha_desde,
-      sortable: true,
-      format: (row) => Moment(row.fecha_desde).format("L"),
-    },
-    {
-      name: "Fecha hasta",
-      selector: (row) => row.fecha_hasta,
-      format: (row) =>
-        row.fechaHasta ? (
-          Moment(row.fecha_hasta).format("L")
-        ) : (
-          <i>En Vigencia</i>
-        ),
-      sortFunction: (a, b) => (a.fecha_hasta ? 1 : b.fecha_hasta ? -1 : 0),
-      sortable: true,
-    },
-    {
-      name: "Acción",
-      cell: (row) =>
-        editIndex === row.id ? (
-          <>
-            <input
-              className="input"
-              style={{ maxWidth: "40%" }}
-              type="number"
-              value={editPrice}
-              onChange={(e) => handlePriceChange(+e.target.value)}
-              min={0}
-            />
-            <div className="acciones">
-              <button
-                className="btn btn-guardar btn-sm mt-1"
-                onClick={() => handleSave(row.id)}
-                disabled={editPrice <= 0 || prevValor == editPrice}
-              >
-                Guardar
-              </button>
-              <button
-                className="btn btn-limpiar btn-sm mb-1"
-                onClick={handleCancel}
-              >
-                Cancelar
-              </button>
-            </div>
-          </>
-        ) : (
-          !row.fechaHasta && (
-            <Dropdown>
-              <button
-                className={`dropdown-item dropdown-item-custom d-flex align-items-center gap-2
-              }`}
-                type="button"
-                // data-bs-toggle="modal"
-                // data-bs-target="#opDefinitiva"
-                onClick={() => handleEdit(row.id, row.valor)}
-              >
-                <FaEdit />
-                Editar Valor
-              </button>
-              <button
-                className={`dropdown-item dropdown-item-custom d-flex align-items-center gap-2`}
-                type="button"
-                // data-bs-toggle="modal"
-                // data-bs-target="#opDefinitiva"
-                onClick={() => handleBaja(row.id, row.descripcion)}
-              >
-                <FaTimes />
-                Dar de Baja
-              </button>
-            </Dropdown>
-          )
-        ),
-    },
+    // {
+    //   name: "Acción",
+    //   cell: (row) =>
+    //     editIndex === row.id ? (
+    //       <>
+    //         <input
+    //           className="input"
+    //           style={{ maxWidth: "40%" }}
+    //           type="number"
+    //           value={editPrice}
+    //           onChange={(e) => handlePriceChange(+e.target.value)}
+    //           min={0}
+    //         />
+    //         <div className="acciones">
+    //           <button
+    //             className="btn btn-guardar btn-sm mt-1"
+    //             onClick={() => handleSave(row.id)}
+    //             disabled={editPrice <= 0 || prevValor == editPrice}
+    //           >
+    //             Guardar
+    //           </button>
+    //           <button
+    //             className="btn btn-limpiar btn-sm mb-1"
+    //             onClick={handleCancel}
+    //           >
+    //             Cancelar
+    //           </button>
+    //         </div>
+    //       </>
+    //     ) : (
+    //       !row.fechaHasta && (
+    //         <Dropdown>
+    //           <button
+    //             className={`dropdown-item dropdown-item-custom d-flex align-items-center gap-2
+    //           }`}
+    //             type="button"
+    //             // data-bs-toggle="modal"
+    //             // data-bs-target="#opDefinitiva"
+    //             onClick={() => handleEdit(row.id, row.valor)}
+    //           >
+    //             <FaEdit />
+    //             Editar Valor
+    //           </button>
+    //           <button
+    //             className={`dropdown-item dropdown-item-custom d-flex align-items-center gap-2`}
+    //             type="button"
+    //             // data-bs-toggle="modal"
+    //             // data-bs-target="#opDefinitiva"
+    //             onClick={() => handleBaja(row.id, row.descripcion)}
+    //           >
+    //             <FaTimes />
+    //             Dar de Baja
+    //           </button>
+    //         </Dropdown>
+    //       )
+    //     ),
+    // },
   ];
 
   return (
@@ -282,16 +286,16 @@ const Modulos = ({ ...props }) => {
             window.innerWidth < 1000 ? "btn-sm" : "btn-md"
           }`}
           onClick={handleMostrarFormulario}
-          disabled={showSpinner || !fetchedModulos}
+          disabled={showSpinner}
         >
-          + Asignar Valor
+          + Crear M&oacute;dulo
         </button>
 
         {mostrarFormulario && (
           <div className="form-modulo">
-            <CrearValor
+            <CrearModulo
               handleCerrarFormulario={handleCerrarFormulario}
-              data={modulos}
+              data={modulo}
             />
           </div>
         )}
@@ -313,4 +317,4 @@ const Modulos = ({ ...props }) => {
   );
 };
 
-export default Modulos;
+export default ListaModulos;
