@@ -1,0 +1,7 @@
+version: "3.8"
+services:
+    reactapp:
+      build: ./cucaibafront
+      container_name: cucaibafront
+      ports:
+        - '3000:3000'

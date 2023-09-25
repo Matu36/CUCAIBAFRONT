@@ -2,7 +2,7 @@ import axios from "axios";
 import { AgentesAPI } from "../../api/AgentesAPI";
 import { OperativosAPI } from "../../api/OperativosAPI";
 import { ModulosAPI } from "../../api/ModulosAPI";
-import { CategoriasAPI } from "../../api/CategoriasAPI.js";
+import { CategoriasAPI } from "../../api/CategoriasAPI.JS";
 import { TipoAPI } from "../../api/TipoAPI";
 import { PersonasAPI } from "../../api/PersonasAPI";
 import { HonorariosAPI } from "../../api/HonorariosAPI";
