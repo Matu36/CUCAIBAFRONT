@@ -95,7 +95,10 @@ const Modulos = ({ ...props }) => {
 
   //EDITAR PRECIO
 
-  const [editValue, setEditValue] = useState({ valor: 0, fechaDesde: "" });
+  const [editValue, setEditValue] = useState({
+    valor: "",
+    fechaDesde: "",
+  });
   const [prevValor, setPrevValor] = useState(0);
   const [disabledButton, setDisabledButton] = useState(false);
   const [indexModulo, setIndexModulo] = useState(0);
@@ -237,7 +240,8 @@ const Modulos = ({ ...props }) => {
         title="Editar Módulo"
         referenceID="editModuloModal"
         customFooter={true}
-        handleClose={() => setEditValue({ valor: 0, fechaDesde: "" })}
+        handleClose={() => setEditValue({ valor: "", fechaDesde: "" })}
+        isStatic={true}
       >
         <div>
           <div className="d-flex align-items-center justify-content-center gap-4 flex-md-row flex-sm-column">
