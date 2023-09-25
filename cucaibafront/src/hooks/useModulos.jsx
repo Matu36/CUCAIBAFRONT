@@ -178,6 +178,16 @@ export const useModulos = (operativoId = 0, valor = false) => {
     },
   });
 
+  const editarModulo = useMutation({
+    mutationKey: ["editar-modulo"],
+    mutationFn: async (data) =>
+      await ModulosValorAPI.put(`/editar/${data.id}`, {
+        valor: data.valor,
+        fechaDesde: data.fechaDesde,
+      }),
+    onSuccess: () => {},
+  });
+
   return {
     modulosQuery,
     modulosValorQuery,
@@ -185,5 +195,6 @@ export const useModulos = (operativoId = 0, valor = false) => {
     modulosMutation,
     crearModulo,
     crearModuloValor,
+    editarModulo,
   };
 };

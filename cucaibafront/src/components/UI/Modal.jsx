@@ -29,6 +29,7 @@ const Modal = ({
               className="btn-close"
               data-bs-dismiss="modal"
               aria-label="Close"
+              onClick={handleClose}
             ></button>
           </div>
           <div className="modal-body">{children}</div>
