@@ -9,6 +9,7 @@ const Modal = ({
   customFooter,
   size = "modal-lg",
   handleClose,
+  isStatic,
 }) => {
   return (
     <div
@@ -17,6 +18,7 @@ const Modal = ({
       tabIndex="-1"
       aria-labelledby={`${referenceID}`}
       aria-hidden="true"
+      data-bs-backdrop={isStatic && "static"}
     >
       <div className="modal-dialog">
         <div className="modal-content bg-white">
@@ -29,6 +31,7 @@ const Modal = ({
               className="btn-close"
               data-bs-dismiss="modal"
               aria-label="Close"
+              onClick={handleClose}
             ></button>
           </div>
           <div className="modal-body">{children}</div>

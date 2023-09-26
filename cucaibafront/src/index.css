@@ -756,6 +756,10 @@ h6 small {
   color: #fff;
 }
 
+.text-bg-success {
+  background-color: #28a745 !important;
+}
+
 /*--------------------------------------------------------------------------------------------------------------------*/
 /**
 * Estilos para modificar el paginador

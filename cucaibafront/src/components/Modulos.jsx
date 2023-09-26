@@ -5,7 +5,7 @@ import DataTable from "react-data-table-component";
 import EmptyTable from "./UI/EmptyTable";
 import { usePagination } from "../hooks/usePagination";
 import Moment from "moment";
-import CrearModulo from "./CrearModulo";
+import CrearValor from "./CrearValor";
 import Spinner from "./UI/Spinner";
 import "../assets/styles/detalle.css";
 import Swal from "sweetalert2";
@@ -13,20 +13,21 @@ import { useModulos } from "../hooks/useModulos";
 import NumberFormatter from "../utils/NumberFormatter";
 import "../components/styles/Modulos.css";
 import Dropdown from "./UI/Dropdown";
-import { FaEdit, FaTimes } from "react-icons/fa";
+import { FaCalendar, FaEdit, FaRedo, FaTimes } from "react-icons/fa";
 import "./styles/ordenes.css";
+import Modal from "./UI/Modal";
+import { validateFecha } from "../utils/Validaciones";
 
 //Componente que muestra los MODULOS y que permite la edición de los mismos.
 
 const Modulos = ({ ...props }) => {
   let dispatch = useDispatch();
-  const { modulosQuery, modulosValorQuery, modulosMutation } = useModulos(
-    0,
-    true
-  );
+  const { modulosQuery, modulosValorQuery, modulosMutation, editarModulo } =
+    useModulos(0, true);
   const { data, isFetched, refetch } = modulosValorQuery;
-  const { data: modulos } = modulosQuery;
+  const { data: modulos, isFetched: fetchedModulos } = modulosQuery;
   const { mutate } = modulosMutation;
+  const { mutate: editMutate } = editarModulo;
 
   const orderData = (data) => {
     if (data && data.length > 0) {
@@ -94,44 +95,40 @@ const Modulos = ({ ...props }) => {
 
   //EDITAR PRECIO
 
-  const [editIndex, setEditIndex] = useState(null);
-  const [editPrice, setEditPrice] = useState(null);
+  const [editValue, setEditValue] = useState({
+    valor: "",
+    fechaDesde: "",
+  });
   const [prevValor, setPrevValor] = useState(0);
+  const [disabledButton, setDisabledButton] = useState(false);
+  const [indexModulo, setIndexModulo] = useState(0);
 
-  const handleEdit = (id, valor) => {
-    setEditIndex(id);
+  const handleEdit = (valor) => {
     setEditPrice(valor);
     setPrevValor(valor);
   };
 
-  const handlePriceChange = (valor) => {
-    setEditPrice(valor);
-  };
+  const handleSave = () => {
+    const updatedModulo = {
+      id: indexModulo,
+      valor: editValue.valor,
+      fechaDesde: editValue.fechaDesde,
+    };
 
-  const handleSave = (id) => {
-    if (editPrice !== null) {
-      const updatedModulo = {
-        id: id,
-        valor: editPrice,
-      };
+    console.log("hola");
 
-      dispatch(updateModulo(updatedModulo));
-      refetch();
-      setEditIndex(null);
-      setEditPrice(null);
-      Swal.fire({
-        position: "center",
-        icon: "success",
-        title: "El valor del módulo ha sido modificado",
-        showConfirmButton: false,
-        timer: 4000,
-      });
-    }
-  };
-
-  const handleCancel = () => {
-    setEditIndex(null);
-    setEditPrice(null);
+    editMutate(updatedModulo);
+    return;
+    refetch();
+    setEditValue({ valor: 0, fechaDesde: "" });
+    setIndexModulo(0);
+    Swal.fire({
+      position: "center",
+      icon: "success",
+      title: "El valor del módulo ha sido modificado",
+      showConfirmButton: false,
+      timer: 4000,
+    });
   };
 
   const handleBaja = (id, descripcion) => {
@@ -177,139 +174,193 @@ const Modulos = ({ ...props }) => {
     },
     {
       name: "Fecha Desde",
-      selector: (row) => row.fechaDesde,
+      selector: (row) => row.fecha_desde,
       sortable: true,
-      format: (row) => Moment(row.fechaDesde).format("L"),
+      format: (row) => Moment(row.fecha_desde).format("L"),
     },
     {
       name: "Fecha hasta",
-      selector: (row) => row.fechaHasta,
+      selector: (row) => row.fecha_hasta,
       format: (row) =>
         row.fechaHasta ? (
-          Moment(row.fechaHasta).format("L")
+          Moment(row.fecha_hasta).format("L")
         ) : (
           <i>En Vigencia</i>
         ),
-      sortFunction: (a, b) => (a.fechaHasta ? 1 : b.fechaHasta ? -1 : 0),
+      sortFunction: (a, b) => (a.fecha_hasta ? 1 : b.fecha_hasta ? -1 : 0),
       sortable: true,
     },
     {
       name: "Acción",
       cell: (row) =>
-        editIndex === row.id ? (
-          <>
-            <input
-              className="input"
-              style={{ maxWidth: "40%" }}
-              type="number"
-              value={editPrice}
-              onChange={(e) => handlePriceChange(+e.target.value)}
-              min={0}
-            />
-            <div className="acciones">
-              <button
-                className="btn btn-guardar btn-sm mt-1"
-                onClick={() => handleSave(row.id)}
-                disabled={editPrice <= 0 || prevValor == editPrice}
-              >
-                Guardar
-              </button>
-              <button
-                className="btn btn-limpiar btn-sm mb-1"
-                onClick={handleCancel}
-              >
-                Cancelar
-              </button>
-            </div>
-          </>
-        ) : (
-          !row.fechaHasta && (
-            <Dropdown>
+        !row.fechaHasta && (
+          <Dropdown>
+            {row.unico && (
               <button
                 className={`dropdown-item dropdown-item-custom d-flex align-items-center gap-2
               }`}
                 type="button"
-                // data-bs-toggle="modal"
-                // data-bs-target="#opDefinitiva"
-                onClick={() => handleEdit(row.id, row.valor)}
+                data-bs-toggle="modal"
+                data-bs-target="#editModuloModal"
+                onClick={() => setIndexModulo(row.id)}
               >
                 <FaEdit />
-                Editar Valor
+                Editar M&oacute;dulo
               </button>
-              <button
-                className={`dropdown-item dropdown-item-custom d-flex align-items-center gap-2`}
-                type="button"
-                // data-bs-toggle="modal"
-                // data-bs-target="#opDefinitiva"
-                onClick={() => handleBaja(row.id, row.descripcion)}
-              >
-                <FaTimes />
-                Dar de Baja
-              </button>
-            </Dropdown>
-          )
+            )}
+            <button
+              className={`dropdown-item dropdown-item-custom d-flex align-items-center gap-2
+              }`}
+              type="button"
+              // data-bs-toggle="modal"
+              // data-bs-target="#opDefinitiva"
+              // onClick={() => handleEdit(row.id, row.valor)}
+            >
+              <FaCalendar />
+              Cerrar Período
+            </button>
+            <button
+              className={`dropdown-item dropdown-item-custom d-flex align-items-center gap-2`}
+              type="button"
+              // data-bs-toggle="modal"
+              // data-bs-target="#opDefinitiva"
+              onClick={() => handleBaja(row.id, row.descripcion)}
+            >
+              <FaTimes />
+              Dar de Baja
+            </button>
+          </Dropdown>
         ),
     },
   ];
 
   return (
-    <div>
-      <div
-        className="d-flex gap-2 w-100 justify-content-between align-items-center"
-        style={{ flexDirection: window.innerWidth < 1000 ? "column" : "row" }}
+    <>
+      <Modal
+        title="Editar Módulo"
+        referenceID="editModuloModal"
+        customFooter={true}
+        handleClose={() => setEditValue({ valor: "", fechaDesde: "" })}
+        isStatic={true}
       >
-        <div
-          className="input-group mb-3"
-          style={{
-            zIndex: 1,
-            width: window.innerWidth < 1000 ? "100%" : "45%",
-          }}
-        >
-          <input
-            type="text"
-            className={`form-control ${
-              window.innerWidth < 1000 ? "" : "inputSearch"
-            }`}
-            placeholder="Buscar por Descripción"
-            onChange={handleOnChange}
-            value={search}
-            disabled={showSpinner || !data}
-            autoComplete="off"
-          />
+        <div>
+          <div className="d-flex align-items-center justify-content-center gap-4 flex-md-row flex-sm-column">
+            <div className="d-flex flex-column gap-2 justify-content-center align-items-center w-50">
+              <h6 className="text-muted">Editar Fecha</h6>
+              <div>
+                <input
+                  type="date"
+                  className="form-control"
+                  name="fechaDesde"
+                  min="2022-01-01"
+                  value={editValue.fechaDesde}
+                  autoComplete="off"
+                  placeholder="Fecha Desde"
+                  onChange={(e) => {
+                    setEditValue({ ...editValue, fechaDesde: e.target.value });
+                    setDisabledButton(validateFecha(e.target.value));
+                  }}
+                />
+              </div>
+            </div>
+            <div className="d-flex justify-content-center gap-2 flex-column align-items-center w-50">
+              <h6 className="text-muted">Editar Valor</h6>
+              <div>
+                <input
+                  className="form-control"
+                  type="number"
+                  value={editValue.valor}
+                  onChange={(e) =>
+                    setEditValue({ ...editValue, valor: e.target.value })
+                  }
+                  min={0}
+                />
+              </div>
+            </div>
+          </div>
+          <div className="modal-footer mt-4">
+            <button
+              type="button"
+              onClick={() => {
+                setEditValue({ valor: 0, fechaDesde: "" });
+                setDisabledButton(false);
+              }}
+              className="btn btn-limpiar d-flex align-items-center justify-content-center gap-2"
+            >
+              <FaRedo />
+              <span>Limpiar campos</span>
+            </button>
+            <button
+              type="button"
+              className="btn btn-guardar"
+              onClick={() => handleSave()}
+              disabled={
+                (!editValue.valor && !editValue.fechaDesde) || disabledButton
+              }
+            >
+              Guardar cambios
+            </button>
+          </div>
         </div>
-        <button
-          className={`btn btn-dark ${
-            window.innerWidth < 1000 ? "btn-sm" : "btn-md"
-          }`}
-          onClick={handleMostrarFormulario}
-          disabled={showSpinner}
+      </Modal>
+      <div>
+        <div
+          className="d-flex gap-2 w-100 justify-content-between align-items-center"
+          style={{ flexDirection: window.innerWidth < 1000 ? "column" : "row" }}
         >
-          + Asignar Valor
-        </button>
-
-        {mostrarFormulario && (
-          <div className="form-modulo">
-            <CrearModulo
-              handleCerrarFormulario={handleCerrarFormulario}
-              data={modulos}
+          <div
+            className="input-group mb-3"
+            style={{
+              zIndex: 1,
+              width: window.innerWidth < 1000 ? "100%" : "45%",
+            }}
+          >
+            <input
+              type="text"
+              className={`form-control ${
+                window.innerWidth < 1000 ? "" : "inputSearch"
+              }`}
+              placeholder="Buscar por Descripción"
+              onChange={handleOnChange}
+              value={search}
+              disabled={showSpinner || !data}
+              autoComplete="off"
             />
           </div>
+          <button
+            className={`btn btn-dark ${
+              window.innerWidth < 1000 ? "btn-sm" : "btn-md"
+            }`}
+            onClick={handleMostrarFormulario}
+            disabled={showSpinner || !fetchedModulos}
+          >
+            + Asignar Valor
+          </button>
+
+          {mostrarFormulario && (
+            <div className="form-modulo">
+              <CrearValor
+                handleCerrarFormulario={handleCerrarFormulario}
+                data={modulos}
+              />
+            </div>
+          )}
+        </div>
+        {showSpinner && <Spinner />}
+        {!showSpinner && (
+          <DataTable
+            columns={columns}
+            data={modulo}
+            pagination
+            striped
+            paginationComponentOptions={paginationOptions}
+            noDataComponent={<EmptyTable msg="No se encontro ningún Módulo" />}
+            className="del-overflow"
+            {...props}
+          />
         )}
       </div>
-      {showSpinner && <Spinner />}
-      {!showSpinner && (
-        <DataTable
-          columns={columns}
-          data={modulo}
-          pagination
-          striped
-          paginationComponentOptions={paginationOptions}
-          noDataComponent={<EmptyTable msg="No se encontro ningún Módulo" />}
-          className="del-overflow"
-          {...props}
-        />
-      )}
-    </div>
+    </>
   );
 };
 
