@@ -9,7 +9,6 @@ const Modal = ({
   customFooter,
   size = "modal-lg",
   handleClose,
-  isStatic,
 }) => {
   return (
     <div
@@ -18,20 +17,19 @@ const Modal = ({
       tabIndex="-1"
       aria-labelledby={`${referenceID}`}
       aria-hidden="true"
-      data-bs-backdrop={isStatic && "static"}
     >
       <div className="modal-dialog">
         <div className="modal-content bg-white">
           <div className="modal-header">
-            <h4 className="modal-title" style={{ color: "#5DADE2" }}>
-              {title}
-            </h4>
+            <div className="modulo">
+              <h6>{title.toUpperCase()}</h6>
+            </div>
+            <hr className="hrstyle" />
             <button
               type="button"
               className="btn-close"
               data-bs-dismiss="modal"
               aria-label="Close"
-              onClick={handleClose}
             ></button>
           </div>
           <div className="modal-body">{children}</div>

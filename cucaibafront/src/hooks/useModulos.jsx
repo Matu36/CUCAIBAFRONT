@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { ModulosAPI } from "../api/ModulosAPI";
 import Swal from "sweetalert2";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { ModulosValorAPI } from "../api/ModuloValorAPI";
 
 // Función para obtener módulos según el operativo
@@ -28,6 +28,7 @@ const getModulosValor = async () => {
 
 export const useModulos = (operativoId = 0, valor = false) => {
   const location = useLocation();
+  const navigate = useNavigate();
 
   const modulosQuery = useQuery({
     queryKey: ["modulos", { valor }],
@@ -185,7 +186,65 @@ export const useModulos = (operativoId = 0, valor = false) => {
         valor: data.valor,
         fechaDesde: data.fechaDesde,
       }),
-    onSuccess: () => {},
+    onSuccess: () => {
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        title: "Se actualizó el módulo",
+        showConfirmButton: false,
+        timer: 4000,
+      });
+      let modalEl = document.getElementById("editModuloModal");
+      let modalInstance = bootstrap.Modal.getInstance(modalEl);
+      modalInstance.hide();
+      modulosValorQuery.refetch();
+    },
+    onError: (error) => {
+      let { data } = error.response;
+      if (typeof data == "object") {
+        const lista = data
+          .map(
+            (o) =>
+              `<li>Nro. Órden de Pago Provisorio: <span class="fw-bold">${o.opprovisorio_nro}</span></li>`
+          )
+          .join("");
+        const container = document.createElement("div");
+        container.innerHTML = `
+        <div class="d-flex gap-1 flex-column align-items-center justify-content-center">
+          <p>Hay órdenes de pago Provisorias asociadas al módulo. Debe eliminar las siguientes O.P</p>
+          <div>
+            <ul class="d-flex flex-column justify-content-start align-items-start">${lista}</ul>
+          </div>
+        <div>
+        `;
+        Swal.fire({
+          position: "center",
+          icon: "info",
+          title: "Hubo un error",
+          html: container,
+          showConfirmButton: true,
+          confirmButtonText: "Ver órdenes de pago",
+          showCancelButton: true,
+          cancelButtonText: "Cerrar",
+          confirmButtonColor: "#4CAF50",
+        }).then((value) => {
+          if (value.isConfirmed) navigate("/ordenes/ver-ordenes");
+        });
+      } else {
+        Swal.fire({
+          position: "center",
+          icon: "info",
+          title: "Hubo un error",
+          showCancelButton: true,
+          cancelButtonText: "Cerrar",
+          showConfirmButton: false,
+          text: `${data}`,
+        });
+      }
+      let modalEl = document.getElementById("editModuloModal");
+      let modalInstance = bootstrap.Modal.getInstance(modalEl);
+      modalInstance.hide();
+    },
   });
 
   return {

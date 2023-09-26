@@ -115,20 +115,10 @@ const Modulos = ({ ...props }) => {
       fechaDesde: editValue.fechaDesde,
     };
 
-    console.log("hola");
-
     editMutate(updatedModulo);
-    return;
     refetch();
     setEditValue({ valor: 0, fechaDesde: "" });
     setIndexModulo(0);
-    Swal.fire({
-      position: "center",
-      icon: "success",
-      title: "El valor del módulo ha sido modificado",
-      showConfirmButton: false,
-      timer: 4000,
-    });
   };
 
   const handleBaja = (id, descripcion) => {
@@ -212,8 +202,8 @@ const Modulos = ({ ...props }) => {
               className={`dropdown-item dropdown-item-custom d-flex align-items-center gap-2
               }`}
               type="button"
-              // data-bs-toggle="modal"
-              // data-bs-target="#opDefinitiva"
+              data-bs-toggle="modal"
+              data-bs-target="#periodoModal"
               // onClick={() => handleEdit(row.id, row.valor)}
             >
               <FaCalendar />
@@ -300,6 +290,42 @@ const Modulos = ({ ...props }) => {
             >
               Guardar cambios
             </button>
+          </div>
+        </div>
+      </Modal>
+      <Modal title="Cerrar Período" referenceID="periodoModal">
+        <div className="d-flex align-items-center justify-content-center gap-4 flex-md-row flex-sm-column">
+          <div className="d-flex flex-column gap-2 justify-content-center align-items-center w-50">
+            <h6 className="text-muted">Fecha de Cierre</h6>
+            <div>
+              <input
+                type="date"
+                className="form-control"
+                name="fechaDesde"
+                min="2022-01-01"
+                value={editValue.fechaDesde}
+                autoComplete="off"
+                placeholder="Fecha Desde"
+                onChange={(e) => {
+                  setEditValue({ ...editValue, fechaDesde: e.target.value });
+                  setDisabledButton(validateFecha(e.target.value));
+                }}
+              />
+            </div>
+          </div>
+          <div className="d-flex justify-content-center gap-2 flex-column align-items-center w-50">
+            <h6 className="text-muted">Valor del nuevo período</h6>
+            <div>
+              <input
+                className="form-control"
+                type="number"
+                value={editValue.valor}
+                onChange={(e) =>
+                  setEditValue({ ...editValue, valor: e.target.value })
+                }
+                min={0}
+              />
+            </div>
           </div>
         </div>
       </Modal>
