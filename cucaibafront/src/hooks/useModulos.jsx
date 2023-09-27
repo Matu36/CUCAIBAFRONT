@@ -138,6 +138,29 @@ export const useModulos = (operativoId = 0, valor = false) => {
     },
   });
 
+  const cerrarModuloValor = useMutation({
+    mutationKey: ["cerrar-modulo"],
+    mutationFn: async (data) =>
+      await ModulosValorAPI.put(`/cerrar/${data.id}`, {
+        valor: data.valor,
+        fechaHasta: data.fechaHasta,
+      }),
+    onSuccess: () => {
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        title: "Se cerro el período del módulo",
+        text: "Se generó un nuevo modulo, con nueva fecha de inicio y valor",
+        showConfirmButton: false,
+        timer: 4000,
+      });
+      let modalEl = document.getElementById("periodoModal");
+      let modalInstance = bootstrap.Modal.getInstance(modalEl);
+      modalInstance.hide();
+      modulosValorQuery.refetch();
+    },
+  });
+
   // Mutación para dar de baja un módulo
   const modulosMutation = useMutation({
     mutationKey: ["baja-modulo"],
@@ -255,5 +278,6 @@ export const useModulos = (operativoId = 0, valor = false) => {
     crearModulo,
     crearModuloValor,
     editarModulo,
+    cerrarModuloValor,
   };
 };
