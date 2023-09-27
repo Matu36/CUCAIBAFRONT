@@ -18,16 +18,32 @@ import "./styles/ordenes.css";
 import Modal from "./UI/Modal";
 import { validateFecha } from "../utils/Validaciones";
 
+const formatDate = (fecha) => {
+  let date = new Date(fecha);
+  date.setDate(date.getDate() + 2);
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+
+  return `${year}-${month}-${day}`;
+};
+
 //Componente que muestra los MODULOS y que permite la edición de los mismos.
 
 const Modulos = ({ ...props }) => {
   let dispatch = useDispatch();
-  const { modulosQuery, modulosValorQuery, modulosMutation, editarModulo } =
-    useModulos(0, true);
+  const {
+    modulosQuery,
+    modulosValorQuery,
+    modulosMutation,
+    editarModulo,
+    cerrarModuloValor,
+  } = useModulos(0, true);
   const { data, isFetched, refetch } = modulosValorQuery;
   const { data: modulos, isFetched: fetchedModulos } = modulosQuery;
   const { mutate } = modulosMutation;
   const { mutate: editMutate } = editarModulo;
+  const { mutate: cerrarMutate } = cerrarModuloValor;
 
   const orderData = (data) => {
     if (data && data.length > 0) {
@@ -99,6 +115,8 @@ const Modulos = ({ ...props }) => {
     valor: "",
     fechaDesde: "",
   });
+  const [newValue, setNewValue] = useState({ valor: "", fechaHasta: "" });
+  const [fechaAnterior, setFechaAnterior] = useState("");
   const [prevValor, setPrevValor] = useState(0);
   const [disabledButton, setDisabledButton] = useState(false);
   const [indexModulo, setIndexModulo] = useState(0);
@@ -108,16 +126,29 @@ const Modulos = ({ ...props }) => {
     setPrevValor(valor);
   };
 
-  const handleSave = () => {
-    const updatedModulo = {
-      id: indexModulo,
-      valor: editValue.valor,
-      fechaDesde: editValue.fechaDesde,
-    };
+  const handleSave = (option) => {
+    let moduloData = { id: indexModulo };
+    if (option == "editar") {
+      moduloData = {
+        ...moduloData,
+        valor: editValue.valor,
+        fechaDesde: editValue.fechaDesde,
+      };
 
-    editMutate(updatedModulo);
-    refetch();
-    setEditValue({ valor: 0, fechaDesde: "" });
+      editMutate(moduloData);
+      refetch();
+      setEditValue({ valor: 0, fechaDesde: "" });
+    } else if (option == "cerrar") {
+      moduloData = {
+        ...moduloData,
+        valor: newValue.valor,
+        fechaHasta: newValue.fechaHasta,
+      };
+      cerrarMutate(moduloData);
+      refetch();
+      setEditValue({ valor: 0, fechaDesde: "" });
+    }
+
     setIndexModulo(0);
   };
 
@@ -172,7 +203,7 @@ const Modulos = ({ ...props }) => {
       name: "Fecha hasta",
       selector: (row) => row.fecha_hasta,
       format: (row) =>
-        row.fechaHasta ? (
+        row.fecha_hasta ? (
           Moment(row.fecha_hasta).format("L")
         ) : (
           <i>En Vigencia</i>
@@ -198,17 +229,22 @@ const Modulos = ({ ...props }) => {
                 Editar M&oacute;dulo
               </button>
             )}
-            <button
-              className={`dropdown-item dropdown-item-custom d-flex align-items-center gap-2
+            {!row.fecha_hasta && (
+              <button
+                className={`dropdown-item dropdown-item-custom d-flex align-items-center gap-2
               }`}
-              type="button"
-              data-bs-toggle="modal"
-              data-bs-target="#periodoModal"
-              // onClick={() => handleEdit(row.id, row.valor)}
-            >
-              <FaCalendar />
-              Cerrar Período
-            </button>
+                type="button"
+                data-bs-toggle="modal"
+                data-bs-target="#periodoModal"
+                onClick={() => {
+                  setIndexModulo(row.id);
+                  setFechaAnterior(row.fecha_desde);
+                }}
+              >
+                <FaCalendar />
+                Cerrar Período
+              </button>
+            )}
             <button
               className={`dropdown-item dropdown-item-custom d-flex align-items-center gap-2`}
               type="button"
@@ -230,7 +266,10 @@ const Modulos = ({ ...props }) => {
         title="Editar Módulo"
         referenceID="editModuloModal"
         customFooter={true}
-        handleClose={() => setEditValue({ valor: "", fechaDesde: "" })}
+        handleClose={() => {
+          setEditValue({ valor: "", fechaDesde: "" });
+          setIndexModulo(0);
+        }}
         isStatic={true}
       >
         <div>
@@ -283,7 +322,7 @@ const Modulos = ({ ...props }) => {
             <button
               type="button"
               className="btn btn-guardar"
-              onClick={() => handleSave()}
+              onClick={() => handleSave("editar")}
               disabled={
                 (!editValue.valor && !editValue.fechaDesde) || disabledButton
               }
@@ -293,39 +332,73 @@ const Modulos = ({ ...props }) => {
           </div>
         </div>
       </Modal>
-      <Modal title="Cerrar Período" referenceID="periodoModal">
-        <div className="d-flex align-items-center justify-content-center gap-4 flex-md-row flex-sm-column">
-          <div className="d-flex flex-column gap-2 justify-content-center align-items-center w-50">
-            <h6 className="text-muted">Fecha de Cierre</h6>
-            <div>
-              <input
-                type="date"
-                className="form-control"
-                name="fechaDesde"
-                min="2022-01-01"
-                value={editValue.fechaDesde}
-                autoComplete="off"
-                placeholder="Fecha Desde"
-                onChange={(e) => {
-                  setEditValue({ ...editValue, fechaDesde: e.target.value });
-                  setDisabledButton(validateFecha(e.target.value));
-                }}
-              />
+      <Modal
+        title="Cerrar Período"
+        referenceID="periodoModal"
+        customFooter={true}
+        isStatic={true}
+        handleClose={() => {
+          setNewValue({ valor: "", fechaHasta: "" });
+          setIndexModulo(0);
+        }}
+      >
+        <div>
+          <div className="d-flex align-items-center justify-content-center gap-4 flex-md-row flex-sm-column">
+            <div className="d-flex flex-column gap-2 justify-content-center align-items-center w-50">
+              <h6 className="text-muted">Fecha de Cierre</h6>
+              <div>
+                <input
+                  type="date"
+                  className="form-control"
+                  name="fechaHasta"
+                  min={formatDate(fechaAnterior)}
+                  value={newValue.fechaHasta}
+                  autoComplete="off"
+                  placeholder="Fecha Hasta"
+                  onChange={(e) => {
+                    setNewValue({ ...newValue, fechaHasta: e.target.value });
+                    setDisabledButton(validateFecha(e.target.value));
+                  }}
+                />
+              </div>
+            </div>
+            <div className="d-flex justify-content-center gap-2 flex-column align-items-center w-50">
+              <h6 className="text-muted">Valor del nuevo período</h6>
+              <div>
+                <input
+                  className="form-control"
+                  type="number"
+                  value={newValue.valor}
+                  onChange={(e) =>
+                    setNewValue({ ...newValue, valor: e.target.value })
+                  }
+                  min={0}
+                />
+              </div>
             </div>
           </div>
-          <div className="d-flex justify-content-center gap-2 flex-column align-items-center w-50">
-            <h6 className="text-muted">Valor del nuevo período</h6>
-            <div>
-              <input
-                className="form-control"
-                type="number"
-                value={editValue.valor}
-                onChange={(e) =>
-                  setEditValue({ ...editValue, valor: e.target.value })
-                }
-                min={0}
-              />
-            </div>
+          <div className="modal-footer mt-4">
+            <button
+              type="button"
+              onClick={() => {
+                setNewValue({ valor: 0, fechaHasta: "" });
+                setDisabledButton(false);
+              }}
+              className="btn btn-limpiar d-flex align-items-center justify-content-center gap-2"
+            >
+              <FaRedo />
+              <span>Limpiar campos</span>
+            </button>
+            <button
+              type="button"
+              className="btn btn-guardar"
+              onClick={() => handleSave("cerrar")}
+              disabled={
+                !newValue.valor || !newValue.fechaHasta || disabledButton
+              }
+            >
+              Guardar cambios
+            </button>
           </div>
         </div>
       </Modal>
