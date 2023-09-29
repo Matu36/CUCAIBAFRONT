@@ -13,14 +13,14 @@ import { useModulos } from "../hooks/useModulos";
 import NumberFormatter from "../utils/NumberFormatter";
 import "../components/styles/Modulos.css";
 import Dropdown from "./UI/Dropdown";
-import { FaCalendar, FaEdit, FaRedo, FaTimes } from "react-icons/fa";
+import { FaCalendar, FaEdit, FaRedo, FaSync, FaTimes } from "react-icons/fa";
 import "./styles/ordenes.css";
 import Modal from "./UI/Modal";
 import { validateFecha } from "../utils/Validaciones";
 
-const formatDate = (fecha) => {
+const formatDate = (fecha, cant = 2) => {
   let date = new Date(fecha);
-  date.setDate(date.getDate() + 2);
+  date.setDate(date.getDate() + cant);
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, "0");
   const day = String(date.getDate()).padStart(2, "0");
@@ -38,12 +38,14 @@ const Modulos = ({ ...props }) => {
     modulosMutation,
     editarModulo,
     cerrarModuloValor,
+    actualizarValor,
   } = useModulos(0, true);
   const { data, isFetched, refetch } = modulosValorQuery;
   const { data: modulos, isFetched: fetchedModulos } = modulosQuery;
   const { mutate } = modulosMutation;
   const { mutate: editMutate } = editarModulo;
   const { mutate: cerrarMutate } = cerrarModuloValor;
+  const { mutate: actualizarMutate } = actualizarValor;
 
   const orderData = (data) => {
     if (data && data.length > 0) {
@@ -115,16 +117,11 @@ const Modulos = ({ ...props }) => {
     valor: "",
     fechaDesde: "",
   });
-  const [newValue, setNewValue] = useState({ valor: "", fechaHasta: "" });
-  const [fechaAnterior, setFechaAnterior] = useState("");
-  const [prevValor, setPrevValor] = useState(0);
-  const [disabledButton, setDisabledButton] = useState(false);
+  const [fechaCierre, setFechaCierre] = useState("");
   const [indexModulo, setIndexModulo] = useState(0);
-
-  const handleEdit = (valor) => {
-    setEditPrice(valor);
-    setPrevValor(valor);
-  };
+  const [newModulo, setNewModulo] = useState({ valor: 0, fechaDesde: "" });
+  const [fechaAnterior, setFechaAnterior] = useState("");
+  const [disabledButton, setDisabledButton] = useState(false);
 
   const handleSave = (option) => {
     let moduloData = { id: indexModulo };
@@ -141,12 +138,20 @@ const Modulos = ({ ...props }) => {
     } else if (option == "cerrar") {
       moduloData = {
         ...moduloData,
-        valor: newValue.valor,
-        fechaHasta: newValue.fechaHasta,
+        fechaHasta: fechaCierre,
       };
       cerrarMutate(moduloData);
       refetch();
-      setEditValue({ valor: 0, fechaDesde: "" });
+      setFechaCierre("");
+    } else if (option == "actualizar") {
+      moduloData = {
+        ...moduloData,
+        valor: newModulo.valor,
+        fechaDesde: newModulo.fechaDesde,
+      };
+      actualizarMutate(moduloData);
+      refetch();
+      setNewModulo({ valor: 0, fechaDesde: "" });
     }
 
     setIndexModulo(0);
@@ -216,19 +221,20 @@ const Modulos = ({ ...props }) => {
       cell: (row) =>
         !row.fechaHasta && (
           <Dropdown>
-            {row.unico && (
-              <button
-                className={`dropdown-item dropdown-item-custom d-flex align-items-center gap-2
+            {row.unico ||
+              (!row.fecha_hasta && (
+                <button
+                  className={`dropdown-item dropdown-item-custom d-flex align-items-center gap-2
               }`}
-                type="button"
-                data-bs-toggle="modal"
-                data-bs-target="#editModuloModal"
-                onClick={() => setIndexModulo(row.id)}
-              >
-                <FaEdit />
-                Editar M&oacute;dulo
-              </button>
-            )}
+                  type="button"
+                  data-bs-toggle="modal"
+                  data-bs-target="#editModuloModal"
+                  onClick={() => setIndexModulo(row.id)}
+                >
+                  <FaEdit />
+                  Editar M&oacute;dulo
+                </button>
+              ))}
             {!row.fecha_hasta && (
               <button
                 className={`dropdown-item dropdown-item-custom d-flex align-items-center gap-2
@@ -245,6 +251,26 @@ const Modulos = ({ ...props }) => {
                 Cerrar Período
               </button>
             )}
+            {!row.unico ||
+              (row.fecha_hasta && (
+                <button
+                  className={`dropdown-item dropdown-item-custom d-flex align-items-center gap-2
+              }`}
+                  type="button"
+                  data-bs-toggle="modal"
+                  data-bs-target="#valorModal"
+                  onClick={() => {
+                    setIndexModulo(row.id);
+                    setNewModulo({
+                      ...newModulo,
+                      fechaDesde: formatDate(row.fecha_hasta, 1),
+                    });
+                  }}
+                >
+                  <FaSync />
+                  Actualizar Valor
+                </button>
+              ))}
             <button
               className={`dropdown-item dropdown-item-custom d-flex align-items-center gap-2`}
               type="button"
@@ -335,16 +361,17 @@ const Modulos = ({ ...props }) => {
       <Modal
         title="Cerrar Período"
         referenceID="periodoModal"
+        size="modal-md"
         customFooter={true}
         isStatic={true}
         handleClose={() => {
-          setNewValue({ valor: "", fechaHasta: "" });
+          setFechaCierre();
           setIndexModulo(0);
         }}
       >
         <div>
           <div className="d-flex align-items-center justify-content-center gap-4 flex-md-row flex-sm-column">
-            <div className="d-flex flex-column gap-2 justify-content-center align-items-center w-50">
+            <div className="d-flex flex-column gap-2 justify-content-center align-items-center w-50 mb-2">
               <h6 className="text-muted">Fecha de Cierre</h6>
               <div>
                 <input
@@ -352,27 +379,13 @@ const Modulos = ({ ...props }) => {
                   className="form-control"
                   name="fechaHasta"
                   min={formatDate(fechaAnterior)}
-                  value={newValue.fechaHasta}
+                  value={fechaCierre}
                   autoComplete="off"
                   placeholder="Fecha Hasta"
                   onChange={(e) => {
-                    setNewValue({ ...newValue, fechaHasta: e.target.value });
+                    setFechaCierre(e.target.value);
                     setDisabledButton(validateFecha(e.target.value));
                   }}
-                />
-              </div>
-            </div>
-            <div className="d-flex justify-content-center gap-2 flex-column align-items-center w-50">
-              <h6 className="text-muted">Valor del nuevo período</h6>
-              <div>
-                <input
-                  className="form-control"
-                  type="number"
-                  value={newValue.valor}
-                  onChange={(e) =>
-                    setNewValue({ ...newValue, valor: e.target.value })
-                  }
-                  min={0}
                 />
               </div>
             </div>
@@ -381,7 +394,7 @@ const Modulos = ({ ...props }) => {
             <button
               type="button"
               onClick={() => {
-                setNewValue({ valor: 0, fechaHasta: "" });
+                setFechaCierre("");
                 setDisabledButton(false);
               }}
               className="btn btn-limpiar d-flex align-items-center justify-content-center gap-2"
@@ -393,8 +406,71 @@ const Modulos = ({ ...props }) => {
               type="button"
               className="btn btn-guardar"
               onClick={() => handleSave("cerrar")}
+              disabled={!fechaCierre || disabledButton}
+            >
+              Guardar cambios
+            </button>
+          </div>
+        </div>
+      </Modal>
+      <Modal
+        title="Actualizar Valor"
+        referenceID="valorModal"
+        customFooter={true}
+        isStatic={true}
+        handleClose={() => setIndexModulo(0)}
+      >
+        <div>
+          <div className="d-flex align-items-center justify-content-center gap-4 flex-md-row flex-sm-column">
+            <div className="d-flex flex-column gap-2 justify-content-center align-items-center w-50 mb-2">
+              <h6 className="text-muted">Fecha de Inicio</h6>
+              <div>
+                <input
+                  type="date"
+                  className="form-control"
+                  name="fechaDesde"
+                  value={newModulo.fechaDesde}
+                  autoComplete="off"
+                  placeholder="Fecha Desde"
+                  disabled
+                />
+              </div>
+            </div>
+            <div className="d-flex justify-content-center gap-2 flex-column align-items-center w-50">
+              <h6 className="text-muted">Nuevo Valor</h6>
+              <div>
+                <input
+                  className="form-control"
+                  type="number"
+                  value={newModulo.valor}
+                  onChange={(e) =>
+                    setNewModulo({ ...newModulo, valor: e.target.value })
+                  }
+                  min={0}
+                />
+              </div>
+            </div>
+          </div>
+          <div className="modal-footer mt-4">
+            <button
+              type="button"
+              onClick={() => {
+                setNewModulo({ ...newModulo, valor: 0 });
+                setDisabledButton(false);
+              }}
+              className="btn btn-limpiar d-flex align-items-center justify-content-center gap-2"
+            >
+              <FaRedo />
+              <span>Limpiar campos</span>
+            </button>
+            <button
+              type="button"
+              className="btn btn-guardar"
+              onClick={() => handleSave("actualizar")}
               disabled={
-                !newValue.valor || !newValue.fechaHasta || disabledButton
+                !newModulo.fechaDesde ||
+                !newModulo.valor ||
+                newModulo.valor <= 0
               }
             >
               Guardar cambios
