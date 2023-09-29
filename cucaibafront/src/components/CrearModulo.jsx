@@ -196,37 +196,35 @@ const CrearModulo = ({ handleCerrarFormulario, data }) => {
               )
             )}
           </div>
-        </div>
-        <hr className="hrstyle2" />
-
-        <div className="d-flex justify-content-between align-items-center">
-          <p className="text-muted">
+          <p className="text-muted mt-2">
             (En caso de ingresar Valor y Fecha Desde, se le va a estar asociando
             un valor al módulo creado)
           </p>
-          <div>
-            <button
-              onClick={handleCerrarFormulario}
-              type="submit"
-              className="btn btn-outline-secondary pb-2"
-              style={{ marginRight: "10px" }}
-            >
-              Cancelar
-            </button>
-            <button
-              type="submit"
-              ref={crearModuloButtonRef}
-              className="btn btn-guardar pt-2"
-              disabled={
-                showError.fecha ||
-                showError.descripcion != 0 ||
-                showError.valor ||
-                !modulo.descripcion
-              }
-            >
-              Crear M&oacute;dulo
-            </button>
-          </div>
+        </div>
+        <hr className="hrstyle2 mt-0" />
+
+        <div className="d-flex justify-content-end align-items-center">
+          <button
+            onClick={handleCerrarFormulario}
+            type="submit"
+            className="btn btn-outline-secondary "
+            style={{ marginRight: "10px" }}
+          >
+            Cerrar
+          </button>
+          <button
+            type="submit"
+            ref={crearModuloButtonRef}
+            className="btn btn-guardar pt-2"
+            disabled={
+              showError.fecha ||
+              showError.descripcion != 0 ||
+              showError.valor ||
+              !modulo.descripcion
+            }
+          >
+            Crear M&oacute;dulo
+          </button>
         </div>
       </form>
     </div>

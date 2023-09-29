@@ -142,7 +142,6 @@ export const useModulos = (operativoId = 0, valor = false) => {
     mutationKey: ["cerrar-modulo"],
     mutationFn: async (data) =>
       await ModulosValorAPI.put(`/cerrar/${data.id}`, {
-        valor: data.valor,
         fechaHasta: data.fechaHasta,
       }),
     onSuccess: () => {
@@ -158,6 +157,26 @@ export const useModulos = (operativoId = 0, valor = false) => {
       let modalInstance = bootstrap.Modal.getInstance(modalEl);
       modalInstance.hide();
       modulosValorQuery.refetch();
+    },
+    onError: (err) => {
+      let fecha = new Date(err.response.data);
+      switch (err.response.status) {
+        case 405:
+          Swal.fire({
+            position: "center",
+            icon: "warning",
+            title: "Hubo un problema",
+            text: `La fecha mínima tiene que ser posterior al ${fecha.getDate()}/${
+              fecha.getMonth() + 1
+            }/${fecha.getFullYear()}`,
+            showConfirmButton: false,
+            timer: 4000,
+          });
+          let modalEl = document.getElementById("periodoModal");
+          let modalInstance = bootstrap.Modal.getInstance(modalEl);
+          modalInstance.hide();
+          break;
+      }
     },
   });
 
@@ -270,6 +289,29 @@ export const useModulos = (operativoId = 0, valor = false) => {
     },
   });
 
+  const actualizarValor = useMutation({
+    mutationKey: ["actualizar-valor"],
+    mutationFn: async (data) =>
+      await ModulosValorAPI.put(`/actualizar/${data.id}`, {
+        valor: data.valor,
+        fechaDesde: data.fechaDesde,
+      }),
+    onSuccess: () => {
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        title: "Se actualizó el valor del módulo",
+        text: "Se generó un nuevo modulo, con nueva fecha de inicio y valor",
+        showConfirmButton: false,
+        timer: 4000,
+      });
+      let modalEl = document.getElementById("valorModal");
+      let modalInstance = bootstrap.Modal.getInstance(modalEl);
+      modalInstance.hide();
+      modulosValorQuery.refetch();
+    },
+  });
+
   return {
     modulosQuery,
     modulosValorQuery,
@@ -279,5 +321,6 @@ export const useModulos = (operativoId = 0, valor = false) => {
     crearModuloValor,
     editarModulo,
     cerrarModuloValor,
+    actualizarValor,
   };
 };

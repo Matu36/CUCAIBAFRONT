@@ -21,7 +21,7 @@ const Badge = ({ estado }) => {
           className="badge rounded-pill px-3 py-1 text-bg-success"
           style={{ fontSize: "11px" }}
         >
-          Disponible
+          Sin Valor
         </span>
       );
 
@@ -31,7 +31,7 @@ const Badge = ({ estado }) => {
           className="badge rounded-pill px-3 py-1 text-bg-danger"
           style={{ fontSize: "11px" }}
         >
-          No Disponible
+          Con Valor
         </span>
       );
   }
