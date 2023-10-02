@@ -73,18 +73,18 @@ const CrearModulo = ({ handleCerrarFormulario, data }) => {
   };
 
   return (
-    <div className="form-container pt-2 container">
+    <div className="form-container pt-2 container" >
       <form
         onSubmit={handleOnSubmit}
-        className="row g-3 pt-4"
+        className="row g-3 pt-4" 
         onKeyDown={(e) => {
           if (e.key === "Enter" && e.target !== crearModuloButtonRef.current) {
             e.preventDefault();
           }
         }}
       >
-        <div className="modulo">
-          <h6>CREAR M&Oacute;DULO</h6>
+        <div className="modalPersonalizado">
+          <h6 style={{color:"#5dade2"}}>CREAR M&Oacute;DULO</h6>
         </div>
         <hr className="hrstyle" />
         <div className="col-md-6"></div>
@@ -202,7 +202,7 @@ const CrearModulo = ({ handleCerrarFormulario, data }) => {
             un valor al módulo creado)
           </p>
         </div>
-        <hr className="hrstyle2 mt-0" />
+        <hr className="hrstyle2 mt-6" />
 
         <div className="d-flex justify-content-end align-items-center">
           <button

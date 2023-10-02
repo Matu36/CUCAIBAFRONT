@@ -17,7 +17,6 @@ import { FaCalendar, FaEdit, FaRedo, FaSync, FaTimes } from "react-icons/fa";
 import "./styles/ordenes.css";
 import Modal from "./UI/Modal";
 import { validateFecha } from "../utils/Validaciones";
-import { MaskMoneda } from "../utils/Mask";
 
 const formatDate = (fecha, cant = 2) => {
   let date = new Date(fecha);
@@ -222,19 +221,20 @@ const Modulos = ({ ...props }) => {
       cell: (row) =>
         !row.fechaHasta && (
           <Dropdown>
-            {row.unico && !row.fecha_hasta && (
-              <button
-                className={`dropdown-item dropdown-item-custom d-flex align-items-center gap-2
+            {row.unico ||
+              (!row.fecha_hasta && (
+                <button
+                  className={`dropdown-item dropdown-item-custom d-flex align-items-center gap-2
               }`}
-                type="button"
-                data-bs-toggle="modal"
-                data-bs-target="#editModuloModal"
-                onClick={() => setIndexModulo(row.id)}
-              >
-                <FaEdit />
-                Editar M&oacute;dulo
-              </button>
-            )}
+                  type="button"
+                  data-bs-toggle="modal"
+                  data-bs-target="#editModuloModal"
+                  onClick={() => setIndexModulo(row.id)}
+                >
+                  <FaEdit />
+                  Editar M&oacute;dulo
+                </button>
+              ))}
             {!row.fecha_hasta && (
               <button
                 className={`dropdown-item dropdown-item-custom d-flex align-items-center gap-2
@@ -251,25 +251,26 @@ const Modulos = ({ ...props }) => {
                 Cerrar Período
               </button>
             )}
-            {row.estado == 3 && (
-              <button
-                className={`dropdown-item dropdown-item-custom d-flex align-items-center gap-2
+            {!row.unico ||
+              (row.fecha_hasta && (
+                <button
+                  className={`dropdown-item dropdown-item-custom d-flex align-items-center gap-2
               }`}
-                type="button"
-                data-bs-toggle="modal"
-                data-bs-target="#valorModal"
-                onClick={() => {
-                  setIndexModulo(row.id);
-                  setNewModulo({
-                    ...newModulo,
-                    fechaDesde: formatDate(row.fecha_hasta, 1),
-                  });
-                }}
-              >
-                <FaSync />
-                Actualizar Valor
-              </button>
-            )}
+                  type="button"
+                  data-bs-toggle="modal"
+                  data-bs-target="#valorModal"
+                  onClick={() => {
+                    setIndexModulo(row.id);
+                    setNewModulo({
+                      ...newModulo,
+                      fechaDesde: formatDate(row.fecha_hasta, 1),
+                    });
+                  }}
+                >
+                  <FaSync />
+                  Actualizar Valor
+                </button>
+              ))}
             <button
               className={`dropdown-item dropdown-item-custom d-flex align-items-center gap-2`}
               type="button"
@@ -298,8 +299,9 @@ const Modulos = ({ ...props }) => {
         isStatic={true}
       >
         <div>
+          <hr className="hrstyle" style={{marginTop:"-2rem"}}/>
           <div className="d-flex align-items-center justify-content-center gap-4 flex-md-row flex-sm-column">
-            <div className="d-flex flex-column gap-2 justify-content-center align-items-center w-50">
+            <div className="d-flex flex-column gap-2 justify-content-center align-items-center w-50 mt-5">
               <h6 className="text-muted">Editar Fecha</h6>
               <div>
                 <input
@@ -317,25 +319,23 @@ const Modulos = ({ ...props }) => {
                 />
               </div>
             </div>
-            <div className="d-flex justify-content-center gap-2 flex-column align-items-center w-50">
+            <div className="d-flex justify-content-center gap-2 flex-column align-items-center w-50 mt-5">
               <h6 className="text-muted">Editar Valor</h6>
               <div>
                 <input
                   className="form-control"
                   type="number"
-                  value={MaskMoneda(editValue.valor)}
+                  value={editValue.valor}
                   onChange={(e) =>
-                    setEditValue({
-                      ...editValue,
-                      valor: MaskMoneda(e.target.value),
-                    })
+                    setEditValue({ ...editValue, valor: e.target.value })
                   }
                   min={0}
                 />
               </div>
             </div>
           </div>
-          <div className="modal-footer mt-4">
+          <hr className="hrstyle2"/>
+          <div className="modal-footer mt-4" style={{border:"none"}}>
             <button
               type="button"
               onClick={() => {
@@ -366,14 +366,18 @@ const Modulos = ({ ...props }) => {
         size="modal-md"
         customFooter={true}
         isStatic={true}
+        showHr={true} 
+        showHr2={true} 
         handleClose={() => {
           setFechaCierre();
           setIndexModulo(0);
         }}
       >
         <div>
-          <div className="d-flex align-items-center justify-content-center gap-4 flex-md-row flex-sm-column">
-            <div className="d-flex flex-column gap-2 justify-content-center align-items-center w-50 mb-2">
+          <hr className="hrstyle" style={{marginTop:"-1.5rem"}} />
+          <div className="d-flex align-items-center justify-content-center gap-4 flex-md-row flex-sm-column ">
+            <div className="d-flex flex-column gap-2 justify-content-center align-items-center w-50 mt-5">
+           
               <h6 className="text-muted">Fecha de Cierre</h6>
               <div>
                 <input
@@ -391,8 +395,10 @@ const Modulos = ({ ...props }) => {
                 />
               </div>
             </div>
+            
           </div>
-          <div className="modal-footer mt-4">
+          <hr className="hrstyle2"/>
+          <div className="modal-footer" style={{border:"none"}}>
             <button
               type="button"
               onClick={() => {
@@ -401,6 +407,7 @@ const Modulos = ({ ...props }) => {
               }}
               className="btn btn-limpiar d-flex align-items-center justify-content-center gap-2"
             >
+              
               <FaRedo />
               <span>Limpiar campos</span>
             </button>
@@ -412,6 +419,7 @@ const Modulos = ({ ...props }) => {
             >
               Guardar cambios
             </button>
+            
           </div>
         </div>
       </Modal>
@@ -444,19 +452,20 @@ const Modulos = ({ ...props }) => {
                 <input
                   className="form-control"
                   type="number"
-                  value={MaskMoneda(newModulo.valor)}
+                  value={newModulo.valor}
                   onChange={(e) =>
-                    setNewModulo({
-                      ...newModulo,
-                      valor: MaskMoneda(e.target.value),
-                    })
+                    setNewModulo({ ...newModulo, valor: e.target.value })
                   }
                   min={0}
                 />
               </div>
+             
             </div>
+           
           </div>
+          
           <div className="modal-footer mt-4">
+            
             <button
               type="button"
               onClick={() => {
@@ -465,6 +474,7 @@ const Modulos = ({ ...props }) => {
               }}
               className="btn btn-limpiar d-flex align-items-center justify-content-center gap-2"
             >
+             
               <FaRedo />
               <span>Limpiar campos</span>
             </button>

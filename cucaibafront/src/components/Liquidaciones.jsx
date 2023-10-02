@@ -180,9 +180,10 @@ const Liquidaciones = ({ ...props }) => {
             customFooter={true}
           >
             <div>
-              <div className="d-flex w-full justify-content-evenly">
+              <hr className="hrstyle" style={{marginTop:"-2rem"}} />
+              <div className="d-flex w-full justify-content-evenly mt-4">
                 <div className="mb-3">
-                  <label htmlFor="inputFolio" className="form-label">
+                  <label htmlFor="inputFolio" className="form-label mt-5">
                     Nro de Folio Banco: <span style={{ color: "red" }}>*</span>
                   </label>
                   <input
@@ -205,7 +206,7 @@ const Liquidaciones = ({ ...props }) => {
                 <div className="mb-3">
                   <label
                     htmlFor="inputCheque-Transferencia"
-                    className="form-label"
+                    className="form-label mt-5"
                   >
                     Nro de Cheque/Transferencia:{" "}
                     <span className="spanObligatorio">*</span>
@@ -228,8 +229,8 @@ const Liquidaciones = ({ ...props }) => {
                   )}
                 </div>
               </div>
-
-              <div className="modal-footer">
+<hr className="hrstyle2"/>
+              <div className="modal-footer" style={{border:"none"}}>
                 <button
                   type="button"
                   className="btn btn-guardar"
