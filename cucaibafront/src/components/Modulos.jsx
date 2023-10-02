@@ -17,7 +17,6 @@ import { FaCalendar, FaEdit, FaRedo, FaSync, FaTimes } from "react-icons/fa";
 import "./styles/ordenes.css";
 import Modal from "./UI/Modal";
 import { validateFecha } from "../utils/Validaciones";
-import { MaskMoneda } from "../utils/Mask";
 
 const formatDate = (fecha, cant = 2) => {
   let date = new Date(fecha);
@@ -222,19 +221,20 @@ const Modulos = ({ ...props }) => {
       cell: (row) =>
         !row.fechaHasta && (
           <Dropdown>
-            {row.unico && !row.fecha_hasta && (
-              <button
-                className={`dropdown-item dropdown-item-custom d-flex align-items-center gap-2
+            {row.unico ||
+              (!row.fecha_hasta && (
+                <button
+                  className={`dropdown-item dropdown-item-custom d-flex align-items-center gap-2
               }`}
-                type="button"
-                data-bs-toggle="modal"
-                data-bs-target="#editModuloModal"
-                onClick={() => setIndexModulo(row.id)}
-              >
-                <FaEdit />
-                Editar M&oacute;dulo
-              </button>
-            )}
+                  type="button"
+                  data-bs-toggle="modal"
+                  data-bs-target="#editModuloModal"
+                  onClick={() => setIndexModulo(row.id)}
+                >
+                  <FaEdit />
+                  Editar M&oacute;dulo
+                </button>
+              ))}
             {!row.fecha_hasta && (
               <button
                 className={`dropdown-item dropdown-item-custom d-flex align-items-center gap-2
@@ -251,25 +251,26 @@ const Modulos = ({ ...props }) => {
                 Cerrar Período
               </button>
             )}
-            {row.estado == 3 && (
-              <button
-                className={`dropdown-item dropdown-item-custom d-flex align-items-center gap-2
+            {!row.unico ||
+              (row.fecha_hasta && (
+                <button
+                  className={`dropdown-item dropdown-item-custom d-flex align-items-center gap-2
               }`}
-                type="button"
-                data-bs-toggle="modal"
-                data-bs-target="#valorModal"
-                onClick={() => {
-                  setIndexModulo(row.id);
-                  setNewModulo({
-                    ...newModulo,
-                    fechaDesde: formatDate(row.fecha_hasta, 1),
-                  });
-                }}
-              >
-                <FaSync />
-                Actualizar Valor
-              </button>
-            )}
+                  type="button"
+                  data-bs-toggle="modal"
+                  data-bs-target="#valorModal"
+                  onClick={() => {
+                    setIndexModulo(row.id);
+                    setNewModulo({
+                      ...newModulo,
+                      fechaDesde: formatDate(row.fecha_hasta, 1),
+                    });
+                  }}
+                >
+                  <FaSync />
+                  Actualizar Valor
+                </button>
+              ))}
             <button
               className={`dropdown-item dropdown-item-custom d-flex align-items-center gap-2`}
               type="button"
@@ -323,12 +324,9 @@ const Modulos = ({ ...props }) => {
                 <input
                   className="form-control"
                   type="number"
-                  value={MaskMoneda(editValue.valor)}
+                  value={editValue.valor}
                   onChange={(e) =>
-                    setEditValue({
-                      ...editValue,
-                      valor: MaskMoneda(e.target.value),
-                    })
+                    setEditValue({ ...editValue, valor: e.target.value })
                   }
                   min={0}
                 />
@@ -444,12 +442,9 @@ const Modulos = ({ ...props }) => {
                 <input
                   className="form-control"
                   type="number"
-                  value={MaskMoneda(newModulo.valor)}
+                  value={newModulo.valor}
                   onChange={(e) =>
-                    setNewModulo({
-                      ...newModulo,
-                      valor: MaskMoneda(e.target.value),
-                    })
+                    setNewModulo({ ...newModulo, valor: e.target.value })
                   }
                   min={0}
                 />

@@ -20,13 +20,13 @@ const Modal = ({
       aria-hidden="true"
       data-bs-backdrop={isStatic && "static"}
     >
-      <div className="modal-dialog">
+      <div className="modal-dialog modalPersonalizado">
         <div className="modal-content bg-white">
           <div className="modal-header">
             <div className="modulo">
-              <h6>{title.toUpperCase()}</h6>
+              <h6 style={{color:"#5dade2"}}>{title.toUpperCase()}</h6>
             </div>
-            <hr className="hrstyle" />
+
             <button
               type="button"
               className="btn-close"

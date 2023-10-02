@@ -381,6 +381,7 @@ const RowExpandedComponent = ({ data: operativo }) => {
         title={`Agregar Agente al Operativo: ${operativo.referencia}`}
         referenceID="agregarAgenteModal"
       >
+
         <div>
           <input
             type="text"

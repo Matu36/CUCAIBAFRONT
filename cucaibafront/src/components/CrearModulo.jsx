@@ -83,8 +83,8 @@ const CrearModulo = ({ handleCerrarFormulario, data }) => {
           }
         }}
       >
-        <div className="modulo">
-          <h6>CREAR M&Oacute;DULO</h6>
+        <div className="modalPersonalizado">
+          <h6 style={{color:"#5dade2"}}>CREAR M&Oacute;DULO</h6>
         </div>
         <hr className="hrstyle" />
         <div className="col-md-6"></div>
