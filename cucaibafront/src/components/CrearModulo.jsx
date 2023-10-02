@@ -202,7 +202,7 @@ const CrearModulo = ({ handleCerrarFormulario, data }) => {
             un valor al módulo creado)
           </p>
         </div>
-        <hr className="hrstyle2 mt-0" />
+        <hr className="hrstyle2 mt-6" />
 
         <div className="d-flex justify-content-end align-items-center">
           <button

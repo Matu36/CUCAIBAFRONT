@@ -22,7 +22,7 @@ const Modal = ({
     >
       <div className="modal-dialog modalPersonalizado">
         <div className="modal-content bg-white">
-          <div className="modal-header">
+          <div className="modal-header" style={{borderColor:"#5dade2" }}>
             <div className="modulo">
               <h6 style={{color:"#5dade2"}}>{title.toUpperCase()}</h6>
             </div>
@@ -36,7 +36,7 @@ const Modal = ({
           </div>
           <div className="modal-body">{children}</div>
           {!customFooter && (
-            <div className="modal-footer">
+            <div className="modal-footer" style={{border:"none"}} >
               <button
                 type="button"
                 className="btn btn-secondary"

@@ -390,7 +390,7 @@ const Modulos = ({ ...props }) => {
               </div>
             </div>
           </div>
-          <div className="modal-footer mt-4">
+          <div className="modal-footer mt-4" style={{border:"none"}}>
             <button
               type="button"
               onClick={() => {
