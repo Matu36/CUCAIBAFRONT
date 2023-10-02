@@ -396,9 +396,10 @@ export const VerOrdenes = ({ ...props }) => {
         customFooter={true}
       >
         <div>
+          <hr className="hrstyle" style={{marginTop:"-2rem"}} />
           <form>
             <div
-              className="d-flex gap-1 align-items-center"
+              className="d-flex gap-1 align-items-center mt-5"
               style={{
                 flexDirection: window.innerWidth < 1000 ? "column" : "row",
               }}
@@ -439,7 +440,9 @@ export const VerOrdenes = ({ ...props }) => {
               required={true}
             />
           </form>
-          <div className="modal-footer">
+          <hr className="hrstyle2"/>
+          <div className="modal-footer" style={{border:"none"}}>
+           
             <button
               type="button"
               className="btn btn-secondary"

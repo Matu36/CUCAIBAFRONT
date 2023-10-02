@@ -73,10 +73,10 @@ const CrearModulo = ({ handleCerrarFormulario, data }) => {
   };
 
   return (
-    <div className="form-container pt-2 container">
+    <div className="form-container pt-2 container" >
       <form
         onSubmit={handleOnSubmit}
-        className="row g-3 pt-4"
+        className="row g-3 pt-4" 
         onKeyDown={(e) => {
           if (e.key === "Enter" && e.target !== crearModuloButtonRef.current) {
             e.preventDefault();

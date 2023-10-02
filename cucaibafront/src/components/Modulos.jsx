@@ -299,8 +299,9 @@ const Modulos = ({ ...props }) => {
         isStatic={true}
       >
         <div>
+          <hr className="hrstyle" style={{marginTop:"-2rem"}}/>
           <div className="d-flex align-items-center justify-content-center gap-4 flex-md-row flex-sm-column">
-            <div className="d-flex flex-column gap-2 justify-content-center align-items-center w-50">
+            <div className="d-flex flex-column gap-2 justify-content-center align-items-center w-50 mt-5">
               <h6 className="text-muted">Editar Fecha</h6>
               <div>
                 <input
@@ -318,7 +319,7 @@ const Modulos = ({ ...props }) => {
                 />
               </div>
             </div>
-            <div className="d-flex justify-content-center gap-2 flex-column align-items-center w-50">
+            <div className="d-flex justify-content-center gap-2 flex-column align-items-center w-50 mt-5">
               <h6 className="text-muted">Editar Valor</h6>
               <div>
                 <input
@@ -333,7 +334,8 @@ const Modulos = ({ ...props }) => {
               </div>
             </div>
           </div>
-          <div className="modal-footer mt-4">
+          <hr className="hrstyle2"/>
+          <div className="modal-footer mt-4" style={{border:"none"}}>
             <button
               type="button"
               onClick={() => {
@@ -364,14 +366,18 @@ const Modulos = ({ ...props }) => {
         size="modal-md"
         customFooter={true}
         isStatic={true}
+        showHr={true} 
+        showHr2={true} 
         handleClose={() => {
           setFechaCierre();
           setIndexModulo(0);
         }}
       >
         <div>
-          <div className="d-flex align-items-center justify-content-center gap-4 flex-md-row flex-sm-column">
-            <div className="d-flex flex-column gap-2 justify-content-center align-items-center w-50 mb-2">
+          <hr className="hrstyle" style={{marginTop:"-1.5rem"}} />
+          <div className="d-flex align-items-center justify-content-center gap-4 flex-md-row flex-sm-column ">
+            <div className="d-flex flex-column gap-2 justify-content-center align-items-center w-50 mt-5">
+           
               <h6 className="text-muted">Fecha de Cierre</h6>
               <div>
                 <input
@@ -389,8 +395,10 @@ const Modulos = ({ ...props }) => {
                 />
               </div>
             </div>
+            
           </div>
-          <div className="modal-footer mt-4" style={{border:"none"}}>
+          <hr className="hrstyle2"/>
+          <div className="modal-footer" style={{border:"none"}}>
             <button
               type="button"
               onClick={() => {
@@ -399,6 +407,7 @@ const Modulos = ({ ...props }) => {
               }}
               className="btn btn-limpiar d-flex align-items-center justify-content-center gap-2"
             >
+              
               <FaRedo />
               <span>Limpiar campos</span>
             </button>
@@ -410,6 +419,7 @@ const Modulos = ({ ...props }) => {
             >
               Guardar cambios
             </button>
+            
           </div>
         </div>
       </Modal>
@@ -449,9 +459,13 @@ const Modulos = ({ ...props }) => {
                   min={0}
                 />
               </div>
+             
             </div>
+           
           </div>
+          
           <div className="modal-footer mt-4">
+            
             <button
               type="button"
               onClick={() => {
@@ -460,6 +474,7 @@ const Modulos = ({ ...props }) => {
               }}
               className="btn btn-limpiar d-flex align-items-center justify-content-center gap-2"
             >
+             
               <FaRedo />
               <span>Limpiar campos</span>
             </button>

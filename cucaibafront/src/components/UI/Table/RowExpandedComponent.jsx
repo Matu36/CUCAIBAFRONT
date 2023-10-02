@@ -317,6 +317,7 @@ const RowExpandedComponent = ({ data: operativo }) => {
   return (
     <>
       <Modal title="Agregar función al Agente" referenceID="formModal">
+        <hr className="hrstyle" style={{marginTop:"-2rem"}}/>
         <div className="p-3">
           <table className="table table-responsive">
             <thead>
@@ -381,8 +382,8 @@ const RowExpandedComponent = ({ data: operativo }) => {
         title={`Agregar Agente al Operativo: ${operativo.referencia}`}
         referenceID="agregarAgenteModal"
       >
-
-        <div>
+<hr className="hrstyle" style={{marginTop:"-1.5rem"}} />
+        <div className="mt-4">
           <input
             type="text"
             className="form-control"

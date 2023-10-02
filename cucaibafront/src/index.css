@@ -820,3 +820,15 @@ fieldset[disabled] .btn {
     max-width: 1140px !important;
   }
 }
+
+.hrstyle {
+  margin: 10px 0;
+  border: #5dade2;
+  border-bottom: 5px solid #5dade2;
+}
+
+.hrstyle2 {
+  margin-top: 4rem;
+  border: #5dade2;
+  border-bottom: 5px solid #5dade2;
+}

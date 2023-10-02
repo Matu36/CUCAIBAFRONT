@@ -147,8 +147,11 @@ const PostHonorarios = ({
           >
             <AiOutlinePlus />
           </button>
+         
         </div>
+       
       </div>
+      <hr className="hrstyle2"/>
     </div>
   );
 };
