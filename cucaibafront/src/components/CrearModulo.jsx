@@ -6,6 +6,7 @@ import { validateFecha } from "../utils/Validaciones";
 import { useModulos } from "../hooks/useModulos";
 import { FaPlus } from "react-icons/fa";
 import "../components/styles/CrearModulo.css";
+import { MaskMoneda } from "../utils/Mask";
 
 const NUMBER_REGEX = /^[0-9]+$/;
 const STRING_REGEX = /^[a-zA-Z].*(?:\d| )*$/;
