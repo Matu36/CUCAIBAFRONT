@@ -221,20 +221,19 @@ const Modulos = ({ ...props }) => {
       cell: (row) =>
         !row.fechaHasta && (
           <Dropdown>
-            {row.unico ||
-              (!row.fecha_hasta && (
-                <button
-                  className={`dropdown-item dropdown-item-custom d-flex align-items-center gap-2
+            {row.unico && !row.fecha_hasta && (
+              <button
+                className={`dropdown-item dropdown-item-custom d-flex align-items-center gap-2
               }`}
-                  type="button"
-                  data-bs-toggle="modal"
-                  data-bs-target="#editModuloModal"
-                  onClick={() => setIndexModulo(row.id)}
-                >
-                  <FaEdit />
-                  Editar M&oacute;dulo
-                </button>
-              ))}
+                type="button"
+                data-bs-toggle="modal"
+                data-bs-target="#editModuloModal"
+                onClick={() => setIndexModulo(row.id)}
+              >
+                <FaEdit />
+                Editar M&oacute;dulo
+              </button>
+            )}
             {!row.fecha_hasta && (
               <button
                 className={`dropdown-item dropdown-item-custom d-flex align-items-center gap-2
@@ -299,7 +298,7 @@ const Modulos = ({ ...props }) => {
         isStatic={true}
       >
         <div>
-          <hr className="hrstyle" style={{marginTop:"-2rem"}}/>
+          <hr className="hrstyle" style={{ marginTop: "-2rem" }} />
           <div className="d-flex align-items-center justify-content-center gap-4 flex-md-row flex-sm-column">
             <div className="d-flex flex-column gap-2 justify-content-center align-items-center w-50 mt-5">
               <h6 className="text-muted">Editar Fecha</h6>
@@ -334,8 +333,8 @@ const Modulos = ({ ...props }) => {
               </div>
             </div>
           </div>
-          <hr className="hrstyle2"/>
-          <div className="modal-footer mt-4" style={{border:"none"}}>
+          <hr className="hrstyle2" />
+          <div className="modal-footer mt-4" style={{ border: "none" }}>
             <button
               type="button"
               onClick={() => {
@@ -366,18 +365,17 @@ const Modulos = ({ ...props }) => {
         size="modal-md"
         customFooter={true}
         isStatic={true}
-        showHr={true} 
-        showHr2={true} 
+        showHr={true}
+        showHr2={true}
         handleClose={() => {
-          setFechaCierre();
+          setFechaCierre("");
           setIndexModulo(0);
         }}
       >
         <div>
-          <hr className="hrstyle" style={{marginTop:"-1.5rem"}} />
+          <hr className="hrstyle" style={{ marginTop: "-1.5rem" }} />
           <div className="d-flex align-items-center justify-content-center gap-4 flex-md-row flex-sm-column ">
             <div className="d-flex flex-column gap-2 justify-content-center align-items-center w-50 mt-5">
-           
               <h6 className="text-muted">Fecha de Cierre</h6>
               <div>
                 <input
@@ -395,10 +393,9 @@ const Modulos = ({ ...props }) => {
                 />
               </div>
             </div>
-            
           </div>
-          <hr className="hrstyle2"/>
-          <div className="modal-footer" style={{border:"none"}}>
+          <hr className="hrstyle2" />
+          <div className="modal-footer" style={{ border: "none" }}>
             <button
               type="button"
               onClick={() => {
@@ -407,7 +404,6 @@ const Modulos = ({ ...props }) => {
               }}
               className="btn btn-limpiar d-flex align-items-center justify-content-center gap-2"
             >
-              
               <FaRedo />
               <span>Limpiar campos</span>
             </button>
@@ -419,7 +415,6 @@ const Modulos = ({ ...props }) => {
             >
               Guardar cambios
             </button>
-            
           </div>
         </div>
       </Modal>
@@ -459,13 +454,10 @@ const Modulos = ({ ...props }) => {
                   min={0}
                 />
               </div>
-             
             </div>
-           
           </div>
-          
+
           <div className="modal-footer mt-4">
-            
             <button
               type="button"
               onClick={() => {
@@ -474,7 +466,6 @@ const Modulos = ({ ...props }) => {
               }}
               className="btn btn-limpiar d-flex align-items-center justify-content-center gap-2"
             >
-             
               <FaRedo />
               <span>Limpiar campos</span>
             </button>
