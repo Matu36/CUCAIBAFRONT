@@ -15,6 +15,15 @@ import "./styles/ordenes.css";
 
 const Badge = ({ estado }) => {
   switch (estado) {
+    case 0:
+      return (
+        <span
+          className="badge rounded-pill px-3 py-1 text-bg-danger"
+          style={{ fontSize: "11px" }}
+        >
+          Dado de baja
+        </span>
+      );
     case 1:
       return (
         <span

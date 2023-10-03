@@ -59,9 +59,9 @@ export const useModulos = (operativoId = 0, valor = false) => {
         timer: 3000,
       });
 
-      // window.close();
+      window.close();
 
-      // window.location.reload();
+      window.location.reload();
     },
     onError: (err) => {
       switch (err.response.status) {
@@ -183,7 +183,10 @@ export const useModulos = (operativoId = 0, valor = false) => {
   // Mutación para dar de baja un módulo
   const modulosMutation = useMutation({
     mutationKey: ["baja-modulo"],
-    mutationFn: async (id) => await ModulosAPI.put(`/baja/${id}`),
+    mutationFn: async (data) =>
+      await ModulosValorAPI.put(`/baja/${data.id}`, {
+        fechaHasta: data.fechaHasta,
+      }),
     onSuccess: () => {
       modulosQuery.refetch();
       Swal.fire({
@@ -193,19 +196,29 @@ export const useModulos = (operativoId = 0, valor = false) => {
         showConfirmButton: false,
         timer: 4000,
       });
+      let modalEl = document.getElementById("bajaModal");
+      let modalInstance = bootstrap.Modal.getInstance(modalEl);
+      modalInstance.hide();
+      modulosValorQuery.refetch();
     },
     onError: (error) => {
       // Manejar errores de manera diferente según el status de la respuesta
+      let fecha = new Date(error.response.data);
       switch (error.response.status) {
         case 405:
           Swal.fire({
             position: "center",
             icon: "warning",
             title: "Hubo un problema",
-            html: error.response.data,
+            text: `La fecha mínima tiene que ser posterior al ${fecha.getDate()}/${
+              fecha.getMonth() + 1
+            }/${fecha.getFullYear()}`,
             showConfirmButton: false,
             timer: 4000,
           });
+          let modalEl = document.getElementById("bajaModal");
+          let modalInstance = bootstrap.Modal.getInstance(modalEl);
+          modalInstance.hide();
           break;
 
         default:
@@ -300,8 +313,7 @@ export const useModulos = (operativoId = 0, valor = false) => {
       Swal.fire({
         position: "center",
         icon: "success",
-        title: "Se actualizó el valor del módulo",
-        text: "Se generó un nuevo modulo, con nueva fecha de inicio y valor",
+        title: "Se actualizó la información del módulo",
         showConfirmButton: false,
         timer: 4000,
       });

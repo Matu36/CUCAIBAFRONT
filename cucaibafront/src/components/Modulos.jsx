@@ -122,6 +122,7 @@ const Modulos = ({ ...props }) => {
   const [newModulo, setNewModulo] = useState({ valor: 0, fechaDesde: "" });
   const [fechaAnterior, setFechaAnterior] = useState("");
   const [disabledButton, setDisabledButton] = useState(false);
+  const [editState, setEditState] = useState({ valor: true, fecha: false });
 
   const handleSave = (option) => {
     let moduloData = { id: indexModulo };
@@ -157,10 +158,10 @@ const Modulos = ({ ...props }) => {
     setIndexModulo(0);
   };
 
-  const handleBaja = (id, descripcion) => {
+  const handleBaja = (id) => {
     Swal.fire({
       title: "Dar de baja al módulo",
-      text: `¿Usted esta seguro de que desea eliminar el módulo: ${descripcion}?`,
+      text: `¿Usted esta seguro de que desea dar de baja el módulo?`,
       icon: "warning",
       showCancelButton: true,
       confirmButtonText: "Eliminar",
@@ -169,7 +170,8 @@ const Modulos = ({ ...props }) => {
       cancelButtonColor: "#3085d6",
     }).then((result) => {
       if (result.isConfirmed) {
-        mutate(id);
+        mutate({ id, fechaHasta: fechaCierre });
+        setFechaCierre("");
       }
     });
   };
@@ -219,16 +221,20 @@ const Modulos = ({ ...props }) => {
     {
       name: "Acción",
       cell: (row) =>
-        !row.fechaHasta && (
+        !row.fechaHasta &&
+        row.estado != 0 && (
           <Dropdown>
-            {row.unico && !row.fecha_hasta && (
+            {!row.fecha_hasta && (
               <button
                 className={`dropdown-item dropdown-item-custom d-flex align-items-center gap-2
               }`}
                 type="button"
                 data-bs-toggle="modal"
                 data-bs-target="#editModuloModal"
-                onClick={() => setIndexModulo(row.id)}
+                onClick={() => {
+                  setIndexModulo(row.id);
+                  setEditState({ valor: true, fecha: row.unico });
+                }}
               >
                 <FaEdit />
                 Editar M&oacute;dulo
@@ -273,9 +279,12 @@ const Modulos = ({ ...props }) => {
             <button
               className={`dropdown-item dropdown-item-custom d-flex align-items-center gap-2`}
               type="button"
-              // data-bs-toggle="modal"
-              // data-bs-target="#opDefinitiva"
-              onClick={() => handleBaja(row.id, row.descripcion)}
+              data-bs-toggle="modal"
+              data-bs-target="#bajaModal"
+              onClick={() => {
+                setIndexModulo(row.id);
+                setFechaAnterior(row.fecha_desde);
+              }}
             >
               <FaTimes />
               Dar de Baja
@@ -300,38 +309,45 @@ const Modulos = ({ ...props }) => {
         <div>
           <hr className="hrstyle" style={{ marginTop: "-2rem" }} />
           <div className="d-flex align-items-center justify-content-center gap-4 flex-md-row flex-sm-column">
-            <div className="d-flex flex-column gap-2 justify-content-center align-items-center w-50 mt-5">
-              <h6 className="text-muted">Editar Fecha</h6>
-              <div>
-                <input
-                  type="date"
-                  className="form-control"
-                  name="fechaDesde"
-                  min="2022-01-01"
-                  value={editValue.fechaDesde}
-                  autoComplete="off"
-                  placeholder="Fecha Desde"
-                  onChange={(e) => {
-                    setEditValue({ ...editValue, fechaDesde: e.target.value });
-                    setDisabledButton(validateFecha(e.target.value));
-                  }}
-                />
+            {editState.fecha && (
+              <div className="d-flex flex-column gap-2 justify-content-center align-items-center w-50 mt-5">
+                <h6 className="text-muted">Editar Fecha</h6>
+                <div>
+                  <input
+                    type="date"
+                    className="form-control"
+                    name="fechaDesde"
+                    min="2022-01-01"
+                    value={editValue.fechaDesde}
+                    autoComplete="off"
+                    placeholder="Fecha Desde"
+                    onChange={(e) => {
+                      setEditValue({
+                        ...editValue,
+                        fechaDesde: e.target.value,
+                      });
+                      setDisabledButton(validateFecha(e.target.value));
+                    }}
+                  />
+                </div>
               </div>
-            </div>
-            <div className="d-flex justify-content-center gap-2 flex-column align-items-center w-50 mt-5">
-              <h6 className="text-muted">Editar Valor</h6>
-              <div>
-                <input
-                  className="form-control"
-                  type="number"
-                  value={editValue.valor}
-                  onChange={(e) =>
-                    setEditValue({ ...editValue, valor: e.target.value })
-                  }
-                  min={0}
-                />
+            )}
+            {editState.valor && (
+              <div className="d-flex justify-content-center gap-2 flex-column align-items-center w-50 mt-5">
+                <h6 className="text-muted">Editar Valor</h6>
+                <div>
+                  <input
+                    className="form-control"
+                    type="number"
+                    value={editValue.valor}
+                    onChange={(e) =>
+                      setEditValue({ ...editValue, valor: e.target.value })
+                    }
+                    min={0}
+                  />
+                </div>
               </div>
-            </div>
+            )}
           </div>
           <hr className="hrstyle2" />
           <div className="modal-footer mt-4" style={{ border: "none" }}>
@@ -414,6 +430,64 @@ const Modulos = ({ ...props }) => {
               disabled={!fechaCierre || disabledButton}
             >
               Guardar cambios
+            </button>
+          </div>
+        </div>
+      </Modal>
+      <Modal
+        title="Baja de Módulo"
+        referenceID="bajaModal"
+        size="modal-md"
+        customFooter={true}
+        isStatic={true}
+        showHr={true}
+        showHr2={true}
+        handleClose={() => {
+          setFechaCierre("");
+          setIndexModulo(0);
+        }}
+      >
+        <div>
+          <hr className="hrstyle" style={{ marginTop: "-1.5rem" }} />
+          <div className="d-flex align-items-center justify-content-center gap-4 flex-md-row flex-sm-column ">
+            <div className="d-flex flex-column gap-2 justify-content-center align-items-center w-50 mt-5">
+              <h6 className="text-muted">Fecha de Cierre</h6>
+              <div>
+                <input
+                  type="date"
+                  className="form-control"
+                  name="fechaHasta"
+                  min={formatDate(fechaAnterior)}
+                  value={fechaCierre}
+                  autoComplete="off"
+                  placeholder="Fecha Hasta"
+                  onChange={(e) => {
+                    setFechaCierre(e.target.value);
+                    setDisabledButton(validateFecha(e.target.value));
+                  }}
+                />
+              </div>
+            </div>
+          </div>
+          <hr className="hrstyle2" />
+          <div className="modal-footer" style={{ border: "none" }}>
+            <button
+              type="button"
+              onClick={() => {
+                setFechaCierre("");
+                setDisabledButton(false);
+              }}
+              className="btn btn-limpiar d-flex align-items-center justify-content-center gap-2"
+            >
+              <span>Cancelar</span>
+            </button>
+            <button
+              type="button"
+              className="btn btn-guardar"
+              onClick={() => handleBaja(indexModulo)}
+              disabled={!fechaCierre || disabledButton}
+            >
+              Dar de Baja
             </button>
           </div>
         </div>
