@@ -149,7 +149,6 @@ const postAgente = () => {
       };
 
       dispatch(postAgentes(newAgente));
-      console.log(newAgente);
 
       await Swal.fire({
         position: "center",
