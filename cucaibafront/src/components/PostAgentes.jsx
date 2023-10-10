@@ -57,13 +57,13 @@ const postAgente = () => {
         setShowForm(true);
         setAgente({
           ...agente,
-          apellido: personaData.apellido,
-          nombre: personaData.nombre,
-          cuil: personaData.cuil,
-          cbu: personaData.cbuBloque1 + personaData.cbuBloque2,
-          tipoPago: personaData.tipoPago == 5 ? "cb" : "ch",
-          personaid: personaData.id,
-          legajo: personaData.legajo,
+          apellido: personaData.Apellido,
+          nombre: personaData.Nombre,
+          cuil: personaData.Cuil,
+          cbu: personaData.CBUBloque1 + personaData.CBUBloque2,
+          tipoPago: personaData.RefTipoPago == 5 ? "cb" : "ch",
+          personaid: personaData.IdPersona,
+          legajo: personaData.Legajo,
         });
 
         if (typeof personaData[0] == "string") {
@@ -72,13 +72,13 @@ const postAgente = () => {
               setStatusForm("update");
               setAgente({
                 ...agente,
-                apellido: personaData[1].apellido,
-                nombre: personaData[1].nombre,
-                cuil: personaData[1].cuil,
-                cbu: personaData[1].cbuBloque1 + personaData[1].cbuBloque2,
-                tipoPago: personaData[1].tipoPago == 5 ? "cb" : "ch",
-                personaid: personaData[1].id,
-                legajo: personaData[1].legajo,
+                apellido: personaData[1].Apellido,
+                nombre: personaData[1].Nombre,
+                cuil: personaData[1].Cuil,
+                cbu: personaData[1].CBUBloque1 + personaData[1].CBUBloque2,
+                tipoPago: personaData[1].RefTipoPago == 5 ? "cb" : "ch",
+                personaid: personaData[1].IdPersona,
+                legajo: personaData[1].Legajo,
               });
               Swal.fire({
                 position: "center",
@@ -93,13 +93,13 @@ const postAgente = () => {
               setStatusForm("found");
               setAgente({
                 ...agente,
-                apellido: personaData[1].apellido,
-                nombre: personaData[1].nombre,
-                cuil: personaData[1].cuil,
-                cbu: personaData[1].cbuBloque1 + personaData[1].cbuBloque2,
-                tipoPago: personaData[1].tipoPago == 5 ? "cb" : "ch",
-                personaid: personaData[1].id,
-                legajo: personaData[1].legajo,
+                apellido: personaData[1].Apellido,
+                nombre: personaData[1].Nombre,
+                cuil: personaData[1].Cuil,
+                cbu: personaData[1].CBUBloque1 + personaData[1].CBUBloque2,
+                tipoPago: personaData[1].RefTipoPago == 5 ? "cb" : "ch",
+                personaid: personaData[1].IdPersona,
+                legajo: personaData[1].Legajo,
               });
               Swal.fire({
                 position: "center",
@@ -143,7 +143,7 @@ const postAgente = () => {
         cuil: agente.cuil,
         cbu: agente.cbu,
         tipoPago: agente.tipoPago,
-        personaid: personaData.id,
+        personaid: personaData.IdPersona,
         dni: agente.nroDocumento,
         legajo: agente.legajo,
       };
