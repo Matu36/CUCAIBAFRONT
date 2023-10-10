@@ -276,5 +276,17 @@ export const styles = StyleSheet.create({
     firmaText: {
       paddingTop: "5px",
       borderTop: "1px solid black"
-    }
+    },
+
+    lines: {
+      borderTopWidth: 1,
+      borderTopColor: "gray",
+      width: 75,
+      paddingBottom:15,
+      marginLeft:-5,
+      marginBottom:15
+    },
+    
+  
+    
   });

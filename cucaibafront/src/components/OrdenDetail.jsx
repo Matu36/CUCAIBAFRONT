@@ -289,7 +289,6 @@ export const OrdenDetail = () => {
         <View style={styles.section}>
           <View style={{ justifyContent: "center", alignItems: "center" }}>
             <Text style={[styles.detalletitle]}>
-              
               Detalle de la Orden de Pago {gastos.gastos.da_op_nro ?? null}
             </Text>
           </View>
@@ -309,6 +308,8 @@ export const OrdenDetail = () => {
           {personasExceptLast.map((personasData, index) => {
             const { nombre, cuil, items, valor_total, legajo } = personasData;
 
+            
+
             return (
               <View style={styles.row} key={index}>
                 <Text style={styles.cell}>{nombre}</Text>
@@ -323,8 +324,12 @@ export const OrdenDetail = () => {
                   {items.map((item, itemIndex) => (
                     <View key={itemIndex}>
                       {item.descripciones.map((descripcion, descIndex) => (
+                        
                         <Text key={descIndex}>{descripcion.descripcion}</Text>
+                        
                       ))}
+                      
+                         <Text style={styles.lines}></Text>  
                     </View>
                   ))}
                 </View>
@@ -336,8 +341,11 @@ export const OrdenDetail = () => {
                           $ {NumberFormatter(descripcion.valor_unitario)}
                         </Text>
                       ))}
+                      
+                        <Text style={styles.lines}></Text>  
                     </View>
                   ))}
+                  
                 </View>
                 <Text style={styles.cell}>
                   $ {NumberFormatter(valor_total)}
@@ -345,17 +353,15 @@ export const OrdenDetail = () => {
               </View>
             );
           })}
-        </View>
-        {!gastos.gastos.op_fecha_emision && (
-          <View
-            style={{
-              ...styles.marcaAgua,
-              width: "500px",
-            }}
-          >
-            <Text>No válido</Text>
+          <View style={styles.totalRow}>
+            <Text style={styles.totalText}>
+              Total: $
+              {gastos.gastos.op_monto
+                ? NumberFormatter(gastos.gastos.op_monto)
+                : null}
+            </Text>
           </View>
-        )}
+        </View>
       </Page>
     </Document>
   );
