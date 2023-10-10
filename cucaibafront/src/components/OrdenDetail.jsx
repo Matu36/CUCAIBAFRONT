@@ -289,7 +289,6 @@ export const OrdenDetail = () => {
         <View style={styles.section}>
           <View style={{ justifyContent: "center", alignItems: "center" }}>
             <Text style={[styles.detalletitle]}>
-              
               Detalle de la Orden de Pago {gastos.gastos.da_op_nro ?? null}
             </Text>
           </View>
@@ -309,6 +308,8 @@ export const OrdenDetail = () => {
           {personasExceptLast.map((personasData, index) => {
             const { nombre, cuil, items, valor_total, legajo } = personasData;
 
+            
+
             return (
               <View style={styles.row} key={index}>
                 <Text style={styles.cell}>{nombre}</Text>
@@ -319,22 +320,35 @@ export const OrdenDetail = () => {
                     <Text key={itemIndex}>{item.referencia}</Text>
                   ))}
                 </View>
+
                 <View style={styles.cell}>
                   {items.map((item, itemIndex) => (
+                   
                     <View key={itemIndex}>
                       {item.descripciones.map((descripcion, descIndex) => (
-                        <Text key={descIndex}>{descripcion.descripcion}</Text>
+                        <View
+                          style={styles.descriptionValueContainer}
+                          key={descIndex}
+                        >
+                          <Text>{descripcion.descripcion}</Text>
+                        </View>
                       ))}
+                   {items.reduce((total, item) => total + item.descripciones.length, 0) > 1 && (
+    <View style={styles.lines}></View>
+  )}
                     </View>
                   ))}
                 </View>
+
                 <View style={styles.cell}>
                   {items.map((item, itemIndex) => (
                     <View key={itemIndex}>
                       {item.descripciones.map((descripcion, descIndex) => (
-                        <Text key={descIndex}>
-                          $ {NumberFormatter(descripcion.valor_unitario)}
-                        </Text>
+                        <View style={styles.valueContainer} key={descIndex}>
+                          <Text style={styles.valueText}>
+                            $ {NumberFormatter(descripcion.valor_unitario)}
+                          </Text>
+                        </View>
                       ))}
                     </View>
                   ))}
@@ -345,17 +359,15 @@ export const OrdenDetail = () => {
               </View>
             );
           })}
-        </View>
-        {!gastos.gastos.op_fecha_emision && (
-          <View
-            style={{
-              ...styles.marcaAgua,
-              width: "500px",
-            }}
-          >
-            <Text>No válido</Text>
+          <View style={styles.totalRow}>
+            <Text style={styles.totalText}>
+              Total: $
+              {gastos.gastos.op_monto
+                ? NumberFormatter(gastos.gastos.op_monto)
+                : null}
+            </Text>
           </View>
-        )}
+        </View>
       </Page>
     </Document>
   );
