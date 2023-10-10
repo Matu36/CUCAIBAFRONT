@@ -320,32 +320,38 @@ export const OrdenDetail = () => {
                     <Text key={itemIndex}>{item.referencia}</Text>
                   ))}
                 </View>
+
                 <View style={styles.cell}>
                   {items.map((item, itemIndex) => (
+                   
                     <View key={itemIndex}>
                       {item.descripciones.map((descripcion, descIndex) => (
-                        
-                        <Text key={descIndex}>{descripcion.descripcion}</Text>
-                        
+                        <View
+                          style={styles.descriptionValueContainer}
+                          key={descIndex}
+                        >
+                          <Text>{descripcion.descripcion}</Text>
+                        </View>
                       ))}
-                      
-                         <Text style={styles.lines}></Text>  
+                   {items.reduce((total, item) => total + item.descripciones.length, 0) > 1 && (
+    <View style={styles.lines}></View>
+  )}
                     </View>
                   ))}
                 </View>
+
                 <View style={styles.cell}>
                   {items.map((item, itemIndex) => (
                     <View key={itemIndex}>
                       {item.descripciones.map((descripcion, descIndex) => (
-                        <Text key={descIndex}>
-                          $ {NumberFormatter(descripcion.valor_unitario)}
-                        </Text>
+                        <View style={styles.valueContainer} key={descIndex}>
+                          <Text style={styles.valueText}>
+                            $ {NumberFormatter(descripcion.valor_unitario)}
+                          </Text>
+                        </View>
                       ))}
-                      
-                        <Text style={styles.lines}></Text>  
                     </View>
                   ))}
-                  
                 </View>
                 <Text style={styles.cell}>
                   $ {NumberFormatter(valor_total)}
