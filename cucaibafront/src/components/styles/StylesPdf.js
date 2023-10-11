@@ -276,5 +276,47 @@ export const styles = StyleSheet.create({
     firmaText: {
       paddingTop: "5px",
       borderTop: "1px solid black"
+    },
+    table_content: {
+      fontSize: "8px",
+      border: "1px solid #e0e0e0"
+    },
+    table_row: {
+      display: "flex",
+      width: "100%",
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between",
+      borderBottom: "1px solid #e0e0e0"
+    },
+    table_colSpan: {
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      justifyContent: "space-between",
+      height: "100%",
+      // borderRight: "1px solid #e0e0e0",
+    },
+    table_colSpan_content: {
+      display: "flex",
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between",
+      maxHeight: "100%"
+    },
+    table_modulo: {
+      display: "flex",
+      flexDirection: "row",
+      justifyContent: "space-between",
+      borderBottom: "1px solid #e0e0e0"
+    },
+    table_column: {
+      width: "75px",
+      borderRight: "1px solid #e0e0e0",
+      padding: "0px",
+      height: "100%"
+    },
+    table_list_modulo: {
+      display: "flex"
     }
   });
