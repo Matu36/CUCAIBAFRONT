@@ -373,8 +373,6 @@ export const OrdenDetail = () => {
           {personasExceptLast.map((personasData, index) => {
             const { nombre, cuil, items, valor_total, legajo } = personasData;
 
-            
-
             return (
               <View style={styles.row} key={index}>
                 <Text style={styles.cell}>{nombre}</Text>
@@ -382,13 +380,13 @@ export const OrdenDetail = () => {
                 <Text style={styles.cell}>{cuil}</Text>
                 <View style={styles.cell}>
                   {items.map((item, itemIndex) => (
-                    <Text key={itemIndex}>{item.referencia}</Text>
+                    <Text key={itemIndex} style={styles.valueText}>{item.referencia}</Text>
                   ))}
+                  
                 </View>
 
                 <View style={styles.cell}>
                   {items.map((item, itemIndex) => (
-                   
                     <View key={itemIndex}>
                       {item.descripciones.map((descripcion, descIndex) => (
                         <View
@@ -398,9 +396,10 @@ export const OrdenDetail = () => {
                           <Text>{descripcion.descripcion}</Text>
                         </View>
                       ))}
-                   {items.reduce((total, item) => total + item.descripciones.length, 0) > 1 && (
-    <View style={styles.lines}></View>
-  )}
+                      {items.reduce(
+                        (total, item) => total + item.descripciones.length,
+                        0
+                      ) > 1 && <View style={styles.lines}></View>}
                     </View>
                   ))}
                 </View>
