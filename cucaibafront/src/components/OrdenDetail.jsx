@@ -292,19 +292,84 @@ export const OrdenDetail = () => {
               Detalle de la Orden de Pago {gastos.gastos.da_op_nro ?? null}
             </Text>
           </View>
-          <View style={{ ...styles.row, fontSize: 10 }}>
-            <Text style={{ ...styles.cell, ...styles.header }}>Nombre</Text>
-            <Text style={{ ...styles.cell, ...styles.header }}>Legajo</Text>
-            <Text style={{ ...styles.cell, ...styles.header }}>CUIL</Text>
-            <Text style={{ ...styles.cell, ...styles.header }}>PD Nro</Text>
-            <Text style={{ ...styles.cell, ...styles.header }}>
-              Descripción
-            </Text>
-            <Text style={{ ...styles.cell, ...styles.header }}>Monto</Text>
-            <Text style={{ ...styles.cell, ...styles.header }}>
-              Monto Total
-            </Text>
+          <View>
+            <View style={{ ...styles.row, fontSize: "10px" }}>
+              <Text style={{ ...styles.cell, ...styles.header }}>Nombre</Text>
+              <Text style={{ ...styles.cell, ...styles.header }}>Legajo</Text>
+              <Text style={{ ...styles.cell, ...styles.header }}>CUIL</Text>
+              <Text style={{ ...styles.cell, ...styles.header }}>PD Nro</Text>
+              <Text style={{ ...styles.cell, ...styles.header }}>
+                Descripción
+              </Text>
+              <Text style={{ ...styles.cell, ...styles.header }}>Monto</Text>
+              <Text style={{ ...styles.cell, ...styles.header }}>
+                Monto Total
+              </Text>
+            </View>
+            <View style={styles.table_content}>
+              {personasExceptLast.map((d, ib) => {
+                const { nombre, cuil, items, valor_total, legajo } = d;
+                return (
+                  <View
+                    style={{
+                      ...styles.table_row,
+                      borderBottom:
+                        ib == personasExceptLast.length - 1
+                          ? "none"
+                          : "1px solid #e0e0e0",
+                    }}
+                  >
+                    <Text style={styles.table_column}>{nombre}</Text>
+                    <Text style={styles.table_column}>{legajo}</Text>
+                    <Text style={styles.table_column}>{cuil}</Text>
+                    <View style={styles.table_colSpan}>
+                      {items.map((o, ia) => (
+                        <View
+                          style={{
+                            ...styles.table_colSpan_content,
+                            borderBottom:
+                              items.length - 1 == ia
+                                ? "none"
+                                : "1px solid #e0e0e0",
+                          }}
+                        >
+                          <Text style={styles.table_column}>
+                            {o.referencia}
+                          </Text>
+                          <View style={{ ...styles.table_list_modulo }}>
+                            {o.descripciones.map((m, i) => (
+                              <View
+                                style={{
+                                  ...styles.table_modulo,
+                                  borderBottom:
+                                    o.descripciones.length - 1 == i
+                                      ? "none"
+                                      : "1px solid #e0e0e0",
+                                }}
+                              >
+                                <Text style={styles.table_column}>
+                                  {m.descripcion}
+                                </Text>
+                                <Text style={styles.table_column}>
+                                  $ {NumberFormatter(m.valor_unitario)}
+                                </Text>
+                              </View>
+                            ))}
+                          </View>
+                        </View>
+                      ))}
+                    </View>
+                    <Text
+                      style={{ ...styles.table_column, borderRight: "none" }}
+                    >
+                      $ {NumberFormatter(valor_total)}
+                    </Text>
+                  </View>
+                );
+              })}
+            </View>
           </View>
+          {/* 
           {personasExceptLast.map((personasData, index) => {
             const { nombre, cuil, items, valor_total, legajo } = personasData;
 
@@ -358,6 +423,7 @@ export const OrdenDetail = () => {
               </View>
             );
           })}
+        */}
           <View style={styles.totalRow}>
             <Text style={styles.totalText}>
               Total: $

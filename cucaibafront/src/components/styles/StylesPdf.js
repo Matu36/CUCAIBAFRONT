@@ -181,129 +181,143 @@ export const styles = StyleSheet.create({
     textAlign: "center",
   },
 
-  marcaAgua: {
-    textTransform: "uppercase",
-    position: "absolute",
-    top: 350,
-    fontSize: 90,
-    color: "#0078b3",
-    transform: "rotate(45deg)",
-    left: 50,
-    fontWeight: 100,
-    opacity: 0.3,
-  },
-  content: {
-    display: "flex",
-    flexDirection: "row",
-    border: "1px solid black",
-    justifyContent: "space-between",
-    fontSize: 10,
-    maxWidth: "80%",
-    margin: "5px auto",
-  },
-  tableContent: {
-    display: "flex",
-    flexDirection: "column",
-    height: "100px",
-    borderRight: "1px solid black",
-    borderBottom: "1px solid black",
-    marginRight: "10px",
-    marginBottom: "20px",
-    maxWidth: "80%",
-  },
-  tableHeader: {
-    maxWidth: "100%",
-    maxHeight: "30px",
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    borderBottom: "1px solid black",
-  },
-  tableColumnContent: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    paddingBottom: "5px",
-    paddingTop: "4px",
-    minWidth: "20%",
-    fontWeight: "bold",
-  },
-  tableFirstColumn: {
-    minWidth: "80%",
-    borderRight: "1px solid black",
-  },
-  tableBodyWrapper: {
-    display: "flex",
-    flexDirection: "column",
-  },
-  tableBodyRow: {
-    display: "flex",
-    flexDirection: "row",
-    width: "100%",
-    borderBottom: "1px solid black",
-  },
-  tableRowContent: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    padding: "5px",
-    textAlign: "left",
-    minWidth: "20%",
-  },
-  tableFirstRow: {
-    minWidth: "80%",
-    borderRight: "1px solid black",
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  tableLastChild: {
-    borderBottom: "none",
-  },
-  firmaContent: {
-    width: "50%",
-    fontSize: 10,
-    display: "flex",
-    padding: "5px",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  firmaBody: {
-    minHeight: "100px",
-    marginBottom: "5px",
-  },
-  firmaText: {
-    paddingTop: "5px",
-    borderTop: "1px solid black",
-  },
-
-  lines: {
-    borderTopWidth: 1,
-    borderTopColor: "gray",
-    width: 153,
-    marginLeft: -5,
-  },
-
-  descriptionValueContainer: {
-    flexDirection: 'row',
-    alignItems: 'flex-start', // Alinea elementos verticalmente en la parte superior
-  },
-
-  descriptionText: {
-    flex: 1, // Ocupa todo el espacio horizontal disponible en la columna de descripción
-  },
-
-  valueContainer: {
-    flexDirection: 'row',
-    alignItems:"center", // Alinea elementos verticalmente en la parte superior
-  },
-
-  valueText: {
-    flexDirection: 'row',
-    alignItems:"center",
-    justifyContent:"space-between",
-    paddingBottom:30
-  },
-  
-});
+    marcaAgua: {
+      textTransform: "uppercase",
+      position: "absolute",
+      top: 350,
+      fontSize: 90,
+      color: "#0078b3",
+      transform: "rotate(45deg)",
+      left: 50,
+      fontWeight: 100,
+      opacity: 0.3,
+    },
+    content: {
+      display: "flex",
+      flexDirection: "row",
+      border: "1px solid black",
+      justifyContent: "space-between",
+      fontSize: 10,
+      maxWidth: "80%",
+      margin: "5px auto"
+    },
+    tableContent:{
+      display: "flex",
+      flexDirection: "column",
+      height: "100px",
+      borderRight: "1px solid black",
+      borderBottom: "1px solid black",
+      marginRight: "10px",
+      marginBottom: "20px",
+      maxWidth: "80%"
+    },
+    tableHeader: {
+      maxWidth: "100%",
+      maxHeight: "30px",
+      display: "flex",
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between",
+      borderBottom: "1px solid black",
+      
+    },
+    tableColumnContent: {
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      paddingBottom: "5px",
+      paddingTop: "4px",
+      minWidth: "20%",
+      fontWeight: "bold"
+    },
+    tableFirstColumn:{
+      minWidth: "80%",
+      borderRight: "1px solid black",
+    },
+    tableBodyWrapper: {
+      display: "flex",
+      flexDirection: "column",
+    },
+    tableBodyRow: {
+      display: "flex",
+      flexDirection: "row",
+      width: "100%",
+      borderBottom: "1px solid black",
+    },
+    tableRowContent: {
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      padding: "5px",
+      textAlign: "left",
+      minWidth: "20%"
+    },
+    tableFirstRow: {
+      minWidth: "80%",
+      borderRight: "1px solid black",
+      flexDirection: "row",
+      justifyContent: "space-between"
+    },
+    tableLastChild: {
+      borderBottom: "none"
+    },
+    firmaContent: {
+      width: "50%",
+      fontSize: 10,
+      display: "flex",
+      padding: "5px",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center"
+    },
+    firmaBody: {
+      minHeight: "100px",
+      marginBottom: "5px"
+    },
+    firmaText: {
+      paddingTop: "5px",
+      borderTop: "1px solid black"
+    },
+    table_content: {
+      fontSize: "8px",
+      border: "1px solid #e0e0e0"
+    },
+    table_row: {
+      display: "flex",
+      width: "100%",
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between",
+      borderBottom: "1px solid #e0e0e0"
+    },
+    table_colSpan: {
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      justifyContent: "space-between",
+      height: "100%",
+      // borderRight: "1px solid #e0e0e0",
+    },
+    table_colSpan_content: {
+      display: "flex",
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between",
+      maxHeight: "100%"
+    },
+    table_modulo: {
+      display: "flex",
+      flexDirection: "row",
+      justifyContent: "space-between",
+      borderBottom: "1px solid #e0e0e0"
+    },
+    table_column: {
+      width: "75px",
+      borderRight: "1px solid #e0e0e0",
+      padding: "0px",
+      height: "100%"
+    },
+    table_list_modulo: {
+      display: "flex"
+    }
+  });
