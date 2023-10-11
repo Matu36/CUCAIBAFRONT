@@ -59,10 +59,6 @@ const Liquidaciones = ({ ...props }) => {
     filterData();
   }, [search, mesSearch]);
 
-  // useEffect(() => {
-  //   filterData(search, mesSearch);
-  // }, [mesSearch]);
-
   const handleOnChange = (e) => {
     e.preventDefault();
     setSearch(e.target.value);
@@ -170,6 +166,21 @@ const Liquidaciones = ({ ...props }) => {
     setError({ ...error, [e.target.name]: e.target.value.length == 0 });
   };
 
+  const selectAllRows = () => {
+    setSelectedRows(data); 
+  
+    const selectedTotal = data.reduce((acc, row) => acc + Number(row.valor), 0);
+  
+    setTotal(selectedTotal); 
+  };
+
+  const clearSelection = () => {
+    const deselectedTotal = selectedRows.reduce((acc, row) => acc + Number(row.valor), 0);
+    const newTotal = total - deselectedTotal;
+    setTotal(newTotal);
+    setSelectedRows([]);
+  };
+  
   return (
     <>
       {isFetched ? (
@@ -180,7 +191,7 @@ const Liquidaciones = ({ ...props }) => {
             customFooter={true}
           >
             <div>
-              <hr className="hrstyle" style={{marginTop:"-2rem"}} />
+              <hr className="hrstyle" style={{ marginTop: "-2rem" }} />
               <div className="d-flex w-full justify-content-evenly mt-4">
                 <div className="mb-3">
                   <label htmlFor="inputFolio" className="form-label mt-5">
@@ -229,8 +240,8 @@ const Liquidaciones = ({ ...props }) => {
                   )}
                 </div>
               </div>
-<hr className="hrstyle2"/>
-              <div className="modal-footer" style={{border:"none"}}>
+              <hr className="hrstyle2" />
+              <div className="modal-footer" style={{ border: "none" }}>
                 <button
                   type="button"
                   className="btn btn-guardar"
@@ -299,7 +310,11 @@ const Liquidaciones = ({ ...props }) => {
                 </div>
               </div>
             </ExpandableFilters>
+            <br />
             <div>
+              <button className="btn btn-buscar" onClick={selectAllRows} >Seleccionar Todo</button>
+              
+              <button className="btn btn-limpiar" onClick={clearSelection} style={{marginLeft:"1rem"}}>Limpiar Selección</button>
               {showSpinner ? (
                 <Spinner />
               ) : typeof liquidaciones === "object" &&
@@ -308,6 +323,11 @@ const Liquidaciones = ({ ...props }) => {
                   columns={columns}
                   data={liquidaciones}
                   pagination
+                  selectableRowsSelected={selectedRows.map((row) => row.index)}
+                  selectableRowsHideCheck={false}
+                  onSelectedRowsChange={({ selectedRows }) =>
+                    setSelectedRows(selectedRows.map((row) => data[row.index]))
+                  }
                   striped
                   paginationComponentOptions={paginationOptions}
                   noDataComponent={
