@@ -11,6 +11,7 @@ import "../components/styles/Liquidaciones.css";
 import moment from "moment";
 import { FaFilter } from "react-icons/fa";
 import ExpandableFilters from "./UI/ExpandableFilters";
+import { MaskCuil } from "../utils/Mask";
 
 // Componente que se encarga de mostrar y de Generar las Ordenes de Pago
 
@@ -139,10 +140,30 @@ const Liquidaciones = ({ ...props }) => {
       omit: true,
     },
     { name: "PD Nro", selector: (row) => row.referencia, sortable: true },
-    { name: "APELLIDO", selector: (row) => row.apellido, sortable: true },
-    { name: "NOMBRE", selector: (row) => row.nombre, sortable: true },
-    { name: "CUIL", selector: (row) => row.cuil, sortable: true },
-    { name: "DESCRIPCIÓN", selector: (row) => row.descripcion, sortable: true },
+    {
+      name: "APELLIDO",
+      selector: (row) => row.apellido,
+      sortable: true,
+      wrap: true,
+    },
+    {
+      name: "NOMBRE",
+      selector: (row) => row.nombre,
+      sortable: true,
+      wrap: true,
+    },
+    {
+      name: "CUIL",
+      selector: (row) => row.cuil,
+      format: (row) => MaskCuil(row.cuil),
+      sortable: true,
+    },
+    {
+      name: "DESCRIPCIÓN",
+      selector: (row) => row.descripcion,
+      sortable: true,
+      wrap: true,
+    },
     {
       name: "VALOR",
       selector: (row) => `$ ${NumberFormatter(row.valor)}`,
