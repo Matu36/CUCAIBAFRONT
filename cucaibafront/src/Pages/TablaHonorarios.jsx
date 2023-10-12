@@ -111,8 +111,15 @@ const TablaHonorarios = () => {
         <DataTable
           columns={columns}
           data={honorario}
+          conditionalRowStyles={[
+            {
+              when: (row) => row === currentRow,
+              style: {
+                backgroundColor: "#e0e0e0",
+              },
+            },
+          ]}
           pagination
-          striped
           paginationComponentOptions={paginationOptions}
           noDataComponent={
             <EmptyTable msg="No se encontró el PD con ese número de Referencia" />
@@ -121,8 +128,9 @@ const TablaHonorarios = () => {
           expandableRowsComponent={RowExpandedComponent}
           expandableRowExpanded={(row) => row === currentRow}
           expandOnRowClicked
-          onRowExpandToggled={(bool, row) => setCurrentRow(row)}
-          onRowClicked={(row) => setCurrentRow(row)}
+          onRowExpandToggled={(bool, row) => {
+            setCurrentRow(bool && row);
+          }}
           className="del-overflow"
         />
       ) : (

@@ -13,7 +13,7 @@ import { useNavigate } from "react-router-dom";
 import { useModulos } from "../../../hooks/useModulos";
 import EmptyTable from "../../UI/EmptyTable";
 import Spinner from "../Spinner";
-import { FaPlus, FaTimes, FaTrash } from "react-icons/fa";
+import { FaPlus, FaTimes, FaTrash, FaUsers } from "react-icons/fa";
 import NumberFormatter from "../../../utils/NumberFormatter";
 import { MaskCuil } from "../../../utils/Mask";
 import Dropdown from "../Dropdown";
@@ -317,7 +317,7 @@ const RowExpandedComponent = ({ data: operativo }) => {
   return (
     <>
       <Modal title="Agregar función al Agente" referenceID="formModal">
-        <hr className="hrstyle" style={{marginTop:"-2rem"}}/>
+        <hr className="hrstyle" style={{ marginTop: "-2rem" }} />
         <div className="p-3">
           <table className="table table-responsive">
             <thead>
@@ -382,7 +382,7 @@ const RowExpandedComponent = ({ data: operativo }) => {
         title={`Agregar Agente al Operativo: ${operativo.referencia}`}
         referenceID="agregarAgenteModal"
       >
-<hr className="hrstyle" style={{marginTop:"-1.5rem"}} />
+        <hr className="hrstyle" style={{ marginTop: "-1.5rem" }} />
         <div className="mt-4">
           <input
             type="text"
@@ -440,18 +440,30 @@ const RowExpandedComponent = ({ data: operativo }) => {
           loadingModulosActivos={loadingModulosActivos}
         />
       </Modal>
-      <div>
-        <div className="p-3">
+      <div style={{ boxShadow: "inset 0 1px 3px rgba(0,0,0,.1)" }}>
+        <div>
           <div className="agentes-container">
-            <div>
-              <div className="d-flex align-items-center justify-content-between">
-                <h5 style={{ color: "#5DADE2" }}>
-                  Agentes asociados al Operativo
-                </h5>
-                <div></div>
+            <div
+              style={{
+                backgroundColor: "#f0f0f078",
+                boxShadow: "inset 0 1px 3px rgba(0,0,0,.1)",
+              }}
+              className="p-3"
+            >
+              <div className="d-flex align-items-center justify-content-between py-3">
+                <div className="d-flex  align-items-center">
+                  <FaUsers
+                    className="sidebarIcons"
+                    color="rgb(0, 79, 132)"
+                    size="2rem"
+                  />{" "}
+                  <h5 style={{ color: "rgb(0, 79, 132)" }} className="mb-0">
+                    Agentes asociados
+                  </h5>
+                </div>
                 <button
                   type="btn"
-                  className="btn btn-success btn-round py-1"
+                  className="btn btn-outline-success btn-round py-1"
                   data-bs-toggle="modal"
                   data-bs-target="#agregarAgenteModal"
                   onClick={() => {
@@ -462,14 +474,12 @@ const RowExpandedComponent = ({ data: operativo }) => {
                   <FaPlus /> Agregar Agente
                 </button>
               </div>
-              <hr />
             </div>
             <div className="p-3">
               <table className="table table-responsive">
                 <thead>
                   <tr>
-                    <th scope="col">Apellido</th>
-                    <th scope="col">Nombre</th>
+                    <th scope="col">Apellido y Nombre</th>
                     <th scope="col">CUIL</th>
                     <th scope="col">Acción</th>
                   </tr>
@@ -485,8 +495,10 @@ const RowExpandedComponent = ({ data: operativo }) => {
                   <tbody>
                     {agentes.map((agente) => (
                       <tr key={agente.persona_id}>
-                        <td>{agente.apellido}</td>
-                        <td>{agente.nombre}</td>
+                        <td>
+                          {agente.apellido} {agente.nombre}
+                        </td>
+
                         <td>{MaskCuil(agente.cuil)}</td>
                         <td className="d-flex gap-3">
                           <Dropdown>
