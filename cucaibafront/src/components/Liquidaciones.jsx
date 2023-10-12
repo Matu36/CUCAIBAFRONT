@@ -43,10 +43,14 @@ const Liquidaciones = ({ ...props }) => {
 
   const [showSpinner, setShowSpinner] = useState(true);
 
+  //ESTO!
+
   useEffect(() => {
     if (isFetched) {
       if (data) {
         setLiquidaciones(data);
+      } else {
+        setLiquidaciones([]);
       }
       setShowSpinner(false);
     }
@@ -65,8 +69,10 @@ const Liquidaciones = ({ ...props }) => {
     setSearch(e.target.value);
   };
 
+  //ESTO
+
   const filterData = () => {
-    if (data) {
+    if (Array.isArray(data)) {
       const filtered = data.filter((item) => {
         if (
           Number(mesSearch) !== 0 &&
@@ -83,6 +89,8 @@ const Liquidaciones = ({ ...props }) => {
         return true;
       });
       setLiquidaciones(filtered);
+    } else {
+      setLiquidaciones([]);
     }
   };
 
@@ -189,6 +197,7 @@ const Liquidaciones = ({ ...props }) => {
 
   const selectAllRows = () => {
     setSelectedRows(data);
+  
 
     const selectedTotal = data.reduce((acc, row) => acc + Number(row.valor), 0);
 
@@ -297,7 +306,7 @@ const Liquidaciones = ({ ...props }) => {
                       onChange={handleOnChange}
                       value={search}
                       autoComplete="off"
-                      disabled={liquidaciones == 400}
+                      disabled={liquidaciones.length == 0}
                     />
                   </div>
 
@@ -313,6 +322,7 @@ const Liquidaciones = ({ ...props }) => {
                       onChange={(e) => {
                         setMesSearch(e.target.value);
                       }}
+                      disabled={liquidaciones.length == 0}
                     >
                       <option defaultChecked value="0">
                         Todos
@@ -336,7 +346,7 @@ const Liquidaciones = ({ ...props }) => {
             </ExpandableFilters>
             <br />
             <div>
-              <button className="btn btn-buscar" onClick={selectAllRows}>
+              <button className="btn btn-buscar" onClick={selectAllRows} disabled={liquidaciones.length == 0}>
                 Seleccionar Todo
               </button>
 
@@ -344,6 +354,7 @@ const Liquidaciones = ({ ...props }) => {
                 className="btn btn-limpiar"
                 onClick={clearSelection}
                 style={{ marginLeft: "1rem" }}
+                disabled={liquidaciones.length == 0}
               >
                 Limpiar Selección
               </button>
