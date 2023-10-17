@@ -440,7 +440,10 @@ const RowExpandedComponent = ({ data: operativo }) => {
           loadingModulosActivos={loadingModulosActivos}
         />
       </Modal>
-      <div style={{ boxShadow: "inset 0 1px 3px rgba(0,0,0,.1)" }}>
+      <div
+        className="row_content"
+        style={{ boxShadow: "inset 0 1px 3px rgba(0,0,0,.1)" }}
+      >
         <div>
           <div className="agentes-container">
             <div
@@ -475,12 +478,13 @@ const RowExpandedComponent = ({ data: operativo }) => {
                 </button>
               </div>
             </div>
-            <div className="p-3">
+            <div className="p-3  border-bottom border-2">
               <table className="table table-responsive">
                 <thead>
                   <tr>
                     <th scope="col">Apellido y Nombre</th>
                     <th scope="col">CUIL</th>
+                    <th scope="col">Módulos</th>
                     <th scope="col">Acción</th>
                   </tr>
                 </thead>
@@ -500,7 +504,14 @@ const RowExpandedComponent = ({ data: operativo }) => {
                         </td>
 
                         <td>{MaskCuil(agente.cuil)}</td>
-                        <td className="d-flex gap-3">
+                        <td>
+                          <ul>
+                            {agente.modulos.map((m, i) => (
+                              <li key={i}>{m.descripcion}</li>
+                            ))}
+                          </ul>
+                        </td>
+                        <td>
                           <Dropdown>
                             <button
                               type="button"
