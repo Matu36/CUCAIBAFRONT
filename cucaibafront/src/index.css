@@ -111,7 +111,7 @@ body {
   min-height: 80px;
 }
 
-.intranet-logo>span {
+.intranet-logo > span {
   display: block;
   font-family: var(--ms-font), Helvetica, sans-serif;
   font-size: 1.1rem;
@@ -264,7 +264,7 @@ body {
   z-index: 111;
 }
 
-.breadcrumb-item+.breadcrumb-item::before {
+.breadcrumb-item + .breadcrumb-item::before {
   color: #aaa;
   content: "\00BB";
 }
@@ -339,7 +339,6 @@ body {
 * Control pantallas desktop
 */
 @media only screen and (min-width: 1715px) {
-
   .footer.open,
   .breadcrumb.open {
     /*margin-left: 300px;*/
@@ -362,7 +361,6 @@ body {
 }
 
 @media only screen and (min-width: 1024px) {
-
   .footer.open,
   .breadcrumb.open {
     margin-left: 280px;
@@ -914,7 +912,6 @@ fieldset[disabled] .btn {
 /*}*/
 
 @media (min-width: 1200px) {
-
   .container,
   .container-lg,
   .container-md,
