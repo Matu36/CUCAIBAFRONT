@@ -340,8 +340,9 @@ const RowExpandedComponent = ({ data: operativo }) => {
     }
   };
 
-  console.log(AgentesDispo);
   //-------------------------------- FIN SEARCHBAR --------------------------- //
+
+  console.log(agentes);
 
   return (
     <>
@@ -508,7 +509,7 @@ const RowExpandedComponent = ({ data: operativo }) => {
                 </button>
               </div>
             </div>
-            <div className="mt-4">
+            <div className="mt-4" style={{ marginLeft: "1rem" }}>
               <input
                 type="text"
                 className="form-control"
