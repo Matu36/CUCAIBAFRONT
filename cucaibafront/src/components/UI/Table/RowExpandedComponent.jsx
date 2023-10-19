@@ -17,6 +17,7 @@ import { FaPlus, FaTimes, FaTrash, FaUsers } from "react-icons/fa";
 import NumberFormatter from "../../../utils/NumberFormatter";
 import { MaskCuil } from "../../../utils/Mask";
 import Dropdown from "../Dropdown";
+import { GrFormCheckmark } from "react-icons/gr";
 
 // Se usa en el componente TablaHonorarios al hacer click en los operativos.
 
@@ -286,6 +287,8 @@ const RowExpandedComponent = ({ data: operativo }) => {
   const [search, setSearch] = useState("");
   const [filteredAgentes, setFilteredAgentes] = useState(agentesDisponibles);
   const [isFetched, setIsFetched] = useState(false);
+  const [searchByApellido, setSearchByApellido] = useState("");
+  const [AgentesDispo, setAgentesDispo] = useState(agentes);
 
   useEffect(() => {
     setFilteredAgentes(agentesDisponibles);
@@ -293,11 +296,23 @@ const RowExpandedComponent = ({ data: operativo }) => {
   }, [agentesDisponibles]);
 
   useEffect(() => {
+    setAgentesDispo(agentes);
+  }, [agentes]);
+
+  useEffect(() => {
     filterByDni(search);
   }, [search]);
 
+  useEffect(() => {
+    filterByApellido(searchByApellido);
+  }, [searchByApellido]);
+
   const handleOnChange = (e) => {
     setSearch(e.target.value);
+  };
+
+  const handleOnChangeByApellido = (e) => {
+    setSearchByApellido(e.target.value);
   };
 
   const filterByDni = (value) => {
@@ -312,7 +327,22 @@ const RowExpandedComponent = ({ data: operativo }) => {
     }
   };
 
+  const filterByApellido = (value) => {
+    if (!value) {
+      setAgentesDispo(agentes);
+    } else {
+      const filteredAgents = agentes.filter(
+        (agent) =>
+          agent.apellido &&
+          agent.apellido.toLowerCase().includes(value.toLowerCase())
+      );
+      setAgentesDispo(filteredAgents);
+    }
+  };
+
   //-------------------------------- FIN SEARCHBAR --------------------------- //
+
+  console.log(agentes);
 
   return (
     <>
@@ -464,6 +494,7 @@ const RowExpandedComponent = ({ data: operativo }) => {
                     Agentes asociados
                   </h5>
                 </div>
+
                 <button
                   type="btn"
                   className="btn btn-outline-success btn-round py-1"
@@ -477,6 +508,23 @@ const RowExpandedComponent = ({ data: operativo }) => {
                   <FaPlus /> Agregar Agente
                 </button>
               </div>
+            </div>
+            <div className="mt-4" style={{ marginLeft: "1rem" }}>
+              <input
+                type="text"
+                className="form-control"
+                style={{ maxWidth: "30%" }}
+                placeholder="Buscar por APELLIDO"
+                onMouseLeave={() => setToggledClearRows(false)}
+                onChange={handleOnChangeByApellido}
+                onKeyDown={(e) => {
+                  setHonorarioData({ ...honorarioData, agente_id: 0 });
+                  setToggledClearRows(true);
+                }}
+                value={searchByApellido}
+                autoComplete="off"
+                disabled={AgentesDispo === 204 || !AgentesDispo}
+              />
             </div>
             <div className="p-3  border-bottom border-2">
               <table className="table table-responsive">
@@ -495,9 +543,9 @@ const RowExpandedComponent = ({ data: operativo }) => {
                     </tr>
                   </tbody>
                 )}
-                {!loadingAgentes && typeof agentes === "object" ? (
+                {!loadingAgentes && typeof AgentesDispo === "object" ? (
                   <tbody>
-                    {agentes.map((agente) => (
+                    {AgentesDispo.map((agente) => (
                       <tr key={agente.persona_id}>
                         <td>
                           {agente.apellido} {agente.nombre}
@@ -505,9 +553,12 @@ const RowExpandedComponent = ({ data: operativo }) => {
 
                         <td>{MaskCuil(agente.cuil)}</td>
                         <td>
-                          <ul>
+                          <ul className="list-unstyled">
                             {agente.modulos.map((m, i) => (
-                              <li key={i}>{m.descripcion}</li>
+                              <li key={i}>
+                                <GrFormCheckmark />
+                                <i></i> {m.descripcion}
+                              </li>
                             ))}
                           </ul>
                         </td>
