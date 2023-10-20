@@ -342,8 +342,6 @@ const RowExpandedComponent = ({ data: operativo }) => {
 
   //-------------------------------- FIN SEARCHBAR --------------------------- //
 
-  console.log(agentes);
-
   return (
     <>
       <Modal title="Agregar función al Agente" referenceID="formModal">
