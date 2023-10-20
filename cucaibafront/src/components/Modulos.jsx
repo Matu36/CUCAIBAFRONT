@@ -469,6 +469,20 @@ const Modulos = ({ ...props }) => {
               </div>
             </div>
           </div>
+          <br />
+          <br />
+          <div style={{ marginLeft: "2rem" }}>
+            {disabledButton && (
+              <p
+                style={{
+                  color: "red",
+                  fontSize: "16px",
+                }}
+              >
+                La fecha de cierre no puede ser posterior al día de hoy
+              </p>
+            )}
+          </div>
           <hr className="hrstyle2" />
           <div className="modal-footer" style={{ border: "none" }}>
             <button
