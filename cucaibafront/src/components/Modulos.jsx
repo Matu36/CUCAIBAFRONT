@@ -493,7 +493,7 @@ const Modulos = ({ ...props }) => {
               }}
               className="btn btn-limpiar d-flex align-items-center justify-content-center gap-2"
             >
-              <span>Cancelar</span>
+              <span>Limpiar Campos</span>
             </button>
             <button
               type="button"
