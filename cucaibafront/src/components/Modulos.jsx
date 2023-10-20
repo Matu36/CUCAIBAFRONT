@@ -137,8 +137,10 @@ const Modulos = ({ ...props }) => {
     if (option == "editar") {
       moduloData = {
         ...moduloData,
-        valor: editState.valor.value,
-        fechaDesde: editState.fechaDesde.value,
+        valor: editState.valor.edited ? editState.valor.value : 0,
+        fechaDesde: editState.fechaDesde.edited
+          ? editState.fechaDesde.value
+          : "",
       };
 
       editMutate(moduloData);
@@ -343,7 +345,7 @@ const Modulos = ({ ...props }) => {
       >
         <div>
           <hr className="hrstyle" style={{ marginTop: "-2rem" }} />
-          <div className="d-flex align-items-center justify-content-center gap-4 flex-md-row flex-sm-column">
+          <div className="d-flex align-items-start justify-content-center gap-4 flex-md-row flex-sm-column">
             {editState.fechaDesde.canEdit && (
               <div className="d-flex flex-column gap-2 justify-content-center align-items-center w-50 mt-5">
                 <h6 className="text-muted">Editar Fecha</h6>
@@ -369,6 +371,19 @@ const Modulos = ({ ...props }) => {
                     }}
                   />
                 </div>
+                {editState.fechaDesde.edited &&
+                  validateFecha(editState.fechaDesde.value) && (
+                    <div>
+                      <p
+                        style={{
+                          color: "red",
+                          fontSize: "16px",
+                        }}
+                      >
+                        La fecha de cierre no puede ser posterior al día de hoy
+                      </p>
+                    </div>
+                  )}
               </div>
             )}
             {editState.valor.canEdit && (
@@ -402,8 +417,12 @@ const Modulos = ({ ...props }) => {
               type="button"
               onClick={() => {
                 setEditState({
-                  valor: { ...editState.valor, value: 0 },
-                  fechaDesde: { ...editState.fechaDesde, value: "" },
+                  valor: { ...editState.valor, value: 0, edited: false },
+                  fechaDesde: {
+                    ...editState.fechaDesde,
+                    value: "",
+                    edited: false,
+                  },
                 });
                 setDisabledButton(false);
               }}
