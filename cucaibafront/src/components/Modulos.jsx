@@ -113,29 +113,50 @@ const Modulos = ({ ...props }) => {
 
   //EDITAR PRECIO
 
-  const [editValue, setEditValue] = useState({
-    valor: "",
-    fechaDesde: "",
-  });
   const [fechaCierre, setFechaCierre] = useState("");
   const [indexModulo, setIndexModulo] = useState(0);
   const [newModulo, setNewModulo] = useState({ valor: 0, fechaDesde: "" });
   const [fechaAnterior, setFechaAnterior] = useState("");
   const [disabledButton, setDisabledButton] = useState(false);
-  const [editState, setEditState] = useState({ valor: true, fecha: false });
+  const [prevValue, setPrevValue] = useState({ valor: 0, fechaDesde: "" });
+  const [editState, setEditState] = useState({
+    valor: {
+      value: 0,
+      canEdit: true,
+      edited: false,
+    },
+    fechaDesde: {
+      value: "",
+      canEdit: false,
+      edited: false,
+    },
+  });
 
   const handleSave = (option) => {
     let moduloData = { id: indexModulo };
     if (option == "editar") {
       moduloData = {
         ...moduloData,
-        valor: editValue.valor,
-        fechaDesde: editValue.fechaDesde,
+        valor: editState.valor.edited ? editState.valor.value : 0,
+        fechaDesde: editState.fechaDesde.edited
+          ? editState.fechaDesde.value
+          : "",
       };
 
       editMutate(moduloData);
       refetch();
-      setEditValue({ valor: 0, fechaDesde: "" });
+      setEditState({
+        valor: {
+          value: 0,
+          canEdit: true,
+          edited: false,
+        },
+        fechaDesde: {
+          value: "",
+          canEdit: true,
+          edited: false,
+        },
+      });
     } else if (option == "cerrar") {
       moduloData = {
         ...moduloData,
@@ -233,7 +254,20 @@ const Modulos = ({ ...props }) => {
                 data-bs-target="#editModuloModal"
                 onClick={() => {
                   setIndexModulo(row.id);
-                  setEditState({ valor: true, fecha: row.unico });
+                  setEditState({
+                    valor: {
+                      canEdit: true,
+                      value: row.valor,
+                    },
+                    fechaDesde: {
+                      canEdit: row.unico,
+                      value: row.fecha_desde.split("T")[0],
+                    },
+                  });
+                  setPrevValue({
+                    valor: row.valor,
+                    fechaDesde: row.fecha_desde.split("T")[0],
+                  });
                 }}
               >
                 <FaEdit />
@@ -301,15 +335,18 @@ const Modulos = ({ ...props }) => {
         referenceID="editModuloModal"
         customFooter={true}
         handleClose={() => {
-          setEditValue({ valor: "", fechaDesde: "" });
+          setEditState({
+            valor: { ...editState.valor, value: 0, edited: false },
+            fechaDesde: { ...editState.fechaDesde, value: "", edited: false },
+          });
           setIndexModulo(0);
         }}
         isStatic={true}
       >
         <div>
           <hr className="hrstyle" style={{ marginTop: "-2rem" }} />
-          <div className="d-flex align-items-center justify-content-center gap-4 flex-md-row flex-sm-column">
-            {editState.fecha && (
+          <div className="d-flex align-items-start justify-content-center gap-4 flex-md-row flex-sm-column">
+            {editState.fechaDesde.canEdit && (
               <div className="d-flex flex-column gap-2 justify-content-center align-items-center w-50 mt-5">
                 <h6 className="text-muted">Editar Fecha</h6>
                 <div>
@@ -318,31 +355,56 @@ const Modulos = ({ ...props }) => {
                     className="form-control"
                     name="fechaDesde"
                     min="2022-01-01"
-                    value={editValue.fechaDesde}
+                    value={editState.fechaDesde.value}
                     autoComplete="off"
                     placeholder="Fecha Desde"
                     onChange={(e) => {
-                      setEditValue({
-                        ...editValue,
-                        fechaDesde: e.target.value,
+                      setEditState({
+                        ...editState,
+                        fechaDesde: {
+                          ...editState.fechaDesde,
+                          value: e.target.value,
+                          edited: e.target.value != prevValue.fechaDesde,
+                        },
                       });
                       setDisabledButton(validateFecha(e.target.value));
                     }}
                   />
                 </div>
+                {editState.fechaDesde.edited &&
+                  validateFecha(editState.fechaDesde.value) && (
+                    <div>
+                      <p
+                        style={{
+                          color: "red",
+                          fontSize: "16px",
+                        }}
+                      >
+                        La fecha de cierre no puede ser posterior al día de hoy
+                      </p>
+                    </div>
+                  )}
               </div>
             )}
-            {editState.valor && (
+            {editState.valor.canEdit && (
               <div className="d-flex justify-content-center gap-2 flex-column align-items-center w-50 mt-5">
                 <h6 className="text-muted">Editar Valor</h6>
                 <div>
                   <input
                     className="form-control"
                     type="number"
-                    value={editValue.valor}
-                    onChange={(e) =>
-                      setEditValue({ ...editValue, valor: e.target.value })
-                    }
+                    value={editState.valor.value}
+                    onChange={(e) => {
+                      setEditState({
+                        ...editState,
+                        valor: {
+                          ...editState.valor,
+                          value: e.target.value,
+                          edited: e.target.value != prevValue.valor,
+                        },
+                      });
+                      setDisabledButton(!e.target.value || e.target.value == 0);
+                    }}
                     min={0}
                   />
                 </div>
@@ -354,7 +416,14 @@ const Modulos = ({ ...props }) => {
             <button
               type="button"
               onClick={() => {
-                setEditValue({ valor: 0, fechaDesde: "" });
+                setEditState({
+                  valor: { ...editState.valor, value: 0, edited: false },
+                  fechaDesde: {
+                    ...editState.fechaDesde,
+                    value: "",
+                    edited: false,
+                  },
+                });
                 setDisabledButton(false);
               }}
               className="btn btn-limpiar d-flex align-items-center justify-content-center gap-2"
@@ -367,7 +436,8 @@ const Modulos = ({ ...props }) => {
               className="btn btn-guardar"
               onClick={() => handleSave("editar")}
               disabled={
-                (!editValue.valor && !editValue.fechaDesde) || disabledButton
+                (!editState.valor.edited && !editState.fechaDesde.edited) ||
+                disabledButton
               }
             >
               Guardar cambios
