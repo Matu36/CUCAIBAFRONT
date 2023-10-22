@@ -20,6 +20,7 @@ import Archivos from "../Pages/Archivos";
 import ErrorPage from "../Pages/ErrorPage";
 import ModulosValor from "../Pages/ModulosValor";
 import ModulosVista from "../Pages/ModulosVista";
+import HonorariosPorAgentes from "../Pages/HonorariosPorAgentes";
 
 const RedirectComponent = () => {
   const location = useLocation();
@@ -97,6 +98,15 @@ const router = createBrowserRouter(
                 {
                   index: true,
                   element: <TablaHonorarios />,
+                },
+              ],
+            },
+            {
+              path: "/honorarios/variables/agentes",
+              children: [
+                {
+                  index: true,
+                  element: <HonorariosPorAgentes />,
                 },
               ],
             },
