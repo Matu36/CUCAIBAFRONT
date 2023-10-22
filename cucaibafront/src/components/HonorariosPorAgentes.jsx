@@ -187,7 +187,9 @@ const HonorariosPorAgente = () => {
                   marginBottom: "1rem",
                 }}
               >
-                <button className="btn btn-primary">Crear Honorario</button>
+                <button type="submit" className="btn btn-primary">
+                  Crear Honorario
+                </button>
               </div>
             </div>
           )}
