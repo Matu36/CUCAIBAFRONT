@@ -8,28 +8,40 @@ import { useOperativo } from "../hooks/useOperativo";
 import { MaskMoneda } from "../utils/Mask";
 import { FaSearch } from "react-icons/fa";
 import { formatFecha } from "../utils/MesAño";
+import { useQueryClient } from "@tanstack/react-query";
 
 const STRING_REGEX = /^[a-zA-Z].*(?:\d| )*$/;
 
 const HonorariosPorAgente = () => {
+  const queryClient = useQueryClient();
   const { data, isLoading } = useAgentes().agentesQuery;
   const [showDropdown, setShowDropdown] = useState(false);
-  const [selectedFunciones, setSelectedFunciones] = useState([]);
-  const [selectedOption, setSelectedOption] = useState("");
+  const [selectedOptions, setSelectedOptions] = useState([]);
   const [refValue, setRefValue] = useState("");
   const [clicked, setClicked] = useState(false);
+  const [estaHabilitado, setEstaHabilitado] = useState(false);
 
   const { operativosByRef } = useOperativo(0, refValue, clicked);
 
-  const dataByRef = operativosByRef.data;
+  const {
+    data: dataByRef,
+    isFetching: operativoFetching,
+    isError,
+    refetch,
+  } = operativosByRef;
 
   const handleInputChange = (e) => {
     const newValue = e.target.value;
     setRefValue(newValue);
+    if (newValue.length <= 0) {
+      setSelectedOptions([]);
+      setEstaHabilitado(false);
+    }
   };
 
   const handleBuscarClick = () => {
     setClicked(true);
+    refetch();
   };
 
   useEffect(() => {
@@ -37,6 +49,22 @@ const HonorariosPorAgente = () => {
       setClicked(false);
     }
   }, [dataByRef]);
+
+  useEffect(() => {
+    if (isError) {
+      Swal.fire({
+        title: "Hubo un error",
+        html: `<p>No se encontro el Operativo con referencia: <b># ${refValue}</b></p>`,
+        showCancelButton: false,
+        timer: 4000,
+        showConfirmButton: false,
+        icon: "error",
+      });
+      queryClient.removeQueries(["operativoByRef", { refValue: refValue }]);
+      setRefValue("");
+      setClicked(false);
+    }
+  }, [isError]);
 
   // TRAE LA DATA DE LOS AGENTES //
   const [options, setOptions] = useState([]);
@@ -89,6 +117,18 @@ const HonorariosPorAgente = () => {
     }
   }, [fetchedModulosActivos, loadingModulosActivos]);
 
+  const handleAsociar = () => {
+    setEstaHabilitado(true);
+    Swal.fire({
+      title: "Se asoció el agente al operativo",
+      text: "El agente esta habilitado a participar en este operativo",
+      icon: "success",
+      timer: 3000,
+      showCancelButton: false,
+      showConfirmButton: false,
+    });
+  };
+
   return (
     <div className="honorariosPorAgente">
       <div>
@@ -119,6 +159,12 @@ const HonorariosPorAgente = () => {
             onChange={(e) => {
               setSelectValue(e);
               setShowDropdown(true);
+              queryClient.removeQueries([
+                "operativoByRef",
+                { refValue: refValue },
+              ]);
+              setRefValue("");
+              setClicked(false);
             }}
           />
         )}
@@ -154,32 +200,44 @@ const HonorariosPorAgente = () => {
                     placeholder="Introducir número del operativo"
                     onChange={handleInputChange}
                     className="form-control"
+                    value={refValue}
+                    min={0}
                   />
-                  <div className="input-group-append">
+                  <div className="input-group-append d-flex gap-2 align-items-center">
+                    {operativoFetching && (
+                      <div
+                        className="spinner-border text-primary"
+                        role="status"
+                      >
+                        <span className="visually-hidden">Loading...</span>
+                      </div>
+                    )}
                     <button
                       type="button"
                       className="btn btn-buscar d-flex align-items-center justify-content-center gap-2 ml-2"
                       style={{ zIndex: 0 }}
                       onClick={handleBuscarClick}
+                      disabled={operativoFetching || !refValue || refValue == 0}
                     >
                       <FaSearch />
                       Buscar
                     </button>
-                    {dataByRef ? (
-                      <div
-                        className="asociar"
-                        style={{ marginLeft: "7.5rem", marginTop: "-2.3rem" }}
+                    {dataByRef && (
+                      <button
+                        type="button"
+                        className="btn btn-info"
+                        style={{ zIndex: 0 }}
+                        onClick={handleAsociar}
+                        disabled={estaHabilitado}
                       >
-                        <button className="btn btn-info">
-                          Asociar Operativo
-                        </button>
-                      </div>
-                    ) : null}
+                        Asociar Operativo
+                      </button>
+                    )}
                   </div>
                 </div>
                 <br />
 
-                {dataByRef ? (
+                {dataByRef && (
                   <div className="p-0 mb-3">
                     <div className="card-body justify-content-evenly d-flex gap-2 detalleAgente">
                       <div className="data-row">
@@ -201,8 +259,6 @@ const HonorariosPorAgente = () => {
                       <br />
                     </div>
                   </div>
-                ) : (
-                  <p>No hay resultados disponibles</p>
                 )}
               </div>
 
@@ -217,7 +273,11 @@ const HonorariosPorAgente = () => {
                   placeholder="Seleccioné una opción"
                   classNamePrefix="select2"
                   id="select-modulos"
-                  isDisabled={!operativosByRef.data}
+                  isDisabled={!estaHabilitado}
+                  value={selectedOptions}
+                  onChange={(e) => {
+                    setSelectedOptions(e);
+                  }}
                 />
               </div>
               <br />
@@ -229,7 +289,12 @@ const HonorariosPorAgente = () => {
                   marginBottom: "1rem",
                 }}
               >
-                <button type="submit" className="btn btn-primary">
+                <button
+                  type="button"
+                  className="btn btn-primary"
+                  onClick={() => console.log(selectedOptions)}
+                  disabled={selectedOptions.length == 0}
+                >
                   Crear Honorario
                 </button>
               </div>
