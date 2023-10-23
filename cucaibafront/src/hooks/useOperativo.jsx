@@ -15,16 +15,28 @@ const getAgentesByOperativo = async (operativoId) => {
   return data[0];
 };
 
+// Función para obtener operativos por número de referencia
+const getOperativosByRef = async (refValue) => {
+  const { data: dataByRef } = await OperativosAPI.get(`/${refValue}`);
+  return dataByRef;
+};
+
 // Función para crear un nuevo operativo
 const postOperativo = async (data) => {
   return await OperativosAPI.post("", data);
 };
 
-export const useOperativo = (operativoId = 0) => {
+export const useOperativo = (operativoId = 0, refValue = 0) => {
   const location = useLocation();
   const operativosQuery = useQuery({
     queryKey: ["operativos"],
     queryFn: () => getOperativos(),
+  });
+
+  const operativosByRef = useQuery({
+    queryKey: ["operativoByRef", { refValue }],
+    queryFn: () => getOperativosByRef(refValue),
+    enabled: refValue != 0,
   });
 
   const agentesOperativoQuery = useQuery({
@@ -77,5 +89,6 @@ export const useOperativo = (operativoId = 0) => {
     operativosQuery,
     agentesOperativoQuery,
     operativoMutation,
+    operativosByRef,
   };
 };

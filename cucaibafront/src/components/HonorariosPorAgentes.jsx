@@ -4,6 +4,7 @@ import { useModulos } from "../hooks/useModulos";
 import Spinner from "./UI/Spinner";
 import Swal from "sweetalert2";
 import Select from "react-select";
+import { useOperativo } from "../hooks/useOperativo";
 
 const STRING_REGEX = /^[a-zA-Z].*(?:\d| )*$/;
 
@@ -12,6 +13,16 @@ const HonorariosPorAgente = () => {
   const [showDropdown, setShowDropdown] = useState(false);
   const [selectedFunciones, setSelectedFunciones] = useState([]);
   const [selectedOption, setSelectedOption] = useState("");
+
+  const refValue = 45678;
+
+  const { operativosByRef } = useOperativo(0, refValue);
+
+  if (operativosByRef.isSuccess) {
+    const dataByRef = operativosByRef.data;
+
+    console.log(dataByRef);
+  }
 
   // TRAE LA DATA DE LOS AGENTES //
   const [options, setOptions] = useState([]);
@@ -103,6 +114,7 @@ const HonorariosPorAgente = () => {
             }}
           />
         )}
+        <br />
         <br />
         <form action="submit">
           {showDropdown && (
