@@ -5,8 +5,9 @@ import Spinner from "./UI/Spinner";
 import Swal from "sweetalert2";
 import Select from "react-select";
 import { useOperativo } from "../hooks/useOperativo";
+import { MaskMoneda } from "../utils/Mask";
+import { FaSearch } from "react-icons/fa";
 import { formatFecha } from "../utils/MesAño";
-import { useQueryClient } from "@tanstack/react-query";
 
 const STRING_REGEX = /^[a-zA-Z].*(?:\d| )*$/;
 
@@ -28,7 +29,6 @@ const HonorariosPorAgente = () => {
   };
 
   const handleBuscarClick = () => {
-    console.log(dataByRef);
     setClicked(true);
   };
 
@@ -73,27 +73,21 @@ const HonorariosPorAgente = () => {
 
   // SELECCIONA LAS FUNCIONES DESDE EL SELECT, LAS MUESTRA PERMITE ELIMINARLAS //
 
-  const handleSelectChange = (event) => {
-    const selectedValue = event.target.value;
-    const selectedText = event.target.options[event.target.selectedIndex].text;
-
-    if (selectedValue === "") {
-      return;
+  const [optionsModulos, setOptionsModulos] = useState([
+    { value: "0|0", label: "Elegí una opción" },
+  ]);
+  useEffect(() => {
+    if (!loadingModulosActivos) {
+      typeof dataModulosActivos == "object" &&
+        setOptionsModulos([
+          ...options,
+          ...dataModulosActivos.map((m) => ({
+            value: m.id,
+            label: `${m.descripcion} ($${MaskMoneda(`${m.valor}`)})`,
+          })),
+        ]);
     }
-
-    setSelectedFunciones([
-      ...selectedFunciones,
-      { id: selectedValue, descripcion: selectedText },
-    ]);
-    setSelectedOption("");
-  };
-
-  const handleRemoveFuncion = (id) => {
-    const updatedFunciones = selectedFunciones.filter(
-      (funcion) => funcion.id !== id
-    );
-    setSelectedFunciones(updatedFunciones);
-  };
+  }, [fetchedModulosActivos, loadingModulosActivos]);
 
   return (
     <div className="honorariosPorAgente">
@@ -153,7 +147,7 @@ const HonorariosPorAgente = () => {
                   OPERATIVO
                 </label>
 
-                <div className="input-group">
+                <div className="input-group gap-4">
                   <input
                     style={{ maxWidth: "40%" }}
                     type="number"
@@ -164,10 +158,11 @@ const HonorariosPorAgente = () => {
                   <div className="input-group-append">
                     <button
                       type="button"
-                      className="btn btn-buscar"
-                      style={{ marginLeft: "2rem" }}
+                      className="btn btn-buscar d-flex align-items-center justify-content-center gap-2 ml-2"
+                      style={{ zIndex: 0 }}
                       onClick={handleBuscarClick}
                     >
+                      <FaSearch />
                       Buscar
                     </button>
                   </div>
@@ -179,7 +174,7 @@ const HonorariosPorAgente = () => {
                     <div className="card-body justify-content-evenly d-flex gap-2 detalleAgente">
                       <div className="data-row">
                         <div className="value">{dataByRef.referencia}</div>
-                        <div className="label">Número de Operativo</div>
+                        <div className="label">Número de Referencia</div>
                       </div>
                       <div className="data-row">
                         <div className="value">
@@ -203,32 +198,16 @@ const HonorariosPorAgente = () => {
               <br />
 
               <div className="form-group">
-                <select
-                  style={{ maxWidth: "40%" }}
-                  value={selectedOption}
-                  onChange={handleSelectChange}
-                  className="form-select"
-                >
-                  <option value="">Seleccionar Funciones</option>
-                  {dataModulosActivos.map((modulo) => (
-                    <option key={modulo.id} value={modulo.id}>
-                      {modulo.descripcion}
-                    </option>
-                  ))}
-                </select>
-                <div>
-                  {selectedFunciones.map((funcion) => (
-                    <span key={funcion.id}>
-                      {funcion.descripcion}
-                      <button
-                        className="btn btn-clear"
-                        onClick={() => handleRemoveFuncion(funcion.id)}
-                      >
-                        X
-                      </button>
-                    </span>
-                  ))}
-                </div>
+                <Select
+                  isMulti
+                  name="modulos"
+                  options={optionsModulos}
+                  classNames={{ container: () => "select2-container" }}
+                  placeholder="Seleccioné una opción"
+                  classNamePrefix="select2"
+                  id="select-modulos"
+                  isDisabled={!operativosByRef.data}
+                />
               </div>
               <br />
               <br />
