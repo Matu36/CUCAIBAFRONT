@@ -29,7 +29,6 @@ const HonorariosPorAgente = () => {
   };
 
   const handleBuscarClick = () => {
-    console.log(dataByRef);
     setClicked(true);
   };
 
