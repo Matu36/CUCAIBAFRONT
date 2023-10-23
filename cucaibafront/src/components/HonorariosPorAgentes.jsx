@@ -173,6 +173,16 @@ const HonorariosPorAgente = () => {
                       <FaSearch />
                       Buscar
                     </button>
+                    {dataByRef ? (
+                      <div
+                        className="asociar"
+                        style={{ marginLeft: "7.5rem", marginTop: "-2.3rem" }}
+                      >
+                        <button className="btn btn-info">
+                          Asociar Operativo
+                        </button>
+                      </div>
+                    ) : null}
                   </div>
                 </div>
                 <br />
@@ -196,6 +206,7 @@ const HonorariosPorAgente = () => {
                         </div>
                         <div className="label"> Descripción</div>
                       </div>
+                      <br />
                     </div>
                   </div>
                 ) : (
