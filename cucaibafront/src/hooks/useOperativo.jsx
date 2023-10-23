@@ -26,7 +26,11 @@ const postOperativo = async (data) => {
   return await OperativosAPI.post("", data);
 };
 
-export const useOperativo = (operativoId = 0, refValue = 0) => {
+export const useOperativo = (
+  operativoId = 0,
+  refValue = 0,
+  clicked = false
+) => {
   const location = useLocation();
   const operativosQuery = useQuery({
     queryKey: ["operativos"],
@@ -36,7 +40,7 @@ export const useOperativo = (operativoId = 0, refValue = 0) => {
   const operativosByRef = useQuery({
     queryKey: ["operativoByRef", { refValue }],
     queryFn: () => getOperativosByRef(refValue),
-    enabled: refValue != 0,
+    enabled: refValue != 0 && clicked,
   });
 
   const agentesOperativoQuery = useQuery({
