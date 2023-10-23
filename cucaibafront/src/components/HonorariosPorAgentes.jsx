@@ -14,14 +14,13 @@ const STRING_REGEX = /^[a-zA-Z].*(?:\d| )*$/;
 const HonorariosPorAgente = () => {
   const { data, isLoading } = useAgentes().agentesQuery;
   const [showDropdown, setShowDropdown] = useState(false);
-  const [selectedFunciones, setSelectedFunciones] = useState([]);
-  const [selectedOption, setSelectedOption] = useState("");
+  const [selectedOptions, setSelectedOptions] = useState([]);
   const [refValue, setRefValue] = useState("");
   const [clicked, setClicked] = useState(false);
 
   const { operativosByRef } = useOperativo(0, refValue, clicked);
 
-  const dataByRef = operativosByRef.data;
+  const { data: dataByRef, isFetching: operativoFetching } = operativosByRef;
 
   const handleInputChange = (e) => {
     const newValue = e.target.value;
@@ -155,12 +154,21 @@ const HonorariosPorAgente = () => {
                     onChange={handleInputChange}
                     className="form-control"
                   />
-                  <div className="input-group-append">
+                  <div className="input-group-append d-flex gap-2 align-items-center">
+                    {operativoFetching && (
+                      <div
+                        className="spinner-border text-primary"
+                        role="status"
+                      >
+                        <span className="visually-hidden">Loading...</span>
+                      </div>
+                    )}
                     <button
                       type="button"
                       className="btn btn-buscar d-flex align-items-center justify-content-center gap-2 ml-2"
                       style={{ zIndex: 0 }}
                       onClick={handleBuscarClick}
+                      disabled={operativoFetching}
                     >
                       <FaSearch />
                       Buscar
@@ -207,6 +215,9 @@ const HonorariosPorAgente = () => {
                   classNamePrefix="select2"
                   id="select-modulos"
                   isDisabled={!operativosByRef.data}
+                  onChange={(e) => {
+                    setSelectedOptions(e);
+                  }}
                 />
               </div>
               <br />
@@ -218,7 +229,12 @@ const HonorariosPorAgente = () => {
                   marginBottom: "1rem",
                 }}
               >
-                <button type="submit" className="btn btn-primary">
+                <button
+                  type="button"
+                  className="btn btn-primary"
+                  onClick={() => console.log(selectedOptions)}
+                  disabled={selectedOptions.length == 0}
+                >
                   Crear Honorario
                 </button>
               </div>
