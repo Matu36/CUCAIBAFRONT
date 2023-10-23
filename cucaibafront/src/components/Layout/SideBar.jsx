@@ -115,7 +115,15 @@ function SideBar({ isOpen, setIsOpen }) {
           <ul className="collapse sub-menu" id="collapseHonorarios">
             <li>
               <Link to="/honorarios/variables" onClick={() => setIsOpen(false)}>
-                Variables
+                Variables por Operativos
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/honorarios/variables/agentes"
+                onClick={() => setIsOpen(false)}
+              >
+                Variables por Agentes
               </Link>
             </li>
           </ul>

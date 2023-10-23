@@ -936,3 +936,9 @@ fieldset[disabled] .btn {
 .modal-body {
   font-weight: normal !important;
 }
+
+.custom-dropdown {
+  border: 3px solid #0099cc;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  padding: 10px;
+}

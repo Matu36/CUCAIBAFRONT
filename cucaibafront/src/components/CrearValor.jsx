@@ -75,15 +75,6 @@ const CrearValor = ({ handleCerrarFormulario, data }) => {
     }
   };
 
-  // useEffect(() => {
-  //   if (selectValue) {
-  //     setShowError({
-  //       ...showError,
-  //       descripcion: selectValue.value.toString().includes("create") ? 0 : 1,
-  //     });
-  //   }
-  // }, [selectValue]);
-
   return (
     <div className="form-container pt-2 container">
       <form
@@ -96,7 +87,7 @@ const CrearValor = ({ handleCerrarFormulario, data }) => {
         }}
       >
         <div className="modulo">
-          <h6 style={{color:"#5dade2"}}>ASIGNAR VALOR</h6>
+          <h6 style={{ color: "#5dade2" }}>ASIGNAR VALOR</h6>
         </div>
         <hr className="hrstyle" />
         <div className="col-md-6"></div>
@@ -235,7 +226,7 @@ const CrearValor = ({ handleCerrarFormulario, data }) => {
           <button
             type="submit"
             ref={crearModuloButtonRef}
-            className="btn btn-guardar pt-2" 
+            className="btn btn-guardar pt-2"
             disabled={
               showError.fecha ||
               showError.descripcion != 0 ||
