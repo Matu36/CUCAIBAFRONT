@@ -5,6 +5,8 @@ import Spinner from "./UI/Spinner";
 import Swal from "sweetalert2";
 import Select from "react-select";
 import { useOperativo } from "../hooks/useOperativo";
+import { formatFecha } from "../utils/MesAño";
+import { useQueryClient } from "@tanstack/react-query";
 
 const STRING_REGEX = /^[a-zA-Z].*(?:\d| )*$/;
 
@@ -13,16 +15,28 @@ const HonorariosPorAgente = () => {
   const [showDropdown, setShowDropdown] = useState(false);
   const [selectedFunciones, setSelectedFunciones] = useState([]);
   const [selectedOption, setSelectedOption] = useState("");
+  const [refValue, setRefValue] = useState("");
+  const [clicked, setClicked] = useState(false);
 
-  const refValue = 45678;
+  const { operativosByRef } = useOperativo(0, refValue, clicked);
 
-  const { operativosByRef } = useOperativo(0, refValue);
+  const dataByRef = operativosByRef.data;
 
-  if (operativosByRef.isSuccess) {
-    const dataByRef = operativosByRef.data;
+  const handleInputChange = (e) => {
+    const newValue = e.target.value;
+    setRefValue(newValue);
+  };
 
+  const handleBuscarClick = () => {
     console.log(dataByRef);
-  }
+    setClicked(true);
+  };
+
+  useEffect(() => {
+    if (dataByRef) {
+      setClicked(false);
+    }
+  }, [dataByRef]);
 
   // TRAE LA DATA DE LOS AGENTES //
   const [options, setOptions] = useState([]);
@@ -144,8 +158,7 @@ const HonorariosPorAgente = () => {
                     style={{ maxWidth: "40%" }}
                     type="number"
                     placeholder="Introducir número del operativo"
-                    // value={operativo.id}
-                    // onChange={handleOperativoChange}
+                    onChange={handleInputChange}
                     className="form-control"
                   />
                   <div className="input-group-append">
@@ -153,11 +166,38 @@ const HonorariosPorAgente = () => {
                       type="button"
                       className="btn btn-buscar"
                       style={{ marginLeft: "2rem" }}
+                      onClick={handleBuscarClick}
                     >
                       Buscar
                     </button>
                   </div>
                 </div>
+                <br />
+
+                {dataByRef ? (
+                  <div className="p-0 mb-3">
+                    <div className="card-body justify-content-evenly d-flex gap-2 detalleAgente">
+                      <div className="data-row">
+                        <div className="value">{dataByRef.referencia}</div>
+                        <div className="label">Número de Operativo</div>
+                      </div>
+                      <div className="data-row">
+                        <div className="value">
+                          {formatFecha(dataByRef.fecha)}
+                        </div>
+                        <div className="label"> Fecha</div>
+                      </div>
+                      <div className="data-row">
+                        <div className="value">
+                          {dataByRef.descripcion ?? <i>Sin Descripción</i>}
+                        </div>
+                        <div className="label"> Descripción</div>
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <p>No hay resultados disponibles</p>
+                )}
               </div>
 
               <br />
