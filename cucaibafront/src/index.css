@@ -942,3 +942,21 @@ fieldset[disabled] .btn {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
   padding: 10px;
 }
+
+.operativoByRef {
+  background-color: #f3f3f3;
+  border: 1px solid #ccc;
+
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.operativoInfo {
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+}
+
+.infoItem {
+  margin: 5px 0;
+}
