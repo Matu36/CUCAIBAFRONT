@@ -8,7 +8,7 @@ import { useOperativo } from "../hooks/useOperativo";
 import { MaskMoneda } from "../utils/Mask";
 import { FaSearch } from "react-icons/fa";
 import { formatFecha } from "../utils/MesAño";
-import { useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const STRING_REGEX = /^[a-zA-Z].*(?:\d| )*$/;
 
@@ -20,8 +20,9 @@ const HonorariosPorAgente = () => {
   const [refValue, setRefValue] = useState("");
   const [clicked, setClicked] = useState(false);
   const [estaHabilitado, setEstaHabilitado] = useState(false);
-
   const { operativosByRef } = useOperativo(0, refValue, clicked);
+
+  //TRAE DATA DE OPERATIVO POR REFERENCIA
 
   const {
     data: dataByRef,
@@ -29,6 +30,63 @@ const HonorariosPorAgente = () => {
     isError,
     refetch,
   } = operativosByRef;
+
+  //CREAR HONORARIO //
+
+  //   const mutation = useMutation(
+  //   async (newHonorario) => {
+  //     return await HonorariosAPI.post("", newHonorario);
+  //   },
+  //   {
+  //     onSuccess: () => {
+  //       queryClient.refetchQueries(["honorariosPendientesHome"]);
+  //       return Swal.fire({
+  //         position: "center",
+  //         icon: "success",
+  //         title: "Se creó el honorario de manera correcta",
+  //         showConfirmButton: false,
+  //         timer: 3000,
+  //       });
+  //     },
+  //     onError: (err) => {
+  //       return Swal.fire({
+  //         position: "center",
+  //         icon: "error",
+  //         title: "Hubo un error",
+  //         text: err.response.data,
+  //         showConfirmButton: true,
+  //         confirmButtonText: "Cerrar",
+  //         confirmButtonColor: "#4CAF50",
+  //         timer: 3000,
+  //       });
+  //     },
+  //   }
+  // );
+
+  // const crearHonorario = () => {
+  //   if (
+  //     honorarioData.agente_id == 0 ||
+  //     honorarioData.modulo_valor_id == 0 ||
+  //     honorarioData.operativo_id == 0
+  //   ) {
+  //     Swal.fire({
+  //       position: "center",
+  //       icon: "error",
+  //       title: "Hubo un error, no se pudo crear el honorario",
+  //       showConfirmButton: true,
+  //     });
+  //     return;
+  //   }
+  //   mutation.mutate({ ...honorarioData, fechaModif: new Date() });
+  // };
+
+  const [honorarioData, setHonorarioData] = useState({
+    operativo_id: 0,
+    agente_id: 0,
+    modulos: [],
+  });
+
+  // FINALIZA LA CREACION DEL HONORARIO //
 
   const handleInputChange = (e) => {
     const newValue = e.target.value;
@@ -39,6 +97,8 @@ const HonorariosPorAgente = () => {
     }
   };
 
+  // BUSCA POR REFERENCIA DE OPERATIVO
+
   const handleBuscarClick = () => {
     setClicked(true);
     refetch();
@@ -47,6 +107,7 @@ const HonorariosPorAgente = () => {
   useEffect(() => {
     if (dataByRef) {
       setClicked(false);
+      setHonorarioData({ ...honorarioData, operativo_id: dataByRef.id });
     }
   }, [dataByRef]);
 
@@ -158,6 +219,7 @@ const HonorariosPorAgente = () => {
             }}
             onChange={(e) => {
               setSelectValue(e);
+              setHonorarioData({ ...honorarioData, agente_id: e.value });
               setShowDropdown(true);
               queryClient.removeQueries([
                 "operativoByRef",
@@ -225,7 +287,7 @@ const HonorariosPorAgente = () => {
                     {dataByRef && (
                       <button
                         type="button"
-                        className="btn btn-info"
+                        className="btn btn-outline-info"
                         style={{ zIndex: 0 }}
                         onClick={handleAsociar}
                         disabled={estaHabilitado}
@@ -292,7 +354,17 @@ const HonorariosPorAgente = () => {
                 <button
                   type="button"
                   className="btn btn-primary"
-                  onClick={() => console.log(selectedOptions)}
+                  onClick={() => {
+                    setHonorarioData({
+                      ...honorarioData,
+                      modulos: [].concat(
+                        selectedOptions.map((o) => ({
+                          id: o.value,
+                        }))
+                      ),
+                    });
+                    console.log(honorarioData);
+                  }}
                   disabled={selectedOptions.length == 0}
                 >
                   Crear Honorario
