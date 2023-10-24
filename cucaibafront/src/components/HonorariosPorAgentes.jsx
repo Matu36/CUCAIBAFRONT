@@ -9,6 +9,7 @@ import { MaskMoneda } from "../utils/Mask";
 import { FaSearch } from "react-icons/fa";
 import { formatFecha } from "../utils/MesAño";
 import { useQueryClient } from "@tanstack/react-query";
+import { BsPersonFill } from "react-icons/bs";
 
 const STRING_REGEX = /^[a-zA-Z].*(?:\d| )*$/;
 
@@ -172,17 +173,25 @@ const HonorariosPorAgente = () => {
         <br />
         <form action="submit">
           {showDropdown && (
-            <div className="custom-dropdown">
-              <br />
-              <p style={{ fontWeight: "bold" }}>
-                {selectValue
-                  ? `Agente Seleccionado: ${
-                      selectValue.label.split(" (DNI:")[0]
-                    }`
-                  : ""}
-              </p>
+            <div className="custom-dropdown p-0">
+              <div
+                className="bg-danger d-flex align-items-center justify-content-start"
+                style={{
+                  height: "50px",
+                  boxShadow: "inset 0 1px 3px rgba(0,0,0,.1)",
+                }}
+              >
+                <BsPersonFill size="1.5rem" />
+                <p style={{ fontWeight: "bold" }} className="m-0">
+                  {selectValue
+                    ? `Agente Seleccionado: ${
+                        selectValue.label.split(" (DNI:")[0]
+                      }`
+                    : ""}
+                </p>
+              </div>
 
-              <div className="form-group">
+              <div className="form-group p-2">
                 <label
                   style={{
                     fontSize: "14px",
@@ -264,7 +273,7 @@ const HonorariosPorAgente = () => {
 
               <br />
 
-              <div className="form-group">
+              <div className="form-group p-2">
                 <Select
                   isMulti
                   name="modulos"
