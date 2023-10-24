@@ -960,3 +960,7 @@ fieldset[disabled] .btn {
 .infoItem {
   margin: 5px 0;
 }
+
+.btn.btn-outline-info:hover {
+  color: #fff;
+}
