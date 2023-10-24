@@ -50,7 +50,7 @@ const HonorariosPorAgente = () => {
     queryKey: ["validar-operativo"],
     queryFn: async () => {
       const { data } = await OperativosAPI.get(
-        `/verificar/${refValue}/${selectValue.value}`
+        `/verificar/${refValue}/${selectValue.value.split("|")[0]}`
       );
       return data;
     },
@@ -89,6 +89,7 @@ const HonorariosPorAgente = () => {
   const [honorarioData, setHonorarioData] = useState({
     operativo_id: 0,
     agente_id: 0,
+    persona_id: 0,
     modulos: [],
   });
 
@@ -124,7 +125,7 @@ const HonorariosPorAgente = () => {
     if (!isLoading) {
       setOptions(
         data.map((a) => ({
-          value: a.personaId,
+          value: `${a.personaId}|${a.id}`,
           label: `${a.apellido}, ${a.nombre} (DNI: ${a.dni})`,
         }))
       );
@@ -254,7 +255,14 @@ const HonorariosPorAgente = () => {
                 }}
                 onChange={(e) => {
                   setSelectValue(e);
-                  setHonorarioData({ ...honorarioData, agente_id: e.value });
+                  setHonorarioData(() => {
+                    let dataAgente = e.value.split("|");
+                    return {
+                      ...honorarioData,
+                      agente_id: dataAgente[1],
+                      persona_id: dataAgente[0],
+                    };
+                  });
                   setShowDropdown(true);
                   setEstaHabilitado(false);
                   queryClient.removeQueries(["operativoByRef"]);
