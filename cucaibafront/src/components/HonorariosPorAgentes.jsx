@@ -12,6 +12,8 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { BsPersonFill } from "react-icons/bs";
 import axios from "axios";
 import { OperativosAPI } from "../api/OperativosAPI";
+import { useNavigate } from "react-router-dom";
+import EmptyTable from "./UI/EmptyTable";
 
 const STRING_REGEX = /^[a-zA-Z].*(?:\d| )*$/;
 
@@ -23,23 +25,26 @@ const HonorariosPorAgente = () => {
   const [refValue, setRefValue] = useState("");
   const [clicked, setClicked] = useState(false);
   const [estaHabilitado, setEstaHabilitado] = useState(false);
-  const { operativosByRef } = useOperativo(0, refValue, clicked);
   const [operativoData, setOperativoData] = useState({});
+  const navigate = useNavigate();
 
   useEffect(() => {
     queryClient.removeQueries();
   }, []);
 
+  const handleNavigate = () => {
+    navigate("../../agentes/crear-agente");
+  };
+
   //TRAE DATA DE OPERATIVO POR REFERENCIA
 
   const {
+    refetch: validarOperativoRefetch,
     data: dataByRef,
     isFetching: operativoFetching,
+    isFetched: operativoFetched,
     isError,
-    refetch,
-  } = operativosByRef;
-
-  const { refetch: validarOperativoRefetch } = useQuery({
+  } = useQuery({
     enabled: false,
     queryKey: ["validar-operativo"],
     queryFn: async () => {
@@ -48,8 +53,12 @@ const HonorariosPorAgente = () => {
       );
       return data;
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
       setEstaHabilitado(true);
+      setOperativoData(data);
+      setClicked(false);
+      setHonorarioData({ ...honorarioData, operativo_id: data.id });
+      refetchModulosActivos();
       Swal.fire({
         title: "Se asoció el agente al operativo",
         text: "El agente esta habilitado a participar en este operativo",
@@ -58,17 +67,21 @@ const HonorariosPorAgente = () => {
         showCancelButton: false,
         showConfirmButton: false,
       });
-      refetch();
     },
-    onError: () => {
+    onError: (data) => {
       Swal.fire({
         title: "Hubo un problema",
-        text: "El agente no esta habilitado a participar en este operativo",
+        text: `${data.response.data}`,
         icon: "info",
         timer: 3000,
         showCancelButton: false,
         showConfirmButton: false,
       });
+      queryClient.removeQueries(["operativoByRef", { refValue: refValue }]);
+      setRefValue("");
+      setClicked(false);
+      setOperativoData({});
+      setEstaHabilitado(false);
     },
   });
 
@@ -150,33 +163,7 @@ const HonorariosPorAgente = () => {
     if (operativoData.referencia != refValue) {
       setOptionsModulos([]);
     }
-    refetch();
   };
-
-  useEffect(() => {
-    if (dataByRef) {
-      setClicked(false);
-      setOperativoData(dataByRef);
-      setHonorarioData({ ...honorarioData, operativo_id: operativoData.id });
-      refetchModulosActivos();
-    }
-  }, [dataByRef]);
-
-  useEffect(() => {
-    if (isError) {
-      Swal.fire({
-        title: "Hubo un error",
-        html: `<p>No se encontro el Operativo con referencia: <b># ${refValue}</b></p>`,
-        showCancelButton: false,
-        timer: 4000,
-        showConfirmButton: false,
-        icon: "error",
-      });
-      queryClient.removeQueries(["operativoByRef", { refValue: refValue }]);
-      setRefValue("");
-      setClicked(false);
-    }
-  }, [isError]);
 
   // TRAE LA DATA DE LOS AGENTES //
   const [options, setOptions] = useState([]);
@@ -249,7 +236,17 @@ const HonorariosPorAgente = () => {
                 options={options}
                 value={selectValue}
                 placeholder="Seleccionar Agente por Apellido o DNI"
-                noOptionsMessage={() => "El agente no se encuentra cargado"}
+                noOptionsMessage={() => (
+                  <EmptyTable msg="El agente no se encuentra cargado">
+                    <button
+                      type="button"
+                      className="btn btn-guardar"
+                      onClick={handleNavigate}
+                    >
+                      Crear Agente
+                    </button>
+                  </EmptyTable>
+                )}
                 classNamePrefix="select2"
                 classNames={{ container: () => "select2-container" }}
                 onInputChange={(e) => {
@@ -326,12 +323,7 @@ const HonorariosPorAgente = () => {
                       className="btn btn-buscar d-flex align-items-center justify-content-center gap-2 ml-2"
                       style={{ zIndex: 0 }}
                       onClick={handleBuscarClick}
-                      disabled={
-                        operativoFetching ||
-                        !refValue ||
-                        refValue == 0 ||
-                        dataByRef
-                      }
+                      disabled={operativoFetching || !refValue || refValue == 0}
                     >
                       {operativoFetching ? (
                         <div
@@ -349,7 +341,7 @@ const HonorariosPorAgente = () => {
                 </div>
                 <br />
 
-                {dataByRef && (
+                {operativoData?.id && (
                   <div className="p-0 mb-3 card">
                     <div className="card-header">
                       <label
@@ -364,18 +356,18 @@ const HonorariosPorAgente = () => {
                     </div>
                     <div className="card-body justify-content-evenly d-flex gap-2 detalleAgente">
                       <div className="data-row">
-                        <div className="value">{dataByRef.referencia}</div>
+                        <div className="value">{operativoData.referencia}</div>
                         <div className="label">Número de Referencia</div>
                       </div>
                       <div className="data-row">
                         <div className="value">
-                          {formatFecha(dataByRef.fecha)}
+                          {formatFecha(operativoData.fecha)}
                         </div>
                         <div className="label"> Fecha</div>
                       </div>
                       <div className="data-row">
                         <div className="value">
-                          {dataByRef.descripcion ?? <i>Sin Descripción</i>}
+                          {operativoData.descripcion ?? <i>Sin Descripción</i>}
                         </div>
                         <div className="label"> Descripción</div>
                       </div>
@@ -404,6 +396,7 @@ const HonorariosPorAgente = () => {
                   classNames={{ container: () => "select2-container" }}
                   placeholder="Seleccioné una opción"
                   classNamePrefix="select2"
+                  noOptionsMessage={() => "No hay módulos disponibles"}
                   id="select-modulos"
                   isDisabled={!estaHabilitado}
                   value={selectedOptions}
@@ -421,6 +414,7 @@ const HonorariosPorAgente = () => {
                   onClick={() => {
                     setSelectValue(null);
                     setShowDropdown(false);
+                    setOperativoData({});
                   }}
                 >
                   <FaRedo />
