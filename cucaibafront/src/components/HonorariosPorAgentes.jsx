@@ -10,6 +10,7 @@ import { FaEdit, FaRedo, FaSearch } from "react-icons/fa";
 import { formatFecha } from "../utils/MesAño";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { BsPersonFill } from "react-icons/bs";
+import { HonorariosAPI } from "../api/HonorariosAPI";
 import axios from "axios";
 import { OperativosAPI } from "../api/OperativosAPI";
 
@@ -71,55 +72,6 @@ const HonorariosPorAgente = () => {
       });
     },
   });
-
-  //CREAR HONORARIO //
-
-  //   const mutation = useMutation(
-  //   async (newHonorario) => {
-  //     return await HonorariosAPI.post("", newHonorario);
-  //   },
-  //   {
-  //     onSuccess: () => {
-  //       queryClient.refetchQueries(["honorariosPendientesHome"]);
-  //       return Swal.fire({
-  //         position: "center",
-  //         icon: "success",
-  //         title: "Se creó el honorario de manera correcta",
-  //         showConfirmButton: false,
-  //         timer: 3000,
-  //       });
-  //     },
-  //     onError: (err) => {
-  //       return Swal.fire({
-  //         position: "center",
-  //         icon: "error",
-  //         title: "Hubo un error",
-  //         text: err.response.data,
-  //         showConfirmButton: true,
-  //         confirmButtonText: "Cerrar",
-  //         confirmButtonColor: "#4CAF50",
-  //         timer: 3000,
-  //       });
-  //     },
-  //   }
-  // );
-
-  // const crearHonorario = () => {
-  //   if (
-  //     honorarioData.agente_id == 0 ||
-  //     honorarioData.modulo_valor_id == 0 ||
-  //     honorarioData.operativo_id == 0
-  //   ) {
-  //     Swal.fire({
-  //       position: "center",
-  //       icon: "error",
-  //       title: "Hubo un error, no se pudo crear el honorario",
-  //       showConfirmButton: true,
-  //     });
-  //     return;
-  //   }
-  //   mutation.mutate({ ...honorarioData, fechaModif: new Date() });
-  // };
 
   const [honorarioData, setHonorarioData] = useState({
     operativo_id: 0,
@@ -223,17 +175,51 @@ const HonorariosPorAgente = () => {
     }
   }, [fetchedModulosActivos, loadingModulosActivos, dataModulosActivos]);
 
-  const handleCreate = () => {
-    setHonorarioData({
+  //CREAR HONORARIO //
+  const crearHonorarioPorAgente = useMutation(
+    async (data) => {
+      return await HonorariosAPI.post("Agente", { data });
+    },
+    {
+      onSuccess: () => {
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "Se creó el Honorario correctamente",
+          showConfirmButton: false,
+          timer: 3000,
+        });
+      },
+    }
+  );
+
+  const handleCreateHonorario = async () => {
+    const updatedHonorarioData = {
       ...honorarioData,
       modulos: [].concat(
         selectedOptions.map((o) => ({
           id: o.value,
         }))
       ),
-    });
-    console.log(honorarioData);
+    };
+
+    await crearHonorarioPorAgente.mutate(updatedHonorarioData);
+
+    //
+    console.log(updatedHonorarioData);
   };
+
+  // const handleCreate = () => {
+  //   setHonorarioData({
+  //     ...honorarioData,
+  //     modulos: [].concat(
+  //       selectedOptions.map((o) => ({
+  //         id: o.value,
+  //       }))
+  //     ),
+  //   });
+  //   console.log(honorarioData);
+  // };
 
   return (
     <div className="honorariosPorAgente">
@@ -429,7 +415,7 @@ const HonorariosPorAgente = () => {
                 <button
                   type="button"
                   className="btn btn-guardar"
-                  onClick={() => handleCreate()}
+                  onClick={() => handleCreateHonorario()}
                   disabled={selectedOptions.length == 0}
                 >
                   Crear Honorario
