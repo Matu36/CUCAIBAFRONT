@@ -2,6 +2,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { OperativosAPI } from "../api/OperativosAPI";
 import Swal from "sweetalert2";
 import { useLocation } from "react-router-dom";
+import axios from "axios";
 
 // Función para obtener operativos
 const getOperativos = async () => {
@@ -14,7 +15,6 @@ const getAgentesByOperativo = async (operativoId) => {
   const { data } = await OperativosAPI.get(`/${operativoId}/agentes`);
   return data[0];
 };
-
 // Función para obtener operativos por número de referencia
 const getOperativosByRef = async (refValue) => {
   const { data: dataByRef } = await OperativosAPI.get(`/${refValue}`);

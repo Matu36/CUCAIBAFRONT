@@ -8,8 +8,10 @@ import { useOperativo } from "../hooks/useOperativo";
 import { MaskMoneda } from "../utils/Mask";
 import { FaEdit, FaRedo, FaSearch } from "react-icons/fa";
 import { formatFecha } from "../utils/MesAño";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { BsPersonFill } from "react-icons/bs";
+import axios from "axios";
+import { OperativosAPI } from "../api/OperativosAPI";
 
 const STRING_REGEX = /^[a-zA-Z].*(?:\d| )*$/;
 
@@ -36,6 +38,39 @@ const HonorariosPorAgente = () => {
     isError,
     refetch,
   } = operativosByRef;
+
+  const { refetch: validarOperativoRefetch } = useQuery({
+    enabled: false,
+    queryKey: ["validar-operativo"],
+    queryFn: async () => {
+      const { data } = await OperativosAPI.get(
+        `/verificar/${refValue}/${selectValue.value}`
+      );
+      return data;
+    },
+    onSuccess: () => {
+      setEstaHabilitado(true);
+      Swal.fire({
+        title: "Se asoció el agente al operativo",
+        text: "El agente esta habilitado a participar en este operativo",
+        icon: "success",
+        timer: 3000,
+        showCancelButton: false,
+        showConfirmButton: false,
+      });
+      refetch();
+    },
+    onError: () => {
+      Swal.fire({
+        title: "Hubo un problema",
+        text: "El agente no esta habilitado a participar en este operativo",
+        icon: "info",
+        timer: 3000,
+        showCancelButton: false,
+        showConfirmButton: false,
+      });
+    },
+  });
 
   //CREAR HONORARIO //
 
@@ -111,6 +146,7 @@ const HonorariosPorAgente = () => {
 
   const handleBuscarClick = () => {
     setClicked(true);
+    validarOperativoRefetch();
     if (operativoData.referencia != refValue) {
       setOptionsModulos([]);
     }
@@ -149,7 +185,7 @@ const HonorariosPorAgente = () => {
     if (!isLoading) {
       setOptions(
         data.map((a) => ({
-          value: a.id,
+          value: a.personaId,
           label: `${a.apellido}, ${a.nombre} (DNI: ${a.dni})`,
         }))
       );
@@ -186,18 +222,6 @@ const HonorariosPorAgente = () => {
         ]);
     }
   }, [fetchedModulosActivos, loadingModulosActivos, dataModulosActivos]);
-
-  const handleAsociar = () => {
-    setEstaHabilitado(true);
-    Swal.fire({
-      title: "Se asoció el agente al operativo",
-      text: "El agente esta habilitado a participar en este operativo",
-      icon: "success",
-      timer: 3000,
-      showCancelButton: false,
-      showConfirmButton: false,
-    });
-  };
 
   const handleCreate = () => {
     setHonorarioData({
@@ -321,17 +345,6 @@ const HonorariosPorAgente = () => {
                       )}
                       Buscar
                     </button>
-                    {dataByRef && (
-                      <button
-                        type="button"
-                        className="btn btn-outline-info"
-                        style={{ zIndex: 0 }}
-                        onClick={handleAsociar}
-                        disabled={estaHabilitado}
-                      >
-                        Asociar Operativo
-                      </button>
-                    )}
                   </div>
                 </div>
                 <br />
