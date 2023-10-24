@@ -160,6 +160,7 @@ const HonorariosPorAgente = () => {
             onChange={(e) => {
               setSelectValue(e);
               setShowDropdown(true);
+              setEstaHabilitado(false);
               queryClient.removeQueries([
                 "operativoByRef",
                 { refValue: refValue },
@@ -175,10 +176,11 @@ const HonorariosPorAgente = () => {
           {showDropdown && (
             <div className="custom-dropdown p-0">
               <div
-                className="bg-danger d-flex align-items-center justify-content-start"
+                className=" d-flex align-items-center justify-content-start p-2"
                 style={{
                   height: "50px",
                   boxShadow: "inset 0 1px 3px rgba(0,0,0,.1)",
+                  backgroundColor: "#f7f7f7",
                 }}
               >
                 <BsPersonFill size="1.5rem" />
