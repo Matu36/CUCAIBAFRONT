@@ -6,7 +6,7 @@ import Swal from "sweetalert2";
 import Select from "react-select";
 import { useOperativo } from "../hooks/useOperativo";
 import { MaskMoneda } from "../utils/Mask";
-import { FaSearch } from "react-icons/fa";
+import { FaEdit, FaRedo, FaSearch } from "react-icons/fa";
 import { formatFecha } from "../utils/MesAño";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { BsPersonFill } from "react-icons/bs";
@@ -22,6 +22,11 @@ const HonorariosPorAgente = () => {
   const [clicked, setClicked] = useState(false);
   const [estaHabilitado, setEstaHabilitado] = useState(false);
   const { operativosByRef } = useOperativo(0, refValue, clicked);
+  const [operativoData, setOperativoData] = useState({});
+
+  useEffect(() => {
+    queryClient.removeQueries();
+  }, []);
 
   //TRAE DATA DE OPERATIVO POR REFERENCIA
 
@@ -95,6 +100,10 @@ const HonorariosPorAgente = () => {
     if (newValue.length <= 0) {
       setSelectedOptions([]);
       setEstaHabilitado(false);
+      queryClient.removeQueries([
+        "operativoByRef",
+        { refValue: operativoData.referencia },
+      ]);
     }
   };
 
@@ -102,13 +111,18 @@ const HonorariosPorAgente = () => {
 
   const handleBuscarClick = () => {
     setClicked(true);
+    if (operativoData.referencia != refValue) {
+      setOptionsModulos([]);
+    }
     refetch();
   };
 
   useEffect(() => {
     if (dataByRef) {
       setClicked(false);
-      setHonorarioData({ ...honorarioData, operativo_id: dataByRef.id });
+      setOperativoData(dataByRef);
+      setHonorarioData({ ...honorarioData, operativo_id: operativoData.id });
+      refetchModulosActivos();
     }
   }, [dataByRef]);
 
@@ -147,12 +161,8 @@ const HonorariosPorAgente = () => {
     apellido: 0,
   });
 
-  const operativo = {
-    id: 829,
-  };
-
   //TRAE LOS MODULOS ACTIVOS POR ID DE OPERATIVO //
-  const { modulosActivosQuery } = useModulos(operativo.id);
+  const { modulosActivosQuery } = useModulos(operativoData?.id);
 
   const {
     refetch: refetchModulosActivos,
@@ -163,21 +173,19 @@ const HonorariosPorAgente = () => {
 
   // SELECCIONA LAS FUNCIONES DESDE EL SELECT, LAS MUESTRA PERMITE ELIMINARLAS //
 
-  const [optionsModulos, setOptionsModulos] = useState([
-    { value: "0|0", label: "Elegí una opción" },
-  ]);
+  const [optionsModulos, setOptionsModulos] = useState([]);
   useEffect(() => {
     if (!loadingModulosActivos) {
       typeof dataModulosActivos == "object" &&
         setOptionsModulos([
-          ...options,
+          ...optionsModulos,
           ...dataModulosActivos.map((m) => ({
             value: m.id,
             label: `${m.descripcion} ($${MaskMoneda(`${m.valor}`)})`,
           })),
         ]);
     }
-  }, [fetchedModulosActivos, loadingModulosActivos]);
+  }, [fetchedModulosActivos, loadingModulosActivos, dataModulosActivos]);
 
   const handleAsociar = () => {
     setEstaHabilitado(true);
@@ -191,52 +199,68 @@ const HonorariosPorAgente = () => {
     });
   };
 
+  const handleCreate = () => {
+    setHonorarioData({
+      ...honorarioData,
+      modulos: [].concat(
+        selectedOptions.map((o) => ({
+          id: o.value,
+        }))
+      ),
+    });
+    console.log(honorarioData);
+  };
+
   return (
     <div className="honorariosPorAgente">
       <div>
         {isLoading ? (
           <Spinner />
         ) : (
-          <Select
-            options={options}
-            value={selectValue}
-            placeholder="Seleccionar Agente por Apellido o DNI"
-            noOptionsMessage={() => "El agente no se encuentra cargado"}
-            classNamePrefix="select2"
-            classNames={{ container: () => "select2-container" }}
-            onInputChange={(e) => {
-              if (e.length > 0) {
-                let result = 0;
+          !selectValue && (
+            <div>
+              <h5>Buscar agente</h5>
+              <Select
+                id="select-agentes"
+                options={options}
+                value={selectValue}
+                placeholder="Seleccionar Agente por Apellido o DNI"
+                noOptionsMessage={() => "El agente no se encuentra cargado"}
+                classNamePrefix="select2"
+                classNames={{ container: () => "select2-container" }}
+                onInputChange={(e) => {
+                  setEstaHabilitado(false);
+                  setRefValue("");
+                  setClicked(false);
+                  if (e.length > 0) {
+                    let result = 0;
 
-                if (e.endsWith(" ") || !STRING_REGEX.test(e)) {
-                  result = 2;
-                }
+                    if (e.endsWith(" ") || !STRING_REGEX.test(e)) {
+                      result = 2;
+                    }
 
-                setShowError({
-                  ...showError,
-                  apellido: result,
-                });
-              }
-            }}
-            onChange={(e) => {
-              setSelectValue(e);
-              setHonorarioData({ ...honorarioData, agente_id: e.value });
-              setShowDropdown(true);
-              setEstaHabilitado(false);
-              queryClient.removeQueries([
-                "operativoByRef",
-                { refValue: refValue },
-              ]);
-              setRefValue("");
-              setClicked(false);
-            }}
-          />
+                    setShowError({
+                      ...showError,
+                      apellido: result,
+                    });
+                  }
+                }}
+                onChange={(e) => {
+                  setSelectValue(e);
+                  setHonorarioData({ ...honorarioData, agente_id: e.value });
+                  setShowDropdown(true);
+                  setEstaHabilitado(false);
+                  queryClient.removeQueries(["operativoByRef"]);
+                  setRefValue("");
+                  setClicked(false);
+                }}
+              />
+            </div>
+          )
         )}
-        <br />
-        <br />
         <form action="submit">
-          {showDropdown && (
-            <div className="custom-dropdown p-0">
+          {showDropdown && !isLoading && (
+            <div className="custom-dropdown p-0 rounded-1">
               <div
                 className=" d-flex align-items-center justify-content-start p-2"
                 style={{
@@ -247,11 +271,7 @@ const HonorariosPorAgente = () => {
               >
                 <BsPersonFill size="1.5rem" />
                 <p style={{ fontWeight: "bold" }} className="m-0">
-                  {selectValue
-                    ? `Agente Seleccionado: ${
-                        selectValue.label.split(" (DNI:")[0]
-                      }`
-                    : ""}
+                  {selectValue ? `${selectValue.label.split(" (DNI:")[0]}` : ""}
                 </p>
               </div>
 
@@ -277,22 +297,28 @@ const HonorariosPorAgente = () => {
                     min={0}
                   />
                   <div className="input-group-append d-flex gap-2 align-items-center">
-                    {operativoFetching && (
-                      <div
-                        className="spinner-border text-primary"
-                        role="status"
-                      >
-                        <span className="visually-hidden">Loading...</span>
-                      </div>
-                    )}
                     <button
                       type="button"
                       className="btn btn-buscar d-flex align-items-center justify-content-center gap-2 ml-2"
                       style={{ zIndex: 0 }}
                       onClick={handleBuscarClick}
-                      disabled={operativoFetching || !refValue || refValue == 0}
+                      disabled={
+                        operativoFetching ||
+                        !refValue ||
+                        refValue == 0 ||
+                        dataByRef
+                      }
                     >
-                      <FaSearch />
+                      {operativoFetching ? (
+                        <div
+                          className="spinner-border spinner-border-sm"
+                          role="status"
+                        >
+                          <span className="visually-hidden">Loading...</span>
+                        </div>
+                      ) : (
+                        <FaSearch />
+                      )}
                       Buscar
                     </button>
                     {dataByRef && (
@@ -311,7 +337,18 @@ const HonorariosPorAgente = () => {
                 <br />
 
                 {dataByRef && (
-                  <div className="p-0 mb-3">
+                  <div className="p-0 mb-3 card">
+                    <div className="card-header">
+                      <label
+                        style={{
+                          fontSize: "14px",
+                          fontWeight: "bold",
+                          marginLeft: "0.5rem",
+                        }}
+                      >
+                        Datos del operativo
+                      </label>
+                    </div>
                     <div className="card-body justify-content-evenly d-flex gap-2 detalleAgente">
                       <div className="data-row">
                         <div className="value">{dataByRef.referencia}</div>
@@ -338,6 +375,15 @@ const HonorariosPorAgente = () => {
               <br />
 
               <div className="form-group p-2">
+                <label
+                  style={{
+                    fontSize: "14px",
+                    fontWeight: "bold",
+                    marginLeft: "0.5rem",
+                  }}
+                >
+                  Seleccione M&oacute;dulos:
+                </label>
                 <Select
                   isMulti
                   name="modulos"
@@ -355,27 +401,22 @@ const HonorariosPorAgente = () => {
               </div>
               <br />
               <br />
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  marginBottom: "1rem",
-                }}
-              >
+              <div className="d-flex align-items-center justify-content-between p-2">
                 <button
                   type="button"
-                  className="btn btn-primary"
+                  className="btn btn-limpiar d-flex gap-2 align-items-center"
                   onClick={() => {
-                    setHonorarioData({
-                      ...honorarioData,
-                      modulos: [].concat(
-                        selectedOptions.map((o) => ({
-                          id: o.value,
-                        }))
-                      ),
-                    });
-                    console.log(honorarioData);
+                    setSelectValue(null);
+                    setShowDropdown(false);
                   }}
+                >
+                  <FaRedo />
+                  Limpiar Campos
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-guardar"
+                  onClick={() => handleCreate()}
                   disabled={selectedOptions.length == 0}
                 >
                   Crear Honorario
