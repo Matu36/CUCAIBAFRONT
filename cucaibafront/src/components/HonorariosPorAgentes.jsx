@@ -167,8 +167,8 @@ const HonorariosPorAgente = () => {
 
   const crearHonorarioPorAgente = useMutation({
     mutationKey: ["crear-honorarios-agente"],
-    mutationFn: async (data) =>
-      await HonorariosAPI.post("/Agente", { ...data }),
+    mutationFn: async () =>
+      await HonorariosAPI.post("/Agente", { ...honorarioData }),
 
     onSuccess: () => {
       Swal.fire({
@@ -192,18 +192,24 @@ const HonorariosPorAgente = () => {
     },
   });
 
-  const handleCreate = () => {
-    const modulosData = selectedOptions.map((o) => o.value);
+  /// ACTUALIZAMOS EL ESTADO honorarioData cada vez que se modifica selectedOptiones que es el estado que almacena los módulos (se quedaba con el modulo anterior)
 
+  useEffect(() => {
+    const modulosData = selectedOptions.map((o) => o.value);
     const agenteId = parseInt(honorarioData.agente_id, 10);
     setHonorarioData({
+      ...honorarioData,
       agente_id: agenteId,
-      operativo_id: honorarioData.operativo_id,
       modulos: modulosData,
     });
+  }, [selectedOptions]);
 
+  //Enviamos honorarioData a la ruta
+  const handleCreate = () => {
     crearHonorarioPorAgente.mutate(honorarioData);
   };
+
+  // crearHonorarioPorAgente.mutate(honorarioData);
 
   //FINALIZA LA CREACION DEL HONORARIO
 
