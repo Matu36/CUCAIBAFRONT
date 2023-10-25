@@ -164,50 +164,48 @@ const HonorariosPorAgente = () => {
   }, [fetchedModulosActivos, loadingModulosActivos, dataModulosActivos]);
 
   //CREAR HONORARIO //
-  const crearHonorarioPorAgente = useMutation(
-    async (data) => {
-      return await HonorariosAPI.post("Agente", { data });
+
+  const crearHonorarioPorAgente = useMutation({
+    mutationKey: ["crear-honorarios-agente"],
+    mutationFn: async (data) =>
+      await HonorariosAPI.post("/Agente", { ...data }),
+
+    onSuccess: () => {
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        title: "Se creó el Honorario correctamente",
+        showConfirmButton: false,
+        timer: 3000,
+      }).then(() => {
+        window.location.reload();
+      });
     },
-    {
-      onSuccess: () => {
-        Swal.fire({
-          position: "center",
-          icon: "success",
-          title: "Se creó el Honorario correctamente",
-          showConfirmButton: false,
-          timer: 3000,
-        });
-      },
-    }
-  );
+    onError: () => {
+      Swal.fire({
+        title: "Hubo un error al crear el Honorario",
+        position: "center",
+        icon: "error",
+        confirmButtonText: "Cerrar",
+        confirmButtonColor: "#4CAF50",
+      });
+    },
+  });
 
-  const handleCreateHonorario = async () => {
-    const updatedHonorarioData = {
-      ...honorarioData,
-      modulos: [].concat(
-        selectedOptions.map((o) => ({
-          id: o.value,
-        }))
-      ),
-    };
+  const handleCreate = () => {
+    const modulosData = selectedOptions.map((o) => o.value);
 
-    await crearHonorarioPorAgente.mutate(updatedHonorarioData);
+    const agenteId = parseInt(honorarioData.agente_id, 10);
+    setHonorarioData({
+      agente_id: agenteId,
+      operativo_id: honorarioData.operativo_id,
+      modulos: modulosData,
+    });
 
-    //
-    console.log(updatedHonorarioData);
+    crearHonorarioPorAgente.mutate(honorarioData);
   };
 
-  // const handleCreate = () => {
-  //   setHonorarioData({
-  //     ...honorarioData,
-  //     modulos: [].concat(
-  //       selectedOptions.map((o) => ({
-  //         id: o.value,
-  //       }))
-  //     ),
-  //   });
-  //   console.log(honorarioData);
-  // };
+  //FINALIZA LA CREACION DEL HONORARIO
 
   return (
     <div className="honorariosPorAgente">
@@ -417,7 +415,7 @@ const HonorariosPorAgente = () => {
                 <button
                   type="button"
                   className="btn btn-guardar"
-                  onClick={() => handleCreateHonorario()}
+                  onClick={() => handleCreate()}
                   disabled={selectedOptions.length == 0}
                 >
                   Crear Honorario
