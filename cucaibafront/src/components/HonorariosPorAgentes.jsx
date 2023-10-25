@@ -203,9 +203,9 @@ const HonorariosPorAgente = () => {
     });
 
     crearHonorarioPorAgente.mutate(honorarioData);
-
-    console.log(honorarioData);
   };
+
+  //FINALIZA LA CREACION DEL HONORARIO
 
   return (
     <div className="honorariosPorAgente">
