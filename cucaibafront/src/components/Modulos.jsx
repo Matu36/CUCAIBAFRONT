@@ -89,7 +89,7 @@ const Modulos = ({ ...props }) => {
 
   const filterByDescripcion = (value) => {
     if (!value) {
-      setModulo(orderData);
+      setModulo(orderData(data));
     } else {
       const arrayCache = data.filter((mod) =>
         mod.descripcion.toLowerCase().includes(value.toLowerCase())
@@ -521,7 +521,7 @@ const Modulos = ({ ...props }) => {
           <hr className="hrstyle" style={{ marginTop: "-1.5rem" }} />
           <div className="d-flex align-items-center justify-content-center gap-4 flex-md-row flex-sm-column ">
             <div className="d-flex flex-column gap-2 justify-content-center align-items-center w-50 mt-5">
-              <h6 className="text-muted">Fecha de Cierre</h6>
+              <h6 className="text-muted">Fecha de Baja</h6>
               <div>
                 <input
                   type="date"
@@ -549,7 +549,7 @@ const Modulos = ({ ...props }) => {
                   fontSize: "16px",
                 }}
               >
-                La fecha de cierre no puede ser posterior al día de hoy
+                La fecha de baja no puede ser posterior al día de hoy
               </p>
             )}
           </div>
