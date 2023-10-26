@@ -236,7 +236,7 @@ const CrearValor = ({ handleCerrarFormulario, data }) => {
               !selectValue
             }
           >
-            Crear Modulo
+            Asignar Valor
           </button>
         </div>
       </form>

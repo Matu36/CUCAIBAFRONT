@@ -9,7 +9,7 @@ import "../components/styles/CrearModulo.css";
 import { MaskMoneda } from "../utils/Mask";
 
 const NUMBER_REGEX = /^[0-9]+$/;
-const STRING_REGEX = /^[a-zA-Z].*(?:\d| )*$/;
+const STRING_REGEX = /^[a-zA-ZñÑáéíóúÁÉÍÓÚ].*(?:\d| )*$/;
 
 //Componente para crear el módulo
 
@@ -73,10 +73,10 @@ const CrearModulo = ({ handleCerrarFormulario, data }) => {
   };
 
   return (
-    <div className="form-container pt-2 container" >
+    <div className="form-container pt-2 container">
       <form
         onSubmit={handleOnSubmit}
-        className="row g-3 pt-4" 
+        className="row g-3 pt-4"
         onKeyDown={(e) => {
           if (e.key === "Enter" && e.target !== crearModuloButtonRef.current) {
             e.preventDefault();
@@ -84,7 +84,7 @@ const CrearModulo = ({ handleCerrarFormulario, data }) => {
         }}
       >
         <div className="modalPersonalizado">
-          <h6 style={{color:"#5dade2"}}>CREAR M&Oacute;DULO</h6>
+          <h6 style={{ color: "#5dade2" }}>CREAR M&Oacute;DULO</h6>
         </div>
         <hr className="hrstyle" />
         <div className="col-md-6"></div>
