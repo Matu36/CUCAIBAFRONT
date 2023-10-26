@@ -116,8 +116,12 @@ const CrearModulo = ({ handleCerrarFormulario, data }) => {
                   ...modulo,
                   descripcion: value
                     .normalize("NFD")
-                    .replace(/[\u0300-\u036f]/g, "")
-                    .toUpperCase(),
+                    .replace(
+                      /([^n\u0300-\u036f]|n(?!\u0303(?![\u0300-\u036f])))[\u0300-\u036f]+/gi,
+                      ""
+                    )
+                    .toUpperCase()
+                    .replace(/ñ/g, "Ñ"),
                 });
               }}
             />
