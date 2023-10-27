@@ -49,7 +49,13 @@ export const useModulos = (operativoId = 0, valor = false) => {
 
   const crearModulo = useMutation({
     mutationKey: ["crear-modulo"],
-    mutationFn: async (data) => await ModulosAPI.post("", data),
+    mutationFn: async (data) =>
+      await ModulosAPI.post("", data, {
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "*/*",
+        },
+      }),
     onSuccess: () => {
       Swal.fire({
         position: "center",
@@ -59,7 +65,7 @@ export const useModulos = (operativoId = 0, valor = false) => {
         timer: 3000,
       });
 
-      window.close();
+      // window.close();
 
       window.location.reload();
     },
