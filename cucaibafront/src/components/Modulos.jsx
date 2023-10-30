@@ -468,7 +468,7 @@ const Modulos = ({ ...props }) => {
                   type="date"
                   className="form-control"
                   name="fechaHasta"
-                  min={formatDate(fechaAnterior)}
+                  min={formatDate(new Date())}
                   value={fechaCierre}
                   autoComplete="off"
                   placeholder="Fecha Hasta"
