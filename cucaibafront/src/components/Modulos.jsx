@@ -498,7 +498,11 @@ const Modulos = ({ ...props }) => {
               type="button"
               className="btn btn-guardar"
               onClick={() => handleSave("cerrar")}
-              disabled={!fechaCierre}
+              disabled={
+                !fechaCierre ||
+                new Date(formatDate(fechaAnterior)).getTime() >
+                  new Date(formatDate(fechaCierre)).getTime()
+              }
             >
               Guardar cambios
             </button>
