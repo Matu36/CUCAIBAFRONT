@@ -469,7 +469,7 @@ const Modulos = ({ ...props }) => {
                   type="date"
                   className="form-control"
                   name="fechaHasta"
-                  min={formatDate(new Date())}
+                  min={formatDate(fechaAnterior)}
                   value={fechaCierre}
                   autoComplete="off"
                   placeholder="Fecha Hasta"
@@ -498,7 +498,7 @@ const Modulos = ({ ...props }) => {
               type="button"
               className="btn btn-guardar"
               onClick={() => handleSave("cerrar")}
-              disabled={!fechaCierre || !validateFecha(fechaCierre)}
+              disabled={!fechaCierre}
             >
               Guardar cambios
             </button>
