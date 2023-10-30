@@ -242,8 +242,7 @@ const Modulos = ({ ...props }) => {
     {
       name: "Acción",
       cell: (row) =>
-        !row.fechaHasta &&
-        row.estado != 0 && (
+        ((row.estado != 0 && row.unico) || !row.fecha_hasta) && (
           <Dropdown>
             {!row.fecha_hasta && (
               <button
@@ -310,19 +309,21 @@ const Modulos = ({ ...props }) => {
                   Actualizar Valor
                 </button>
               ))}
-            <button
-              className={`dropdown-item dropdown-item-custom d-flex align-items-center gap-2`}
-              type="button"
-              data-bs-toggle="modal"
-              data-bs-target="#bajaModal"
-              onClick={() => {
-                setIndexModulo(row.id);
-                setFechaAnterior(row.fecha_desde);
-              }}
-            >
-              <FaTimes />
-              Dar de Baja
-            </button>
+            {!row.fecha_hasta && (
+              <button
+                className={`dropdown-item dropdown-item-custom d-flex align-items-center gap-2`}
+                type="button"
+                data-bs-toggle="modal"
+                data-bs-target="#bajaModal"
+                onClick={() => {
+                  setIndexModulo(row.id);
+                  setFechaAnterior(row.fecha_desde);
+                }}
+              >
+                <FaTimes />
+                Dar de Baja
+              </button>
+            )}
           </Dropdown>
         ),
     },
