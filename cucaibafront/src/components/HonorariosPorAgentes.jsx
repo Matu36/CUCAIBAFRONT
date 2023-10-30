@@ -406,6 +406,7 @@ const HonorariosPorAgente = () => {
                     setSelectValue(null);
                     setShowDropdown(false);
                     setOperativoData({});
+                    setSelectedOptions([]);
                   }}
                 >
                   <FaRedo />
