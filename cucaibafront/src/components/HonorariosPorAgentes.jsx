@@ -60,18 +60,11 @@ const HonorariosPorAgente = () => {
       setClicked(false);
       setHonorarioData({ ...honorarioData, operativo_id: data.id });
       refetchModulosActivos();
-      Swal.fire({
-        title: "Se asoció el agente al operativo",
-        text: "El agente esta habilitado a participar en este operativo",
-        icon: "success",
-        timer: 3000,
-        showCancelButton: false,
-        showConfirmButton: false,
-      });
     },
     onError: (data) => {
       Swal.fire({
-        title: "Hubo un problema",
+        title:
+          "El agente no se encontraba activo durante la fecha del operativo",
         text: `${data.response.data}`,
         icon: "info",
         timer: 3000,
