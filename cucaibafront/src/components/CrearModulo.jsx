@@ -134,9 +134,7 @@ const CrearModulo = ({ handleCerrarFormulario, data }) => {
             )}
           </div>
           <div className="col-md-3">
-            <label htmlFor="valor">
-              Valor <span className="spanObligatorio">*</span>
-            </label>
+            <label htmlFor="valor">Valor</label>
             <input
               onKeyDown={handleKeyDown}
               type="number"
@@ -156,19 +154,21 @@ const CrearModulo = ({ handleCerrarFormulario, data }) => {
                     ...modulo,
                     valor: newValue === "" ? "" : Number(newValue),
                   });
+                  setShowError({
+                    ...showError,
+                    valor: false,
+                  });
                 }
               }}
             />
             {showError.valor && (
               <div style={{ color: "red" }}>
-                El valor solo puede ser númerico y no estar vacio
+                El valor solo puede ser númerico
               </div>
             )}
           </div>
           <div className="col-md-3">
-            <label htmlFor="fechaDesde">
-              Fecha Desde <span className="spanObligatorio">*</span>
-            </label>
+            <label htmlFor="fechaDesde">Fecha Desde</label>
             <input
               onKeyDown={handleKeyDown}
               type="date"
@@ -191,6 +191,16 @@ const CrearModulo = ({ handleCerrarFormulario, data }) => {
                     ? 2
                     : 0,
                 });
+                if (e.target.value === "") {
+                  setModulo({
+                    ...modulo,
+                    fechaDesde: "",
+                  });
+                  setShowError({
+                    ...showError,
+                    fecha: false,
+                  });
+                }
               }}
             />
             {showError.fecha == 1 ? (
@@ -226,10 +236,10 @@ const CrearModulo = ({ handleCerrarFormulario, data }) => {
             ref={crearModuloButtonRef}
             className="btn btn-guardar pt-2"
             disabled={
-              showError.fecha ||
               showError.descripcion != 0 ||
-              showError.valor ||
-              !modulo.descripcion
+              !modulo.descripcion ||
+              showError.fecha ||
+              showError.valor
             }
           >
             Crear M&oacute;dulo
