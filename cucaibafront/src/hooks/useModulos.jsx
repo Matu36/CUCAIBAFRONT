@@ -232,6 +232,7 @@ export const useModulos = (operativoId = 0, valor = false) => {
             position: "center",
             icon: "warning",
             title: "Hubo un problema",
+            text: error.response.data,
             showConfirmButton: false,
             timer: 4000,
           });
