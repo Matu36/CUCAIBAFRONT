@@ -242,7 +242,9 @@ const Modulos = ({ ...props }) => {
     {
       name: "Acción",
       cell: (row) =>
-        ((row.estado != 0 && row.unico) || !row.fecha_hasta) && (
+        (row.estado != 0 && row.unico) ||
+        row.estado == 3 ||
+        (!row.fecha_hasta && !row.unico) ? (
           <Dropdown>
             {!row.fecha_hasta && (
               <button
@@ -289,26 +291,25 @@ const Modulos = ({ ...props }) => {
                 Cerrar Período
               </button>
             )}
-            {!row.unico ||
-              (row.fecha_hasta && (
-                <button
-                  className={`dropdown-item dropdown-item-custom d-flex align-items-center gap-2
+            {row.estado == 3 && (
+              <button
+                className={`dropdown-item dropdown-item-custom d-flex align-items-center gap-2
               }`}
-                  type="button"
-                  data-bs-toggle="modal"
-                  data-bs-target="#valorModal"
-                  onClick={() => {
-                    setIndexModulo(row.id);
-                    setNewModulo({
-                      ...newModulo,
-                      fechaDesde: formatDate(row.fecha_hasta, 1),
-                    });
-                  }}
-                >
-                  <FaSync />
-                  Actualizar Valor
-                </button>
-              ))}
+                type="button"
+                data-bs-toggle="modal"
+                data-bs-target="#valorModal"
+                onClick={() => {
+                  setIndexModulo(row.id);
+                  setNewModulo({
+                    ...newModulo,
+                    fechaDesde: formatDate(row.fecha_hasta, 1),
+                  });
+                }}
+              >
+                <FaSync />
+                Actualizar Valor
+              </button>
+            )}
             {!row.fecha_hasta && (
               <button
                 className={`dropdown-item dropdown-item-custom d-flex align-items-center gap-2`}
@@ -325,7 +326,7 @@ const Modulos = ({ ...props }) => {
               </button>
             )}
           </Dropdown>
-        ),
+        ) : null,
     },
   ];
 
