@@ -134,7 +134,9 @@ const CrearModulo = ({ handleCerrarFormulario, data }) => {
             )}
           </div>
           <div className="col-md-3">
-            <label htmlFor="valor">Valor</label>
+            <label htmlFor="valor">
+              Valor <span className="spanObligatorio">*</span>
+            </label>
             <input
               onKeyDown={handleKeyDown}
               type="number"
@@ -164,7 +166,9 @@ const CrearModulo = ({ handleCerrarFormulario, data }) => {
             )}
           </div>
           <div className="col-md-3">
-            <label htmlFor="fechaDesde">Fecha Desde</label>
+            <label htmlFor="fechaDesde">
+              Fecha Desde <span className="spanObligatorio">*</span>
+            </label>
             <input
               onKeyDown={handleKeyDown}
               type="date"

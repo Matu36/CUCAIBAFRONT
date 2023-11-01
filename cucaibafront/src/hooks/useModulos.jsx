@@ -155,7 +155,7 @@ export const useModulos = (operativoId = 0, valor = false) => {
         position: "center",
         icon: "success",
         title: "Se cerro el período del módulo",
-        text: "Se generó un nuevo modulo, con nueva fecha de inicio y valor",
+
         showConfirmButton: false,
         timer: 4000,
       });
@@ -319,7 +319,7 @@ export const useModulos = (operativoId = 0, valor = false) => {
       Swal.fire({
         position: "center",
         icon: "success",
-        title: "Se actualizó la información del módulo",
+        title: "Se generó un nuevo modulo, con nueva fecha de inicio y valor",
         showConfirmButton: false,
         timer: 4000,
       });
