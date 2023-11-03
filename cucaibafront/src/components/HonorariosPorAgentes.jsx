@@ -15,6 +15,7 @@ import axios from "axios";
 import { OperativosAPI } from "../api/OperativosAPI";
 import { useNavigate } from "react-router-dom";
 import EmptyTable from "./UI/EmptyTable";
+import NumberFormatter from "../utils/NumberFormatter";
 
 const STRING_REGEX = /^[a-zA-Z].*(?:\d| )*$/;
 
@@ -166,7 +167,7 @@ const HonorariosPorAgente = () => {
           ...optionsModulos,
           ...dataModulosActivos.map((m) => ({
             value: m.id,
-            label: `${m.descripcion} ($${MaskMoneda(`${m.valor}`)})`,
+            label: `${m.descripcion} ($${NumberFormatter(m.valor)})`,
           })),
         ]);
     }
