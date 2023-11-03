@@ -61,16 +61,32 @@ const HonorariosPorAgente = () => {
       setHonorarioData({ ...honorarioData, operativo_id: data.id });
       refetchModulosActivos();
     },
-    onError: (data) => {
-      Swal.fire({
-        title:
-          "El agente no se encontraba activo durante la fecha del operativo",
-        text: `${data.response.data}`,
-        icon: "info",
-        timer: 3000,
-        showCancelButton: false,
-        showConfirmButton: false,
-      });
+    onError: (error) => {
+      switch (error.response.status) {
+        case 404:
+          Swal.fire({
+            title: "Hubo un error",
+            text: "El operativo que ingreso no se encontró",
+            icon: "error",
+            timer: 3000,
+            showCancelButton: false,
+            showConfirmButton: false,
+          });
+          break;
+
+        case 409:
+          Swal.fire({
+            title:
+              "El agente no se encontraba activo durante la fecha del operativo",
+            text: `${error.response.data}`,
+            icon: "info",
+            timer: 3000,
+            showCancelButton: false,
+            showConfirmButton: false,
+          });
+          break;
+      }
+
       queryClient.removeQueries(["operativoByRef", { refValue: refValue }]);
       setRefValue("");
       setClicked(false);
