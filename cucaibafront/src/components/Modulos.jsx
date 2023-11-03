@@ -302,7 +302,7 @@ const Modulos = ({ ...props }) => {
                   setIndexModulo(row.id);
                   setNewModulo({
                     ...newModulo,
-                    fechaDesde: formatDate(row.fecha_hasta, 1),
+                    fechaDesde: formatDate(row.fecha_hasta, 2),
                   });
                 }}
               >
