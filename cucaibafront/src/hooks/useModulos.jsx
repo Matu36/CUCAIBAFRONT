@@ -13,12 +13,12 @@ const getModulos = async (operativoId, valor) => {
     );
     return data[0];
   }
+};
 
-  if (operativoId) {
-    // Obtener módulos activos para el operativo
-    const { data } = await ModulosValorAPI.get(`/activos/${operativoId}`);
-    return data;
-  }
+const getModulosActivosById = async (operativoId) => {
+  if (operativoId == 0) return [];
+  const { data } = await ModulosValorAPI.get(`/activos/${operativoId}`);
+  return data;
 };
 
 const getModulosValor = async () => {
@@ -43,7 +43,7 @@ export const useModulos = (operativoId = 0, valor = false) => {
 
   const modulosActivosQuery = useQuery({
     queryKey: ["modulos-activos", { operativoId }],
-    queryFn: () => getModulos(operativoId, valor),
+    queryFn: () => getModulosActivosById(operativoId),
     enabled: operativoId != 0,
   });
 

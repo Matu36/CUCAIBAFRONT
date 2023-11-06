@@ -5,7 +5,7 @@ import Spinner from "./UI/Spinner";
 import Swal from "sweetalert2";
 import Select from "react-select";
 import { useOperativo } from "../hooks/useOperativo";
-import { MaskMoneda } from "../utils/Mask";
+import { MaskCuil, MaskMoneda } from "../utils/Mask";
 import { FaEdit, FaRedo, FaSearch } from "react-icons/fa";
 import { formatFecha } from "../utils/MesAño";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -123,9 +123,14 @@ const HonorariosPorAgente = () => {
   const handleBuscarClick = () => {
     setClicked(true);
     validarOperativoRefetch();
-    if (operativoData.referencia != refValue) {
-      setOptionsModulos([]);
-    }
+    // if (operativoData.referencia != refValue) {
+    //   // setOptionsModulos([]);
+    //   console.log(
+    //     operativoData.referencia,
+    //     refValue,
+    //     operativoData.referencia != refValue
+    //   );
+    // }
   };
 
   // TRAE LA DATA DE LOS AGENTES //
@@ -148,13 +153,14 @@ const HonorariosPorAgente = () => {
   });
 
   //TRAE LOS MODULOS ACTIVOS POR ID DE OPERATIVO //
-  const { modulosActivosQuery } = useModulos(operativoData?.id);
+  const { modulosActivosQuery } = useModulos(honorarioData.operativo_id);
 
   const {
     refetch: refetchModulosActivos,
     data: dataModulosActivos,
     isLoading: loadingModulosActivos,
     isFetched: fetchedModulosActivos,
+    isFetching: fetchingModulosActivos,
   } = modulosActivosQuery;
 
   // SELECCIONA LAS FUNCIONES DESDE EL SELECT, LAS MUESTRA PERMITE ELIMINARLAS //
@@ -162,19 +168,17 @@ const HonorariosPorAgente = () => {
   const [optionsModulos, setOptionsModulos] = useState([]);
 
   useEffect(() => {
-    if (!loadingModulosActivos) {
+    if (!loadingModulosActivos && dataModulosActivos) {
       if (dataModulosActivos && Array.isArray(dataModulosActivos)) {
-        setOptionsModulos((prevOptions) => [
-          ...(prevOptions && prevOptions),
-          ...(dataModulosActivos &&
-            dataModulosActivos.map((m) => ({
-              value: m.id,
-              label: `${m.descripcion} ($${NumberFormatter(m.valor)})`,
-            }))),
-        ]);
+        setOptionsModulos(
+          dataModulosActivos.map((m) => ({
+            value: m.id,
+            label: `${m.descripcion} ($${NumberFormatter(m.valor)})`,
+          }))
+        );
       }
     }
-  }, [dataModulosActivos]);
+  }, [dataModulosActivos, loadingModulosActivos]);
 
   //CREAR HONORARIO //
 
@@ -303,7 +307,13 @@ const HonorariosPorAgente = () => {
               >
                 <BsPersonFill size="1.5rem" />
                 <p style={{ fontWeight: "bold" }} className="m-0">
-                  {selectValue ? `${selectValue.label.split(" (DNI:")[0]}` : ""}
+                  {selectValue ? `${selectValue.label.split(" (DNI:")[0]}` : ""}{" "}
+                  (
+                  {selectValue.label
+                    .split(" (DNI:")[1]
+                    .trim()
+                    .replace(/^(\d{2})(\d{3})(\d{3}).*/, "$1.$2.$3")}
+                  )
                 </p>
               </div>
 
@@ -322,7 +332,7 @@ const HonorariosPorAgente = () => {
                   <input
                     style={{ maxWidth: "40%" }}
                     type="number"
-                    placeholder="Introducir número del operativo"
+                    placeholder="Introducir PD"
                     onChange={handleInputChange}
                     className="form-control"
                     value={refValue}
@@ -368,7 +378,7 @@ const HonorariosPorAgente = () => {
                     <div className="card-body justify-content-evenly d-flex gap-2 detalleAgente">
                       <div className="data-row">
                         <div className="value">{operativoData.referencia}</div>
-                        <div className="label">Número de Referencia</div>
+                        <div className="label">Proceso de Donación</div>
                       </div>
                       <div className="data-row">
                         <div className="value">
@@ -409,7 +419,7 @@ const HonorariosPorAgente = () => {
                   classNamePrefix="select2"
                   noOptionsMessage={() => "No hay módulos disponibles"}
                   id="select-modulos"
-                  isDisabled={!estaHabilitado}
+                  isDisabled={!estaHabilitado || loadingModulosActivos}
                   value={selectedOptions}
                   onChange={(e) => {
                     setSelectedOptions(e);
@@ -427,11 +437,11 @@ const HonorariosPorAgente = () => {
                     setShowDropdown(false);
                     setOperativoData({});
                     setSelectedOptions([]);
-                    setOptionsModulos([]);
+                    // setOptionsModulos([]);
                   }}
                 >
                   <FaRedo />
-                  Limpiar Campos
+                  Nueva búsqueda
                 </button>
                 <button
                   type="button"
