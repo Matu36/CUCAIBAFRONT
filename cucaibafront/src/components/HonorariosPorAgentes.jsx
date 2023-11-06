@@ -160,18 +160,21 @@ const HonorariosPorAgente = () => {
   // SELECCIONA LAS FUNCIONES DESDE EL SELECT, LAS MUESTRA PERMITE ELIMINARLAS //
 
   const [optionsModulos, setOptionsModulos] = useState([]);
+
   useEffect(() => {
     if (!loadingModulosActivos) {
-      typeof dataModulosActivos == "object" &&
-        setOptionsModulos([
-          ...optionsModulos,
-          ...dataModulosActivos.map((m) => ({
-            value: m.id,
-            label: `${m.descripcion} ($${NumberFormatter(m.valor)})`,
-          })),
+      if (dataModulosActivos && Array.isArray(dataModulosActivos)) {
+        setOptionsModulos((prevOptions) => [
+          ...(prevOptions && prevOptions),
+          ...(dataModulosActivos &&
+            dataModulosActivos.map((m) => ({
+              value: m.id,
+              label: `${m.descripcion} ($${NumberFormatter(m.valor)})`,
+            }))),
         ]);
+      }
     }
-  }, [fetchedModulosActivos, loadingModulosActivos, dataModulosActivos]);
+  }, [dataModulosActivos]);
 
   //CREAR HONORARIO //
 
@@ -424,6 +427,7 @@ const HonorariosPorAgente = () => {
                     setShowDropdown(false);
                     setOperativoData({});
                     setSelectedOptions([]);
+                    setOptionsModulos([]);
                   }}
                 >
                   <FaRedo />
