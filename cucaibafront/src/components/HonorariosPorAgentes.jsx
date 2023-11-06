@@ -29,6 +29,7 @@ const HonorariosPorAgente = () => {
   const [estaHabilitado, setEstaHabilitado] = useState(false);
   const [operativoData, setOperativoData] = useState({});
   const navigate = useNavigate();
+  const [isCreating, setIsCreating] = useState(false);
 
   useEffect(() => {
     queryClient.removeQueries();
@@ -133,6 +134,15 @@ const HonorariosPorAgente = () => {
     // }
   };
 
+  //DATA QUE TRAE AGENTE POR OPERATIVO
+
+  const { agentesOperativoQuery } = useOperativo(operativoData.id);
+  const {
+    data: agentes,
+    isLoading: loadingAgentes,
+    refetch: refetchAgentes,
+  } = agentesOperativoQuery;
+
   // TRAE LA DATA DE LOS AGENTES //
   const [options, setOptions] = useState([]);
 
@@ -221,9 +231,22 @@ const HonorariosPorAgente = () => {
     });
   }, [selectedOptions]);
 
-  //Enviamos honorarioData a la ruta
   const handleCreate = () => {
-    crearHonorarioPorAgente.mutate(honorarioData);
+    if (isCreating) {
+      return;
+    }
+
+    setIsCreating(true);
+
+    crearHonorarioPorAgente
+      .mutate(honorarioData)
+      .then(() => {
+        setIsCreating(false);
+      })
+      .catch((error) => {
+        console.error(error);
+        setIsCreating(false);
+      });
   };
 
   // crearHonorarioPorAgente.mutate(honorarioData);
@@ -398,6 +421,38 @@ const HonorariosPorAgente = () => {
                 )}
               </div>
 
+              {agentes && agentes.length > 0 && selectValue ? (
+                // <div className="p-0 mb-3 card">
+                <div className="card-body justify-content-evenly d-flex gap-2 detalleAgente">
+                  {agentes.map(
+                    (agente) =>
+                      agente.id ===
+                        parseInt(selectValue.value.split("|")[1]) && (
+                        <div key={agente.id} className="data-row">
+                          <div className="card-header">
+                            <label
+                              style={{
+                                fontSize: "14px",
+                                fontWeight: "bold",
+                                marginLeft: "0.5rem",
+                              }}
+                            >
+                              El Agente ya se encuentra asociado al Operativo
+                            </label>
+                          </div>
+                          <div className="value">
+                            {agente.modulos
+                              .map((modulo) => modulo.descripcion)
+                              .join(", ")}
+                          </div>
+                          <div className="label">Funciones Asociadas</div>
+                        </div>
+                      )
+                  )}
+                </div>
+              ) : // </div>
+              null}
+
               <br />
 
               <div className="form-group p-2">
@@ -447,7 +502,7 @@ const HonorariosPorAgente = () => {
                   type="button"
                   className="btn btn-guardar"
                   onClick={() => handleCreate()}
-                  disabled={selectedOptions.length == 0}
+                  disabled={isCreating || selectedOptions.length == 0}
                 >
                   Crear Honorario
                 </button>
