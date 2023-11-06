@@ -9,7 +9,7 @@ import { MaskCuil, MaskMoneda } from "../utils/Mask";
 import { FaEdit, FaRedo, FaSearch } from "react-icons/fa";
 import { formatFecha } from "../utils/MesAño";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { BsPersonFill } from "react-icons/bs";
+import { BsCheck, BsPersonFill } from "react-icons/bs";
 import { HonorariosAPI } from "../api/HonorariosAPI";
 import axios from "axios";
 import { OperativosAPI } from "../api/OperativosAPI";
@@ -253,6 +253,8 @@ const HonorariosPorAgente = () => {
 
   //FINALIZA LA CREACION DEL HONORARIO
 
+  const [selectedAgente, setSelectedAgente] = useState();
+
   return (
     <div className="honorariosPorAgente">
       <div>
@@ -439,32 +441,26 @@ const HonorariosPorAgente = () => {
                             M&oacute;dulos del agente
                           </label>
                         </div>
-                        <div className="card-body justify-content-evenly d-flex flex-column gap-2 detalleAgente">
-                          {agentes.map((agente) => (
-                            // agente.id ===
-                            //   parseInt(selectValue.value.split("|")[1]) && (
-                            //   <div key={agente.id} className="data-row">
-                            //     <div className="card-header">
-                            //       <label
-                            //         style={{
-                            //           fontSize: "14px",
-                            //           fontWeight: "bold",
-                            //           marginLeft: "0.5rem",
-                            //         }}
-                            //       >
-                            //         El Agente ya se encuentra asociado al
-                            //         Operativo
-                            //       </label>
-                            //     </div>
-                            <div>
-                              <div className="value">
-                                {agente.modulos
-                                  .map((modulo) => modulo.descripcion)
-                                  .join(", ")}
-                              </div>
-                              <div className="label">Funciones Asociadas</div>
-                            </div>
-                          ))}
+                        <div className="card-body detalleAgente">
+                          <div>
+                            {agentes.map(
+                              (agente) =>
+                                agente.id ===
+                                  parseInt(selectValue.value.split("|")[1]) &&
+                                (agente.modulos.length > 0 ? (
+                                  agente.modulos.map((m, i) => (
+                                    <div key={i} className="value">
+                                      <BsCheck />
+                                      {m.descripcion}
+                                    </div>
+                                  ))
+                                ) : (
+                                  <div>
+                                    <i>El agente no posee módulos </i>
+                                  </div>
+                                ))
+                            )}
+                          </div>
                         </div>
                       </div>
                     ) : // <div className="card-body justify-content-evenly d-flex gap-2 detalleAgente">
