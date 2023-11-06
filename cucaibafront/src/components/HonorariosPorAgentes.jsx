@@ -385,73 +385,120 @@ const HonorariosPorAgente = () => {
                 </div>
                 <br />
 
-                {operativoData?.id && (
-                  <div className="p-0 mb-3 card">
-                    <div className="card-header">
-                      <label
-                        style={{
-                          fontSize: "14px",
-                          fontWeight: "bold",
-                          marginLeft: "0.5rem",
-                        }}
-                      >
-                        Datos del operativo
-                      </label>
-                    </div>
-                    <div className="card-body justify-content-evenly d-flex gap-2 detalleAgente">
-                      <div className="data-row">
-                        <div className="value">{operativoData.referencia}</div>
-                        <div className="label">Proceso de Donación</div>
-                      </div>
-                      <div className="data-row">
-                        <div className="value">
-                          {formatFecha(operativoData.fecha)}
+                <div className="container">
+                  <div className="row gap-3">
+                    {operativoData?.id && (
+                      <div className="p-0 mb-3 card col">
+                        <div className="card-header">
+                          <label
+                            style={{
+                              fontSize: "14px",
+                              fontWeight: "bold",
+                              marginLeft: "0.5rem",
+                            }}
+                          >
+                            Datos del operativo
+                          </label>
                         </div>
-                        <div className="label"> Fecha</div>
-                      </div>
-                      <div className="data-row">
-                        <div className="value">
-                          {operativoData.descripcion ?? <i>Sin Descripción</i>}
+                        <div className="card-body justify-content-evenly d-flex flex-column gap-2 detalleAgente">
+                          <div className="data-row">
+                            <div className="value">
+                              {operativoData.referencia}
+                            </div>
+                            <div className="label">Proceso de Donación</div>
+                          </div>
+                          <div className="data-row">
+                            <div className="value">
+                              {formatFecha(operativoData.fecha)}
+                            </div>
+                            <div className="label"> Fecha</div>
+                          </div>
+                          <div className="data-row">
+                            <div className="value">
+                              {operativoData.descripcion ?? (
+                                <i>Sin Descripción</i>
+                              )}
+                            </div>
+                            <div className="label"> Descripción</div>
+                          </div>
+                          <br />
                         </div>
-                        <div className="label"> Descripción</div>
                       </div>
-                      <br />
-                    </div>
+                    )}
+                    {agentes && agentes.length > 0 && selectValue ? (
+                      // <div className="p-0 mb-3 card">
+                      <div className="p-0 mb-3 card col">
+                        <div className="card-header">
+                          <label
+                            style={{
+                              fontSize: "14px",
+                              fontWeight: "bold",
+                              marginLeft: "0.5rem",
+                            }}
+                          >
+                            M&oacute;dulos del agente
+                          </label>
+                        </div>
+                        <div className="card-body justify-content-evenly d-flex flex-column gap-2 detalleAgente">
+                          {agentes.map((agente) => (
+                            // agente.id ===
+                            //   parseInt(selectValue.value.split("|")[1]) && (
+                            //   <div key={agente.id} className="data-row">
+                            //     <div className="card-header">
+                            //       <label
+                            //         style={{
+                            //           fontSize: "14px",
+                            //           fontWeight: "bold",
+                            //           marginLeft: "0.5rem",
+                            //         }}
+                            //       >
+                            //         El Agente ya se encuentra asociado al
+                            //         Operativo
+                            //       </label>
+                            //     </div>
+                            <div>
+                              <div className="value">
+                                {agente.modulos
+                                  .map((modulo) => modulo.descripcion)
+                                  .join(", ")}
+                              </div>
+                              <div className="label">Funciones Asociadas</div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ) : // <div className="card-body justify-content-evenly d-flex gap-2 detalleAgente">
+                    //   {agentes.map(
+                    //     (agente) =>
+                    //       agente.id ===
+                    //         parseInt(selectValue.value.split("|")[1]) && (
+                    //         <div key={agente.id} className="data-row">
+                    //           <div className="card-header">
+                    //             <label
+                    //               style={{
+                    //                 fontSize: "14px",
+                    //                 fontWeight: "bold",
+                    //                 marginLeft: "0.5rem",
+                    //               }}
+                    //             >
+                    //               El Agente ya se encuentra asociado al Operativo
+                    //             </label>
+                    //           </div>
+                    //           <div className="value">
+                    //             {agente.modulos
+                    //               .map((modulo) => modulo.descripcion)
+                    //               .join(", ")}
+                    //           </div>
+                    //           <div className="label">Funciones Asociadas</div>
+                    //         </div>
+                    //       )
+                    //   )}
+                    // </div>
+                    // </div>
+                    null}
                   </div>
-                )}
-              </div>
-
-              {agentes && agentes.length > 0 && selectValue ? (
-                // <div className="p-0 mb-3 card">
-                <div className="card-body justify-content-evenly d-flex gap-2 detalleAgente">
-                  {agentes.map(
-                    (agente) =>
-                      agente.id ===
-                        parseInt(selectValue.value.split("|")[1]) && (
-                        <div key={agente.id} className="data-row">
-                          <div className="card-header">
-                            <label
-                              style={{
-                                fontSize: "14px",
-                                fontWeight: "bold",
-                                marginLeft: "0.5rem",
-                              }}
-                            >
-                              El Agente ya se encuentra asociado al Operativo
-                            </label>
-                          </div>
-                          <div className="value">
-                            {agente.modulos
-                              .map((modulo) => modulo.descripcion)
-                              .join(", ")}
-                          </div>
-                          <div className="label">Funciones Asociadas</div>
-                        </div>
-                      )
-                  )}
                 </div>
-              ) : // </div>
-              null}
+              </div>
 
               <br />
 
