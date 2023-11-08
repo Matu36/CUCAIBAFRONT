@@ -124,6 +124,9 @@ const HonorariosPorAgente = () => {
   const handleBuscarClick = () => {
     setClicked(true);
     validarOperativoRefetch();
+    if (operativoData.referencia != refValue) {
+      setOptionsModulos([]);
+    }
   };
 
   //DATA QUE TRAE AGENTE POR OPERATIVO
@@ -178,6 +181,8 @@ const HonorariosPorAgente = () => {
             label: `${m.descripcion} ($${NumberFormatter(m.valor)})`,
           }))
         );
+      } else {
+        setOptionsModulos([]);
       }
     }
   }, [dataModulosActivos, loadingModulosActivos]);
@@ -419,52 +424,51 @@ const HonorariosPorAgente = () => {
                 )}
               </div>
               <br />
-              {agentes && agentes.length > 0 && selectValue ? (
-                <div
-                  className="card-body justify-content-center d-flex gap-2 detalleAgente"
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    width: "80%",
-                    padding: "10px",
-                    margin: "0 auto",
-                    border: "1px solid #87CEEB",
-                    boxShadow: "2px 2px 5px #888888",
-                  }}
-                >
-                  {agentes.map(
+              {agentes && agentes.length > 0 && selectValue
+                ? agentes.map(
                     (agente) =>
                       agente.id ===
                         parseInt(selectValue.value.split("|")[1]) && (
-                        <div key={agente.id} className="data-row">
-                          <div className="card-header">
-                            <label
-                              style={{
-                                fontSize: "14px",
-                                fontWeight: "bold",
-                                marginLeft: "0.5rem",
-                              }}
-                            >
-                              El Agente ya se encuentra asociado al Operativo
-                            </label>
+                        <div
+                          className="card-body justify-content-center d-flex gap-2 detalleAgente"
+                          style={{
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            width: "80%",
+                            padding: "10px",
+                            margin: "0 auto",
+                            border: "1px solid #87CEEB",
+                            boxShadow: "2px 2px 5px #888888",
+                          }}
+                        >
+                          <div key={agente.id} className="data-row">
+                            <div className="card-header">
+                              <label
+                                style={{
+                                  fontSize: "14px",
+                                  fontWeight: "bold",
+                                  marginLeft: "0.5rem",
+                                }}
+                              >
+                                El Agente ya se encuentra asociado al Operativo
+                              </label>
+                            </div>
+                            <div className="value">
+                              {agente.modulos.map((modulo) => (
+                                <div key={modulo.id}>
+                                  <GrFormCheckmark /> {modulo.descripcion}
+                                </div>
+                              ))}
+                            </div>
+                            <div className="label">Funciones Asociadas</div>
                           </div>
-                          <div className="value">
-                            {agente.modulos.map((modulo) => (
-                              <div key={modulo.id}>
-                                <GrFormCheckmark /> {modulo.descripcion}
-                              </div>
-                            ))}
-                          </div>
-                          <div className="label">Funciones Asociadas</div>
                         </div>
                       )
-                  )}
-                </div>
-              ) : null}
+                  )
+                : null}
 
-              <br />
               {operativoData && operativoData.id ? (
                 <div className="form-group p-2">
                   <label
@@ -504,6 +508,7 @@ const HonorariosPorAgente = () => {
                     setShowDropdown(false);
                     setOperativoData({});
                     setSelectedOptions([]);
+                    setOptionsModulos([]);
                   }}
                 >
                   <FaRedo />
