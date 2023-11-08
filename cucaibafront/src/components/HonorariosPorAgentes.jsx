@@ -5,11 +5,11 @@ import Spinner from "./UI/Spinner";
 import Swal from "sweetalert2";
 import Select from "react-select";
 import { useOperativo } from "../hooks/useOperativo";
-import { MaskCuil, MaskMoneda } from "../utils/Mask";
-import { FaEdit, FaRedo, FaSearch } from "react-icons/fa";
+import { GrFormCheckmark } from "react-icons/gr";
+import { FaRedo, FaSearch } from "react-icons/fa";
 import { formatFecha } from "../utils/MesAño";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { BsCheck, BsPersonFill } from "react-icons/bs";
+import { BsPersonFill } from "react-icons/bs";
 import { HonorariosAPI } from "../api/HonorariosAPI";
 import axios from "axios";
 import { OperativosAPI } from "../api/OperativosAPI";
@@ -124,14 +124,6 @@ const HonorariosPorAgente = () => {
   const handleBuscarClick = () => {
     setClicked(true);
     validarOperativoRefetch();
-    // if (operativoData.referencia != refValue) {
-    //   // setOptionsModulos([]);
-    //   console.log(
-    //     operativoData.referencia,
-    //     refValue,
-    //     operativoData.referencia != refValue
-    //   );
-    // }
   };
 
   //DATA QUE TRAE AGENTE POR OPERATIVO
@@ -253,8 +245,6 @@ const HonorariosPorAgente = () => {
 
   //FINALIZA LA CREACION DEL HONORARIO
 
-  const [selectedAgente, setSelectedAgente] = useState();
-
   return (
     <div className="honorariosPorAgente">
       <div>
@@ -323,25 +313,31 @@ const HonorariosPorAgente = () => {
           {showDropdown && !isLoading && (
             <div className="custom-dropdown p-0 rounded-1">
               <div
-                className=" d-flex align-items-center justify-content-start p-2"
+                className="d-flex align-items-center justify-content-between p-2"
                 style={{
                   height: "50px",
                   boxShadow: "inset 0 1px 3px rgba(0,0,0,.1)",
                   backgroundColor: "#f7f7f7",
                 }}
               >
-                <BsPersonFill size="1.5rem" />
-                <p style={{ fontWeight: "bold" }} className="m-0">
-                  {selectValue ? `${selectValue.label.split(" (DNI:")[0]}` : ""}{" "}
-                  (
-                  {selectValue.label
-                    .split(" (DNI:")[1]
-                    .trim()
-                    .replace(/^(\d{2})(\d{3})(\d{3}).*/, "$1.$2.$3")}
-                  )
-                </p>
+                <div>
+                  <p style={{ fontWeight: "bold" }} className="m-0">
+                    {selectValue
+                      ? `${selectValue.label.split(" (DNI:")[0]}`
+                      : ""}{" "}
+                    (
+                    {selectValue.label
+                      .split(" (DNI:")[1]
+                      .trim()
+                      .replace(/^(\d{2})(\d{3})(\d{3}).*/, "$1.$2.$3")}
+                    )
+                  </p>
+                </div>
+                <div>
+                  <BsPersonFill size="1.5rem" />
+                </div>
               </div>
-
+              <br />
               <div className="form-group p-2">
                 <label
                   style={{
@@ -353,7 +349,7 @@ const HonorariosPorAgente = () => {
                   OPERATIVO
                 </label>
 
-                <div className="input-group gap-4">
+                <div className="input-group gap-4 mt-1">
                   <input
                     style={{ maxWidth: "40%" }}
                     type="number"
@@ -387,143 +383,116 @@ const HonorariosPorAgente = () => {
                 </div>
                 <br />
 
-                <div className="container">
-                  <div className="row gap-3">
-                    {operativoData?.id && (
-                      <div className="p-0 mb-3 card col">
-                        <div className="card-header">
-                          <label
-                            style={{
-                              fontSize: "14px",
-                              fontWeight: "bold",
-                              marginLeft: "0.5rem",
-                            }}
-                          >
-                            Datos del operativo
-                          </label>
-                        </div>
-                        <div className="card-body justify-content-evenly d-flex flex-column gap-2 detalleAgente">
-                          <div className="data-row">
-                            <div className="value">
-                              {operativoData.referencia}
-                            </div>
-                            <div className="label">Proceso de Donación</div>
-                          </div>
-                          <div className="data-row">
-                            <div className="value">
-                              {formatFecha(operativoData.fecha)}
-                            </div>
-                            <div className="label"> Fecha</div>
-                          </div>
-                          <div className="data-row">
-                            <div className="value">
-                              {operativoData.descripcion ?? (
-                                <i>Sin Descripción</i>
-                              )}
-                            </div>
-                            <div className="label"> Descripción</div>
-                          </div>
-                          <br />
-                        </div>
+                {operativoData?.id && (
+                  <div className="p-0 mb-3 card">
+                    <div className="card-header">
+                      <label
+                        style={{
+                          fontSize: "14px",
+                          fontWeight: "bold",
+                          marginLeft: "0.5rem",
+                        }}
+                      >
+                        Datos del operativo
+                      </label>
+                    </div>
+                    <div className="card-body justify-content-evenly d-flex gap-2 detalleAgente">
+                      <div className="data-row">
+                        <div className="value">{operativoData.referencia}</div>
+                        <div className="label">Proceso de Donación</div>
                       </div>
-                    )}
-                    {agentes && agentes.length > 0 && selectValue ? (
-                      // <div className="p-0 mb-3 card">
-                      <div className="p-0 mb-3 card col">
-                        <div className="card-header">
-                          <label
-                            style={{
-                              fontSize: "14px",
-                              fontWeight: "bold",
-                              marginLeft: "0.5rem",
-                            }}
-                          >
-                            M&oacute;dulos del agente
-                          </label>
+                      <div className="data-row">
+                        <div className="value">
+                          {formatFecha(operativoData.fecha)}
                         </div>
-                        <div className="card-body detalleAgente">
-                          <div>
-                            {agentes.map(
-                              (agente) =>
-                                agente.id ===
-                                  parseInt(selectValue.value.split("|")[1]) &&
-                                (agente.modulos.length > 0 ? (
-                                  agente.modulos.map((m, i) => (
-                                    <div key={i} className="value">
-                                      <BsCheck />
-                                      {m.descripcion}
-                                    </div>
-                                  ))
-                                ) : (
-                                  <div>
-                                    <i>El agente no posee módulos </i>
-                                  </div>
-                                ))
-                            )}
-                          </div>
-                        </div>
+                        <div className="label"> Fecha</div>
                       </div>
-                    ) : // <div className="card-body justify-content-evenly d-flex gap-2 detalleAgente">
-                    //   {agentes.map(
-                    //     (agente) =>
-                    //       agente.id ===
-                    //         parseInt(selectValue.value.split("|")[1]) && (
-                    //         <div key={agente.id} className="data-row">
-                    //           <div className="card-header">
-                    //             <label
-                    //               style={{
-                    //                 fontSize: "14px",
-                    //                 fontWeight: "bold",
-                    //                 marginLeft: "0.5rem",
-                    //               }}
-                    //             >
-                    //               El Agente ya se encuentra asociado al Operativo
-                    //             </label>
-                    //           </div>
-                    //           <div className="value">
-                    //             {agente.modulos
-                    //               .map((modulo) => modulo.descripcion)
-                    //               .join(", ")}
-                    //           </div>
-                    //           <div className="label">Funciones Asociadas</div>
-                    //         </div>
-                    //       )
-                    //   )}
-                    // </div>
-                    // </div>
-                    null}
+                      <div className="data-row">
+                        <div className="value">
+                          {operativoData.descripcion ?? <i>Sin Descripción</i>}
+                        </div>
+                        <div className="label"> Descripción</div>
+                      </div>
+                      <br />
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
-
               <br />
-
-              <div className="form-group p-2">
-                <label
+              {agentes && agentes.length > 0 && selectValue ? (
+                <div
+                  className="card-body justify-content-center d-flex gap-2 detalleAgente"
                   style={{
-                    fontSize: "14px",
-                    fontWeight: "bold",
-                    marginLeft: "0.5rem",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    width: "80%",
+                    padding: "10px",
+                    margin: "0 auto",
+                    border: "1px solid #87CEEB",
+                    boxShadow: "2px 2px 5px #888888",
                   }}
                 >
-                  Seleccione M&oacute;dulos:
-                </label>
-                <Select
-                  isMulti
-                  name="modulos"
-                  options={optionsModulos}
-                  classNames={{ container: () => "select2-container" }}
-                  placeholder="Seleccioné una opción"
-                  classNamePrefix="select2"
-                  noOptionsMessage={() => "No hay módulos disponibles"}
-                  id="select-modulos"
-                  isDisabled={!estaHabilitado || loadingModulosActivos}
-                  value={selectedOptions}
-                  onChange={(e) => {
-                    setSelectedOptions(e);
-                  }}
-                />
-              </div>
+                  {agentes.map(
+                    (agente) =>
+                      agente.id ===
+                        parseInt(selectValue.value.split("|")[1]) && (
+                        <div key={agente.id} className="data-row">
+                          <div className="card-header">
+                            <label
+                              style={{
+                                fontSize: "14px",
+                                fontWeight: "bold",
+                                marginLeft: "0.5rem",
+                              }}
+                            >
+                              El Agente ya se encuentra asociado al Operativo
+                            </label>
+                          </div>
+                          <div className="value">
+                            {agente.modulos.map((modulo) => (
+                              <div key={modulo.id}>
+                                <GrFormCheckmark /> {modulo.descripcion}
+                              </div>
+                            ))}
+                          </div>
+                          <div className="label">Funciones Asociadas</div>
+                        </div>
+                      )
+                  )}
+                </div>
+              ) : null}
+
+              <br />
+              {operativoData && operativoData.id ? (
+                <div className="form-group p-2">
+                  <label
+                    style={{
+                      fontSize: "14px",
+                      fontWeight: "bold",
+                      marginLeft: "0.5rem",
+                    }}
+                  >
+                    Seleccione M&oacute;dulos:
+                  </label>
+                  <Select
+                    isMulti
+                    name="modulos"
+                    options={optionsModulos}
+                    classNames={{ container: () => "select2-container" }}
+                    placeholder="Seleccioné una opción"
+                    classNamePrefix="select2"
+                    noOptionsMessage={() => "No hay módulos disponibles"}
+                    id="select-modulos"
+                    isDisabled={!estaHabilitado || loadingModulosActivos}
+                    value={selectedOptions}
+                    onChange={(e) => {
+                      setSelectedOptions(e);
+                    }}
+                  />
+                </div>
+              ) : null}
               <br />
               <br />
               <div className="d-flex align-items-center justify-content-between p-2">
@@ -535,7 +504,6 @@ const HonorariosPorAgente = () => {
                     setShowDropdown(false);
                     setOperativoData({});
                     setSelectedOptions([]);
-                    // setOptionsModulos([]);
                   }}
                 >
                   <FaRedo />
