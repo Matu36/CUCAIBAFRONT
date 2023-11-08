@@ -5,8 +5,8 @@ import Spinner from "./UI/Spinner";
 import Swal from "sweetalert2";
 import Select from "react-select";
 import { useOperativo } from "../hooks/useOperativo";
-import { MaskCuil, MaskMoneda } from "../utils/Mask";
-import { FaEdit, FaRedo, FaSearch } from "react-icons/fa";
+import { GrFormCheckmark } from "react-icons/gr";
+import { FaRedo, FaSearch } from "react-icons/fa";
 import { formatFecha } from "../utils/MesAño";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { BsPersonFill } from "react-icons/bs";
@@ -124,14 +124,6 @@ const HonorariosPorAgente = () => {
   const handleBuscarClick = () => {
     setClicked(true);
     validarOperativoRefetch();
-    // if (operativoData.referencia != refValue) {
-    //   // setOptionsModulos([]);
-    //   console.log(
-    //     operativoData.referencia,
-    //     refValue,
-    //     operativoData.referencia != refValue
-    //   );
-    // }
   };
 
   //DATA QUE TRAE AGENTE POR OPERATIVO
@@ -321,25 +313,31 @@ const HonorariosPorAgente = () => {
           {showDropdown && !isLoading && (
             <div className="custom-dropdown p-0 rounded-1">
               <div
-                className=" d-flex align-items-center justify-content-start p-2"
+                className="d-flex align-items-center justify-content-between p-2"
                 style={{
                   height: "50px",
                   boxShadow: "inset 0 1px 3px rgba(0,0,0,.1)",
                   backgroundColor: "#f7f7f7",
                 }}
               >
-                <BsPersonFill size="1.5rem" />
-                <p style={{ fontWeight: "bold" }} className="m-0">
-                  {selectValue ? `${selectValue.label.split(" (DNI:")[0]}` : ""}{" "}
-                  (
-                  {selectValue.label
-                    .split(" (DNI:")[1]
-                    .trim()
-                    .replace(/^(\d{2})(\d{3})(\d{3}).*/, "$1.$2.$3")}
-                  )
-                </p>
+                <div>
+                  <p style={{ fontWeight: "bold" }} className="m-0">
+                    {selectValue
+                      ? `${selectValue.label.split(" (DNI:")[0]}`
+                      : ""}{" "}
+                    (
+                    {selectValue.label
+                      .split(" (DNI:")[1]
+                      .trim()
+                      .replace(/^(\d{2})(\d{3})(\d{3}).*/, "$1.$2.$3")}
+                    )
+                  </p>
+                </div>
+                <div>
+                  <BsPersonFill size="1.5rem" />
+                </div>
               </div>
-
+              <br />
               <div className="form-group p-2">
                 <label
                   style={{
@@ -351,7 +349,7 @@ const HonorariosPorAgente = () => {
                   OPERATIVO
                 </label>
 
-                <div className="input-group gap-4">
+                <div className="input-group gap-4 mt-1">
                   <input
                     style={{ maxWidth: "40%" }}
                     type="number"
@@ -420,10 +418,22 @@ const HonorariosPorAgente = () => {
                   </div>
                 )}
               </div>
-
+              <br />
               {agentes && agentes.length > 0 && selectValue ? (
-                // <div className="p-0 mb-3 card">
-                <div className="card-body justify-content-evenly d-flex gap-2 detalleAgente">
+                <div
+                  className="card-body justify-content-center d-flex gap-2 detalleAgente"
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    width: "80%",
+                    padding: "10px",
+                    margin: "0 auto",
+                    border: "1px solid #87CEEB",
+                    boxShadow: "2px 2px 5px #888888",
+                  }}
+                >
                   {agentes.map(
                     (agente) =>
                       agente.id ===
@@ -441,46 +451,48 @@ const HonorariosPorAgente = () => {
                             </label>
                           </div>
                           <div className="value">
-                            {agente.modulos
-                              .map((modulo) => modulo.descripcion)
-                              .join(", ")}
+                            {agente.modulos.map((modulo) => (
+                              <div key={modulo.id}>
+                                <GrFormCheckmark /> {modulo.descripcion}
+                              </div>
+                            ))}
                           </div>
                           <div className="label">Funciones Asociadas</div>
                         </div>
                       )
                   )}
                 </div>
-              ) : // </div>
-              null}
+              ) : null}
 
               <br />
-
-              <div className="form-group p-2">
-                <label
-                  style={{
-                    fontSize: "14px",
-                    fontWeight: "bold",
-                    marginLeft: "0.5rem",
-                  }}
-                >
-                  Seleccione M&oacute;dulos:
-                </label>
-                <Select
-                  isMulti
-                  name="modulos"
-                  options={optionsModulos}
-                  classNames={{ container: () => "select2-container" }}
-                  placeholder="Seleccioné una opción"
-                  classNamePrefix="select2"
-                  noOptionsMessage={() => "No hay módulos disponibles"}
-                  id="select-modulos"
-                  isDisabled={!estaHabilitado || loadingModulosActivos}
-                  value={selectedOptions}
-                  onChange={(e) => {
-                    setSelectedOptions(e);
-                  }}
-                />
-              </div>
+              {operativoData && operativoData.id ? (
+                <div className="form-group p-2">
+                  <label
+                    style={{
+                      fontSize: "14px",
+                      fontWeight: "bold",
+                      marginLeft: "0.5rem",
+                    }}
+                  >
+                    Seleccione M&oacute;dulos:
+                  </label>
+                  <Select
+                    isMulti
+                    name="modulos"
+                    options={optionsModulos}
+                    classNames={{ container: () => "select2-container" }}
+                    placeholder="Seleccioné una opción"
+                    classNamePrefix="select2"
+                    noOptionsMessage={() => "No hay módulos disponibles"}
+                    id="select-modulos"
+                    isDisabled={!estaHabilitado || loadingModulosActivos}
+                    value={selectedOptions}
+                    onChange={(e) => {
+                      setSelectedOptions(e);
+                    }}
+                  />
+                </div>
+              ) : null}
               <br />
               <br />
               <div className="d-flex align-items-center justify-content-between p-2">
@@ -492,7 +504,6 @@ const HonorariosPorAgente = () => {
                     setShowDropdown(false);
                     setOperativoData({});
                     setSelectedOptions([]);
-                    // setOptionsModulos([]);
                   }}
                 >
                   <FaRedo />
