@@ -468,6 +468,7 @@ const HonorariosPorAgente = () => {
                       )
                   )
                 : null}
+              <br />
 
               {operativoData && operativoData.id ? (
                 <div className="form-group p-2">
