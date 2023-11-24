@@ -33,8 +33,8 @@ const CardItem = ({ title, value }) => {
 const CardDetalleAgente = ({ data }) => {
   const dateFormatted = new Date(data.fecha);
   const arrDate = [
-    dateFormatted.getDate(),
-    dateFormatted.getMonth(),
+    dateFormatted.getDate() + 1,
+    dateFormatted.getMonth() + 1,
     dateFormatted.getFullYear(),
   ];
   const fullDate = arrDate.join("/");
@@ -43,8 +43,11 @@ const CardDetalleAgente = ({ data }) => {
       <div className="card h-100 w-100 p-0">
         <div className="card-header bg-light" style={{ fontWeight: 600 }}>
           <small className="text-muted">
-            {data.liquidacion_id
-              ? `Orden de Pago: #${data.liquidacion_id}`
+            {console.log(data)}
+            {data.liquidacion_id || data.op_nro
+              ? `Orden de Pago${!data.op_nro ? " (Provisoria)" : ""}: #${
+                  data.op_nro ?? data.liquidacion_id
+                }`
               : "Sin Orden de Pago"}
           </small>
         </div>
