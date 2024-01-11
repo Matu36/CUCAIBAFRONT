@@ -31,17 +31,22 @@ const InputField = ({
         onChange={handleChange}
         {...props}
       />
-      {error && !props.disabled && (
+      {error && !props.disabled && inputType != "date" && (
         <p style={{ color: "red" }}>
           El campo no puede estar vacío y debe ser de tipo{" "}
           {inputType === "text" ? "texto" : "numérico"}
         </p>
       )}
-      {inputKey === "anio_acto" && error === "minmax" ?  (
+      {inputKey === "anio_acto" && error === "minmax" ? (
         <p style={{ color: "red" }}>
-            "El año no puede ser anterior al 2022 y posterior al año actual"
-            </p>
-          ) : null}
+          "El año no puede ser anterior al 2022 y posterior al año actual"
+        </p>
+      ) : null}
+      {inputType === "date" && error ? (
+        <p style={{ color: "red" }}>
+          La fecha no puede ser posterior al día actual
+        </p>
+      ) : null}
     </div>
   );
 };
