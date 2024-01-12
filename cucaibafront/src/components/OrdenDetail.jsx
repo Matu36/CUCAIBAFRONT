@@ -207,7 +207,7 @@ export const OrdenDetail = () => {
                       marginBottom: "20px",
                     }}
                   >
-                    3.5.5 : $
+                    {gastos.gastos.op_inciso}.{gastos.gastos.op_partidappal}.{gastos.gastos.op_partidaparcial} : $
                     {gastos.gastos.op_monto ? gastos.gastos.op_monto : null}
                   </Text>
                   <Text style={styles.text}>

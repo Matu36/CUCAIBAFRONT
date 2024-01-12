@@ -20,6 +20,7 @@ import PrintOrdenPagoPDFTransferencia from "./UI/PrintPDFTransferencia";
 
 import Dropdown from "./UI/Dropdown";
 import { FaPlus, FaPrint, FaSearch, FaTimes } from "react-icons/fa";
+import { validateFecha } from "../utils/Validaciones";
 
 const NUMBER_REGEX = /^[0-9]+$/;
 const NO_NUMBER_STRING_REGEX = /^[^0-9]+$/;
@@ -52,7 +53,7 @@ const labels = [
     min: previousYear,
     max: currentYear,
   },
-  
+
   {
     label: "Nro. Acto",
     disabled: false,
@@ -88,6 +89,13 @@ const labels = [
     inputKey: "anio_op",
     inputType: "number",
     show: false,
+  },
+  {
+    label: "Fecha de Emisión",
+    disabled: false,
+    inputKey: "fecha_dispo",
+    inputType: "date",
+    show: true,
   },
 ];
 
@@ -130,12 +138,15 @@ export const VerOrdenes = ({ ...props }) => {
     const anioActoIsValid =
       OP["anio_acto"] >= 2022 && OP["anio_acto"] <= new Date().getFullYear();
 
+    const fechaDispoIsValid = !validateFecha(OP["fecha_dispo"]);
+
     return (
       incompleteFields.length === 0 &&
       nroOpComplete &&
       !tipoActoIsNumber &&
       !reparticionActoIsNumber &&
-      anioActoIsValid
+      anioActoIsValid &&
+      fechaDispoIsValid
     );
   };
 
@@ -213,6 +224,13 @@ export const VerOrdenes = ({ ...props }) => {
           [e.target.name]: !NUMBER_REGEX.test(e.target.value),
         });
         break;
+
+      case "date":
+        setError({
+          ...error,
+          [e.target.name]: validateFecha(e.target.value),
+        });
+        break;
     }
 
     if (e.target.name === "tipo_acto") {
@@ -261,7 +279,15 @@ export const VerOrdenes = ({ ...props }) => {
         timer: 3000,
       });
     } else {
-      mutate(OP);
+      let fecha = OP.fecha_dispo;
+      let arr = fecha.split("-").reverse();
+      arr[arr.length - 1] = arr[arr.length - 1].slice(2, 4);
+      let modifFecha = arr.join("/");
+      let modif = {
+        ...OP,
+        fecha_dispo: modifFecha,
+      };
+      mutate(modif);
       setOP(INITIAL_STATE);
     }
   };
@@ -319,7 +345,7 @@ export const VerOrdenes = ({ ...props }) => {
             </button>
           )}
 
-          {row.op_nro === null && (
+
             <button className="dropdown-item w-100 dropdown-item-custom pdf-download-link">
               <FaPrint size="0.85em" />
               <PrintOrdenPago
@@ -328,8 +354,8 @@ export const VerOrdenes = ({ ...props }) => {
                 clicked={clicked}
               />
             </button>
-          )}
-          {row.op_nro === null && (
+
+
             <button className="dropdown-item w-100 dropdown-item-custom pdf-download-link">
               <FaPrint size="0.85em" />
               <PrintOrdenPagoPDFTransferencia
@@ -338,7 +364,7 @@ export const VerOrdenes = ({ ...props }) => {
                 clicked={clicked}
               />
             </button>
-          )}
+
 
           {!row.op_nro && row.opprovisorio_nro && (
             <button
@@ -396,7 +422,7 @@ export const VerOrdenes = ({ ...props }) => {
         customFooter={true}
       >
         <div>
-          <hr className="hrstyle" style={{marginTop:"-2rem"}} />
+          <hr className="hrstyle" style={{ marginTop: "-2rem" }} />
           <form>
             <div
               className="d-flex gap-1 align-items-center mt-5"
@@ -439,10 +465,19 @@ export const VerOrdenes = ({ ...props }) => {
               handleChange={handleInputChange}
               required={true}
             />
+            <InputField
+              label="Fecha de Emisión"
+              key="fecha_dispo"
+              error={error["fecha_dispo"]}
+              inputType="date"
+              inputKey="fecha_dispo"
+              value={OP["fecha_dispo"]}
+              handleChange={handleInputChange}
+              required={true}
+            />
           </form>
-          <hr className="hrstyle2"/>
-          <div className="modal-footer" style={{border:"none"}}>
-           
+          <hr className="hrstyle2" />
+          <div className="modal-footer" style={{ border: "none" }}>
             <button
               type="button"
               className="btn btn-secondary"
